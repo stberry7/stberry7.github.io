@@ -319,7 +319,8 @@ document.addEventListener('click', function(e){
         img2.style.display = 'block';
     }
 });
-</script><div id="visitCount"><script>
+
+<!-- </script><div id="visitCount"><script>
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -330,9 +331,9 @@ today = mm + '/' + dd + '/' + yyyy;
 if (localStorage[today])
   localStorage[today]=Number(localStorage[today]) +1;
 else
-  localStorage[today]=1;
+  localStorage[today]=1; -->
 
-document.write("Visits today: " + localStorage[today] + " time(s).");
+// document.write("Visits today: " + localStorage[today] + " time(s).");
 
 var oneDayAgo = new Date(Date.now() - 864e5);
 dd = String(oneDayAgo.getDate()).padStart(2, '0');
