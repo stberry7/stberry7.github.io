@@ -216,5 +216,27 @@ document.addEventListener('click', function(e){
     var img = document.querySelector('img');
     img.style.display = 'block';
 });
+</script><script>
+document.addEventListener('mousemove', function(e){
+    var sidebar = document.querySelector('.sidebar');
+    if (e.clientX < 50) {
+        sidebar.style.left = '0';
+    } else {
+        sidebar.style.left = '-200px';
+    }
+});
+
+document.addEventListener('click', function(e){
+    var img1 = document.querySelector('img');
+    var img2 = document.querySelectorAll('img')[1];
+    var rect = img1.getBoundingClientRect();
+    var dx = e.clientX - (rect.left + rect.width / 2);
+    var dy = e.clientY - (rect.top + rect.height / 2);
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < 100) {
+        img1.style.display = 'none';
+        img2.style.display = 'block';
+    }
+});
 </script></body>
 </html>
