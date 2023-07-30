@@ -1,7 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #visitCounter {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let visitCount = localStorage.getItem('visitCount');
+            if (!visitCount) {
+                visitCount = 0;
+            }
+            visitCount++;
+            localStorage.setItem('visitCount', visitCount);
+
+            const visitCounter = document.getElementById('visitCounter');
+            visitCounter.innerText = `이 페이지를 ${visitCount}번 방문하셨습니다.`;
+            visitCounter.style.display = 'block';
+
+            setTimeout(() => {
+                visitCounter.style.display = 'none';
+            }, 5000);  // 5 seconds
+        });
+    </script>
+</head>
+<body>
 <!DOCTYPE html>
 
 <html lang="ko">
-<head>
+
 <meta charset="utf-8"/>
 <title>
    영어 표현 공부
@@ -91,8 +129,8 @@
     text-align: center;
     padding: 10px 0;
 }
-</style></head>
-<body><img alt="Girl Image 2" src="image/girl_front2.png" style="display: none; margin: auto;"/>
+</style>
+<img alt="Girl Image 2" src="image/girl_front2.png" style="display: none; margin: auto;"/>
 <div class="sidebar" style="left: -200px; transition: left 0.5s;">
 <a href="English.html">
     버튼 1
@@ -278,5 +316,9 @@ window.onload = function() {
         visitCount.style.display = 'none';
     }, 3000);
 };
-</script></body>
+</script>
+
+
+    <div id="visitCounter"></div>
+</body>
 </html>
