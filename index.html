@@ -93,7 +93,7 @@
 }
 </style></head>
 <body>
-<div class="sidebar">
+<div class="sidebar" style="left: -200px; transition: left 0.5s;">
 <a href="English.html">
     버튼 1
    </a>
@@ -108,7 +108,7 @@
 <p>
     영어 표현을 쉽게 배울 수 있는 웹페이지입니다.
    </p>
-<img alt="Girl Image" src="image/girl_front1.png" style="display: none;"/></div>
+<img alt="Girl Image" src="image/girl_front1.png" style="display: none; margin: auto;"/></div>
 <script>
    var clickCount = 0;
 // document.addEventListener('click', function(e){
@@ -203,9 +203,18 @@ document.addEventListener('click', function(e){
 });
   </script>
 <footer class="footer"><p>Copyright © 2023</p></footer><script>
-document.addEventListener('click', function(){
+document.addEventListener('mousemove', function(e){
+    var sidebar = document.querySelector('.sidebar');
+    if (e.clientX < 50) {
+        sidebar.style.left = '0';
+    } else {
+        sidebar.style.left = '-200px';
+    }
+    
     var img = document.querySelector('img');
-    img.style.display = 'block';
+    if(e.type === 'click') {
+        img.style.display = 'block';
+    }
 });
 </script></body>
 </html>
