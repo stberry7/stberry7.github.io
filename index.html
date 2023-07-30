@@ -210,11 +210,11 @@ document.addEventListener('mousemove', function(e){
     } else {
         sidebar.style.left = '-200px';
     }
-    
+});
+
+document.addEventListener('click', function(e){
     var img = document.querySelector('img');
-    if(e.type === 'click') {
-        img.style.display = 'block';
-    }
+    img.style.display = 'block';
 });
 </script></body>
 </html>
