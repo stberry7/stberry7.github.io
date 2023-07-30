@@ -54,6 +54,23 @@
         });
     };
 </script>
+
+<script>
+    window.onload = function() {
+        var img1 = document.getElementById('img1');
+        var img2 = document.getElementById('img2');
+
+        img1.addEventListener('load', function() {
+            img1.style.display = 'none';
+            img2.style.display = 'block';
+        });
+
+        img2.addEventListener('load', function() {
+            img1.style.display = 'block';
+            img2.style.display = 'none';
+        });
+    };
+</script>
 </head>
 <body>
 <!DOCTYPE html>
@@ -341,6 +358,14 @@ window.onload = function() {
 
     <div id="visitCounter"></div>
 
+<img id="img1" src="image/girl_front1.png" />
+<img id="img2" src="image/girl_front2.png" />
+
+<style>
+    #img2 {
+        display: none;
+    }
+</style>
 <img id="img1" src="image/girl_front1.png" />
 <img id="img2" src="image/girl_front2.png" />
 </body>
