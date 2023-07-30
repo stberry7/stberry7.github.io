@@ -238,7 +238,7 @@ document.addEventListener('click', function(e){
         img2.style.display = 'block';
     }
 });
-</script><script>
+</script><div id="visitCount"><script>
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -270,5 +270,13 @@ yyyy = twoDaysAgo.getFullYear();
 twoDaysAgo = mm + '/' + dd + '/' + yyyy;
 
 document.write("Visits the day before yesterday: " + (localStorage[twoDaysAgo] || 0) + " time(s).");
+</script></div><script>
+window.onload = function() {
+    var visitCount = document.getElementById('visitCount');
+    visitCount.style.display = 'block';
+    setTimeout(function() {
+        visitCount.style.display = 'none';
+    }, 3000);
+};
 </script></body>
 </html>
