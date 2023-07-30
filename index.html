@@ -342,7 +342,7 @@ yyyy = oneDayAgo.getFullYear();
 
 oneDayAgo = mm + '/' + dd + '/' + yyyy;
 
-// document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
+document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
 
 var twoDaysAgo = new Date(Date.now() - 864e5 * 2);
 dd = String(twoDaysAgo.getDate()).padStart(2, '0');
@@ -361,6 +361,6 @@ twoDaysAgo = mm + '/' + dd + '/' + yyyy;
 //     }, 3000);
 // };
 </script>
-<!-- <div id="visitCounter"></div> -->
+<div id="visitCounter"></div>
 </div></html></body>
 </html>
