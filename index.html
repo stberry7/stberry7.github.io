@@ -230,10 +230,10 @@
 </div>
 <div class="content">
 <h1>
- 환영합니다! 
+<!-- 환영합니다! -->
 </h1>
 <p>
- 영어 표현을 쉽게 배울 수 있는 웹페이지입니다. 
+<!-- 영어 표현을 쉽게 배울 수 있는 웹페이지입니다. -->
 </p>
 <script>
    var clickCount = 0;
@@ -335,14 +335,14 @@ else
 
 // document.write("Visits today: " + localStorage[today] + " time(s).");
 
-var oneDayAgo = new Date(Date.now() - 864e5);
-dd = String(oneDayAgo.getDate()).padStart(2, '0');
-mm = String(oneDayAgo.getMonth() + 1).padStart(2, '0');
-yyyy = oneDayAgo.getFullYear();
+// var oneDayAgo = new Date(Date.now() - 864e5);
+// dd = String(oneDayAgo.getDate()).padStart(2, '0');
+// mm = String(oneDayAgo.getMonth() + 1).padStart(2, '0');
+// yyyy = oneDayAgo.getFullYear();
 
-oneDayAgo = mm + '/' + dd + '/' + yyyy;
+// oneDayAgo = mm + '/' + dd + '/' + yyyy;
 
-document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
+// document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
 
 var twoDaysAgo = new Date(Date.now() - 864e5 * 2);
 dd = String(twoDaysAgo.getDate()).padStart(2, '0');
@@ -361,6 +361,6 @@ twoDaysAgo = mm + '/' + dd + '/' + yyyy;
 //     }, 3000);
 // };
 </script>
-<div id="visitCounter"></div>
+<!-- <div id="visitCounter"></div> -->
 </div></html></body>
 </html>
