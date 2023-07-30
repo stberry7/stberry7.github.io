@@ -226,7 +226,6 @@
     padding: 10px 0;
 }
 </style>
-<img alt="Girl Image 2" src="image/girl_front2.png" style="display: none; margin: auto;"/>
 <div class="sidebar" style="left: -200px; transition: left 0.5s;">
 <a href="English.html">
     버튼 1
@@ -245,51 +244,6 @@
 <img alt="Girl Image" src="image/girl_front1.png" style="display: none; margin: auto;"/></div>
 <script>
    var clickCount = 0;
-// document.addEventListener('click', function(e){
-//     clickCount++;
-//     if (clickCount > 100) {
-//         var message = document.createElement('div');
-//         message.setAttribute('class', 'message');
-//         message.innerText = "아파요~";
-//         document.body.appendChild(message);
-//         message.style.left = (e.pageX - 50) + 'px';
-//         message.style.top = (e.pageY - 50) + 'px';
-
-//         var image = document.createElement('img');
-//         image.setAttribute('class', 'image');
-//         image.src = 'girl.png';
-//         document.body.appendChild(image);
-//         image.style.left = (e.pageX + 50) + 'px';
-//         image.style.top = (e.pageY - 50) + 'px';
-
-//         setTimeout(function(){
-//             message.parentNode.removeChild(message);
-//             image.parentNode.removeChild(image);
-//         }, 1000);
-
-//         clickCount = 0;
-//     }
-
-//     var circle = document.createElement('div');
-//     circle.setAttribute('class', 'circle');
-//     document.body.appendChild(circle);
-
-//     // var size = (Math.random() * 1.5 + 1) * 100 + 'px';  // Random size between 200% and 500% of original size
-//     var size = 100 + 'px';  // Random size between 200% and 500% of original size
-    
-//         circle.style.width = size;
-//         circle.style.height = size;
-        
-//     circle.style.left = (e.pageX - 50) + 'px';  // Adjusted to consider the size of the circle
-//     circle.style.top = (e.pageY - 50) + 'px';  // Adjusted to consider the size of the circle
-
-//     var color = '#' + Math.floor(Math.random()*16777215).toString(16);
-//     circle.style.borderColor = color;
-
-//     setTimeout(function(){
-//         circle.parentNode.removeChild(circle);
-//     }, 1000);
-// });
 
 
 document.addEventListener('click', function(e){
@@ -414,28 +368,8 @@ window.onload = function() {
 };
 </script>
 
-
     <div id="visitCounter"></div>
 
-<img id="img1" src="image/girl_front1.png" />
-<img id="img2" src="image/girl_front2.png" />
-
-<style>
-    #img2 {
-        display: none;
-    }
-</style>
-<img id="img1" src="image/girl_front1.png" />
-<img id="img2" src="image/girl_front2.png" />
-
-<img id="img1" src="image/girl_front1.png" />
-<img id="img2" src="image/girl_front2.png" />
-
-<img id="img" src="image/girl_front1.png" />
-
-<img class="girl" src="image/girl_front1.png" />
-<img class="girl" src="image/girl_front1.png" />
-<!-- Add as many images as you want -->
 
 <img id="img" src="image/girl_front1.png" />
 </body>
