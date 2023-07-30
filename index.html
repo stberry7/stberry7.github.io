@@ -238,5 +238,37 @@ document.addEventListener('click', function(e){
         img2.style.display = 'block';
     }
 });
+</script><script>
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0');
+var yyyy = today.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+
+if (localStorage[today])
+  localStorage[today]=Number(localStorage[today]) +1;
+else
+  localStorage[today]=1;
+
+document.write("Visits today: " + localStorage[today] + " time(s).");
+
+var oneDayAgo = new Date(Date.now() - 864e5);
+dd = String(oneDayAgo.getDate()).padStart(2, '0');
+mm = String(oneDayAgo.getMonth() + 1).padStart(2, '0');
+yyyy = oneDayAgo.getFullYear();
+
+oneDayAgo = mm + '/' + dd + '/' + yyyy;
+
+document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
+
+var twoDaysAgo = new Date(Date.now() - 864e5 * 2);
+dd = String(twoDaysAgo.getDate()).padStart(2, '0');
+mm = String(twoDaysAgo.getMonth() + 1).padStart(2, '0');
+yyyy = twoDaysAgo.getFullYear();
+
+twoDaysAgo = mm + '/' + dd + '/' + yyyy;
+
+document.write("Visits the day before yesterday: " + (localStorage[twoDaysAgo] || 0) + " time(s).");
 </script></body>
 </html>
