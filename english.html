@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   미국 엔지니어들의 영어 표현 공부
+  </title>
+  <style>
+   body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+  </style>
+  <style>
+   .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: darkblue;
+}
+  </style>
+  <style>
+   .circle {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 5px solid;
+    animation: circleFadeOut 1s forwards;
+}
+
+@keyframes circleFadeOut {
+    from {transform: scale(0.5); opacity: 1;}
+    to {transform: scale(1.5); opacity: 0;}
+}
+  </style>
+  <style>
+   .message {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: messageFadeOut 1s forwards;
+}
+
+@keyframes messageFadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+  </style>
+ </head>
+ <body>
+  <header>
+   <a class="home-button" href="index.html">
+    Home
+   </a>
+   <h1>
+    영어 표현 공부
+   </h1>
+   <p>
+    영어 표현을 쉽게 배울 수 있는 웹페이지입니다.
+   </p>
+  </header>
+  <main>
+   <h2>
+
+   </h2>
+   <ul>     
+    <!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+   </ul>
+  </main>
+  <footer>
+   © 2023 영어 표현 공부. All rights reserved.
+   <a href="mailto:stberry7@gmail.com?subject=Hello&amp;body=Nice%20to%20meet%20you">
+    Email me
+   </a>
+  </footer>
+  <script>
+   var clickCount = 0;
+document.addEventListener('click', function(e){
+    clickCount++;
+    // if (clickCount > 5) {
+    //     var message = document.createElement('div');
+    //     message.setAttribute('class', 'message');
+    //     message.innerText = "아파요~";
+    //     document.body.appendChild(message);
+    //     message.style.left = (e.pageX - 50) + 'px';
+    //     message.style.top = (e.pageY - 50) + 'px';
+
+    //     var image = document.createElement('img');
+    //     image.setAttribute('class', 'image');
+    //     image.src = 'girl.png';
+    //     document.body.appendChild(image);
+    //     image.style.left = (e.pageX + 50) + 'px';
+    //     image.style.top = (e.pageY - 50) + 'px';
+
+    //     setTimeout(function(){
+    //         message.parentNode.removeChild(message);
+    //         image.parentNode.removeChild(image);
+    //     }, 1000);
+
+        // clickCount = 0;
+    }
+
+    var circle = document.createElement('div');
+    circle.setAttribute('class', 'circle');
+    document.body.appendChild(circle);
+
+    circle.style.left = (e.pageX - 50) + 'px';  // Adjusted to consider the size of the circle
+    circle.style.top = (e.pageY - 50) + 'px';  // Adjusted to consider the size of the circle
+
+    var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+    circle.style.borderColor = color;
+
+    setTimeout(function(){
+        circle.parentNode.removeChild(circle);
+    }, 1000);
+});
+  </script>
+ 
+<script>
+window.onload = function() {
+    fetch('english.txt')
+    .then(response => response.text())
+    .then(data => {
+        var para = document.createElement("P");  // Create a <p> element
+        var t = document.createTextNode(data);  // Create a text node
+        para.appendChild(t);  // Append the text to <p>
+        document.body.appendChild(para);  // Append <p> to <body>
+    })
+    .catch(error => console.error(error))
+}
+</script>
+
+<script>
+window.onload = function() {
+    var files = ['file1.txt', 'file2.txt', 'file3.txt'];  // This should be the actual list of files in the "english" directory
+
+    files.forEach(function(file) {
+        fetch('english/' + file)
+        .then(response => response.text())
+        .then(data => {
+            // Split the text into lines and create a separate paragraph for each line
+            var lines = data.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                var para = document.createElement("P");
+                var t = document.createTextNode(lines[i]);
+                para.appendChild(t);
+                document.body.appendChild(para);
+            }
+        })
+        .catch(error => console.error(error))
+    });
+}
+</script>
+</body>
+</html>
