@@ -99,54 +99,56 @@
   </div>
   <script>
    var clickCount = 0;
-document.addEventListener('click', function(e){
-    clickCount++;
-    if (clickCount > 100) {
-        var message = document.createElement('div');
-        message.setAttribute('class', 'message');
-        message.innerText = "아파요~";
-        document.body.appendChild(message);
-        message.style.left = (e.pageX - 50) + 'px';
-        message.style.top = (e.pageY - 50) + 'px';
+// document.addEventListener('click', function(e){
+//     clickCount++;
+//     if (clickCount > 100) {
+//         var message = document.createElement('div');
+//         message.setAttribute('class', 'message');
+//         message.innerText = "아파요~";
+//         document.body.appendChild(message);
+//         message.style.left = (e.pageX - 50) + 'px';
+//         message.style.top = (e.pageY - 50) + 'px';
 
-        var image = document.createElement('img');
-        image.setAttribute('class', 'image');
-        image.src = 'girl.png';
-        document.body.appendChild(image);
-        image.style.left = (e.pageX + 50) + 'px';
-        image.style.top = (e.pageY - 50) + 'px';
+//         var image = document.createElement('img');
+//         image.setAttribute('class', 'image');
+//         image.src = 'girl.png';
+//         document.body.appendChild(image);
+//         image.style.left = (e.pageX + 50) + 'px';
+//         image.style.top = (e.pageY - 50) + 'px';
 
-        setTimeout(function(){
-            message.parentNode.removeChild(message);
-            image.parentNode.removeChild(image);
-        }, 1000);
+//         setTimeout(function(){
+//             message.parentNode.removeChild(message);
+//             image.parentNode.removeChild(image);
+//         }, 1000);
 
-        clickCount = 0;
-    }
+//         clickCount = 0;
+//     }
 
-    var circle = document.createElement('div');
-    circle.setAttribute('class', 'circle');
-    document.body.appendChild(circle);
+//     var circle = document.createElement('div');
+//     circle.setAttribute('class', 'circle');
+//     document.body.appendChild(circle);
 
-    // var size = (Math.random() * 1.5 + 1) * 100 + 'px';  // Random size between 200% and 500% of original size
-    var size = 100 + 'px';  // Random size between 200% and 500% of original size
+//     // var size = (Math.random() * 1.5 + 1) * 100 + 'px';  // Random size between 200% and 500% of original size
+//     var size = 100 + 'px';  // Random size between 200% and 500% of original size
     
-        circle.style.width = size;
-        circle.style.height = size;
+//         circle.style.width = size;
+//         circle.style.height = size;
         
-    circle.style.left = (e.pageX - 50) + 'px';  // Adjusted to consider the size of the circle
-    circle.style.top = (e.pageY - 50) + 'px';  // Adjusted to consider the size of the circle
+//     circle.style.left = (e.pageX - 50) + 'px';  // Adjusted to consider the size of the circle
+//     circle.style.top = (e.pageY - 50) + 'px';  // Adjusted to consider the size of the circle
 
-    var color = '#' + Math.floor(Math.random()*16777215).toString(16);
-    circle.style.borderColor = color;
+//     var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+//     circle.style.borderColor = color;
 
-    setTimeout(function(){
-        circle.parentNode.removeChild(circle);
-    }, 1000);
-});
+//     setTimeout(function(){
+//         circle.parentNode.removeChild(circle);
+//     }, 1000);
+// });
 
-document.addEventListener('dblclick', function(e){
-    var numCircles = Math.floor(Math.random() * 11) + 10;  // Random number of circles between 10 and 20
+
+document.addEventListener('click', function(e){
+    // var numCircles = Math.floor(Math.random() * 1) + 2;  // Random number of circles between 10 and 20
+    var numCircles = 1;  // Random number of circles between 10 and 20
     for (var i = 0; i < numCircles; i++) {
         var circle = document.createElement('div');
         circle.setAttribute('class', 'circle');
@@ -163,8 +165,13 @@ document.addEventListener('dblclick', function(e){
         circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';  // Centered on cursor
         circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';  // Centered on cursor
 
-        var moveX = Math.floor(Math.random() * 5) - 2;  // Random movement in X direction
-        var moveY = Math.floor(Math.random() * 5) - 2;  // Random movement in Y direction
+        var moveX = Math.floor(Math.random() *5 )-2;  // Random movement in X direction
+        var moveY = Math.floor(Math.random() *5 )-2;  // Random movement in Y direction
+        // var moveX = Math.floor(Math.random() * 5) - 2;  // Random movement in X direction
+        // var moveY = Math.floor(Math.random() * 5) - 2;  // Random movement in Y direction
+
+
+
         var intervalID = setInterval(function(){
             var left = parseInt(circle.style.left);
             var top = parseInt(circle.style.top);
@@ -174,7 +181,7 @@ document.addEventListener('dblclick', function(e){
                 circle.style.left = (left + moveX) + 'px';
                 circle.style.top = (top + moveY) + 'px';
             }
-        }, 100);
+        }, 1);
 
         setTimeout(function(){
             clearInterval(intervalID);
