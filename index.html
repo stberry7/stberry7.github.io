@@ -126,7 +126,7 @@
     };
 </script>
 </head>
-<body><img src="image/girl_front1.png" style="max-width: 100%; height: auto;"/>
+<body><img id="randomImage" src="" style="max-width: 100%; height: auto;"/>
 <!DOCTYPE html>
 
 <html lang="ko">
@@ -362,5 +362,12 @@ twoDaysAgo = mm + '/' + dd + '/' + yyyy;
 // };
 </script>
 <!-- <div id="visitCounter"></div> -->
-</div></html></body>
+</div></html><script>
+window.onload = function() {
+    var images = ['image/girl_front1.png', 'image/girl_front2.png'];
+    var img = document.getElementById('randomImage');
+    var randomIndex = Math.floor(Math.random() * images.length);
+    img.src = images[randomIndex];
+};
+</script></body>
 </html>
