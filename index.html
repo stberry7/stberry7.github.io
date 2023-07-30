@@ -90,6 +90,18 @@
         });
     };
 </script>
+
+<script>
+    window.onload = function() {
+        var img = document.getElementById('img');
+
+        img.style.display = 'none';
+
+        document.body.addEventListener('click', function() {
+            img.style.display = 'block';
+        });
+    };
+</script>
 </head>
 <body>
 <!DOCTYPE html>
@@ -390,5 +402,7 @@ window.onload = function() {
 
 <img id="img1" src="image/girl_front1.png" />
 <img id="img2" src="image/girl_front2.png" />
+
+<img id="img" src="image/girl_front1.png" />
 </body>
 </html>
