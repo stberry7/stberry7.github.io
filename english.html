@@ -581,7 +581,7 @@ document.addEventListener('click', function(e){
 });
   </script>
  
-<!-- <style>
+<style>
 .firework {
     position: absolute;
     width: 1px;
@@ -597,15 +597,18 @@ document.addEventListener('click', function(e){
         opacity: 0;
     }
 }
-
-@media only screen and (max-width: 600px) {
-    body {
-        font-size: 300%;
-    }
-}
 </style>
 
+<style>
+    /* Increase the font size on screens smaller than 600px (typical size for mobile phones) */
+    @media only screen and (max-width: 600px) {
+        body {
+            font-size: 10em;
+        }
+    }
+    </style>
 <script>
+
 var colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
 
 document.addEventListener('click', function(event) {
@@ -625,7 +628,7 @@ document.addEventListener('click', function(event) {
             document.body.removeChild(firework);
         }, 3000);
     }
-}); -->
+});
 </script>
 </body>
 </html>
