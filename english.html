@@ -588,11 +588,11 @@ body {
 
 .firework {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 1px;
+    height: 1px;
     border-radius: 50%;
     background: red;
-    animation: explode 1s ease-out;
+    animation: explode 3s ease-out;
 }
 
 @keyframes explode {
@@ -604,20 +604,20 @@ body {
 </style>
 
 <script>
-var colors = ['red', 'yellow', 'blue', 'green'];
+var colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
 
 document.addEventListener('click', function(event) {
     for (var i = 0; i < 20; i++) {
         var firework = document.createElement('div');
         firework.className = 'firework';
-        firework.style.top = (event.clientY - 2.5) + 'px';
-        firework.style.left = (event.clientX - 2.5) + 'px';
+        firework.style.top = (event.clientY - 0.5) + 'px';
+        firework.style.left = (event.clientX - 0.5) + 'px';
         firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         firework.style.transform = 'translate(' + (Math.random() * 200 - 100) + 'px, ' + (Math.random() * 200 - 100) + 'px)';
         document.body.appendChild(firework);
         setTimeout(function() {
             document.body.removeChild(firework);
-        }, 1000);
+        }, 3000);
     }
 });
 </script>
