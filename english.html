@@ -582,10 +582,6 @@ document.addEventListener('click', function(e){
   </script>
  
 <style>
-body {
-    overflow: hidden;
-}
-
 .firework {
     position: absolute;
     width: 1px;
@@ -607,6 +603,10 @@ body {
 var colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
 
 document.addEventListener('click', function(event) {
+    if (event.clientX < 30 || event.clientX > window.innerWidth - 30 ||
+        event.clientY < 30 || event.clientY > window.innerHeight - 30) {
+        return;
+    }
     for (var i = 0; i < 20; i++) {
         var firework = document.createElement('div');
         firework.className = 'firework';
