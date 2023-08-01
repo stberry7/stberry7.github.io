@@ -3,7 +3,7 @@
 
 <html>
 <head>
-<style>.sidebar { left: 0px; }</style>
+<style>.sidebar { position: fixed; position: fixed; left: 0px; }</style>
 <script>
 window.onload = function() {
     var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
@@ -202,14 +202,7 @@ window.onload = function() {
     padding: 10px 0;
 }
 </style>
-<div class="sidebar" style="left: -200px; transition: left 2s;">
-<a href="english.html">
-    버튼 1
-   </a>
-<a href="project.html">
-    버튼 2
-   </a>
-<a href="vba.html">버튼 3</a></div>
+
 <div class="content">
 <h1>
 <!-- 환영합니다! -->
@@ -302,18 +295,18 @@ document.addEventListener('click', function(e){
     }
 });
 
-<!-- </script><div id="visitCount"><script>
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0');
-var yyyy = today.getFullYear();
+// <!-- </script><div id="visitCount"><script>
+// var today = new Date();
+// var dd = String(today.getDate()).padStart(2, '0');
+// var mm = String(today.getMonth() + 1).padStart(2, '0');
+// var yyyy = today.getFullYear();
 
-today = mm + '/' + dd + '/' + yyyy;
+// today = mm + '/' + dd + '/' + yyyy;
 
-if (localStorage[today])
-  localStorage[today]=Number(localStorage[today]) +1;
-else
-  localStorage[today]=1; -->
+// if (localStorage[today])
+//   localStorage[today]=Number(localStorage[today]) +1;
+// else
+//   localStorage[today]=1; -->
 
 // document.write("Visits today: " + localStorage[today] + " time(s).");
 
@@ -326,12 +319,12 @@ else
 
 // document.write("Visits yesterday: " + (localStorage[oneDayAgo] || 0) + " time(s).");
 
-var twoDaysAgo = new Date(Date.now() - 864e5 * 2);
-dd = String(twoDaysAgo.getDate()).padStart(2, '0');
-mm = String(twoDaysAgo.getMonth() + 1).padStart(2, '0');
-yyyy = twoDaysAgo.getFullYear();
+// var twoDaysAgo = new Date(Date.now() - 864e5 * 2);
+// dd = String(twoDaysAgo.getDate()).padStart(2, '0');
+// mm = String(twoDaysAgo.getMonth() + 1).padStart(2, '0');
+// yyyy = twoDaysAgo.getFullYear();
 
-twoDaysAgo = mm + '/' + dd + '/' + yyyy;
+// twoDaysAgo = mm + '/' + dd + '/' + yyyy;
 
 // document.write("Visits the day before yesterday: " + (localStorage[twoDaysAgo] || 0) + " time(s).");
 // </script></div><script>
