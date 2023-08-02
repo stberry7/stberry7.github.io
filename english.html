@@ -642,5 +642,14 @@ document.addEventListener('click', function(event) {
     }
 });
 </script>
+
+<script>
+    window.onload = function() {
+        var images = ['00', '01', '02', '03', '04'];
+        var randomImage = images[Math.floor(Math.random() * images.length)];
+        var imgSrc = './image_english/0030.igotyourback_' + randomImage + '.png';
+        document.getElementById('randomImage').src = imgSrc;
+    }
+</script>
 </body>
 </html>
