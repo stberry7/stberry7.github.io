@@ -224,6 +224,7 @@
      </strong>
 </p>
 <p>
+    <img src="0060.logjam_00.png" alt="Logjam" style="width: 130%;"><br>
      "Logjam"이란 단어는 주로 두 가지 상황에서 사용됩니다:
 
                     실제적인 의미: 강 또는 하천에서 나무 원목들이 얽히거나 겹쳐서 움직임을 막는 현상을 의미합니다. 이런 현상은 물의 흐름을 방해하고, 때로는 홍수를 일으키기도 합니다.
@@ -659,6 +660,14 @@ document.addEventListener('click', function(event) {
         var images = ['00', '01', '02', '03', '04'];
         var randomImage = images[Math.floor(Math.random() * images.length)];
         var imgSrc = './image_english/0040.square_away_' + randomImage + '.png';
+        document.getElementById('randomImage').src = imgSrc;
+    }
+</script>
+<script>
+    window.onload = function() {
+        var images = ['00', '01', '02', '03', '04'];
+        var randomImage = images[Math.floor(Math.random() * images.length)];
+        var imgSrc = './image_english/0060.logjam_' + randomImage + '.png';
         document.getElementById('randomImage').src = imgSrc;
     }
 </script>
