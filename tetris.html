@@ -1,13 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tetris Game</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-</head>
-<body>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Tetris Game
+  </title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js">
+  </script>
+  <style>
+   body {
+    display: block;
+    text-align: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f8f8;
+    font-family: 'Open Sans', sans-serif;
+    padding-top: 20px;
+}
+
+.home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+  </style>
+ </head>
+ <body>
+  <button class="home-button" onclick="location.href='index.html';">
+   Home
+  </button>
   <script>
-    const blockSize = 20;
+   const blockSize = 20;
     const gridWidth = 10, gridHeight = 20;
     const grid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(false));
     const shapes = [
@@ -152,7 +181,6 @@
       fill(255);
       text(`Score: ${score}`, 10, 20);
     }
-
   </script>
-</body>
+ </body>
 </html>
