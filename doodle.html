@@ -5,6 +5,19 @@
     <title>Processing to p5.js</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <style>
+
+.home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
         body { display: flex; justify-content: center; align-items: center; height: 100vh; }
         button { position: absolute; top: 20px; }
         #scores { position: absolute; top: 60px; }
@@ -12,6 +25,7 @@
 </head>
 <body>
     <button id="start">Start</button>
+<a href="index.html" class="home-button" id="home">Home</a>
     <div id="scores"></div>
     <script>
         const PLATFORM_COUNT = 10;
