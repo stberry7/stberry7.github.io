@@ -9,13 +9,15 @@
   </script>
   <style>
    body {
-    display: block;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     margin: 0;
     background-color: #f8f8f8;
     font-family: 'Open Sans', sans-serif;
-    padding-top: 20px;
+    overflow: hidden;  /* Prevent scrolling */
 }
 
 .home-button {
@@ -30,11 +32,33 @@
     transition: background-color 0.3s ease;
 }
   </style>
+  <style>
+   body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f8f8;
+    font-family: 'Open Sans', sans-serif;
+    transform: scale(2);
+}
+
+.home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    transform: scale(0.5);  /* Counter transformation to return the button to its original size */
+}
+  </style>
  </head>
  <body>
-  <button class="home-button" onclick="location.href='index.html';">
-   Home
-  </button>
   <script>
    const blockSize = 20;
     const gridWidth = 10, gridHeight = 20;
@@ -182,5 +206,8 @@
       text(`Score: ${score}`, 10, 20);
     }
   </script>
+  <button class="home-button" onclick="location.href='index.html';">
+   Home
+  </button>
  </body>
 </html>
