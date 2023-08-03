@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tetris Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <script>
+    const blockSize = 20;
+    const gridWidth = 10, gridHeight = 20;
+    const grid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(false));
+    const shapes = [
+      [[false, false, false, false],[true, true, true, true],[false, false, false, false],[false, false, false, false]],
+      [[false, false, false, false],[false, true, true, false],[false, true, true, false],[false, false, false, false]],
+      [[false, false, true, false],[true, true, true, false],[false, false, false, false],[false, false, false, false]],
+      [[false, true, false, false],[true, true, true, false],[false, false, false, false],[false, false, false, false]],
+      [[false, true, true, false],[true, true, false, false],[false, false, false, false],[false, false, false, false]],
+      [[true, true, false, false],[false, true, true, false],[false, false, false, false],[false, false, false, false]],
+      [[true, false, false, false],[true, true, true, false],[false, false, false, false],[false, false, false, false]]
+    ];
+    let block;
+    let blockX, blockY;
+    let blockColor;
+    let score = 0;
+    let speed = 60; 
+
+    function setup() {
+      createCanvas(200, 420);
+      textSize(20);
+      fill(255);
+      block = shapes[floor(random(shapes.length))];
+      blockColor = color(random(255), random(255), random(255));
+      blockX = gridWidth / 2 - 2;
+      blockY = 0;
+    }
+
+    function draw() {
+      background(0);
+      drawGrid();
+      drawBlock();
+      moveBlock();
+      checkUserInput();
+      displayScore();
+    }
+
+    function drawGrid() {
+      for(let i = 0; i < gridHeight; i++) {
+        for(let j = 0; j < gridWidth; j++) {
+          if(grid[i][j]) {
+            fill(255);
+            rect(j * blockSize, i * blockSize + 20, blockSize, blockSize);
+          }
+        }
+      }
+    }
+
+    function drawBlock() {
+      fill(blockColor);
+      for(let i = 0; i < block.length; i++) {
+        for(let j = 0; j < block[0].length; j++) {
+          if(block[i][j]) {
+            rect((blockX + j) * blockSize, (blockY + i) * blockSize + 20, blockSize, blockSize);
+          }
+        }
+      }
+    }
+
+    function moveBlock() {
+      if(frameCount % speed === 0) {
+        if(canMove(block, blockX, blockY + 1)) {
+          blockY++;
+        } else {
+          mergeBlock();
+          block = shapes[floor(random(shapes.length))];
+          blockColor = color(random(255), random(255), random(255));
+          blockX = gridWidth / 2 - 2;
+          blockY = 0;
+          clearRows();
+        }
+      }
+    }
+
+    function checkUserInput() {
+      if (keyIsDown(DOWN_ARROW)) {
+        speed = 5;
+      } else {
+        speed = 60;
+      }
+    }
+
+    function keyPressed() {
+      if(keyCode === LEFT_ARROW && canMove(block, blockX - 1, blockY)) {
+        blockX--;
+      } else if(keyCode === RIGHT_ARROW && canMove(block, blockX + 1, blockY)) {
+        blockX++;
+      } else if(keyCode === UP_ARROW) {
+        const rotatedBlock = rotateBlock(block);
+        if(canMove(rotatedBlock, blockX, blockY)) {
+          block = rotatedBlock;
+        }
+      }
+    }
+
+    function canMove(blockToMove, newX, newY) {
+      for(let i = 0; i < blockToMove.length; i++) {
+        for(let j = 0; j < blockToMove[0].length; j++) {
+          if(blockToMove[i][j]) {
+            if(newX + j < 0 || newX + j >= gridWidth || newY + i < 0 || newY + i >= gridHeight || grid[newY + i][newX + j]) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+    function mergeBlock() {
+      for(let i = 0; i < block.length; i++) {
+        for(let j = 0; j < block[0].length; j++) {
+          if(block[i][j]) {
+            grid[blockY + i][blockX + j] = true;
+          }
+        }
+      }
+    }
+
+    function rotateBlock(blockToRotate) {
+      const size = blockToRotate.length;
+      const rotatedBlock = Array(size).fill().map(() => Array(size).fill(false));
+      for(let i = 0; i < size; i++) {
+        for(let j = 0; j < size; j++) {
+          rotatedBlock[i][j] = blockToRotate[size - j - 1][i];
+        }
+      }
+      return rotatedBlock;
+    }
+
+    function clearRows() {
+      for(let i = gridHeight - 1; i >= 0; i--) {
+        if(grid[i].every(cell => cell)) {
+          for(let j = i; j >= 1; j--) {
+            grid[j] = grid[j - 1].slice();
+          }
+          grid[0] = Array(gridWidth).fill(false);
+          score += 10;
+        }
+      }
+    }
+
+    function displayScore() {
+      fill(255);
+      text(`Score: ${score}`, 10, 20);
+    }
+
+  </script>
+</body>
+</html>

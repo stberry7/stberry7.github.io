@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Processing to p5.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; }
+        button { position: absolute; top: 20px; }
+        #scores { position: absolute; top: 60px; }
+    </style>
+</head>
+<body>
+    <button id="start">Start</button>
+    <div id="scores"></div>
+    <script>
+        const PLATFORM_COUNT = 10;
+        const GRAVITY = 0.5;
+        const JUMP_FORCE = 15;
+        const MOVE_SPEED = 5;
+
+        let playerX, playerY, playerSpeedY, playerSpeedX;
+        let platformX = new Array(PLATFORM_COUNT);
+        let platformY = new Array(PLATFORM_COUNT);
+        let platformW = new Array(PLATFORM_COUNT);
+        let platformActive = new Array(PLATFORM_COUNT);
+        let gameStarted = false;
+        let particles = [];
+        let successfulLandingCount = 0;
+        let initialPlatformWidth = 100;
+        let platformWidth = initialPlatformWidth;
+        let level = 1;
+        let highScores = JSON.parse(localStorage.getItem("highScores")) || [{score:0, date:null}, {score:0, date:null}, {score:0, date:null}];
+        let currentDate = new Date();
+            highScores.push({score: level, date: currentDate});
+
+        function setup() {
+            createCanvas(400, 600);
+
+            let startButton = select('#start');
+            startButton.mousePressed(startGame);
+        }
+
+        function startGame() {
+            gameStarted = true;
+            playerX = width / 2;
+            playerY = height / 2;
+            playerSpeedY = 0;
+            playerSpeedX = 0;
+
+            for (let i = 0; i < PLATFORM_COUNT; i++) {
+                platformX[i] = random(width - platformWidth);
+                platformY[i] = i * height / PLATFORM_COUNT;
+                platformW[i] = platformWidth;
+                platformActive[i] = true;
+            }
+            
+            successfulLandingCount = 0;
+            platformWidth = initialPlatformWidth; 
+            level = 1; 
+        }
+
+        function createParticles(x, y, num) {
+            for (let i = 0; i < num; i++) {
+                let p = {
+                    x: x,
+                    y: y,
+                    vx: random(-1, 1),
+                    vy: random(-2, -1), 
+                    alpha: 255 
+                };
+                particles.push(p);
+            }
+        }
+
+        function drawParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                fill(169, 169, 169, p.alpha);
+                ellipse(p.x, p.y, 2, 2);
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 2;
+
+                if (p.alpha < 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+
+        function draw() {
+            background(255);
+
+            if (gameStarted) {
+                for (let i = 0; i < PLATFORM_COUNT; i++) {
+                    if (platformActive[i]) {
+                        fill(173, 216, 230);
+                        rect(platformX[i], platformY[i], platformW[i], 20);
+                    }
+
+                    platformY[i] += 2;
+
+                    if (platformY[i] > height) {
+                        platformY[i] = 0;
+                        platformX[i] = random(width - platformW[i]);
+                        platformW[i] = platformWidth; 
+                        platformActive[i] = true;
+                    }
+                }
+
+                fill(255, 165, 0);
+                ellipse(playerX, playerY, 20, 20);
+
+                playerSpeedY += GRAVITY;
+                playerY += playerSpeedY;
+                playerX += playerSpeedX;
+
+                for (let i = 0; i < PLATFORM_COUNT; i++) {
+                    if (platformActive[i] && abs(platformY[i] - playerY) < 20 && abs(platformX[i] + platformW[i]/2 - playerX) < platformW[i]/2 && playerSpeedY > 0) {
+                        playerSpeedY = -JUMP_FORCE;
+                        platformActive[i] = false;
+                        createParticles(platformX[i] + platformW[i]/2, platformY[i], 200);
+
+                        successfulLandingCount++;
+                        if (successfulLandingCount >= 10) {
+                            successfulLandingCount = 0;
+                            platformWidth *= 0.9; 
+                            level++; 
+                        }
+                    }
+                }
+
+                drawParticles();
+
+                if (playerY > height) {
+                    gameStarted = false;
+                    fill(0); 
+                    textSize(32);
+                    text("Game Over!", width / 2 - 80, height / 2);
+                    
+                    highScores.push(level);
+                highScores.sort((a, b) => b.score - a.score);
+                    highScores = highScores.slice(0, 3);  // Keep only top 3
+                    localStorage.setItem("highScores", JSON.stringify(highScores)); // Update high scores in local storage
+
+                    successfulLandingCount = 0;
+                    platformWidth = initialPlatformWidth; 
+                    level = 1; 
+                }
+
+                if (keyIsDown(LEFT_ARROW)) {
+                    playerX -= MOVE_SPEED;
+                } else if (keyIsDown(RIGHT_ARROW)) {
+                    playerX += MOVE_SPEED;
+                }
+
+                fill(0);
+                textSize(14);
+                text("Level: " + level, 10, 30);
+                text("Successful landings: " + successfulLandingCount, 10, 50);
+            }
+
+            drawScores();
+        }
+
+        function drawScores() {
+            let scoreElement = select('#scores');
+            scoreElement.html('High Scores:<br>1st: ' + highScores[0].score + ' (Date: ' + highScores[0].date + ')' + '<br>2nd: ' + highScores[1].score + ' (Date: ' + highScores[1].date + ')' + '<br>3rd: ' + highScores[2].score + ' (Date: ' + highScores[2].date + ')');
+        }
+    </script>
+</body>
+</html>
