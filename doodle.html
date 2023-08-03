@@ -18,9 +18,27 @@
     transition: background-color 0.3s ease;
 }
 
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+/*         body { display: flex; justify-content: center; align-items: center; height: 100vh; } */
+    /* body { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        height: 100vh; 
+    } */
+    body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f8f8;
+    font-family: 'Open Sans', sans-serif;
+    overflow: hidden;  /* Prevent scrolling */
+}
         button { position: absolute; top: 20px; }
-        #scores { position: absolute; top: 60px; }
+/*         #scores { position: absolute; top: 60px; } */
     </style>
 </head>
 <body>
@@ -171,7 +189,8 @@
                 fill(0);
                 textSize(14);
                 text("Level: " + level, 10, 30);
-                text("Successful landings: " + successfulLandingCount, 10, 50);
+/*                 text("Successful landings: " + successfulLandingCount, 10, 50); */
+                text("Successful landings: " + successfulLandingCount, windowWidth - 50, 50);
             }
 
             drawScores();
