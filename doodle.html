@@ -6,7 +6,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <style>
 
+/* .home-button {
+    top: 0px;
+    background-color: blue;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+} */
 .home-button {
+    position: absolute;
+    left: 10px;
+    top: 10px;
     display: inline-block;
     padding: 10px 20px;
     font-size: 16px;
@@ -18,15 +34,17 @@
     transition: background-color 0.3s ease;
 }
 
-
-/*         body { display: flex; justify-content: center; align-items: center; height: 100vh; } */
-    /* body { 
+/*         body {
+ display: flex; justify-content: center; align-items: center; height: 100vh; } */
+    /* body {
+ 
         display: flex; 
         justify-content: center; 
         align-items: center; 
         height: 100vh; 
     } */
     body {
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,16 +55,22 @@
     font-family: 'Open Sans', sans-serif;
     overflow: hidden;  /* Prevent scrolling */
 }
-        button { position: absolute; top: 20px; }
+        button { position: absolute; top: 0px; }
 /*         #scores { position: absolute; top: 60px; } */
     </style>
 </head>
 <body>
-    <button id="start">Start</button>
-<a href="index.html" class="home-button" id="home">Home</a>
+    <button 
+    id="start">Start
+    </button>
+    <a
+        href="index.html" 
+        class="home-button" 
+        id="home">Home
+    </a>
     <div id="scores"></div>
     <script>
-        const PLATFORM_COUNT = 10;
+        const PLATFORM_COUNT = 30;
         const GRAVITY = 0.5;
         const JUMP_FORCE = 15;
         const MOVE_SPEED = 5;
@@ -56,10 +80,11 @@
         let platformY = new Array(PLATFORM_COUNT);
         let platformW = new Array(PLATFORM_COUNT);
         let platformActive = new Array(PLATFORM_COUNT);
+let platformSpecial = new Array(PLATFORM_COUNT);
         let gameStarted = false;
         let particles = [];
         let successfulLandingCount = 0;
-        let initialPlatformWidth = 100;
+        let initialPlatformWidth = 300;
         let platformWidth = initialPlatformWidth;
         let level = 1;
         let highScores = JSON.parse(localStorage.getItem("highScores")) || [{score:0, date:null}, {score:0, date:null}, {score:0, date:null}];
@@ -67,7 +92,8 @@
             highScores.push({score: level, date: currentDate});
 
         function setup() {
-            createCanvas(400, 600);
+/*             createCanvas(520, 780); */
+            createCanvas(2000, 820);
 
             let startButton = select('#start');
             startButton.mousePressed(startGame);
@@ -85,6 +111,7 @@
                 platformY[i] = i * height / PLATFORM_COUNT;
                 platformW[i] = platformWidth;
                 platformActive[i] = true;
+platformSpecial[i] = i === Math.floor(PLATFORM_COUNT / 2);
             }
             
             successfulLandingCount = 0;
@@ -126,7 +153,7 @@
             if (gameStarted) {
                 for (let i = 0; i < PLATFORM_COUNT; i++) {
                     if (platformActive[i]) {
-                        fill(173, 216, 230);
+                        if (platformSpecial[i]) { fill(255, 105, 180); } else { fill(173, 216, 230); }
                         rect(platformX[i], platformY[i], platformW[i], 20);
                     }
 
@@ -137,6 +164,7 @@
                         platformX[i] = random(width - platformW[i]);
                         platformW[i] = platformWidth; 
                         platformActive[i] = true;
+platformSpecial[i] = i === Math.floor(PLATFORM_COUNT / 2);
                     }
                 }
 
@@ -149,7 +177,7 @@
 
                 for (let i = 0; i < PLATFORM_COUNT; i++) {
                     if (platformActive[i] && abs(platformY[i] - playerY) < 20 && abs(platformX[i] + platformW[i]/2 - playerX) < platformW[i]/2 && playerSpeedY > 0) {
-                        playerSpeedY = -JUMP_FORCE;
+                        if (platformSpecial[i]) { playerSpeedY = -JUMP_FORCE * 2; } else { playerSpeedY = -JUMP_FORCE; }
                         platformActive[i] = false;
                         createParticles(platformX[i] + platformW[i]/2, platformY[i], 200);
 
@@ -197,9 +225,18 @@
         }
 
         function drawScores() {
+    // This function does nothing now.
+    return;
+}
+
+function drawScores_old() {
             let scoreElement = select('#scores');
             scoreElement.html('High Scores:<br>1st: ' + highScores[0].score + ' (Date: ' + highScores[0].date + ')' + '<br>2nd: ' + highScores[1].score + ' (Date: ' + highScores[1].date + ')' + '<br>3rd: ' + highScores[2].score + ' (Date: ' + highScores[2].date + ')');
         }
     </script>
 </body>
 </html>
+
+<style>
+canvas { margin: 0 auto; display: block; }
+</style>
