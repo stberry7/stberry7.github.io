@@ -130,7 +130,7 @@ window.onload = function() {
             width: 200px;
             background: #343a40;
             color: #fff;
-            opacity: 0.1;
+            opacity: 0.7;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -149,6 +149,7 @@ window.onload = function() {
             display: inline-block;
             text-align: center;
             cursor: pointer;
+            font-size: 1.5em;  /* 글자 크기 설정 */
         }
 
         .sidebar a:hover {
@@ -159,6 +160,14 @@ window.onload = function() {
             text-align: center;
             width: 80%;
         }
+        
+        @media only screen and (max-width: 600px) {
+    .sidebar a {
+        height: 150px;
+        width: 400px;
+        font-size: 5em;
+    }
+}
   </style>
 <style>
    .circle {
@@ -203,13 +212,22 @@ window.onload = function() {
 </style>
 <div class="sidebar" style="left: -200px; transition: left 2s;">
     <a href="english.html">
-        버튼 1
+        ENGLISH
     </a>
     <a href="project.html">
-        버튼 2
+        PROJECT
     </a>
     <a href="vba.html">
-        버튼 3
+        EXCEL VBA
+    </a>
+    <a href="usa.html">
+        USA
+    </a>
+    <a href="mind.html">
+        MINDSET
+    </a>
+    <a href="leader.html">
+        LEADERSHIP
     </a>
 </div>
 <div class="content">
@@ -346,19 +364,23 @@ document.addEventListener('click', function(e){
 // };
 </script>
 <!-- <div id="visitCounter"></div> -->
-</div></html><script>
-// window.onload = function() {
-//     var images = ['image/girl_front1.png', 'image/girl_front2.png'];
-//     var img = document.getElementById('randomImage');
-//     var randomIndex = Math.floor(Math.random() * images.length);
-//     img.src = images[randomIndex];
-// };
-</script><script>
-    window.onload = function() {
-        var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
-        var img = document.getElementById('randomImage');
-        var randomIndex = Math.floor(Math.random() * images.length);
-        img.src = images[randomIndex];
-    };
-    </script></body>
+</div>
+</html>
+    <script>
+        // window.onload = function() {
+        //     var images = ['image/girl_front1.png', 'image/girl_front2.png'];
+        //     var img = document.getElementById('randomImage');
+        //     var randomIndex = Math.floor(Math.random() * images.length);
+        //     img.src = images[randomIndex];
+        // };
+    </script>
+    <script>
+        // window.onload = function() {
+        //     var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
+        //     var img = document.getElementById('randomImage');
+        //     var randomIndex = Math.floor(Math.random() * images.length);
+        //     img.src = images[randomIndex];
+        // };
+    </script>
+    </body>
 </html>
