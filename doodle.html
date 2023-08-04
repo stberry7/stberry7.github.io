@@ -60,6 +60,7 @@
     </style>
 </head>
 <body>
+    <audio id="blockSound" src="sound_doodle/wood_block.mp3" preload="auto"></audio>
     <button 
     id="start">Start
     </button>
@@ -234,6 +235,77 @@ function drawScores_old() {
             scoreElement.html('High Scores:<br>1st: ' + highScores[0].score + ' (Date: ' + highScores[0].date + ')' + '<br>2nd: ' + highScores[1].score + ' (Date: ' + highScores[1].date + ')' + '<br>3rd: ' + highScores[2].score + ' (Date: ' + highScores[2].date + ')');
         }
     </script>
+
+<audio id="myAudio" controls autoplay>
+  /* <source src="sound_doodle/evolution.mp3" type="audio/mpeg"> */
+  <source src="sound_doodle/cute.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+
+
+<script>
+function toggleAudio() {
+  var myAudio = document.getElementById("myAudio");
+  var myButton = document.getElementById("toggleButton");
+  if (myAudio.paused) {
+    myAudio.play();
+    myButton.style.backgroundColor = "rgb(100, 255, 10)";
+  } else {
+    myAudio.pause();
+    myButton.style.backgroundColor = "gray";
+  }
+}
+</script>
+
+<audio id="myAudio" controls autoplay style="display: none;">
+  <source src="sound_doodle/evolution.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<script>
+function toggleAudio() {
+  var myAudio = document.getElementById("myAudio");
+  var myButton = document.getElementById("toggleButton");
+  if (myAudio.paused) {
+    myAudio.play();
+    myButton.style.backgroundColor = "rgb(100, 255, 10)";
+    myButton.innerHTML = "Music On";
+  } else {
+    myAudio.pause();
+    myButton.style.backgroundColor = "gray";
+    myButton.innerHTML = "Music Off";
+  }
+}
+
+function SetVolume(val) {
+    var player = document.getElementById('myAudio');
+    player.volume = val / 100;
+}
+
+window.onload = function() {
+  var homeButton = document.querySelector('.home-button');
+
+  var audioButton = document.createElement("button");
+  audioButton.setAttribute("id", "toggleButton");
+  audioButton.setAttribute("onclick", "toggleAudio()");
+  audioButton.setAttribute("type", "button");
+  audioButton.setAttribute("style", "background-color: rgb(100, 255, 10);");
+  audioButton.textContent = "Music On";
+
+  var volControl = document.createElement("input");
+  volControl.setAttribute("id", "vol-control");
+  volControl.setAttribute("type", "range");
+  volControl.setAttribute("min", "0");
+  volControl.setAttribute("max", "100");
+  volControl.setAttribute("step", "1");
+  volControl.setAttribute("oninput", "SetVolume(this.value)");
+  volControl.setAttribute("onchange", "SetVolume(this.value)");
+
+  homeButton.parentNode.insertBefore(audioButton, homeButton.nextSibling);
+  homeButton.parentNode.insertBefore(volControl, audioButton.nextSibling);
+}
+</script>
 </body>
 </html>
 
