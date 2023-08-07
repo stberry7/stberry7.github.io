@@ -17,7 +17,9 @@
 <style>.sidebar { background-color: rgba(255, 255, 255, 0.9); }</style>
 <script>
 window.onload = function() {
-    var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
+    var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
+    // var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
+
     var img = document.getElementById('randomImage');
     var randomIndex = Math.floor(Math.random() * images.length);
     img.src = images[randomIndex];
@@ -114,7 +116,11 @@ window.onload = function() {
     };
 </script>
 <style>.sidebar { background-color: rgba(255, 255, 255, 0.5); }</style></head>
-<body><img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw;"/>
+<!-- <body><img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw;"/> -->
+<body>
+    <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/>
+</body>
+
 <!DOCTYPE html>
 
 <html lang="ko">
@@ -393,7 +399,8 @@ document.addEventListener('click', function(e){
     </script>
     <script>
         window.onload = function() {
-            var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
+            // var images = ['image/image (1).png', 'image/image (2).png', 'image/image (3).png', 'image/image (4).png', 'image/image (5).png', 'image/image (6).png', 'image/image (7).png', 'image/image (8).png', 'image/image (9).png'];
+            var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
             var img = document.getElementById('randomImage');
             var randomIndex = Math.floor(Math.random() * images.length);
             img.src = images[randomIndex];
