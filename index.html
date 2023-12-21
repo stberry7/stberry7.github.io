@@ -227,7 +227,7 @@ window.onload = function() {
     padding: 10px 0;
 }
 </style>
-<div class="sidebar" style="left: -200px; transition: left 2s;">
+<div class="sidebar" style="left: 0; transition: left 2s;">
     <a href="english.html">
         ENGLISH
     </a>
@@ -309,28 +309,28 @@ document.addEventListener('click', function(e){
 });
   </script>
 <footer class="footer"><p>Copyright © 2023</p></footer><script>
-document.addEventListener('mousemove', function(e){
-    var sidebar = document.querySelector('.sidebar');
-    if (e.clientX < 50) {
-        sidebar.style.left = '0';
-    } else {
-        sidebar.style.left = '-200px';
-    }
-});
+// document.addEventListener('mousemove', function(e){
+//     var sidebar = document.querySelector('.sidebar');
+//     if (e.clientX < 50) {
+//         sidebar.style.left = '0';
+//     } else {
+//         sidebar.style.left = '-200px';
+//     }
+// });
 
 document.addEventListener('click', function(e){
     var img = document.querySelector('img');
     img.style.display = 'block';
 });
 </script><script>
-document.addEventListener('mousemove', function(e){
-    var sidebar = document.querySelector('.sidebar');
-    if (e.clientX < 50) {
-        sidebar.style.left = '0';
-    } else {
-        sidebar.style.left = '-200px';
-    }
-});
+// document.addEventListener('mousemove', function(e){
+//     var sidebar = document.querySelector('.sidebar');
+//     if (e.clientX < 50) {
+//         sidebar.style.left = '0';
+//     } else {
+//         sidebar.style.left = '-200px';
+//     }
+// });
 
 document.addEventListener('click', function(e){
     var img1 = document.querySelector('img');
