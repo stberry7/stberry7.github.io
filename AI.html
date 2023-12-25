@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>
+    인공지능 (AI)
+  </title>
+<style>
+   body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+  </style>
+<style>
+   .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: darkblue;
+}
+  </style>
+<style>
+   .circle {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 5px solid;
+    animation: circleFadeOut 1s forwards;
+}
+
+@keyframes circleFadeOut {
+    from {transform: scale(0.5); opacity: 1;}
+    to {transform: scale(1.5); opacity: 0;}
+}
+  </style>
+<style>
+   .message {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: messageFadeOut 1s forwards;
+}
+
+@keyframes messageFadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+  </style>
+</head>
+<!-- <body><div class="sidebar" style="left: -200px; transition: left 2s;">
+<a href="english.html">
+    버튼 1
+   </a>
+<a href="project.html">
+    버튼 2
+   </a>
+<a href="vba.html">버튼 3</a></div> -->
+<header>
+<a class="home-button" href="index.html">
+    Home
+   </a>
+<h1>
+    인공지능
+   </h1>
+<p>
+    인공지능에 대해서 알아보는 웹페이지입니다.
+    
+    AI 관련 사이트에 오신 것을 환영합니다! 이곳은 AI의 마법 같은 세계를 쉽고 재미있게 탐험할 수 있는 공간입니다. 여기서는 머신러닝의 기적부터 딥러닝의 깊은 이해, 그리고 OpenAI, X, 미드저니와 같은 선구적인 기업들의 도전과 성과까지 모든 AI 관련 정보를 한눈에 볼 수 있습니다. AI의 최신 동향을 파악하고, 다양한 경험을 공유하며, 실생활에서 AI의 영향을 느껴보세요.
+
+    이 홈페이지는 AI 커뮤니티의 중심지로서, 연구, 기술 발전, 업계 소식을 공유합니다. 여러분은 AI에 대한 깊이 있는 토론을 통해, 기술의 현재와 미래가 우리 세계에 미치는 영향을 탐구할 수 있습니다. 또한, AI 미래 실험실로서 모든 이들이 머신러닝과 딥러닝의 실습을 경험하고, AI 분야의 최신 기술과 사례 연구를 통해 학습하며, AI 커뮤니티와 소통하며 지식을 확장할 수 있는 기회를 제공합니다.
+
+    마지막으로, 이곳은 AI 혁신의 산실로서, 창의적인 아이디어와 혁신적인 솔루션을 발견하고, AI 기술의 최전선에서 일어나는 발전을 경험할 수 있는 곳입니다. 여러분은 이곳을 통해 AI의 모든 면모를 이해하고, 미래의 가능성을 모색하며, 이 모든 경험을 하나의 공간에서 탐험할 수 있습니다.
+   </p>
+</header>
+<main>
+<h2>
+    인공지능
+   </h2>
+<ul>
+<li>
+<p>
+<strong>
+       AI관련 사이트 <br>
+
+      </strong>
+      <!-- Clipdrop : 이미지를 수정해주는 사이트 : https://clipdrop.co/uncrop <br> -->
+      <a href="https://clipdrop.co/uncrop" target="_blank">Clipdrop : 이미지를 수정해주는 사이트</a> <br>
+      <!-- Magnific AI : 이미지를 확대해주는 사이트 : https://magnific.ai/ <br> -->
+      <a href="https://magnific.ai/" target="_blank">Magnific AI : 이미지를 확대해주는 사이트</a> <br>
+      <!-- Suno AI : 노래를 만들어주는 사이트 : https://www.suno.ai/ <br> -->
+      <a href="https://www.suno.ai/" target="_blank">Suno AI : 노래를 만들어주는 사이트</a> <br>
+
+</p>
+
+</li>
+<!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+</ul>
+
+<ul>
+    <li>
+    <p>
+    <strong>
+           AI관련 국내 유튜브 강의 채널 <br>
+    
+          </strong>
+          <!-- 조코딩 : 매주 AI관련 내용을 업데이트하는 채널 : https://www.youtube.com/@jocoding <br> -->
+          <a href="https://www.youtube.com/@jocoding" target="_blank">조코딩 : 매주 AI관련 내용을 업데이트하는 채널</a> <br>
+          <!-- 코딩애플 : 코딩관련 업데이트하는 채널 : https://www.youtube.com/@codingapple <br> -->
+          <a href="https://www.youtube.com/@codingapple" target="_blank">코딩애플 : 코딩관련 업데이트하는 채널</a> <br>
+          <!-- 김성훈 : 모두의 딥러닝 : https://www.youtube.com/@hunkims <br> -->
+          <a href="https://www.youtube.com/@hunkims" target="_blank">김성훈 : 모두의 딥러닝</a> <br>
+          <!-- 조박사의 모두의 딥러닝 : 딥러닝관련 강의 채널 : https://www.youtube.com/@taehojo <br> -->
+          <a href="https://www.youtube.com/@taehojo" target="_blank">조박사의 모두의 딥러닝 : 딥러닝관련 강의 채널</a> <br>
+
+    </p>
+    
+    </li>
+    <!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+    </ul>
+    <ul>
+        <li>
+        <p>
+        <strong>
+            AI관련 국내 유튜브 강의 목록 <br>
+        
+              </strong>
+              <!-- 딥러닝의 현재 및 인공지능의 미래 1부 (남세동) : https://www.youtube.com/watch?v=MxPeqZtuW-0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=1 <br> -->
+              <a href=" https://www.youtube.com/watch?v=MxPeqZtuW-0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=1" target="_blank"> 딥러닝의 현재 및 인공지능의 미래 1부 (남세동)</a> <br>
+              <!-- 딥러닝의 현재 및 인공지능의 미래 2부 (남세동) : https://www.youtube.com/watch?v=GThmuBAkan0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=2 <br> -->
+              <a href="https://www.youtube.com/watch?v=GThmuBAkan0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=2" target="_blank">딥러닝의 현재 및 인공지능의 미래 2부 (남세동)</a> <br>
+              <!-- 인공지능과 미디어 (남세동) : https://www.youtube.com/watch?v=xCjQqtE8Mqo&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=3 <br> -->
+              <a href="https://www.youtube.com/watch?v=xCjQqtE8Mqo&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=3" target="_blank">인공지능과 미디어 (남세동)</a> <br>
+              <!-- 직관적이고 명확하게 딥러닝을 이해하기 (남세동) : https://www.youtube.com/watch?v=CRzsi5AgQM8&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=4&t=19s <br> -->
+              <a href="https://www.youtube.com/watch?v=CRzsi5AgQM8&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=4&t=19s" target="_blank">직관적이고 명확하게 딥러닝을 이해하기 (남세동)</a> <br>
+              <!-- 파라미터 AI모델 1차함수만 알면 이해된다 (남세동) : https://www.youtube.com/watch?v=pDNPew0LuD0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=5 <br> -->
+              <a href="https://www.youtube.com/watch?v=pDNPew0LuD0&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=5" target="_blank">파라미터 AI모델 1차함수만 알면 이해된다 (남세동)</a> <br>
+              <!-- ‘한마디 뱉어놓고 수습하는’ 챗GPT의 말하기 (남세동) : https://www.youtube.com/watch?v=e-XUuyyI098&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=6 <br> -->
+              <a href="https://www.youtube.com/watch?v=e-XUuyyI098&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=6" target="_blank">한마디 뱉어놓고 수습하는’ 챗GPT의 말하기 (남세동)</a> <br>
+              <!-- 챗GPT의 언어정복의 비밀 (남세동) : https://www.youtube.com/watch?v=-VmyOfPrB0c&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=7&t=13s <br> -->
+              <a href="https://www.youtube.com/watch?v=-VmyOfPrB0c&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=7&t=13s" target="_blank">챗GPT의 언어정복의 비밀 (남세동)</a> <br>
+              <!-- 챗딥러닝, 이 영상 하나로 끝내자 (남세동) : https://www.youtube.com/watch?v=uyY9_xG2hE8&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=8&t=25s  <br> -->
+              <a href="https://www.youtube.com/watch?v=uyY9_xG2hE8&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=8&t=25s" target="_blank">챗딥러닝, 이 영상 하나로 끝내자 (남세동)</a> <br>
+              <!-- 인공지능, 딥러닝을 알고싶다면 이 영상을 보세요 (남세동) : https://www.youtube.com/watch?v=CA5Ggqg5x6o&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=9&t=114s <br> -->
+              <a href="https://www.youtube.com/watch?v=CA5Ggqg5x6o&list=PLSdBuSqkbMG-s--Kb5hFK81_SgRbLr7yw&index=9&t=114s" target="_blank">인공지능, 딥러닝을 알고싶다면 이 영상을 보세요 (남세동)</a> <br>
+        </p>
+        
+        </li>
+        <!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+        </ul>
+    <ul>
+        <li>
+        <p>
+        <strong>
+            AI관련 해외 유튜브 강의 사이트 <br>
+        
+              </strong>
+              조코딩 : 매주 AI관련 내용을 업데이트하는 채널 : https://www.youtube.com/@jocoding <br>
+              코딩애플 : 코딩관련 업데이트하는 채널 : https://www.youtube.com/@codingapple <br>
+        </p>
+        
+        </li>
+        <!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+        </ul>
+</main>
+<footer>
+   © 2023 미국 거주시 필요사항. All rights reserved.
+   <a href="mailto:stberry7@gmail.com?subject=Hello&amp;body=Nice%20to%20meet%20you">
+    Email me
+   </a>
+</footer>
+<script>
+   var clickCount = 0;
+
+
+// document.addEventListener('click', function(e){
+//     var numCircles = Math.floor(Math.random() * 1) + 5;  // Random number of circles between 10 and 20
+//     for (var i = 0; i < numCircles; i++) {
+//         var circle = document.createElement('div');
+//         circle.setAttribute('class', 'circle');
+//         document.body.appendChild(circle);
+
+//         var size = (Math.random() * 3) * 100 + 'px';  // Random size between 200% and 500% of original size
+//         circle.style.width = size;
+//         circle.style.height = size;
+
+//         var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+//         circle.style.borderColor = color;
+//         circle.style.borderWidth = '1px';  // Very thin border
+
+//         circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';  // Centered on cursor
+//         circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';  // Centered on cursor
+
+//         var moveX = Math.floor(Math.random() * 5) - 2;  // Random movement in X direction
+//         var moveY = Math.floor(Math.random() * 5) - 2;  // Random movement in Y direction
+//         var intervalID = setInterval(function(){
+//             var left = parseInt(circle.style.left);
+//             var top = parseInt(circle.style.top);
+//             if (isNaN(left) || isNaN(top)) {
+//                 clearInterval(intervalID);
+//             } else {
+//                 circle.style.left = (left + moveX) + 'px';
+//                 circle.style.top = (top + moveY) + 'px';
+//             }
+//         }, 1000);
+
+//         setTimeout(function(){
+//             clearInterval(intervalID);
+//             circle.parentNode.removeChild(circle);
+//         }, 3000);  // Triple the duration
+//     }
+// });
+//   </script>
+<style>
+.firework {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    background: red;
+    animation: explode 3s ease-out;
+}
+
+@keyframes explode {
+    to {
+        transform: scale(30);
+        opacity: 0;
+    }
+}
+</style>
+<script>
+var colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
+
+document.addEventListener('click', function(event) {
+    if (event.clientX < 30 || event.clientX > window.innerWidth - 30 ||
+        event.clientY < 30 || event.clientY > window.innerHeight - 30) {
+        return;
+    }
+    for (var i = 0; i < 10; i++) {
+        var firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.top = (event.clientY - 0.5) + 'px';
+        firework.style.left = (event.clientX - 0.5) + 'px';
+        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.transform = 'translate(' + (Math.random() * 200 - 100) + 'px, ' + (Math.random() * 200 - 100) + 'px)';
+        document.body.appendChild(firework);
+        setTimeout(function() {
+            document.body.removeChild(firework);
+        }, 3000);
+    }
+});
+</script>
+</body>
+</html>
