@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>
+    VBA
+  </title>
+<style>
+   body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+  </style>
+<style>
+   .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: darkblue;
+}
+  </style>
+<style>
+   .circle {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 5px solid;
+    animation: circleFadeOut 1s forwards;
+}
+
+@keyframes circleFadeOut {
+    from {transform: scale(0.5); opacity: 1;}
+    to {transform: scale(1.5); opacity: 0;}
+}
+  </style>
+<style>
+   .message {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: messageFadeOut 1s forwards;
+}
+
+@keyframes messageFadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+  </style>
+</head>
+<!-- <body><div class="sidebar" style="left: -200px; transition: left 2s;">
+<a href="english.html">
+    버튼 1
+   </a>
+<a href="project.html">
+    버튼 2
+   </a>
+<a href="vba.html">버튼 3</a></div> -->
+<header>
+<a class="home-button" href="index.html">
+    Home
+   </a>
+<h1>
+    VBA
+   </h1>
+<p>
+    VBA에 대해서 알아보는 웹페이지입니다.
+   </p>
+</header>
+<main>
+<h2>
+    VBA
+   </h2>
+<ul>
+<li>
+<p>
+<strong>
+       VBA관련 유튜브 동영상 <br><br>
+      </strong>
+      <a href="https://www.youtube.com/watch?v=HsNi57gUyQU" target="_blank"> Excel Copilot: Extract Texts from Shape with Excel VBA</a> <br>
+      <a href="https://drive.google.com/file/d/11TIQWgMY8QmRcF9H4S4YLZGkkueO9HuL/view?usp=drive_link" download> 예제파일 다운로드 (Code open) </a><br><br>
+      
+      <a href="https://www.youtube.com/watch?v=qQMAaJ9qjL4&t=19s" target="_blank">Excel Copilot: Fill Texts To Shapes From Cell V1 with Excel VBA</a> <br><br>
+      <a href="https://www.youtube.com/watch?v=YLu1vEA4Tbs" target="_blank">Excel Copilot: Select Cells for Color Change</a> <br><br>
+      <a href="https://www.youtube.com/watch?v=cZb2JU9Ks3k" target="_blank">Excel Copilot: Excel VBA Formula Constant Conditional Formatting Excel Copilot</a> <br><br>
+      <a href="https://www.youtube.com/watch?v=55hD9yGTdE0" target="_blank">Excel Copilot: Search with TWO word Conditional Formatting (조건부 서식을 이용한 원한하는 단어 찾기)</a> <br><br>
+      <a href="https://www.youtube.com/watch?v=sHgXFaUAoBs" target="_blank">Excel Copilot: Search with one word Conditional Formatting</a> <br><br>
+      <a href="https://www.youtube.com/watch?v=cCxcourTkao" target="_blank">Excel Copilot: Show or Hide Note</a> <br><br>
+      
+</p>
+<p>
+</p>
+</li>
+<!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+</ul>
+</main>
+<main>
+    <h2>
+        
+       </h2>
+    <ul>
+    <li>
+    <p>
+    <strong>
+           VBA관련 다운로드 항목 <br><br>
+          </strong>
+          <!-- <a href="path/to/vba_study_material.pdf" download="VBA_Study_Material">VBA 공부 1</a>  -->
+          <a href="https://drive.google.com/uc?export=download&id=1MHu-6lO34eOM3XHRhmX0_7ATE9GmG5Ir" download>Test.txt 다운로드</a><br>
+          
+    </p>
+    <p>
+    </p>
+    </li>
+    <!-- 이곳에 더 많은 표현을 추가할 수 있습니다 -->
+    </ul>
+    </main>
+<footer>
+   © 2023 미국 거주시 필요사항. All rights reserved.
+   <a href="mailto:stberry7@gmail.com?subject=Hello&amp;body=Nice%20to%20meet%20you">
+    Email me
+   </a>
+</footer>
+<script>
+   var clickCount = 0;
+
+
+// document.addEventListener('click', function(e){
+//     var numCircles = Math.floor(Math.random() * 1) + 5;  // Random number of circles between 10 and 20
+//     for (var i = 0; i < numCircles; i++) {
+//         var circle = document.createElement('div');
+//         circle.setAttribute('class', 'circle');
+//         document.body.appendChild(circle);
+
+//         var size = (Math.random() * 3) * 100 + 'px';  // Random size between 200% and 500% of original size
+//         circle.style.width = size;
+//         circle.style.height = size;
+
+//         var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+//         circle.style.borderColor = color;
+//         circle.style.borderWidth = '1px';  // Very thin border
+
+//         circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';  // Centered on cursor
+//         circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';  // Centered on cursor
+
+//         var moveX = Math.floor(Math.random() * 5) - 2;  // Random movement in X direction
+//         var moveY = Math.floor(Math.random() * 5) - 2;  // Random movement in Y direction
+//         var intervalID = setInterval(function(){
+//             var left = parseInt(circle.style.left);
+//             var top = parseInt(circle.style.top);
+//             if (isNaN(left) || isNaN(top)) {
+//                 clearInterval(intervalID);
+//             } else {
+//                 circle.style.left = (left + moveX) + 'px';
+//                 circle.style.top = (top + moveY) + 'px';
+//             }
+//         }, 1000);
+
+//         setTimeout(function(){
+//             clearInterval(intervalID);
+//             circle.parentNode.removeChild(circle);
+//         }, 3000);  // Triple the duration
+//     }
+// });
+//   </script>
+<style>
+.firework {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    background: red;
+    animation: explode 3s ease-out;
+}
+
+@keyframes explode {
+    to {
+        transform: scale(30);
+        opacity: 0;
+    }
+}
+</style>
+<script>
+var colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
+
+document.addEventListener('click', function(event) {
+    if (event.clientX < 30 || event.clientX > window.innerWidth - 30 ||
+        event.clientY < 30 || event.clientY > window.innerHeight - 30) {
+        return;
+    }
+    for (var i = 0; i < 10; i++) {
+        var firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.top = (event.clientY - 0.5) + 'px';
+        firework.style.left = (event.clientX - 0.5) + 'px';
+        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.transform = 'translate(' + (Math.random() * 200 - 100) + 'px, ' + (Math.random() * 200 - 100) + 'px)';
+        document.body.appendChild(firework);
+        setTimeout(function() {
+            document.body.removeChild(firework);
+        }, 3000);
+    }
+});
+</script>
+</body>
+</html>
