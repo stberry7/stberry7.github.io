@@ -30,7 +30,7 @@ window.onload = function() {
 
 
 
-    <script>
+    <!-- <script>
         var lastScrollTop = 0;
         window.addEventListener("scroll", function() {
             var st = window.pageYOffset || document.documentElement.scrollTop;
@@ -43,7 +43,7 @@ window.onload = function() {
             }
             lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         }, false);
-        </script>
+        </script> -->
 
 
 
@@ -100,9 +100,9 @@ window.onload = function() {
             width: 80%;
         }
         
-        /* @media only screen and (max-width: 600px) {
+        @media only screen and (max-width: 600px) {
             .sidebar a {
-                /* height: 150px;
+                /* /* height: 150px; */
                 width: 400px;
                 font-size: 5em;
                 height: 250px;
@@ -111,48 +111,18 @@ window.onload = function() {
             }
             
             .content {
-                /* font-size: 2em; */
-                /* font-size: 4em;
+                font-size: 2em;
+                /* /* font-size: 4em; */
             }
             
             .footer {
                 font-size: 2em;
             } */ */
-        /* } */ */
+        }
 
         <style>
-    /* 기존 스타일 코드 */
-
-    @media only screen and (max-width: 600px) {
-        .sidebar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        .sidebar a {
-            height: 50px;
-            width: auto;
-            font-size: 1.5em;
-            padding: 10px;
-        }
-
-        .content {
-            margin-bottom: 100px;
-            font-size: 2em;
-        }
-
-        .footer {
-            font-size: 1.5em;
-        }
-    }
+    기존 스타일 코드
+    /* } */
 </style>
 </style>
 <style>
