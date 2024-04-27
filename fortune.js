@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
               // 유효한 생년월일인 경우 처리할 내용
               let fileName = '';
               if (selectedOption === '오늘 운세') {
-                fileName = 'today001.txt';
+                fileName = 'today001.html';
               } else if (selectedOption === '내일 운세') {
                 fileName = 'tomorrow001.txt';
               } else if (selectedOption === '이번주 운세') {
