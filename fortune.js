@@ -27,13 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
               if (selectedOption === '오늘 운세') {
                 fileName = 'today001.html';
               } else if (selectedOption === '내일 운세') {
-                fileName = 'tomorrow001.txt';
+                fileName = 'tomorrow001.html';
               } else if (selectedOption === '이번주 운세') {
-                fileName = 'week001.txt';
+                fileName = 'week001.html';
               } else if (selectedOption === '이번달 운세') {
-                fileName = 'month001.txt';
+                fileName = 'month001.html';
               } else if (selectedOption === '올해 운세') {
-                fileName = 'year001.txt';
+                fileName = 'year001.html';
               }
 
               try {
