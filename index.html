@@ -244,55 +244,54 @@ document.addEventListener('click', function(e){
 </html>
 
 
-
 <style>
-    .notice-box {
-      position: fixed !important;
-      bottom: 20px !important;
-      right: 20px !important;
-      width: 300px;
-      max-height: 450px;
-      background-color: rgba(241, 241, 241, 0.5);
-      border: 1px solid #ccc;
-      padding: 30px;
-      display: none;
-      font-size: 54px;
-      overflow-y: auto;
-    }
-    
-    .notice-box p {
-      margin: 0 0 30px;
-    }
-    
-    .notice-box button {
-      font-size: 48px;
-    }
-  </style>
+  .notice-box {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 450px;
+    max-height: 300px;
+    background-color: rgba(241, 241, 241, 0.2);
+    border: 1px solid rgba(204, 204, 204, 0.2);
+    padding: 30px;
+    display: none;
+    font-size: 54px;
+    overflow-y: auto;
+  }
   
-  <div class="notice-box">
-    <p><strong>공지사항</strong></p>
-    <p>안녕하세요. 공지사항입니다.<br>브런치 및 AI NEWS업데이트했어요</p>
-    <button onclick="closeNotice()">닫기</button>
-  </div>
+  .notice-box p {
+    margin: 0 0 30px;
+  }
   
-  <script>
-    function closeNotice() {
-      document.querySelector('.notice-box').style.display = 'none';
+  .notice-box button {
+    font-size: 48px;
+  }
+</style>
+
+<div class="notice-box">
+  <p><strong>공지사항</strong></p>
+  <p>안녕하세요. 공지사항입니다.<br>이 사이트는 현재 개발 중입니다.</p>
+  <button onclick="closeNotice()">닫기</button>
+</div>
+
+<script>
+  function closeNotice() {
+    document.querySelector('.notice-box').style.display = 'none';
+  }
+  
+  window.onload = function() {
+    var images = [];
+    for (var i = 1; i <= 13; i++) {
+      var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
+      images.push('image/index/flower/' + imageName);
     }
+    var img = document.getElementById('randomImage');
+    var randomIndex = Math.floor(Math.random() * images.length);
+    img.src = images[randomIndex];
     
-    window.onload = function() {
-      var images = [];
-      for (var i = 1; i <= 13; i++) {
-        var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
-        images.push('image/index/flower/' + imageName);
-      }
-      var img = document.getElementById('randomImage');
-      var randomIndex = Math.floor(Math.random() * images.length);
-      img.src = images[randomIndex];
-      
-      document.querySelector('.notice-box').style.display = 'block';
-    };
-  </script>
+    document.querySelector('.notice-box').style.display = 'block';
+  };
+</script>
 
 
 
