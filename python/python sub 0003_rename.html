@@ -1,0 +1,159 @@
+<!DOCTYPE html> <html lang="ko"> <head> 
+    
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>파이선</title> 
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison {
+            margin-bottom: 2rem;
+        }
+
+        .comparison h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .conclusion {
+            margin-top: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .subsection {
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+        }
+       
+        .home-button {
+        display: inline-block;
+        /* text-align: center; */
+        justify-content: center;
+        padding: 0rem;
+        font-size: 16px;
+        color: rgb(10, 10, 10);
+        background-color: #a6bcf8; 
+        /* rgb(197, 197, 235); */
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+    
+    .home-button:hover {
+        background-color: darkblue;
+    }
+        </style>
+</head>
+
+    <style> body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; } header { background-color: #333333; color: #fff; text-align: center; padding: 1rem; } main { margin: 2rem auto; max-width: 1200px; padding: 0 1rem; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 2rem; } h1, h2, h3 { margin-bottom: 1rem; } p { margin-bottom: 1.5rem; } ul, ol { margin-bottom: 1.5rem; padding-left: 2rem; } li { margin-bottom: 0.5rem; } .comparison { margin-bottom: 2rem; } .comparison h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; } .conclusion { margin-top: 2rem; } .section { margin-bottom: 3rem; } .section h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; } .subsection { margin-left: 2rem; margin-bottom: 2rem; } </style> </head> <body> 
+    <header> <h1>파이선</h1> </header> 
+    <main> 
+        <a class="home-button" href="../../python.html"> Go Back to Python Code Page</a>
+        <br><br>
+    <section class="section"> 
+        <!-- <img src="image/brunch/babyflower.jpg" alt="" width="100%"> -->
+
+        import os<br>
+        import shutil<br>
+        from tkinter import Tk, filedialog<br><br>
+        
+        # Tkinter 루트 윈도우 생성<br>
+        root = Tk()<br>
+        root.withdraw()<br><br>
+        
+        # 이미지 파일이 있는 폴더 선택 다이얼로그 열기<br>
+        image_folder = filedialog.askdirectory(title="이미지 파일이 있는 폴더 선택")<br><br>
+        
+        # 이미지 파일을 복사할 폴더 선택 다이얼로그 열기<br>
+        destination_folder = filedialog.askdirectory(title="이미지 파일을 복사할 폴더 선택")<br><br>
+        
+        # 선택된 폴더 내에 "Name" 폴더 생성 (이미 존재하는 경우 "Name2", "Name3" 등으로 생성)<br>
+        name_folder = os.path.join(destination_folder, "Name")<br>
+        counter = 1<br>
+        while os.path.exists(name_folder):<br>
+            counter += 1<br>
+            name_folder = os.path.join(destination_folder, f"Name{counter}")<br>
+        os.makedirs(name_folder)<br><br>
+        
+        # 이미지 파일 확장자 목록<br>
+        image_extensions = [".jpg", ".jpeg", ".png", ".bmp", ".gif"]<br><br>
+        
+        # 이미지 파일 복사<br>
+        for filename in os.listdir(image_folder):<br>
+            _, extension = os.path.splitext(filename)<br>
+            if extension.lower() in image_extensions:<br>
+                source_path = os.path.join(image_folder, filename)<br>
+                destination_path = os.path.join(name_folder, filename)<br>
+                shutil.copy(source_path, destination_path)<br><br>
+        
+        # 초기 이름 입력 받기<br>
+        initial_name = input("초기 이름을 입력하세요: ")<br><br>
+        
+        # 이미지 파일 이름 리스트 생성<br>
+        image_files = [filename for filename in os.listdir(name_folder) if os.path.splitext(filename)[1].lower() in image_extensions]<br><br>
+        
+        # 이미지 파일 이름 리스트 정렬<br>
+        image_files.sort(key=lambda x: int(''.join(filter(str.isdigit, os.path.splitext(x)[0]))))<br><br>
+        
+        # 이미지 파일 이름 변경<br>
+        for index, filename in enumerate(image_files):<br>
+            _, extension = os.path.splitext(filename)<br>
+            new_index = (index + 1) * 10<br>
+            new_name = f"{initial_name}{new_index:04d}{extension}"<br>
+            old_path = os.path.join(name_folder, filename)<br>
+            new_path = os.path.join(name_folder, new_name)<br>
+            os.rename(old_path, new_path)<br><br>
+        
+        print("이미지 파일 복사 및 이름 변경이 완료되었습니다.")<br><br><br>
+    
+    <a class="home-button" href="../../python.html"> Go Back to Python Code Page</a>

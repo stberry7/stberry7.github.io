@@ -1,0 +1,156 @@
+<!DOCTYPE html> <html lang="ko"> <head> 
+    
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>파이선</title> 
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison {
+            margin-bottom: 2rem;
+        }
+
+        .comparison h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .conclusion {
+            margin-top: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .subsection {
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+        }
+       
+        .home-button {
+        display: inline-block;
+        /* text-align: center; */
+        justify-content: center;
+        padding: 0rem;
+        font-size: 16px;
+        color: rgb(10, 10, 10);
+        background-color: #a6bcf8; 
+        /* rgb(197, 197, 235); */
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+    
+    .home-button:hover {
+        background-color: darkblue;
+    }
+        </style>
+</head>
+
+    <style> body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; } header { background-color: #333333; color: #fff; text-align: center; padding: 1rem; } main { margin: 2rem auto; max-width: 1200px; padding: 0 1rem; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 2rem; } h1, h2, h3 { margin-bottom: 1rem; } p { margin-bottom: 1.5rem; } ul, ol { margin-bottom: 1.5rem; padding-left: 2rem; } li { margin-bottom: 0.5rem; } .comparison { margin-bottom: 2rem; } .comparison h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; } .conclusion { margin-top: 2rem; } .section { margin-bottom: 3rem; } .section h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; } .subsection { margin-left: 2rem; margin-bottom: 2rem; } </style> </head> <body> 
+    <header> <h1>파이선</h1> </header> 
+    <main> 
+        <a class="home-button" href="../../python.html"> Go Back to Python Code Page</a>
+        <br><br>
+    <section class="section"> 
+        <!-- <img src="image/brunch/babyflower.jpg" alt="" width="100%"> -->
+
+        import cv2<br>
+        import os<br>
+        from tkinter import Tk, filedialog<br><br>
+
+        # Tkinter 루트 윈도우 생성<br>
+        root = Tk()<br>
+        root.withdraw()<br><br>
+
+        # 동영상 파일 선택 다이얼로그 열기<br>
+        video_path = filedialog.askopenfilename(title="동영상 파일 선택", filetypes=[("Video Files", "*.mp4;*.avi;*.mkv;""*.mov")])<br><br>
+
+        # 프레임 추출 간격 설정 (초 단위)<br>
+        interval = 60<br><br>
+
+        # 이미지 저장 폴더 선택 다이얼로그 열기<br>
+        output_folder = filedialog.askdirectory(title="이미지 저장 폴더 선택")<br><br>
+
+        # 동영상 읽기<br>
+        video = cv2.VideoCapture(video_path)<br><br>
+
+        # 동영상의 초당 프레임 수 (FPS) 확인<br>
+        fps = video.get(cv2.CAP_PROP_FPS)<br><br>
+
+        # 동영상 제목 추출<br>
+        video_title = os.path.splitext(os.path.basename(video_path))[0]<br><br>
+
+        # 추출할 프레임의 번호 계산<br>
+        frame_number = 0<br>
+        frame_count = 0<br><br>
+
+        while True:<br>
+            ret, frame = video.read()<br>
+            if not ret:<br>
+                break<br><br>
+
+            # interval 초마다 프레임 추출<br>
+            if frame_count % (fps * interval) == 0:<br>
+                # 프레임을 이미지 파일로 저장<br>
+                frame_path = os.path.join(output_folder, f"{video_title}_{frame_number}.jpg")<br>
+                cv2.imwrite(frame_path, frame)<br>
+                print(f"프레임 {frame_number} 저장 완료")<br>
+                frame_number += 1<br><br>
+
+            frame_count += 1<br><br>
+
+        # 동영상 객체 해제<br>
+        video.release()<br><br>
+
+        print("프레임 추출이 완료되었습니다.")<br><br><br>
+    
+    <a class="home-button" href="../../python.html"> Go Back to Python Code Page</a>
