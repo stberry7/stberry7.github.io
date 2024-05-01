@@ -1,0 +1,72 @@
+import requests
+from bs4 import BeautifulSoup
+from googlesearch import search
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def count_characters(url)
+    try
+        print(f페이지 분석 중 {url})
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        text = soup.get_text()
+        return len(text)
+    except
+        print(f페이지 분석 실패 {url})
+        return 0
+
+def search_pages(query, min_chars, num_results=10)
+    result = []
+    search_results = search(query, num_results=num_results)
+
+    print(f총 {num_results}개의 검색 결과 분석 시작...)
+
+    for i, url in enumerate(search_results, start=1)
+        print(f진행 상황 {i}{num_results})
+        char_count = count_characters(url)
+
+        if char_count  min_chars
+            result.append(url)
+
+    return result
+
+def save_results_to_file(results, file_path)
+    with open(file_path, 'w', encoding='utf-8') as file
+        for url in results
+            file.write(url + 'n')
+
+def select_folder()
+    root = tk.Tk()
+    root.withdraw()
+    folder_path = filedialog.askdirectory()
+    return folder_path
+
+# 검색어 입력 받기
+query = input(검색어를 입력하세요 )
+
+# 검색할 페이지의 최소 글자 수 입력 받기
+min_chars = int(input(검색할 페이지의 최소 글자 수를 입력하세요 ))
+
+# 검색 결과 수 설정 (기본값 10)
+num_results = 20
+
+# 지정된 글자 수 이상의 페이지 검색
+print(f'{query} 검색 시작...')
+result_pages = search_pages(query, min_chars, num_results)
+print(검색 완료!)
+
+# 결과 저장 폴더 선택
+print(결과를 저장할 폴더를 선택하세요.)
+save_path = select_folder()
+
+# 결과 저장 파일 이름 설정
+file_name = f{query}_results.txt
+
+# 파일 경로 생성
+file_path = os.path.join(save_path, file_name)
+
+# 결과를 파일로 저장
+print(검색 결과 파일 저장 중...)
+save_results_to_file(result_pages, file_path)
+print(f검색 결과가 {file_path}에 저장되었습니다.)
