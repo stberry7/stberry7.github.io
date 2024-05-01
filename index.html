@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P5MQZ5LK');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta name="google-site-verification" content="0FQ31nRdW_zrYw3eGVUBRThIigXE3GOrr06OSQ5_5qk" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMQ4MLP54Y"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-HMQ4MLP54Y');
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+<style>.sidebar { background-color: rgba(255, 255, 255, 0.9); }</style>
+<script>
+window.onload = function() {
+    var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
+    var img = document.getElementById('randomImage');
+    var randomIndex = Math.floor(Math.random() * images.length);
+    img.src = images[randomIndex];
+};
+</script>
+<style>.sidebar { background-color: rgba(255, 255, 255, 0.5); }</style>
+
+<style>
+    .notice-box {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 300px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      padding: 10px;
+      display: none;
+    }
+  </style>
+
+</head>
+<body>
+
+
+    <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/>
+
+<!DOCTYPE html>
+<html lang="ko">
+<meta charset="utf-8"/>
+<title>영어 표현 공부</title>
+<style>
+   body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            /* align-items: center; */
+            /* justify-content: center; */
+            height: 80vh;
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 400px; /* 너비 증가 */
+            background: #343a40;
+            color: #fff;
+            opacity: 0.7;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            padding: 20px;
+            background: rgba(108, 117, 125, 1.0);
+            border: none;
+            color: #fff;
+            height: 50px;
+            width: 90%; /* 너비를 100%로 변경 */
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            font-size: 3em;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+        }
+
+        .content {
+            text-align: center;
+            width: 50%;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .sidebar a {
+                width: 400px;
+                font-size: 5em;
+                height: 250px;
+                width: 600px;
+                font-size: 10em;
+            }
+            
+            .content {
+                font-size: 2em;
+            }
+            
+            .footer {
+                font-size: 2em;
+            }
+        }
+</style>
+<style>
+.circle {
+    position: absolute;
+    border: 3px solid;
+    border-radius: 50%;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
+}
+
+.message {
+    position: absolute;
+    font-size: 5em;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
+}
+
+.image {
+    position: absolute;
+    width: 100px;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
+}
+
+@keyframes fadeout {
+    to {
+        opacity: 0;
+    }
+}
+</style>
+<style>
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(84, 84, 243);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+</style>
+<div class="sidebar" style="left: 0; transition: left 2s;">
+    <a href="english.html">English</a>
+    <a href="brunch.html">Brunch</a>
+    <a href="usa.html">USA</a>
+    <a href="AI_Sites.html">AI Site</a>
+    <a href="AI_News.html">AI News</a>
+    <a href="fortune.html">Fortune</a>
+    <a href="battery.html">Battery</a>  
+    <a href="robot.html">Robot</a>  
+    <a href="drone.html">Drone</a>  
+    <a href="python.html">Python</a>
+    <a href="vba.html">Excel</a>
+</div>
+<div class="content">
+<script>
+   var clickCount = 0;
+
+
+document.addEventListener('click', function(e){
+    var numCircles = 1;
+    for (var i = 0; i < numCircles; i++) {
+        var circle = document.createElement('div');
+        circle.setAttribute('class', 'circle');
+        document.body.appendChild(circle);
+
+        var size = (Math.random() * 1.5 + 1) * 100 + 'px';
+        circle.style.width = size;
+        circle.style.height = size;
+
+        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+        circle.style.borderColor = color;
+        circle.style.borderWidth = '1px';
+
+        circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';
+        circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';
+
+        var moveX = Math.floor(Math.random() *5 )-2;
+        var moveY = Math.floor(Math.random() *5 )-2;
+
+        var intervalID = setInterval(function(){
+            var left = parseInt(circle.style.left);
+            var top = parseInt(circle.style.top);
+            if (isNaN(left) || isNaN(top)) {
+                clearInterval(intervalID);
+            } else {
+                circle.style.left = (left + moveX) + 'px';
+                circle.style.top = (top + moveY) + 'px';
+            }
+        }, 1);
+
+        setTimeout(function(){
+            clearInterval(intervalID);
+            circle.parentNode.removeChild(circle);
+        }, 3000);
+    }
+});
+</script>
+<footer class="footer"><p>Copyright © 2023~2024 </p></footer>
+<script>
+document.addEventListener('click', function(e){
+    var img = document.querySelector('img');
+    img.style.display = 'block';
+});
+</script>
+<script>
+document.addEventListener('click', function(e){
+    var img1 = document.querySelector('img');
+    var img2 = document.querySelectorAll('img')[1];
+    var rect = img1.getBoundingClientRect();
+    var dx = e.clientX - (rect.left + rect.width / 2);
+    var dy = e.clientY - (rect.top + rect.height / 2);
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < 100) {
+        img1.style.display = 'none';
+        img2.style.display = 'block';
+    }
+});
+</script>
+</div>
+</html>
+
+<style>
+    .notice-box {
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+      width: 500px;
+      background-color: rgba(241, 241, 241, 0);
+      border: 1px solid rgba(204, 204, 204, 0);
+      padding: 30px;
+      display: none;
+      font-size: 40px;
+      overflow-y: auto;
+      max-height: calc(100vh - 40px);
+    }
+    
+    .notice-box p {
+      background-color: rgba(241, 241, 241, 0);
+      border: 1px solid rgba(204, 204, 204, 0);
+      margin: 0 0 30px;
+    }
+    
+    .notice-box button {
+      font-size: 48px;
+    }
+  </style>
+  
+  <div class="notice-box">
+    <p><strong>공지사항</strong></p>
+    <p>브런치 업데이트 했어요.</p>
+    
+    
+  </div>
+  
+  <script>
+    
+    window.onload = function() {
+      var images = [];
+      for (var i = 1; i <= 13; i++) {
+        var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
+        images.push('image/index/flower/' + imageName);
+      }
+      var img = document.getElementById('randomImage');
+      var randomIndex = Math.floor(Math.random() * images.length);
+      img.src = images[randomIndex];
+      
+      document.querySelector('.notice-box').style.display = 'block';
+    };
+  </script>
+
+
+</body>
+</html>
