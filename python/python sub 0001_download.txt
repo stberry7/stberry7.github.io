@@ -1,0 +1,54 @@
+import cv2
+import os
+from tkinter import Tk, filedialog
+
+# Tkinter 루트 윈도우 생성
+root = Tk()
+root.withdraw()
+
+# 동영상 파일 선택 다이얼로그 열기
+video_path = filedialog.askopenfilename(title=동영상 파일 선택, filetypes=[(Video Files, .mp4;.avi;.mkv)])
+
+# 프레임 추출 간격 설정 (1분 = 60초)
+interval = 60
+
+# 이미지 저장 폴더 선택 다이얼로그 열기
+output_folder = filedialog.askdirectory(title=이미지 저장 폴더 선택)
+
+# 동영상 읽기
+video = cv2.VideoCapture(video_path)
+
+# 동영상의 초당 프레임 수 (FPS) 확인
+fps = video.get(cv2.CAP_PROP_FPS)
+
+# 동영상의 전체 프레임 수 확인
+total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+
+# 동영상 제목 추출
+video_title = os.path.splitext(os.path.basename(video_path))[0]
+
+# 추출할 프레임의 번호 계산
+frame_count = 0
+frame_number = 0
+
+while True
+    ret, frame = video.read()
+    if not ret
+        break
+
+    # 60초마다 프레임 추출
+    if frame_count % int(interval  fps) == 0
+        # 프레임을 이미지 파일로 저장
+        frame_path = os.path.join(output_folder, f{video_title}_frame_{frame_number}.jpg)
+        cv2.imwrite(frame_path, frame)
+        frame_number += 1
+
+    # 진행률 출력
+    progress = (frame_count  total_frames)  100
+    print(f진행률 {progress.2f}%, end='r')
+
+    frame_count += 1
+
+# 동영상 객체 해제
+video.release()
+print(n프레임 추출이 완료되었습니다.)
