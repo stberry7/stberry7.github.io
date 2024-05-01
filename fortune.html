@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>운세 Fortune Teller</title>
+  <style>
+    /* Reset default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+    header {
+      background: #f4f4f4;
+      padding: 1rem;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+    main {
+      padding: 1rem;
+    }
+    .search-container {
+      margin-bottom: 1rem;
+    }
+    .search-container select {
+      width: 100%;
+      padding: 1rem;
+      font-size: 2rem;
+    }
+    .category-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    .category {
+      background: #f4f4f4;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+    }
+    .category img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.5rem;
+    }
+    .home-button { 
+      display: inline-block;
+      padding: 20px;
+      /* min-width: 350px;
+      min-height: 60px; */
+      font-size: 32px;
+      color: white;
+      background-color: blue;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+    @media screen and (min-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>운세 Fortune Teller</h1>
+    <a class="home-button" href="index.html">Home</a>
+    <p></p>
+  </header>
+  <main>
+    <div> </div>
+    <div class="search-container">
+      <select>
+        <option value="">Select an option</option>
+        <option value="오늘 운세">오늘 운세</option>
+        <option value="내일 운세">내일 운세</option>
+        <option value="이번주 운세">이번주 운세</option>
+        <option value="이번달 운세">이번달 운세</option>
+        <option value="올해 운세">올해 운세</option>
+        <!-- <option value="customer_service">Customer Service</option>
+        <option value="information_technology">Information Technology</option> -->
+      </select>
+    </div>
+    <div class="category-container">
+      <!-- 카테고리 내용은 동적으로 생성됩니다. -->
+    </div>
+
+  </main>
+  <script src="fortune.js"></script>
+</body>
+</html>
