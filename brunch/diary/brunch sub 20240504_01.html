@@ -132,6 +132,23 @@
 
         <img src="../../image/brunch/20240504_grad2.jpg" alt="미시간 대학교 졸업식 행사 사진" width="100%">
 
+        <video id="myVideo">
+            <source src="../../image/brunch/20240504_grad3.mov" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          
+          <script>
+            const video = document.getElementById('myVideo');
+          
+            video.addEventListener('focus', () => {
+              video.play();
+            });
+          
+            video.addEventListener('blur', () => {
+              video.pause();
+            });
+          </script>
+          
         <p>드디어 졸업식이 시작되었다. 식은 무려 3시간이 넘게 진행되었다. 사실 좀 지루한 면이 없지 않아 있었다. 웅장한 스타디움 안에서 마이크로 전달되는 연설자들의 목소리가 메아리쳐서 제대로 알아듣기가 힘들었던 것도 사실이다.</p>
 
         <p>그런데 졸업식 중간부터 약간의 소동이 있었다. 약 70명의 친팔레스타인 시위자들이 최근 발발한 이스라엘-하마스 전쟁에 반대하는 구호를 외치며 팔레스타인 국기를 흔들기 시작한 것이다. 그들은 배너를 들고 스타디움을 행진했다. 너무 멀어서 내용은 알 수가 없었다.</p>
