@@ -9,48 +9,363 @@
 
 <url>
   <loc>https://stberry.us/</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://stberry.us/english</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://stberry.us/project</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://stberry.us/vba</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <loc>https://stberry.us/brunch</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://stberry.us/usa</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://stberry.us/ai</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <loc>https://stberry.us/ai_sites</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://stberry.us/coding</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <loc>https://stberry.us/ai_news</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://stberry.us/doodle</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <loc>https://stberry.us/fortune</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://stberry.us/tetris</loc>
-  <lastmod>2023-12-27T14:08:16+00:00</lastmod>
+  <loc>https://stberry.us/battery</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
   <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stberry.us/drone</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stberry.us/vba</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240504_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240502_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240501_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240501_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240501_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240429_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240427_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240426_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240426_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240426_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240425_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240425_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%2020240425_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%200004.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%200003.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%200002.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/brunch/diary/brunch%20sub%200001.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_10.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_09.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_08.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_06.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_07.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_15.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_11.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_12.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_16.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_13.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_17.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_18.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_14.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_04.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/usa/usa%20sub%2020240502_05.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_09.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_06.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_05.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_08.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_10.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_11.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_04.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/battery/battery%20sub%2020240429_07.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240501_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240501_03.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240430_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240430_05.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240430_06.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240501_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240430_02.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/robot/robot%20sub%2020240430_04.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/drone/drone%20sub%2020240430_01.html</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200007_Google_Search_Korean.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200006_Google_Search_English_only.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200005_Animated%20GIF.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200004_subtitle.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200003_rename.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200002_videotoimage.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stberry.us/python/python%20sub%200001_download.txt</loc>
+  <lastmod>2024-05-04T22:36:07+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 
 
