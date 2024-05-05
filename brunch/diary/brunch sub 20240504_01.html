@@ -140,13 +140,20 @@
         <script>
             const video = document.getElementById('myVideo');
         
-            video.addEventListener('focus', () => {
-                video.play();
+            // IntersectionObserver를 사용하여 동영상이 화면에 보이는지 감지
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // 동영상이 화면에 보이면 재생
+                        video.play();
+                    } else {
+                        // 동영상이 화면에서 사라지면 일시정지
+                        video.pause();
+                    }
+                });
             });
         
-            video.addEventListener('blur', () => {
-                video.pause();
-            });
+            observer.observe(video);
         </script>
           
         <p>드디어 졸업식이 시작되었다. 식은 무려 3시간이 넘게 진행되었다. 사실 좀 지루한 면이 없지 않아 있었다. 웅장한 스타디움 안에서 마이크로 전달되는 연설자들의 목소리가 메아리쳐서 제대로 알아듣기가 힘들었던 것도 사실이다.</p>
