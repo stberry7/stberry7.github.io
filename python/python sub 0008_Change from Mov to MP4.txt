@@ -1,0 +1,26 @@
+
+
+# Created 20240505 by Claude 3.0
+# pip install moviepy
+
+import tkinter as tk
+from tkinter import filedialog
+from moviepy.editor import *
+
+# Tkinter 루트 창 생성
+root = tk.Tk()
+root.withdraw()
+
+# mov 파일 선택
+input_file = filedialog.askopenfilename(filetypes=[("MOV Files", "*.mov")])
+
+# mp4 파일 저장 경로 선택
+output_file = filedialog.asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 Files", "*.mp4")])
+
+# mov 파일 불러오기
+clip = VideoFileClip(input_file)
+
+# mp4 파일로 쓰기
+clip.write_videofile(output_file)
+
+
