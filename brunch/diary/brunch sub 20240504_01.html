@@ -132,22 +132,22 @@
 
         <img src="../../image/brunch/20240504_grad2.jpg" alt="미시간 대학교 졸업식 행사 사진" width="100%">
 
-        <video id="myVideo">
-            <source src="../../image/brunch/20240504_grad3.mp4" type="video/mp4" width="100%">
-            Your browser does not support the video tag.
-          </video>
-          
-          <script>
+        <video id="myVideo" width="100%" controls>
+            <source src="../../image/brunch/20240504_grad3.mp4" type="video/mp4">
+            <p>Your browser does not support the video tag.</p>
+        </video>
+        
+        <script>
             const video = document.getElementById('myVideo');
-          
+        
             video.addEventListener('focus', () => {
-              video.play();
+                video.play();
             });
-          
+        
             video.addEventListener('blur', () => {
-              video.pause();
+                video.pause();
             });
-          </script>
+        </script>
           
         <p>드디어 졸업식이 시작되었다. 식은 무려 3시간이 넘게 진행되었다. 사실 좀 지루한 면이 없지 않아 있었다. 웅장한 스타디움 안에서 마이크로 전달되는 연설자들의 목소리가 메아리쳐서 제대로 알아듣기가 힘들었던 것도 사실이다.</p>
 
