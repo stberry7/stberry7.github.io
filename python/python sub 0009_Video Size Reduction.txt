@@ -1,0 +1,50 @@
+
+
+import cv2
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def reduce_video_frames():
+    # 비디오 파일 선택
+    root = tk.Tk()
+    root.withdraw()
+    video_path = filedialog.askopenfilename(title="비디오 파일 선택")
+
+    # 프레임 수 줄일 비율 입력받기
+    reduce_ratio = tk.simpledialog.askinteger("프레임 수 줄이기", "줄일 프레임 수 비율을 입력하세요 (예: 2, 3, 4 등):")
+
+    # 비디오 읽기
+    video = cv2.VideoCapture(video_path)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # 결과 비디오 저장 경로
+    result_path = os.path.splitext(video_path)[0] + "_reduced.mp4"
+
+    # 비디오 코덱 설정
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    out = cv2.VideoWriter(result_path, fourcc, fps / reduce_ratio, (width, height))
+
+    # 프레임 수 줄이기
+    frame_count = 0
+    while True:
+        ret, frame = video.read()
+        if not ret:
+            break
+
+        if frame_count % reduce_ratio == 0:
+            out.write(frame)
+        frame_count += 1
+
+    video.release()
+    out.release()
+
+    print("프레임 수가 줄어든 비디오가 저장되었습니다.")
+    print("저장 경로:", result_path)
+
+# 프로그램 실행
+reduce_video_frames()
+
+

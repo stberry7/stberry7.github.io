@@ -1,0 +1,51 @@
+
+
+import cv2
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def reduce_video_size():
+    # 비디오 파일 선택
+    root = tk.Tk()
+    root.withdraw()
+    video_path = filedialog.askopenfilename(title="비디오 파일 선택")
+
+    # 화질(사이즈) 줄일 비율 입력받기
+    reduce_ratio = tk.simpledialog.askfloat("화질(사이즈) 줄이기", "줄일 화질(사이즈) 비율을 입력하세요 (0.1 ~ 1.0):")
+
+    # 비디오 읽기
+    video = cv2.VideoCapture(video_path)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # 줄어든 화질(사이즈) 계산
+    reduced_width = int(width * reduce_ratio)
+    reduced_height = int(height * reduce_ratio)
+
+    # 결과 비디오 저장 경로
+    result_path = os.path.splitext(video_path)[0] + "_reduced.mp4"
+
+    # 비디오 코덱 설정
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    out = cv2.VideoWriter(result_path, fourcc, fps, (reduced_width, reduced_height))
+
+    # 화질(사이즈) 줄이기
+    while True:
+        ret, frame = video.read()
+        if not ret:
+            break
+
+        reduced_frame = cv2.resize(frame, (reduced_width, reduced_height))
+        out.write(reduced_frame)
+
+    video.release()
+    out.release()
+
+    print("화질(사이즈)이 줄어든 비디오가 저장되었습니다.")
+    print("저장 경로:", result_path)
+
+# 프로그램 실행
+reduce_video_size()
+
