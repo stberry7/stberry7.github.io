@@ -107,20 +107,34 @@
     }
 
     .title-container {
+    position: relative; /* 상대 위치 설정 */
     height: 3em;
     overflow: hidden;
-    background-color: #f1f1f1; /* 배경색 변경 */
-    color: #333; /* 글자색 변경 */
-    font-size: 1.5em; /* 글자 크기를 50% 크게 설정 */
+    background-color: #f1f1f1;
+    color: #333;
+    font-size: 1.5em;
     }
+
     .title-container ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        animation: rotate 28s linear infinite; /* 애니메이션 수정 */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    animation: rotate 28s linear infinite;
     }
+
     .title-container li {
-        line-height: 1em;
+    line-height: 1.5em;
+    }
+
+    .show-all-button {
+    position: absolute; /* 절대 위치 설정 */
+    top: 0;
+    right: 0;
+    padding: 0.5em 1em;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
     }
     @keyframes rotate {
         0% { transform: translateY(0); }
@@ -167,6 +181,7 @@
         <li><a href="#title2">뱀과 메리의 사랑?</a></li>
         <li><a href="#title1">뱀과 메리의 사랑?</a></li>
       </ul>
+      <button class="show-all-button">전체보기</button> <!-- 전체보기 버튼 추가 -->
     </div>
   </header>
   <main>
