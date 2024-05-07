@@ -1,0 +1,72 @@
+
+
+
+import os
+from PIL import Image
+from tkinter import filedialog, messagebox, simpledialog
+
+# 이미지 파일들이 있는 폴더 선택
+messagebox.showinfo("폴더 선택", "이미지 파일들이 있는 폴더를 선택하세요.")
+image_folder = filedialog.askdirectory()
+
+# 결과 GIF 파일을 저장할 폴더 선택
+messagebox.showinfo("폴더 선택", "결과 GIF 파일을 저장할 폴더를 선택하세요.")
+output_folder = filedialog.askdirectory()
+
+# 결과 GIF 파일 이름 입력
+default_name = "animated"
+output_file = simpledialog.askstring("파일 이름", "결과 GIF 파일 이름을 입력하세요.", initialvalue=default_name)
+if output_file is None:
+    output_file = default_name
+
+# 파일 이름 중복 체크
+counter = 1
+while os.path.exists(os.path.join(output_folder, f"{output_file}.gif")):
+    output_file = f"{default_name}{counter}"
+    counter += 1
+
+output_path = os.path.join(output_folder, f"{output_file}.gif")
+
+# 프레임 간격 조정
+duration = simpledialog.askinteger("프레임 간격", "프레임 간격을 입력하세요. (밀리초)", minvalue=100, initialvalue=1000)
+
+# 이미지 품질 선택
+quality_options = ["상", "중", "하"]
+quality_choice = simpledialog.askstring("이미지 품질", "이미지 품질을 선택하세요.", initialvalue=quality_options[1])
+if quality_choice == "상":
+    resample = Image.LANCZOS
+    quality = 95
+elif quality_choice == "하":
+    resample = Image.NEAREST
+    quality = 75
+else:
+    resample = Image.BILINEAR
+    quality = 85
+
+# 이미지 파일 목록 가져오기
+file_names = sorted((fn for fn in os.listdir(image_folder) if fn.endswith(".png") or fn.endswith(".jpg")))
+
+# 첫 번째 이미지 열기
+first_image = Image.open(os.path.join(image_folder, file_names[0]))
+
+# 결과 GIF의 크기 설정 (첫 번째 이미지의 크기로 설정)
+size = first_image.size
+
+# 이미지 열기 및 크기 조정
+images = []
+for name in file_names:
+    img = Image.open(os.path.join(image_folder, name))
+    img = img.resize(size, resample=resample)
+    
+    # RGBA 모드인 경우 RGB 모드로 변환
+    if img.mode == "RGBA":
+        img = img.convert("RGB")
+    
+    images.append(img)
+
+# 이미지들을 GIF로 저장
+loop = 0  # 0은 무한 반복을 의미
+
+images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=loop, optimize=True, quality=quality)
+
+messagebox.showinfo("완료", f"{output_file}.gif 파일이 생성되었습니다.")

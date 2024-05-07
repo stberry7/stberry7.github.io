@@ -1,0 +1,55 @@
+
+
+
+import os
+import shutil
+from tkinter import Tk, filedialog
+
+# Tkinter 루트 윈도우 생성
+root = Tk()
+root.withdraw()
+
+# 이미지 파일이 있는 폴더 선택 다이얼로그 열기
+image_folder = filedialog.askdirectory(title="이미지 파일이 있는 폴더 선택")
+
+# 이미지 파일을 복사할 폴더 선택 다이얼로그 열기
+destination_folder = filedialog.askdirectory(title="이미지 파일을 복사할 폴더 선택")
+
+# 선택된 폴더 내에 "Name" 폴더 생성 (이미 존재하는 경우 "Name2", "Name3" 등으로 생성)
+name_folder = os.path.join(destination_folder, "Name")
+counter = 1
+while os.path.exists(name_folder):
+    counter += 1
+    name_folder = os.path.join(destination_folder, f"Name{counter}")
+os.makedirs(name_folder)
+
+# 이미지 파일 확장자 목록
+image_extensions = [".jpg", ".jpeg", ".png", ".bmp", ".gif"]
+
+# 이미지 파일 복사
+for filename in os.listdir(image_folder):
+    _, extension = os.path.splitext(filename)
+    if extension.lower() in image_extensions:
+        source_path = os.path.join(image_folder, filename)
+        destination_path = os.path.join(name_folder, filename)
+        shutil.copy(source_path, destination_path)
+
+# 초기 이름 입력 받기
+initial_name = input("초기 이름을 입력하세요: ")
+
+# 이미지 파일 이름 리스트 생성
+image_files = [filename for filename in os.listdir(name_folder) if os.path.splitext(filename)[1].lower() in image_extensions]
+
+# 이미지 파일 이름 리스트 정렬
+image_files.sort(key=lambda x: int(''.join(filter(str.isdigit, os.path.splitext(x)[0]))))
+
+# 이미지 파일 이름 변경
+for index, filename in enumerate(image_files):
+    _, extension = os.path.splitext(filename)
+    new_index = (index + 1) * 10
+    new_name = f"{initial_name}{new_index:04d}{extension}"
+    old_path = os.path.join(name_folder, filename)
+    new_path = os.path.join(name_folder, new_name)
+    os.rename(old_path, new_path)
+
+print("이미지 파일 복사 및 이름 변경이 완료되었습니다.")
