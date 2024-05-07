@@ -1,0 +1,49 @@
+
+
+import cv2
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def reduce_video_frames():
+    # Select video file
+    root = tk.Tk()
+    root.withdraw()
+    video_path = filedialog.askopenfilename(title="Select Video File")
+
+    # Get frame reduction ratio input
+    reduce_ratio = tk.simpledialog.askinteger("Frame Reduction", "Enter the frame reduction ratio (e.g., 2, 3, 4, etc.):")
+
+    # Read video
+    video = cv2.VideoCapture(video_path)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # Result video save path
+    result_path = os.path.splitext(video_path)[0] + "_reduced.mp4"
+
+    # Set video codec
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    out = cv2.VideoWriter(result_path, fourcc, fps / reduce_ratio, (width, height))
+
+    # Reduce frames
+    frame_count = 0
+    while True:
+        ret, frame = video.read()
+        if not ret:
+            break
+
+        if frame_count % reduce_ratio == 0:
+            out.write(frame)
+        frame_count += 1
+
+    video.release()
+    out.release()
+
+    print("Video with reduced frames has been saved.")
+    print("Save path:", result_path)
+
+# Run the program
+reduce_video_frames()
+

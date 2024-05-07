@@ -1,0 +1,21 @@
+
+
+import tkinter as tk
+from tkinter import filedialog
+from moviepy.editor import *
+
+# Create Tkinter root window
+root = tk.Tk()
+root.withdraw()
+
+# Select mov file
+input_file = filedialog.askopenfilename(filetypes=[("MOV Files", "*.mov")])
+
+# Select save path for mp4 file
+output_file = filedialog.asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 Files", "*.mp4")])
+
+# Load mov file
+clip = VideoFileClip(input_file)
+
+# Write as mp4 file
+clip.write_videofile(output_file)

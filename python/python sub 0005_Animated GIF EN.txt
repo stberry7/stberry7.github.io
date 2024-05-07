@@ -1,0 +1,73 @@
+
+
+
+
+import os
+from PIL import Image
+from tkinter import filedialog, messagebox, simpledialog
+
+# Select folder containing image files
+messagebox.showinfo("Select Folder", "Select the folder containing the image files.")
+image_folder = filedialog.askdirectory()
+
+# Select folder to save the resulting GIF file
+messagebox.showinfo("Select Folder", "Select the folder to save the resulting GIF file.")
+output_folder = filedialog.askdirectory()
+
+# Input the name of the resulting GIF file
+default_name = "animated"
+output_file = simpledialog.askstring("File Name", "Enter the name of the resulting GIF file.", initialvalue=default_name)
+if output_file is None:
+    output_file = default_name
+
+# Check for file name duplicates
+counter = 1
+while os.path.exists(os.path.join(output_folder, f"{output_file}.gif")):
+    output_file = f"{default_name}{counter}"
+    counter += 1
+
+output_path = os.path.join(output_folder, f"{output_file}.gif")
+
+# Adjust frame interval
+duration = simpledialog.askinteger("Frame Interval", "Enter the frame interval (in milliseconds).", minvalue=100, initialvalue=1000)
+
+# Select image quality
+quality_options = ["High", "Medium", "Low"]
+quality_choice = simpledialog.askstring("Image Quality", "Select the image quality.", initialvalue=quality_options[1])
+if quality_choice == "High":
+    resample = Image.LANCZOS
+    quality = 95
+elif quality_choice == "Low":
+    resample = Image.NEAREST
+    quality = 75
+else:
+    resample = Image.BILINEAR
+    quality = 85
+
+# Get the list of image files
+file_names = sorted((fn for fn in os.listdir(image_folder) if fn.endswith(".png") or fn.endswith(".jpg")))
+
+# Open the first image
+first_image = Image.open(os.path.join(image_folder, file_names[0]))
+
+# Set the size of the resulting GIF (same as the first image)
+size = first_image.size
+
+# Open and resize images
+images = []
+for name in file_names:
+    img = Image.open(os.path.join(image_folder, name))
+    img = img.resize(size, resample=resample)
+    
+    # Convert RGBA mode to RGB mode
+    if img.mode == "RGBA":
+        img = img.convert("RGB")
+    
+    images.append(img)
+
+# Save images as GIF
+loop = 0  # 0 means infinite loop
+
+images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=loop, optimize=True, quality=quality)
+
+messagebox.showinfo("Completed", f"{output_file}.gif file has been created.")

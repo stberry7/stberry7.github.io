@@ -1,0 +1,45 @@
+
+
+
+from youtube_transcript_api import YouTubeTranscriptApi
+from tkinter import Tk, filedialog
+
+def get_subtitles(video_id, language='en'):
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    transcript = transcript_list.find_transcript([language])
+    
+    if transcript:
+        subtitles = transcript.fetch()
+        return subtitles
+    else:
+        print(f"Subtitles not found for the selected language ({language}).")
+        return None
+
+def save_subtitles_to_file(subtitles, output_file):
+    with open(output_file, 'w', encoding='utf-8') as file:
+        for subtitle in subtitles:
+            start_time = subtitle['start']
+            text = subtitle['text']
+            file.write(f"{start_time}: {text}\n")
+
+# Create a Tkinter root window
+root = Tk()
+root.withdraw()
+
+# Extract video_id from YouTube video URL
+video_url = input("Enter the YouTube video URL: ")
+video_id = video_url.split("v=")[1]
+
+# Get subtitles
+subtitles = get_subtitles(video_id)
+
+if subtitles:
+    # Open a file save dialog to choose the save location
+    output_file = filedialog.asksaveasfilename(defaultextension='.txt', 
+                                               filetypes=[('Text Files', '*.txt')])
+    
+    if output_file:
+        save_subtitles_to_file(subtitles, output_file)
+        print(f"Subtitles saved to {output_file}.")
+    else:
+        print("File save canceled.")

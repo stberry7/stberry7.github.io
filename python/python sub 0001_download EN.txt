@@ -1,0 +1,57 @@
+
+
+
+import cv2
+import os
+from tkinter import Tk, filedialog
+
+# Create Tkinter root window
+root = Tk()
+root.withdraw()
+
+# Open video file selection dialog
+video_path = filedialog.askopenfilename(title="Select Video File", filetypes=[("Video Files", "*.mp4;*.avi;*.mkv")])
+
+# Set frame extraction interval (1 minute = 60 seconds)
+interval = 60
+
+# Open image save folder selection dialog
+output_folder = filedialog.askdirectory(title="Select Image Save Folder")
+
+# Read video
+video = cv2.VideoCapture(video_path)
+
+# Get frames per second (FPS) of the video
+fps = video.get(cv2.CAP_PROP_FPS)
+
+# Get total number of frames in the video
+total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+
+# Extract video title
+video_title = os.path.splitext(os.path.basename(video_path))[0]
+
+# Calculate frame numbers to extract
+frame_count = 0
+frame_number = 0
+
+while True:
+    ret, frame = video.read()
+    if not ret:
+        break
+
+    # Extract frame every 60 seconds
+    if frame_count % int(interval * fps) == 0:
+        # Save frame as an image file
+        frame_path = os.path.join(output_folder, f"{video_title}_frame_{frame_number}.jpg")
+        cv2.imwrite(frame_path, frame)
+        frame_number += 1
+
+    # Print progress
+    progress = (frame_count / total_frames) * 100
+    print(f"Progress: {progress:.2f}%", end='\r')
+
+    frame_count += 1
+
+# Release video object
+video.release()
+print("\nFrame extraction completed.")

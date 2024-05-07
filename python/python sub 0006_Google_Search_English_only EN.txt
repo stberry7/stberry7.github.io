@@ -1,0 +1,75 @@
+
+
+
+import requests
+from bs4 import BeautifulSoup
+from googlesearch import search
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def count_characters(url):
+    try:
+        print(f"Analyzing page: {url}")
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        text = soup.get_text()
+        return len(text)
+    except:
+        print(f"Failed to analyze page: {url}")
+        return 0
+
+def search_pages(query, min_chars, num_results=10):
+    result = []
+    search_results = search(query, num_results=num_results)
+
+    print(f"Starting analysis of {num_results} search results...")
+
+    for i, url in enumerate(search_results, start=1):
+        print(f"Progress: {i}/{num_results}")
+        char_count = count_characters(url)
+
+        if char_count > min_chars:
+            result.append(url)
+
+    return result
+
+def save_results_to_file(results, file_path):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for url in results:
+            file.write(url + '\n')
+
+def select_folder():
+    root = tk.Tk()
+    root.withdraw()
+    folder_path = filedialog.askdirectory()
+    return folder_path
+
+# Get search query input
+query = input("Enter the search query: ")
+
+# Get minimum character count input
+min_chars = int(input("Enter the minimum character count for pages to search: "))
+
+# Set the number of search results (default is 10)
+num_results = 20
+
+# Search for pages with the specified minimum character count
+print(f"Starting search for '{query}'...")
+result_pages = search_pages(query, min_chars, num_results)
+print("Search completed!")
+
+# Select folder to save results
+print("Select the folder to save the results.")
+save_path = select_folder()
+
+# Set the name of the results file
+file_name = f"{query}_results.txt"
+
+# Create the file path
+file_path = os.path.join(save_path, file_name)
+
+# Save the results to a file
+print("Saving search results to file...")
+save_results_to_file(result_pages, file_path)
+print(f"Search results saved to {file_path}.")

@@ -1,0 +1,51 @@
+
+
+
+import cv2
+import os
+import tkinter as tk
+from tkinter import filedialog
+
+def reduce_video_size():
+    # Select video file
+    root = tk.Tk()
+    root.withdraw()
+    video_path = filedialog.askopenfilename(title="Select Video File")
+
+    # Get quality (size) reduction ratio input
+    reduce_ratio = tk.simpledialog.askfloat("Quality (Size) Reduction", "Enter the quality (size) reduction ratio (0.1 ~ 1.0):")
+
+    # Read video
+    video = cv2.VideoCapture(video_path)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # Calculate reduced quality (size)
+    reduced_width = int(width * reduce_ratio)
+    reduced_height = int(height * reduce_ratio)
+
+    # Result video save path
+    result_path = os.path.splitext(video_path)[0] + "_reduced.mp4"
+
+    # Set video codec
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    out = cv2.VideoWriter(result_path, fourcc, fps, (reduced_width, reduced_height))
+
+    # Reduce quality (size)
+    while True:
+        ret, frame = video.read()
+        if not ret:
+            break
+
+        reduced_frame = cv2.resize(frame, (reduced_width, reduced_height))
+        out.write(reduced_frame)
+
+    video.release()
+    out.release()
+
+    print("Video with reduced quality (size) has been saved.")
+    print("Save path:", result_path)
+
+# Run the program
+reduce_video_size()

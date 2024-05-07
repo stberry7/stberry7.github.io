@@ -1,0 +1,54 @@
+
+
+import os
+import shutil
+from tkinter import Tk, filedialog
+
+# Create Tkinter root window
+root = Tk()
+root.withdraw()
+
+# Open folder selection dialog for image files
+image_folder = filedialog.askdirectory(title="Select Folder with Image Files")
+
+# Open folder selection dialog to copy image files
+destination_folder = filedialog.askdirectory(title="Select Folder to Copy Image Files")
+
+# Create "Name" folder in the selected folder (if it already exists, create "Name2", "Name3", etc.)
+name_folder = os.path.join(destination_folder, "Name")
+counter = 1
+while os.path.exists(name_folder):
+    counter += 1
+    name_folder = os.path.join(destination_folder, f"Name{counter}")
+os.makedirs(name_folder)
+
+# Image file extensions
+image_extensions = [".jpg", ".jpeg", ".png", ".bmp", ".gif"]
+
+# Copy image files
+for filename in os.listdir(image_folder):
+    _, extension = os.path.splitext(filename)
+    if extension.lower() in image_extensions:
+        source_path = os.path.join(image_folder, filename)
+        destination_path = os.path.join(name_folder, filename)
+        shutil.copy(source_path, destination_path)
+
+# Get initial name input
+initial_name = input("Enter the initial name: ")
+
+# Create a list of image file names
+image_files = [filename for filename in os.listdir(name_folder) if os.path.splitext(filename)[1].lower() in image_extensions]
+
+# Sort the list of image file names
+image_files.sort(key=lambda x: int(''.join(filter(str.isdigit, os.path.splitext(x)[0]))))
+
+# Rename image files
+for index, filename in enumerate(image_files):
+    _, extension = os.path.splitext(filename)
+    new_index = (index + 1) * 10
+    new_name = f"{initial_name}{new_index:04d}{extension}"
+    old_path = os.path.join(name_folder, filename)
+    new_path = os.path.join(name_folder, new_name)
+    os.rename(old_path, new_path)
+
+print("Image file copying and renaming completed.")
