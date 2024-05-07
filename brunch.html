@@ -135,6 +135,7 @@
     color: #fff;
     border: none;
     cursor: pointer;
+    font-size: 1.3em; /* 글자 크기를 2배로 설정 */
     }
     @keyframes rotate {
         0% { transform: translateY(0); }
@@ -367,6 +368,22 @@
           setTimeout(function() {
               document.body.removeChild(firework);
           }, 3000);
+      }
+    });
+  </script>
+
+  <script>
+    const titleContainer = document.querySelector('.title-container');
+    const titleList = document.querySelector('.title-container ul');
+    const showAllButton = document.querySelector('.show-all-button');
+
+    showAllButton.addEventListener('click', () => {
+      if (titleContainer.style.height === 'auto') {
+        titleContainer.style.height = '3em';
+        showAllButton.textContent = '전체보기';
+      } else {
+        titleContainer.style.height = 'auto';
+        showAllButton.textContent = '닫기';
       }
     });
   </script>
