@@ -17,104 +17,99 @@
 <link rel="canonical" href="https://your-website.com/ai-news">
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+  body {
+           font-family: Arial, sans-serif;
+       }
 
-    header {
-        background-color: #f8f9fa;
-        padding: 20px;
-        text-align: center;
-    }
+       header {
+           background-color: #f8f9fa;
+           padding: 20px;
+           text-align: center;
+       }
 
-    main {
-        margin: 2rem auto;
-        max-width: 1200px;
-        padding: 0 1rem;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        padding: 2rem;
-        font-size: 40px;
-    }
+       main {
+           margin: 2rem auto;
+           max-width: 1200px;
+           padding: 0 1rem;
+           background-color: #fff;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           border-radius: 5px;
+           padding: 2rem;
+           font-size: 40px;
+       }
+           @media screen and (max-width: 768px) {
+           main {
+               font-size: 36px;
+           }
+       }
+       ul {
+           list-style-type: none;
+           padding: 0;
+       }
 
-    @media screen and (max-width: 768px) {
-        main {
-            font-size: 36px;
-        }
-    }
+       li {
+           margin-bottom: 10px;
+           padding: 10px;
+           border: 1px solid #ddd;
+           border-radius: 4px;
+       }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
+       footer {
+           background-color: #f8f9fa;
+           padding: 20px;
+           text-align: center;
+           /* position: fixed; */
+           position: center;
+           width: 100%;
+           bottom: 0;
+       }
+ </style>
+<style>
+  .home-button {
+   display: inline-block;
+   padding: 20px 100px;
+   font-size: 64px;
+   color: white;
+   background-color: blue;
+   border: none;
+   border-radius: 5px;
+   text-decoration: none;
+   transition: background-color 0.3s ease;
+}
 
-    li {
-        margin-bottom: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
+.home-button:hover {
+   background-color: darkblue;
+}
+ </style>
+<style>
+  .circle {
+   position: absolute;
+   height: 100px;
+   width: 100px;
+   border-radius: 50%;
+   border: 5px solid;
+   animation: circleFadeOut 1s forwards;
+}
 
-    footer {
-        background-color: #f8f9fa;
-        padding: 20px;
-        text-align: center;
-        position: center;
-        width: 100%;
-        bottom: 0;
-    }
+@keyframes circleFadeOut {
+   from {transform: scale(0.5); opacity: 1;}
+   to {transform: scale(1.5); opacity: 0;}
+}
+ </style>
+<style>
+  .message {
+   position: absolute;
+   font-size: 20px;
+   color: red;
+   animation: messageFadeOut 1s forwards;
+}
 
-    .home-button {
-        display: inline-block;
-        padding: 20px 100px;
-        font-size: 64px;
-        color: white;
-        background-color: blue;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-
-    .home-button:hover {
-        background-color: darkblue;
-    }
-
-    .circle {
-        position: absolute;
-        height: 100px;
-        width: 100px;
-        border-radius: 50%;
-        border: 5px solid;
-        animation: circleFadeOut 1s forwards;
-    }
-
-    @keyframes circleFadeOut {
-        from {transform: scale(0.5); opacity: 1;}
-        to {transform: scale(1.5); opacity: 0;}
-    }
-
-    .message {
-        position: absolute;
-        font-size: 20px;
-        color: red;
-        animation: messageFadeOut 1s forwards;
-    }
-
-    @keyframes messageFadeOut {
-        from {opacity: 1;}
-        to {opacity: 0;}
-    }
-
-    .highlight-green {
-        background-color: lightgreen;
-    }
-  
-    .highlight-yellow {
-        background-color: yellow;
-    }
-</style>
+@keyframes messageFadeOut {
+   from {opacity: 1;}
+   to {opacity: 0;}
+}
+ </style>
+ 
 </head>
 <body>
     <header>
@@ -123,7 +118,7 @@
         <p>Welcome to the Artificial Intelligence News webpage.</p>
     </header>
 <main>
-    <h1>Artificial Intelligence News</h1>
+    <h2>Artificial Intelligence News</h2>
 
     <ul>
         <li>
