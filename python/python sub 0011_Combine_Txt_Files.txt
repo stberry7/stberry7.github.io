@@ -1,0 +1,40 @@
+
+
+import os
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+# 메시지 박스 표시
+root = tk.Tk()
+root.withdraw()
+messagebox.showinfo("파일 선택", "합칠 txt 파일들을 선택해주세요.")
+
+# 파일 선택 대화상자 열기
+root.deiconify()
+root.lift()
+root.attributes("-topmost", True)
+selected_files = filedialog.askopenfilenames(filetypes=[("Text Files", "*.txt")])
+root.withdraw()
+
+if selected_files:
+    # 선택된 파일들의 내용을 합칠 문자열 변수
+    merged_content = ""
+
+    # 선택된 파일들의 내용을 읽어서 합치기
+    for file_path in selected_files:
+        with open(file_path, "r", encoding="utf-8") as file:
+            file_name = os.path.basename(file_path)
+            content = file.read()
+            merged_content += f"[{file_name}]\n{content}\n\n"
+
+    # 저장할 파일 경로 설정
+    save_directory = os.path.dirname(selected_files[0])
+    save_file_path = os.path.join(save_directory, "merged.txt")
+
+    # 합쳐진 내용을 새로운 파일로 저장
+    with open(save_file_path, "w", encoding="utf-8") as file:
+        file.write(merged_content)
+
+    messagebox.showinfo("파일 저장 완료", f"파일이 성공적으로 저장되었습니다.\n저장 위치: {save_file_path}")
+else:
+    messagebox.showinfo("파일 선택 취소", "파일 선택이 취소되었습니다.")
