@@ -119,11 +119,13 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    animation: rotate 28s linear infinite;
+    animation: rotate 20s linear infinite;
     }
 
     .title-container li {
-    line-height: 1.5em;
+    line-height: 1.2em;
+    white-space: nowrap;
+    border: none;
     }
 
     .show-all-button {
@@ -138,23 +140,27 @@
     font-size: 1.3em; /* 글자 크기를 2배로 설정 */
     }
     @keyframes rotate {
-        0% { transform: translateY(0); }
-        6.66% { transform: translateY(-1em); }
-        13.33% { transform: translateY(-2em); }
-        20% { transform: translateY(-3em); }
-        26.66% { transform: translateY(-4em); }
-        33.33% { transform: translateY(-5em); }
-        40% { transform: translateY(-6em); }
-        46.66% { transform: translateY(-7em); }
-        53.33% { transform: translateY(-8em); }
-        60% { transform: translateY(-9em); }
-        66.66% { transform: translateY(-10em); }
-        73.33% { transform: translateY(-11em); }
-        80% { transform: translateY(-12em); }
-        86.66% { transform: translateY(-13em); }
-        93.33% { transform: translateY(-14em); }
-        100% { transform: translateY(-15em); } /* 마지막 키프레임 수정 */
-    }
+    0% { transform: translateY(0); }
+    5.55% { transform: translateY(-1.2em); }
+    11.11% { transform: translateY(-2.4em); }
+    16.66% { transform: translateY(-3.6em); }
+    22.22% { transform: translateY(-4.8em); }
+    27.77% { transform: translateY(-6em); }
+    33.33% { transform: translateY(-7.2em); }
+    38.88% { transform: translateY(-8.4em); }
+    44.44% { transform: translateY(-9.6em); }
+    50% { transform: translateY(-10.8em); }
+    55.55% { transform: translateY(-12em); }
+    61.11% { transform: translateY(-13.2em); }
+    66.66% { transform: translateY(-14.4em); }
+    72.22% { transform: translateY(-15.6em); }
+    77.77% { transform: translateY(-16.8em); }
+    83.33% { transform: translateY(-18em); }
+    88.88% { transform: translateY(-19.2em); }
+    94.44% { transform: translateY(-20.4em); }
+    100% { transform: translateY(-21.6em); }
+  }
+</style>
     </style>
 </head>
 <body>
