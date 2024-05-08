@@ -1,0 +1,57 @@
+import os
+import tkinter as tk
+from tkinter import filedialog, messagebox
+from PIL import Image
+
+def convert_image_format():
+    # 변경할 형식 선택
+    format_window = tk.Tk()
+    format_window.withdraw()
+    target_format = tk.simpledialog.askstring("변경할 형식", "변경할 형식을 선택하세요 (jpg/jpeg/png/gif):")
+    format_window.destroy()
+
+    if target_format not in ["jpg", "jpeg", "png", "gif"]:
+        messagebox.showerror("오류", "지원되지 않는 형식입니다.")
+        return
+
+    # 파일 선택
+    root = tk.Tk()
+    root.withdraw()
+    file_paths = filedialog.askopenfilenames(title="파일 선택", filetypes=[("Image Files", "*.jpg;*.jpeg;*.png;*.gif")])
+
+    if not file_paths:
+        messagebox.showinfo("취소", "파일이 선택되지 않았습니다.")
+        root.destroy()
+        return
+
+    # 이미지 변환 및 저장
+    converted_count = 0
+    skipped_count = 0
+    for file_path in file_paths:
+        try:
+            img = Image.open(file_path)
+            file_name, ext = os.path.splitext(file_path)
+            if ext[1:].lower() == target_format.lower():
+                skipped_count += 1
+                continue
+            new_file_path = f"{file_name}.{target_format}"
+            img.save(new_file_path)
+            converted_count += 1
+        except Exception as e:
+            messagebox.showerror("오류", f"{file_path} 변환 중 오류 발생: {str(e)}")
+
+    # 메시지 박스를 화면 맨 앞으로 표시
+    message_window = tk.Tk()
+    message_window.title("변환 결과")
+    message_window.attributes("-topmost", True)
+    message_label = tk.Label(message_window, text=f"{converted_count}개의 파일이 변환되었습니다. {skipped_count}개의 파일은 이미 {target_format} 형식이어서 건너뛰었습니다.")
+    message_label.pack(padx=20, pady=20)
+    ok_button = tk.Button(message_window, text="확인", command=message_window.destroy)
+    ok_button.pack(pady=10)
+    message_window.mainloop()
+
+    root.destroy()
+
+# 메인 코드
+if __name__ == "__main__":
+    convert_image_format()

@@ -1,0 +1,41 @@
+import os
+from PIL import Image
+import tkinter as tk
+from tkinter import filedialog, simpledialog, messagebox
+
+def select_files():
+    root = tk.Tk()
+    root.withdraw()
+    file_paths = filedialog.askopenfilenames(title="파일 선택", filetypes=[("이미지 파일", "*.jpg;*.jpeg;*.png")])
+    return file_paths
+
+def resize_images(file_paths, scale_percent):
+    for filepath in file_paths:
+        try:
+            with Image.open(filepath) as img:
+                width, height = img.size
+                new_width = int(width * scale_percent / 100)
+                new_height = int(height * scale_percent / 100)
+                resized_img = img.resize((new_width, new_height), Image.ANTIALIAS)
+                folder_path, filename = os.path.split(filepath)
+                new_filename = f"resized_{filename}"
+                new_filepath = os.path.join(folder_path, new_filename)
+                resized_img.save(new_filepath, optimize=True, quality=85)
+        except Exception as e:
+            print(f"Error resizing {filepath}: {str(e)}")
+
+def main():
+    file_paths = select_files()
+    if file_paths:
+        messagebox.showinfo("파일 선택", f"선택한 파일 수: {len(file_paths)}")
+        scale_percent = simpledialog.askinteger("축소 비율", "축소 비율을 입력하세요 (1-100):")
+        if scale_percent is not None and 1 <= scale_percent <= 100:
+            resize_images(file_paths, scale_percent)
+            messagebox.showinfo("완료", "이미지 크기 조정이 완료되었습니다.")
+        else:
+            messagebox.showerror("잘못된 입력", "축소 비율은 1부터 100 사이의 정수여야 합니다.")
+    else:
+        messagebox.showwarning("파일 선택 취소", "파일 선택이 취소되었습니다.")
+
+if __name__ == "__main__":
+    main()
