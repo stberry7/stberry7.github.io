@@ -84,18 +84,19 @@
         }
     
         .sidebar a {
-            padding: 13px;
+            padding: 13px 0; /* 좌우 여백을 0으로 설정 */
             background: rgba(108, 117, 125, 1.0);
             border: none;
             color: #fff;
             height: 52px;
-            width: 45%; /* 너비를 45%로 변경 */
+            width: 45%;
             text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            display: flex; /* flexbox를 사용하여 수직, 수평 가운데 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+            justify-content: center; /* 수평 가운데 정렬 */
             cursor: pointer;
             font-size: 1.95em;
-            }
+        }
     
         .sidebar a:hover {
             background: #495057;
@@ -213,7 +214,7 @@
         </div>
     </div>
     <div class="content">
-    <!-- <script>
+    <script>
        var clickCount = 0;
     document.addEventListener('click', function(e){
     var numCircles = 1;
@@ -252,7 +253,7 @@
         }, 3000);
     }
     });
-    </script> -->
+    </script>
     <footer class="footer"><p>Copyright © 2023~2024 </p></footer>
     <script>
     document.addEventListener('click', function(e){
