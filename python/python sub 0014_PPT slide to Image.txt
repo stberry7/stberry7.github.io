@@ -1,0 +1,51 @@
+
+
+
+import os
+import win32com.client
+from tkinter import Tk, filedialog, messagebox
+
+def ppt_to_images(file_path):
+    powerpoint = win32com.client.Dispatch("Powerpoint.Application")
+    powerpoint.Visible = 1
+    presentation = powerpoint.Presentations.Open(file_path, ReadOnly=1)
+    
+    new_presentation = powerpoint.Presentations.Add()
+    
+    for i, slide in enumerate(presentation.Slides):
+        image_path = os.path.join(os.path.dirname(file_path), f"{os.path.splitext(os.path.basename(file_path))[0]}_Slide{i+1}.jpg")
+        slide.Export(image_path, "JPG")
+        
+        # 새 프레젠테이션에 슬라이드 추가
+        new_slide = new_presentation.Slides.Add(i + 1, 12)  # 12는 빈 레이아웃을 의미합니다.
+        
+        # 변환된 이미지를 새 슬라이드에 붙여넣기
+        new_slide.Shapes.AddPicture(FileName=image_path, LinkToFile=False, SaveWithDocument=True, Left=0, Top=0, Width=-1, Height=-1)
+        
+        # 임시 이미지 파일 삭제
+        os.remove(image_path)
+    
+    new_presentation.SaveAs(os.path.splitext(file_path)[0] + "_converted.pptx")
+    new_presentation.Close()
+    presentation.Close()
+    powerpoint.Quit()
+
+def select_files():
+    root = Tk()
+    root.withdraw()
+    root.attributes("-topmost", True)
+    
+    messagebox.showinfo("알림", "변환할 파워포인트 파일들을 선택해 주세요.")
+    
+    file_paths = filedialog.askopenfilenames(filetypes=[("PowerPoint files", "*.pptx")])
+    
+    for file_path in file_paths:
+        file_path = os.path.normpath(file_path)
+        ppt_to_images(file_path)
+    
+    messagebox.showinfo("완료", "선택한 모든 파워포인트 파일들의 슬라이드가 이미지로 변환되어 새 파일에 삽입되었습니다.")
+
+if __name__ == "__main__":
+    select_files()
+
+

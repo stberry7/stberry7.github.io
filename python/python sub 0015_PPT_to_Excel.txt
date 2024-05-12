@@ -1,0 +1,65 @@
+import os
+import re
+from pptx import Presentation
+from openpyxl import Workbook
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+def remove_illegal_characters(text):
+    # 잘못된 문자를 제거하는 정규표현식 패턴
+    pattern = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
+    # 잘못된 문자를 공백으로 대체
+    cleaned_text = re.sub(pattern, '', text)
+    return cleaned_text
+
+def extract_ppt_to_excel(ppt_file, excel_file):
+    wb = Workbook()
+    ws_all = wb.active
+    ws_all.title = "All Content"
+    ws_tables = wb.create_sheet(title="Tables")
+
+    prs = Presentation(ppt_file)
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                text = shape.text
+                cleaned_text = remove_illegal_characters(text)  # 잘못된 문자 제거
+                ws_all.append([cleaned_text])
+            elif shape.has_table:
+                ws_all.append([""])  # 첫 번째 시트에 빈 행 추가
+                ws_all.append(["[Table]"])  # 첫 번째 시트에 "[Table]" 표시
+                for row in shape.table.rows:
+                    row_data = []
+                    for cell in row.cells:
+                        text = cell.text
+                        cleaned_text = remove_illegal_characters(text)  # 잘못된 문자 제거
+                        row_data.append(cleaned_text)
+                    ws_all.append(row_data)  # 첫 번째 시트에 테이블 행 추가
+                    ws_tables.append(row_data)  # 두 번째 시트에 테이블 행 추가
+                ws_all.append([""])  # 첫 번째 시트에 빈 행 추가
+                ws_tables.append([])  # 두 번째 시트에 빈 행 추가 (테이블 구분)
+
+    wb.save(excel_file)
+
+def select_files():
+    root = tk.Tk()
+    root.withdraw()
+    root.attributes("-topmost", True)
+
+    messagebox.showinfo("파일 선택", "추출할 파워포인트 파일들을 선택해주세요.")
+    ppt_files = filedialog.askopenfilenames(filetypes=[("PowerPoint files", "*.pptx")])
+
+    if ppt_files:
+        for ppt_file in ppt_files:
+            ppt_folder = os.path.dirname(ppt_file)
+            ppt_name = os.path.splitext(os.path.basename(ppt_file))[0]
+            excel_file = os.path.join(ppt_folder, f'{ppt_name}.xlsx')
+            extract_ppt_to_excel(ppt_file, excel_file)
+        messagebox.showinfo("추출 완료", "선택한 파워포인트 파일들이 각각의 엑셀 파일로 추출되었습니다.")
+    else:
+        messagebox.showinfo("파일 선택 취소", "파일 선택이 취소되었습니다.")
+
+    root.destroy()
+
+# 사용 예시
+select_files()
