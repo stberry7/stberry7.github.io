@@ -22,7 +22,7 @@ def count_characters(url):
 
 def search_pages(query, min_chars, num_results=10):
     result = []
-    search_results = search(query, num_results=num_results)
+    search_results = search(search_query, num=num_results)
 
     print(f"Starting analysis of {num_results} search results...")
 
