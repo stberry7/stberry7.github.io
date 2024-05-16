@@ -5,91 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Website</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
+    /* ... 이전 CSS 코드 ... */
 
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-    }
-
-    nav ul li {
-      margin-right: 1rem;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    main {
+    #updates {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
     }
 
-    section {
-      width: 100%;
-      max-width: 1200px;
-      background-color: #fff;
-      border-radius: 5px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .update {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .update img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 5px;
-      margin-right: 1rem;
-    }
-
-    .update-content {
-      flex: 1;
-    }
-
-    .update-content h3 {
-      margin: 0;
-      margin-bottom: 0.5rem;
-    }
-
-    .update-content p {
-      margin: 0;
-      color: #666;
-    }
-
-    .more-button {
-      display: block;
+    .loading {
       text-align: center;
-      background-color: #333;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      text-decoration: none;
       margin-top: 1rem;
     }
   </style>
@@ -106,44 +31,79 @@
   </header>
 
   <main>
-    <section id="brunch">
-      <h2>Brunch</h2>
-      <div class="update">
-        <img src="brunch-image1.jpg" alt="Brunch Image 1">
-        <div class="update-content">
-          <h3><a href="brunch-article1.html">Brunch Article 1</a></h3>
-          <p>Published on May 17, 2024</p>
-        </div>
-      </div>
-      <!-- 더 많은 브런치 업데이트 추가 -->
-      <a href="brunch-section.html" class="more-button">더보기</a>
-    </section>
-
-    <section id="ai-news">
-      <h2>AI News</h2>
-      <div class="update">
-        <img src="ai-news-image1.jpg" alt="AI News Image 1">
-        <div class="update-content">
-          <h3><a href="ai-news-article1.html">AI News Article 1</a></h3>
-          <p>Published on May 16, 2024</p>
-        </div>
-      </div>
-      <!-- 더 많은 인공지능뉴스 업데이트 추가 -->
-      <a href="ai-news-section.html" class="more-button">더보기</a>
-    </section>
-
-    <section id="other-section">
-      <h2>Other Section</h2>
-      <div class="update">
-        <img src="other-section-image1.jpg" alt="Other Section Image 1">
-        <div class="update-content">
-          <h3><a href="other-section-article1.html">Other Section Article 1</a></h3>
-          <p>Published on May 15, 2024</p>
-        </div>
-      </div>
-      <!-- 더 많은 다른 섹션 업데이트 추가 -->
-      <a href="other-section.html" class="more-button">더보기</a>
-    </section>
+    <div id="updates"></div>
+    <div class="loading">Loading...</div>
   </main>
+
+  <script>
+    const updatesPerPage = 10;
+    let currentPage = 1;
+    let isLoading = false;
+
+    const updates = [
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      // ... 더 많은 업데이트 데이터 추가 ...
+    ];
+
+    function loadUpdates() {
+      const startIndex = (currentPage - 1) * updatesPerPage;
+      const endIndex = startIndex + updatesPerPage;
+      const updatesToLoad = updates.slice(startIndex, endIndex);
+
+      const updatesContainer = document.getElementById("updates");
+      updatesToLoad.forEach(update => {
+        const updateElement = document.createElement("div");
+        updateElement.classList.add("update");
+        updateElement.innerHTML = `
+          <img src="${update.image}" alt="${update.title}">
+          <div class="update-content">
+            <h3><a href="${update.link}">${update.title}</a></h3>
+            <p>${update.date}</p>
+          </div>
+        `;
+        updatesContainer.appendChild(updateElement);
+      });
+
+      currentPage++;
+      isLoading = false;
+
+      if (endIndex >= updates.length) {
+        const loadingElement = document.querySelector(".loading");
+        loadingElement.style.display = "none";
+      }
+    }
+
+    function handleScroll() {
+      if (isLoading) return;
+
+      const scrollPosition = window.innerHeight + window.pageYOffset;
+      const pageHeight = document.documentElement.scrollHeight;
+
+      if (scrollPosition >= pageHeight - 100) {
+        isLoading = true;
+        loadUpdates();
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    loadUpdates();
+  </script>
 </body>
 </html>
