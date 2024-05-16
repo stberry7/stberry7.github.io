@@ -7,7 +7,6 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
@@ -16,50 +15,71 @@
     header {
       background-color: #333;
       color: #fff;
-      text-align: center;
       padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 1rem;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
     }
 
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 2rem auto;
-      max-width: 1200px;
-      padding: 0 1rem;
+      padding: 2rem;
     }
 
     section {
       width: 100%;
+      max-width: 1200px;
       background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       padding: 2rem;
       margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    h1, h2, h3 {
+    .update {
+      display: flex;
+      align-items: center;
       margin-bottom: 1rem;
     }
 
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
+    .update img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 1rem;
     }
 
-    .card {
-      background-color: #f8f9fa;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 1rem;
+    .update-content {
+      flex: 1;
     }
 
-    .card img {
-      width: 100%;
-      height: auto;
-      border-radius: 5px;
-      margin-bottom: 1rem;
+    .update-content h3 {
+      margin: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .update-content p {
+      margin: 0;
+      color: #666;
     }
 
     .more-button {
@@ -72,40 +92,10 @@
       text-decoration: none;
       margin-top: 1rem;
     }
-
-    .search-form {
-      display: flex;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-
-    .search-form input {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px 0 0 5px;
-    }
-
-    .search-form button {
-      padding: 0.5rem 1rem;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-    }
-
-    footer {
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
   </style>
 </head>
 <body>
   <header>
-    <h1>My Website</h1>
     <nav>
       <ul>
         <li><a href="#brunch">Brunch</a></li>
@@ -113,58 +103,47 @@
         <li><a href="#other-section">Other Section</a></li>
       </ul>
     </nav>
-    <form action="#" method="get" class="search-form">
-      <input type="text" name="search" placeholder="Search...">
-      <button type="submit">Search</button>
-    </form>
   </header>
 
   <main>
     <section id="brunch">
       <h2>Brunch</h2>
-      <div class="card-container">
-        <!-- Brunch 섹션의 업데이트 내용을 카드 형식으로 표시 -->
-        <div class="card">
-          <img src="brunch-image1.jpg" alt="Brunch Image 1">
+      <div class="update">
+        <img src="brunch-image1.jpg" alt="Brunch Image 1">
+        <div class="update-content">
           <h3><a href="brunch-article1.html">Brunch Article 1</a></h3>
           <p>Published on May 17, 2024</p>
         </div>
-        <!-- 더 많은 브런치 글 카드 추가 -->
       </div>
+      <!-- 더 많은 브런치 업데이트 추가 -->
       <a href="brunch-section.html" class="more-button">더보기</a>
     </section>
 
     <section id="ai-news">
       <h2>AI News</h2>
-      <div class="card-container">
-        <!-- 인공지능뉴스 섹션의 업데이트 내용을 카드 형식으로 표시 -->
-        <div class="card">
-          <img src="ai-news-image1.jpg" alt="AI News Image 1">
+      <div class="update">
+        <img src="ai-news-image1.jpg" alt="AI News Image 1">
+        <div class="update-content">
           <h3><a href="ai-news-article1.html">AI News Article 1</a></h3>
           <p>Published on May 16, 2024</p>
         </div>
-        <!-- 더 많은 인공지능뉴스 글 카드 추가 -->
       </div>
+      <!-- 더 많은 인공지능뉴스 업데이트 추가 -->
       <a href="ai-news-section.html" class="more-button">더보기</a>
     </section>
 
     <section id="other-section">
       <h2>Other Section</h2>
-      <div class="card-container">
-        <!-- 다른 섹션의 업데이트 내용을 카드 형식으로 표시 -->
-        <div class="card">
-          <img src="other-section-image1.jpg" alt="Other Section Image 1">
+      <div class="update">
+        <img src="other-section-image1.jpg" alt="Other Section Image 1">
+        <div class="update-content">
           <h3><a href="other-section-article1.html">Other Section Article 1</a></h3>
           <p>Published on May 15, 2024</p>
         </div>
-        <!-- 더 많은 다른 섹션 글 카드 추가 -->
       </div>
+      <!-- 더 많은 다른 섹션 업데이트 추가 -->
       <a href="other-section.html" class="more-button">더보기</a>
     </section>
   </main>
-
-  <footer>
-    <p>&copy; 2024 My Website. All rights reserved.</p>
-  </footer>
 </body>
 </html>
