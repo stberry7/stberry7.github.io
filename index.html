@@ -1,333 +1,170 @@
-<document index="1">
-    <source>paste.txt</source>
-    <document_content><!DOCTYPE html>
-    <html>
-    <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-P5MQZ5LK');</script>
-        <!-- End Google Tag Manager -->
-    <meta name="google-site-verification" content="0FQ31nRdW_zrYw3eGVUBRThIigXE3GOrr06OSQ5_5qk" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMQ4MLP54Y"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    
-    gtag('config', 'G-HMQ4MLP54Y');
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <style>.sidebar { background-color: rgba(255, 255, 255, 0.9); }</style>
-    <script>
-    window.onload = function() {
-        var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
-        var img = document.getElementById('randomImage');
-        var randomIndex = Math.floor(Math.random() * images.length);
-        img.src = images[randomIndex];
-    };
-    </script>
-    <style>.sidebar { background-color: rgba(255, 255, 255, 0.5); }</style>
-    <style>
-        .notice-box {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          width: 300px;
-          background-color: #f1f1f1;
-          border: 1px solid #ccc;
-          padding: 10px;
-          display: none;
-        }
-      </style>
-    </head>
-    <body>
-    <!-- <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/> -->
-    <img id="randomImage" src="" style="width: 100%; height: 100%; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1;"/>
-    <!DOCTYPE html>
-    <html lang="ko">
-    <meta charset="utf-8"/>
-    <title>미국생활 영어표현 인공지능 배터리</title>
-    <style>
-       body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                display: flex;
-                /* align-items: center; */
-                /* justify-content: center; */
-                height: 80vh;
-                background: #f8f9fa;
-            }
-       .sidebar {
-            position: sticky;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 600px; /* 너비 증가 */
-            background: #343a40;
-            color: #fff;
-            opacity: 0.7;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-        }
-    
-        .sidebar-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-    
-        .sidebar a {
-            padding: 13px 0; /* 좌우 여백을 0으로 설정 */
-            background: rgba(108, 117, 125, 1.0);
-            border: none;
-            color: #fff;
-            height: 52px;
-            width: 45%;
-            text-decoration: none;
-            display: flex; /* flexbox를 사용하여 수직, 수평 가운데 정렬 */
-            align-items: center; /* 수직 가운데 정렬 */
-            justify-content: center; /* 수평 가운데 정렬 */
-            cursor: pointer;
-            font-size: 1.95em;
-        }
-    
-        .sidebar a:hover {
-            background: #495057;
-        }
-    
-        .content {
-            text-align: center;
-            width: 50%;
-        }
-        
-        @media only screen and (max-width: 600px) {
-            .sidebar a {
-                width: 200px;
-                font-size: 4em;
-                height: 200px;
-                width: 300px;
-                font-size: 5em;
-            }
-            
-            .content {
-                font-size: 2em;
-            }
-            
-            .footer {
-                font-size: 2em;
-            }
-        }
-    </style>
-    <style>
-    .circle {
-        position: absolute;
-        border: 3px solid;
-        border-radius: 50%;
-        animation: fadeout 1s forwards;
-        animation-delay: 1s;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
     }
-    .message {
-    position: absolute;
-    font-size: 5em;
-    animation: fadeout 1s forwards;
-    animation-delay: 1s;
+
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
     }
-    .image {
-    position: absolute;
-    width: 100px;
-    animation: fadeout 1s forwards;
-    animation-delay: 1s;
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem auto;
+      max-width: 1200px;
+      padding: 0 1rem;
     }
-    @keyframes fadeout {
-    to {
-    opacity: 0;
+
+    section {
+      width: 100%;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 2rem;
+      margin-bottom: 2rem;
     }
+
+    h1, h2, h3 {
+      margin-bottom: 1rem;
     }
-    </style>
-    <style>
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: rgb(84, 84, 243);
-        color: white;
-        text-align: center;
-        padding: 10px 0;
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
     }
-    </style>
-    <div class="sidebar" style="left: 0; transition: left 2s;">
-        <div class="sidebar-row">
-            <a href="english.html">영어표현</a>
-            <a href="english EN.html">English</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="brunch.html">소소한 일상</a>
-            <a href="brunch EN.html">Daily Life</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="pamyo.html">소설</a>
-            <a href="pamyo.html">Novel</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="usa.html">미국생활</a>
-            <a href="usa EN.html">Life in USA</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="AI_Sites.html">인공지능 사이트</a>
-            <a href="AI_Sites.html">AI Sites</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="AI_News.html">인공지능 뉴스</a>  
-            <a href="AI_News EN.html">AI News</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="fortune.html">운세</a>
-            <a href="fortune.html">Fortune</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="battery.html">배터리</a>  
-            <a href="battery.html">Battery</a>
-        </div>
-        <div class="sidebar-row">  
-            <a href="robot.html">로봇</a>
-            <a href="robot.html">Robot</a>  
-        </div>
-        <div class="sidebar-row">
-            <a href="drone.html">드론</a>
-            <a href="drone.html">Drone</a>
-        </div>
-        <div class="sidebar-row">  
-            <a href="python.html">파이선</a>
-            <a href="python EN.html">Python</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="vba.html">엑셀 VBA</a>
-            <a href="vba.html">Excel VBA</a>
-        </div>
-    </div>
-    <div class="content">
-    <script>
-       var clickCount = 0;
-    document.addEventListener('click', function(e){
-    var numCircles = 1;
-    for (var i = 0; i < numCircles; i++) {
-    var circle = document.createElement('div');
-    circle.setAttribute('class', 'circle');
-    document.body.appendChild(circle);
-        var size = (Math.random() * 1.5 + 1) * 100 + 'px';
-        circle.style.width = size;
-        circle.style.height = size;
-    
-        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
-        circle.style.borderColor = color;
-        circle.style.borderWidth = '1px';
-    
-        circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';
-        circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';
-    
-        var moveX = Math.floor(Math.random() *5 )-2;
-        var moveY = Math.floor(Math.random() *5 )-2;
-    
-        var intervalID = setInterval(function(){
-            var left = parseInt(circle.style.left);
-            var top = parseInt(circle.style.top);
-            if (isNaN(left) || isNaN(top)) {
-                clearInterval(intervalID);
-            } else {
-                circle.style.left = (left + moveX) + 'px';
-                circle.style.top = (top + moveY) + 'px';
-            }
-        }, 1);
-    
-        setTimeout(function(){
-            clearInterval(intervalID);
-            circle.parentNode.removeChild(circle);
-        }, 3000);
+
+    .card {
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
     }
-    });
-    </script>
-    <footer class="footer"><p>Copyright © 2023~2024 </p></footer>
-    <script>
-    document.addEventListener('click', function(e){
-        var img = document.querySelector('img');
-        img.style.display = 'block';
-    });
-    </script>
-    <script>
-    document.addEventListener('click', function(e){
-        var img1 = document.querySelector('img');
-        var img2 = document.querySelectorAll('img')[1];
-        var rect = img1.getBoundingClientRect();
-        var dx = e.clientX - (rect.left + rect.width / 2);
-        var dy = e.clientY - (rect.top + rect.height / 2);
-        var distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < 100) {
-            img1.style.display = 'none';
-            img2.style.display = 'block';
-        }
-    });
-    </script>
-    </div>
-    </html>
-    <!-- <style>
-        .notice-box {
-          position: fixed !important;
-          bottom: 20px !important;
-          right: 20px !important;
-          width: 500px;
-          background-color: rgba(241, 241, 241, 0);
-          border: 1px solid rgba(204, 204, 204, 0);
-          padding: 30px;
-          display: none;
-          font-size: 40px;
-          overflow-y: auto;
-          max-height: calc(100vh - 40px);
-        }
-        
-        .notice-box p {
-          background-color: rgba(241, 241, 241, 0);
-          border: 1px solid rgba(204, 204, 204, 0);
-          margin: 0 0 30px;
-        }
-        
-        .notice-box button {
-          font-size: 48px;
-        }
-      </style>
-      <div class="notice-box">
-        <p><strong></strong></p>
-        <p></p>
-      </div> -->
-      <!-- <script>
-        window.onload = function() {
-          var images = [];
-          
-          // Add F001.jpeg to F013.jpeg
-          for (var i = 1; i <= 13; i++) {
-            var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
-            images.push('image/index/flower/' + imageName);
-          }
-          
-          // Add J001.jpg to J008.jpg
-          for (var j = 1; j <= 8; j++) {
-            var imageName = 'J' + ('00' + j).slice(-3) + '.jpg';
-            images.push('image/index/flower/' + imageName);
-          }
-          
-          var img = document.getElementById('randomImage');
-          var randomIndex = Math.floor(Math.random() * images.length);
-          img.src = images[randomIndex];
-          document.querySelector('.notice-box').style.display = 'block';
-        };
-        </script> -->
-    </body>
-    </html></document_content>
-    </document>
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .more-button {
+      display: block;
+      text-align: center;
+      background-color: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
+
+    .search-form {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .search-form input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .search-form button {
+      padding: 0.5rem 1rem;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Website</h1>
+    <nav>
+      <ul>
+        <li><a href="#brunch">Brunch</a></li>
+        <li><a href="#ai-news">AI News</a></li>
+        <li><a href="#other-section">Other Section</a></li>
+      </ul>
+    </nav>
+    <form action="#" method="get" class="search-form">
+      <input type="text" name="search" placeholder="Search...">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <main>
+    <section id="brunch">
+      <h2>Brunch</h2>
+      <div class="card-container">
+        <!-- Brunch 섹션의 업데이트 내용을 카드 형식으로 표시 -->
+        <div class="card">
+          <img src="brunch-image1.jpg" alt="Brunch Image 1">
+          <h3><a href="brunch-article1.html">Brunch Article 1</a></h3>
+          <p>Published on May 17, 2024</p>
+        </div>
+        <!-- 더 많은 브런치 글 카드 추가 -->
+      </div>
+      <a href="brunch-section.html" class="more-button">더보기</a>
+    </section>
+
+    <section id="ai-news">
+      <h2>AI News</h2>
+      <div class="card-container">
+        <!-- 인공지능뉴스 섹션의 업데이트 내용을 카드 형식으로 표시 -->
+        <div class="card">
+          <img src="ai-news-image1.jpg" alt="AI News Image 1">
+          <h3><a href="ai-news-article1.html">AI News Article 1</a></h3>
+          <p>Published on May 16, 2024</p>
+        </div>
+        <!-- 더 많은 인공지능뉴스 글 카드 추가 -->
+      </div>
+      <a href="ai-news-section.html" class="more-button">더보기</a>
+    </section>
+
+    <section id="other-section">
+      <h2>Other Section</h2>
+      <div class="card-container">
+        <!-- 다른 섹션의 업데이트 내용을 카드 형식으로 표시 -->
+        <div class="card">
+          <img src="other-section-image1.jpg" alt="Other Section Image 1">
+          <h3><a href="other-section-article1.html">Other Section Article 1</a></h3>
+          <p>Published on May 15, 2024</p>
+        </div>
+        <!-- 더 많은 다른 섹션 글 카드 추가 -->
+      </div>
+      <a href="other-section.html" class="more-button">더보기</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 My Website. All rights reserved.</p>
+  </footer>
+</body>
+</html>
