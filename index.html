@@ -39,8 +39,8 @@
     main {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 2rem;
+      align-items: flex-start;
+      padding: 2rem 2rem 2rem 4rem;
     }
 
     section {
@@ -95,7 +95,7 @@
     #updates {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .loading,
@@ -129,30 +129,8 @@
     let isLoading = false;
 
     const updates = [
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
-      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024 고장 난 천장 팬을 고치다", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" }
       // ... 더 많은 업데이트 데이터 추가 ...
     ];
 
@@ -166,11 +144,13 @@
         const updateElement = document.createElement("div");
         updateElement.classList.add("update");
         updateElement.innerHTML = `
-          <img src="${update.image}" alt="${update.title}">
-          <div class="update-content">
-            <h3><a href="${update.link}">${update.title}</a></h3>
-            <p>${update.date}</p>
-          </div>
+          <a href="${update.link}">
+            <img src="${update.image}" alt="${update.title}">
+            <div class="update-content">
+              <h3>${update.title}</h3>
+              <p>${update.date}</p>
+            </div>
+          </a>
         `;
         updatesContainer.appendChild(updateElement);
       });
