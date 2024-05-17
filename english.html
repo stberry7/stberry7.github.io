@@ -73,6 +73,24 @@
             width: 100%;
             bottom: 0;
         }
+        .update img {
+          width: 100%; /* 초기 이미지 크기 */
+          height: auto; /* 종횡비 유지 */
+          max-width: 100%; /* 컨테이너 너비를 초과하지 않도록 설정 */
+          border-radius: 5px;
+          margin: 1rem 0;
+        }
+
+        @media (min-width: 768px) {
+          .update img {
+            width: 50%; /* 큰 화면에서의 이미지 크기 조정 */
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .update img {
+            w          }
+        }
   </style>
 <style>
    .home-button {
