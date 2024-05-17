@@ -98,7 +98,8 @@
       align-items: center;
     }
 
-    .loading {
+    .loading,
+    .end-message {
       text-align: center;
       margin-top: 1rem;
       display: none;
@@ -119,6 +120,7 @@
   <main>
     <div id="updates"></div>
     <div class="loading">Loading...</div>
+    <div class="end-message">No more updates</div>
   </main>
 
   <script>
@@ -151,7 +153,6 @@
       { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
       { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
       { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
-
       // ... 더 많은 업데이트 데이터 추가 ...
     ];
 
@@ -179,7 +180,9 @@
 
       if (endIndex >= updates.length) {
         const loadingElement = document.querySelector(".loading");
+        const endMessageElement = document.querySelector(".end-message");
         loadingElement.style.display = "none";
+        endMessageElement.style.display = "block";
       }
     }
 
