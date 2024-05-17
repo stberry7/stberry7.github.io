@@ -5,7 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Website</title>
   <style>
-    /* ... 이전 CSS 코드 ... */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 1rem;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    section {
+      width: 100%;
+      max-width: 1200px;
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .update {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .update img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 1rem;
+    }
+
+    .update-content {
+      flex: 1;
+    }
+
+    .update-content h3 {
+      margin: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .update-content p {
+      margin: 0;
+      color: #666;
+    }
+
+    .more-button {
+      display: block;
+      text-align: center;
+      background-color: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
 
     #updates {
       display: flex;
@@ -16,6 +101,7 @@
     .loading {
       text-align: center;
       margin-top: 1rem;
+      display: none;
     }
   </style>
 </head>
@@ -59,6 +145,13 @@
       { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
       { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
       { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+      { title: "Brunch Article 1", date: "May 17, 2024", image: "brunch-image1.jpg", link: "brunch-article1.html" },
+      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" },
+      { title: "Other Section Article 1", date: "May 15, 2024", image: "other-section-image1.jpg", link: "other-section-article1.html" },
+
       // ... 더 많은 업데이트 데이터 추가 ...
     ];
 
@@ -98,7 +191,13 @@
 
       if (scrollPosition >= pageHeight - 100) {
         isLoading = true;
-        loadUpdates();
+        const loadingElement = document.querySelector(".loading");
+        loadingElement.style.display = "block";
+
+        setTimeout(() => {
+          loadUpdates();
+          loadingElement.style.display = "none";
+        }, 1000);
       }
     }
 
