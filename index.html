@@ -61,9 +61,9 @@
     }
 
     .update img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+      width: 300%; /* Set initial image size */
+      height: auto; /* Maintain aspect ratio */
+      max-width: 100%; /* Ensure image doesn't exceed container width */
       border-radius: 5px;
       margin: 1rem 0;
     }
@@ -105,6 +105,18 @@
       text-align: center;
       margin-top: 1rem;
       display: none;
+    }
+
+    @media (min-width: 768px) {
+      .update img {
+        width: 150%; /* Adjust image size for larger screens */
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .update img {
+        width: 100%; /* Adjust image size for even larger screens */
+      }
     }
   </style>
 </head>
