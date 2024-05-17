@@ -55,8 +55,9 @@
 
     .update {
       display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 2rem; /* Add margin between updates */
     }
 
     .update img {
@@ -64,7 +65,7 @@
       height: 100px;
       object-fit: cover;
       border-radius: 5px;
-      margin-right: 1rem;
+      margin: 1rem 0;
     }
 
     .update-content {
@@ -79,6 +80,7 @@
     .update-content p {
       margin: 0;
       color: #666;
+      white-space: pre-wrap; /* Preserve white space */
     }
 
     .more-button {
@@ -129,8 +131,22 @@
     let isLoading = false;
 
     const updates = [
-      { title: "Brunch Article 1", date: "May 17, 2024 고장 난 천장 팬을 고치다", image: "brunch-image1.jpg", link: "brunch-article1.html" },
-      { title: "AI News Article 1", date: "May 16, 2024", image: "ai-news-image1.jpg", link: "ai-news-article1.html" }
+      { 
+        title: "Brunch Article", 
+        date: "2024년 5월 13일 월요일, 고장 난 천장 팬을 고치다 ", 
+        image: "brunch-image1.jpg", 
+        titleLink: "a.html", 
+        imageLink: "b.html" 
+      },
+
+      { 
+        title: "AI News Article 1", 
+        date: "May 16, 2024 ", 
+        image: "ai-news-image1.jpg", 
+        titleLink: "c.html", 
+        imageLink: "d.html" 
+      }
+
       // ... 더 많은 업데이트 데이터 추가 ...
     ];
 
@@ -144,13 +160,13 @@
         const updateElement = document.createElement("div");
         updateElement.classList.add("update");
         updateElement.innerHTML = `
-          <a href="${update.link}">
-            <img src="${update.image}" alt="${update.title}">
-            <div class="update-content">
-              <h3>${update.title}</h3>
-              <p>${update.date}</p>
-            </div>
-          </a>
+          <div class="update-content">
+            <h3><a href="${update.titleLink}">${update.title}</a></h3>
+            <a href="${update.imageLink}">
+              <img src="${update.image}" alt="${update.title}">
+            </a>
+            <p>${update.date}</p>
+          </div>
         `;
         updatesContainer.appendChild(updateElement);
       });
