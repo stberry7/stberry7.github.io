@@ -56,12 +56,14 @@
     .update {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      /* align-items: flex-start; */
+      align-items: center; /* 가운데 정렬 */
       margin-bottom: 2rem; /* Add margin between updates */
     }
 
       .update img {
-    width: 300px; /* 고정 너비 설정 */
+    width: 100%; /* 이미지 폭을 100%로 설정 */
+    max-width: 600px; /* 최대 폭 설정 */
     height: auto; /* 종횡비 유지 */
     object-fit: cover; /* 이미지 비율 유지 및 크기에 맞게 자르기 */
     border-radius: 5px;
