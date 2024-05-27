@@ -39,7 +39,7 @@
     main {
       display: flex;
       flex-direction: column;
-      align-items: center; /* 가운데 정렬로 변경 */
+      align-items: center;
       padding: 2rem;
     }
 
@@ -61,9 +61,9 @@
     }
 
     .update img {
-      width: 100%; /* 기본 폭을 100%로 설정 */
-      max-width: 600px; /* 최대 폭을 600px로 설정 */
-      height: auto; /* 비율에 맞게 자동 조절 */
+      width: 100%;
+      max-width: 600px;
+      height: auto;
       object-fit: cover;
       border-radius: 5px;
       margin: 1rem 0;
@@ -71,7 +71,7 @@
 
     .update-content {
       flex: 1;
-      text-align: center; /* 텍스트 가운데 정렬 */
+      text-align: center;
     }
 
     .update-content h3 {
@@ -82,7 +82,7 @@
     .update-content p {
       margin: 0;
       color: #666;
-      white-space: pre-wrap; /* Preserve white space */
+      white-space: pre-wrap;
     }
 
     .more-button {
@@ -109,15 +109,17 @@
       display: none;
     }
 
-    @media (min-width: 768px) {
-      .update img {
-        max-width: 80%; /* 768px 이상에서는 최대 폭을 80%로 조정 */
-      }
+    /* 고정된 이미지 크기를 위한 CSS */
+    .fixed-size-image {
+      width: 400px;
+      height: 300px;
+      object-fit: cover;
     }
 
-    @media (min-width: 1024px) {
-      .update img {
-        max-width: 50%; /* 1024px 이상에서는 최대 폭을 50%로 조정 */
+    @media (max-width: 600px) {
+      .fixed-size-image {
+        width: 100%;
+        height: auto;
       }
     }
   </style>
@@ -284,7 +286,7 @@
           <div class="update-content">
             <h3><a href="${update.titleLink}">${update.title}</a></h3>
             <a href="${update.imageLink}">
-              <img src="${update.image}" alt="${update.title}">
+              <img src="${update.image}" alt="${update.title}" class="fixed-size-image">
             </a>
             <p>${update.date}</p>
           </div>
