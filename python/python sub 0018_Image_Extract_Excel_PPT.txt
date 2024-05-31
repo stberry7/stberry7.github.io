@@ -46,13 +46,15 @@ def extract_images_from_excel(file_path, output_folder):
 def extract_images_from_ppt(file_path, output_folder):
     prs = Presentation(file_path)
     for idx, slide in enumerate(prs.slides):
+        img_count = 0
         for shape in slide.shapes:
             if hasattr(shape, "image"):
                 img = shape.image
-                img_name = f"slide_{idx + 1}.png"
+                img_name = f"slide_{idx + 1}_image_{img_count + 1}.png"
                 img_path = os.path.join(output_folder, img_name)
                 with open(img_path, "wb") as f:
                     f.write(img.blob)
+                img_count += 1
 
 def main():
     file_types = [("Excel files", "*.xlsx"), ("PowerPoint files", "*.pptx")]
