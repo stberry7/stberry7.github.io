@@ -1,0 +1,77 @@
+import os
+import re
+from tkinter import Tk, filedialog
+from openpyxl import load_workbook
+from pptx import Presentation
+from PIL import Image
+from io import BytesIO
+
+def select_file(file_types):
+    root = Tk()
+    root.withdraw()
+    file_path = filedialog.askopenfilename(filetypes=file_types)
+    return file_path
+
+def select_folder():
+    root = Tk()
+    root.withdraw()
+    folder_path = filedialog.askdirectory()
+    return folder_path
+
+def save_image(img, img_path):
+    img.save(img_path)
+
+def sanitize_filename(filename):
+    return re.sub(r'[\\/*?:"<>|]', "_", filename)
+
+def colnum_string(n):
+    """ Convert a column number into a string. """
+    string = ""
+    while n > 0:
+        n, remainder = divmod(n - 1, 26)
+        string = chr(65 + remainder) + string
+    return string
+
+def extract_images_from_excel(file_path, output_folder):
+    wb = load_workbook(file_path, data_only=True)
+    for sheet_name in wb.sheetnames:
+        sheet = wb[sheet_name]
+        for image in sheet._images:
+            img = Image.open(BytesIO(image._data()))
+            col_letter = colnum_string(image.anchor._from.col + 1)
+            img_name = f"{sheet_name}_{col_letter}{image.anchor._from.row + 1}.png"
+            img_path = os.path.join(output_folder, sanitize_filename(img_name))
+            save_image(img, img_path)
+
+def extract_images_from_ppt(file_path, output_folder):
+    prs = Presentation(file_path)
+    for idx, slide in enumerate(prs.slides):
+        for shape in slide.shapes:
+            if hasattr(shape, "image"):
+                img = shape.image
+                img_name = f"slide_{idx + 1}.png"
+                img_path = os.path.join(output_folder, img_name)
+                with open(img_path, "wb") as f:
+                    f.write(img.blob)
+
+def main():
+    file_types = [("Excel files", "*.xlsx"), ("PowerPoint files", "*.pptx")]
+    file_path = select_file(file_types)
+    if not file_path:
+        print("파일을 선택하지 않았습니다.")
+        return
+    
+    output_folder = select_folder()
+    if not output_folder:
+        print("저장할 폴더를 선택하지 않았습니다.")
+        return
+    
+    if file_path.endswith(".xlsx"):
+        extract_images_from_excel(file_path, output_folder)
+    elif file_path.endswith(".pptx"):
+        extract_images_from_ppt(file_path, output_folder)
+    else:
+        print("지원하지 않는 파일 형식입니다.")
+
+if __name__ == "__main__":
+    main()
