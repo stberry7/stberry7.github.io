@@ -1,5 +1,5 @@
 <document index="1">
-    <source>paste.txt</source>
+    <!-- <source>paste.txt</source> -->
     <document_content><!DOCTYPE html>
     <html>
     <head>
@@ -44,6 +44,15 @@
         }
       </style>
     </head>
+    <style>
+        html, body {
+            margin: 0; /* 여백 제거 */
+            padding: 0; /* 여백 제거 */
+            overflow: hidden; /* 스크롤 제거 */
+            width: 100%; /* 가로 크기 고정 */
+            height: 100%; /* 세로 크기 고정 */
+        }
+    </style>
     <body>
     <!-- <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/> -->
     <img id="randomImage" src="" style="width: 100%; height: 100%; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1;"/>
@@ -61,22 +70,23 @@
                 height: 80vh;
                 background: #f8f9fa;
             }
-       .sidebar {
-            position: sticky;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 600px; /* 너비 증가 */
-            background: #343a40;
+
+        .sidebar {
+            position: fixed; /* 화면에 고정 */
+            top: 0; /* 위쪽부터 시작 */
+            left: 0; /* 왼쪽부터 시작 */
+            width: 300px; /* 너비 */
+            height: 100%; /* 높이를 화면 전체로 설정 */
+            background: #343a40; /* 배경 색상 */
             color: #fff;
-            opacity: 0.7;
+            opacity: 0.9; /* 투명도 */
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            overflow-y: auto;
+            overflow-y: auto; /* 콘텐츠가 넘치면 스크롤 추가 */
         }
-    
+
         .sidebar-row {
             display: flex;
             justify-content: space-between;
@@ -88,8 +98,10 @@
             background: rgba(108, 117, 125, 1.0);
             border: none;
             color: #fff;
-            height: 52px;
-            width: 45%; /* 너비를 45%로 변경 */
+            height: 52px; 
+            height: auto; 
+            
+            width: 90%; /* 너비를 45%로 변경 */
             text-decoration: none;
             display: inline-block;
             text-align: center;
@@ -165,51 +177,27 @@
     <div class="sidebar" style="left: 0; transition: left 2s;">
         <div class="sidebar-row">
             <a href="english.html">영어표현</a>
-            <a href="english EN.html">English</a>
         </div>
         <div class="sidebar-row">
             <a href="brunch.html">소소한 일상</a>
-            <a href="brunch EN.html">Daily Life</a>
         </div>
         <div class="sidebar-row">
             <a href="pamyo.html">소설</a>
-            <a href="pamyo.html">Novel</a>
         </div>
         <div class="sidebar-row">
             <a href="usa.html">미국생활</a>
-            <a href="usa EN.html">Life in USA</a>
         </div>
         <div class="sidebar-row">
             <a href="AI_Sites.html">인공지능 사이트</a>
-            <a href="AI_Sites.html">AI Sites</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="AI_News.html">인공지능 뉴스</a>  
-            <a href="AI_News EN.html">AI News</a>
-        </div>
-        <div class="sidebar-row">
-            <a href="fortune.html">운세</a>
-            <a href="fortune.html">Fortune</a>
         </div>
         <div class="sidebar-row">
             <a href="battery.html">배터리</a>  
-            <a href="battery.html">Battery</a>
-        </div>
-        <div class="sidebar-row">  
-            <a href="robot.html">로봇</a>
-            <a href="robot.html">Robot</a>  
-        </div>
-        <div class="sidebar-row">
-            <a href="drone.html">드론</a>
-            <a href="drone.html">Drone</a>
         </div>
         <div class="sidebar-row">  
             <a href="python.html">파이선</a>
-            <a href="python EN.html">Python</a>
         </div>
         <div class="sidebar-row">
             <a href="vba.html">엑셀 VBA</a>
-            <a href="vba.html">Excel VBA</a>
         </div>
     </div>
     <div class="content">
