@@ -1,330 +1,332 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
+<document index="1">
+    <source>paste.txt</source>
+    <document_content><!DOCTYPE html>
+    <html>
+    <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-P5MQZ5LK');</script>
+        <!-- End Google Tag Manager -->
+    <meta name="google-site-verification" content="0FQ31nRdW_zrYw3eGVUBRThIigXE3GOrr06OSQ5_5qk" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMQ4MLP54Y"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    
+    gtag('config', 'G-HMQ4MLP54Y');
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>.sidebar { background-color: rgba(255, 255, 255, 0.9); }</style>
+    <script>
+    window.onload = function() {
+        var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
+        var img = document.getElementById('randomImage');
+        var randomIndex = Math.floor(Math.random() * images.length);
+        img.src = images[randomIndex];
+    };
+    </script>
+    <style>.sidebar { background-color: rgba(255, 255, 255, 0.5); }</style>
+    <style>
+        .notice-box {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          width: 300px;
+          background-color: #f1f1f1;
+          border: 1px solid #ccc;
+          padding: 10px;
+          display: none;
+        }
+      </style>
+    </head>
+    <body>
+    <!-- <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/> -->
+    <img id="randomImage" src="" style="width: 100%; height: 100%; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1;"/>
+    <!DOCTYPE html>
+    <html lang="ko">
+    <meta charset="utf-8"/>
+    <title>미국생활 영어표현 인공지능 배터리</title>
+    <style>
+       body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                display: flex;
+                /* align-items: center; */
+                /* justify-content: center; */
+                height: 80vh;
+                background: #f8f9fa;
+            }
+       .sidebar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 600px; /* 너비 증가 */
+            background: #343a40;
+            color: #fff;
+            opacity: 0.7;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+    
+        .sidebar-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    
+        .sidebar a {
+            padding: 13px;
+            background: rgba(108, 117, 125, 1.0);
+            border: none;
+            color: #fff;
+            height: 52px;
+            width: 45%; /* 너비를 45%로 변경 */
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.95em;
+            }
+    
+        .sidebar a:hover {
+            background: #495057;
+        }
+    
+        .content {
+            text-align: center;
+            width: 50%;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .sidebar a {
+                width: 200px;
+                font-size: 4em;
+                height: 200px;
+                width: 300px;
+                font-size: 5em;
+            }
+            
+            .content {
+                font-size: 2em;
+            }
+            
+            .footer {
+                font-size: 2em;
+            }
+        }
+    </style>
+    <style>
+    .circle {
+        position: absolute;
+        border: 3px solid;
+        border-radius: 50%;
+        animation: fadeout 1s forwards;
+        animation-delay: 1s;
     }
-
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
+    .message {
+    position: absolute;
+    font-size: 5em;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
     }
-
-    nav ul {
-      display: flex;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
+    .image {
+    position: absolute;
+    width: 100px;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
     }
-
-    nav ul li {
-      margin: 0 1rem;
+    @keyframes fadeout {
+    to {
+    opacity: 0;
     }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
     }
-
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    section {
-      width: 100%;
-      max-width: 1200px;
-      background-color: #fff;
-      border-radius: 5px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .update {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .update img {
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      object-fit: cover;
-      border-radius: 5px;
-      margin: 1rem 0;
-    }
-
-    .update-content {
-      flex: 1;
-      text-align: center;
-    }
-
-    .update-content h3 {
-      margin: 0;
-      margin-bottom: 0.5rem;
-    }
-
-    .update-content p {
-      margin: 0;
-      color: #666;
-      white-space: pre-wrap;
-    }
-
-    .more-button {
-      display: block;
-      text-align: center;
-      background-color: #333;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      text-decoration: none;
-      margin-top: 1rem;
-    }
-
-    #updates {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .loading,
-    .end-message {
-      text-align: center;
-      margin-top: 1rem;
-      display: none;
-    }
-
-    /* 고정된 이미지 크기를 위한 CSS */
-    .fixed-size-image {
-      width: 400px;
-      height: 300px;
-      object-fit: cover;
-    }
-
-    @media (max-width: 600px) {
-      .fixed-size-image {
+    </style>
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
         width: 100%;
-        height: auto;
-      }
+        background-color: rgb(84, 84, 243);
+        color: white;
+        text-align: center;
+        padding: 10px 0;
     }
-  </style>
-</head>
-<body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="main.html">Main</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <div id="updates"></div>
-    <div class="loading">Loading...</div>
-    <div class="end-message">No more updates</div>
-  </main>
-
-  <script>
-    const updatesPerPage = 10;
-    let currentPage = 1;
-    let isLoading = false;
-
-    const updates = [
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 25일 토요일, 금값 추이에 대한 새로운 도메인 등록", 
-        image: "image/brunch/20240525 gold 1.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240525_02.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 25일 토요일, 차고 백열등에 도전하다.", 
-        image: "image/brunch/20240525 bulb 1.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240525_01.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 20일 미국경찰", 
-        image: "image/usa/20240520 Police 1.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240520_01.html" 
-      },
-      { 
-        title: "AI News", 
-        date: "2024년 5월 20일 Google I/O 2024", 
-        image: "image/ai_news/20240520 Google 1.png", 
-        titleLink: "AI_News.html", 
-        imageLink: "ai_news/news/AI_News sub 20240520_02.html" 
-      },
-      { 
-        title: "AI News", 
-        date: "2024년 5월 20일 Chat GPT4o", 
-        image: "image/ai_news/20240520 ChatGPT4o 1.png", 
-        titleLink: "AI_News.html", 
-        imageLink: "ai_news/news/AI_News sub 20240520_01.html" 
-      },
-      { 
-        title: "AI 로봇", 
-        date: "2024년 5월 19일 휴머로이드 AI 로봇", 
-        image: "image/robot/20240519_robot0.jpg", 
-        titleLink: "robot.html", 
-        imageLink: "robot/robot sub 20240519_01.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 18일 엄청난 물가", 
-        image: "image/usa/20240518_livingcost.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240518_03.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 18일 미친 은 (Silver) 가격", 
-        image: "image/usa/20240518_silver.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240518_02.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 18일 구리가격이 상승하는 이유", 
-        image: "image/usa/20240518_copper.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240518_01.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 17일 친구에게 돈을 빌려주지 말아야 하는 5가지 이유", 
-        image: "image/usa/20240517_money1.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240517_03.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2024년 5월 17일 월요일, 세액공제, 공제, 고급 투자 전략 등 세금을 낮추는 방법은 많습니다.", 
-        image: "image/usa/20240517_401k.webp", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240517_02.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 13일 월요일, 고장 난 천장 팬을 고치다.", 
-        image: "image/brunch/20240513_fan1.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240513_01.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 12일 일요일, 딸과 함께한 행복한 골프 데이트", 
-        image: "image/brunch/20240512_golf.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240512_02.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 12일 일요일, 고장 난 포드 에스케이프 헤드라이트 교체하다.", 
-        image: "image/brunch/20240512_lamp1.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240512_02.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 07일 화요일, 손상된 데크 페인트를 벗겨내다.", 
-        image: "image/brunch/20240507_deck1.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240507_01.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 5월 04일 토요일, 라일락나무 가지치기를 했더니 앙상해졌다.", 
-        image: "image/brunch/20240504_tree1.png", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240504_02.html" 
-      },
-      { 
-        title: "미국 생활", 
-        date: "2020년 5월 06일 (Harvard Magazine : 미국은 세계에서 가장 높은 수준의 의료비를 지출하고 있습니다.)", 
-        image: "image/usa/20240502_Insurance1.png", 
-        titleLink: "usa.html", 
-        imageLink: "usa/usa sub 20240502_18.html" 
-      },
-      { 
-        title: "사소한 일상", 
-        date: "2024년 4월 26일 금요일 (나무도 자연 그대로의 멋이 있지 않을까?)", 
-        image: "image/brunch/20240426 tree.jpg", 
-        titleLink: "brunch.html", 
-        imageLink: "brunch/diary/brunch sub 20240426_02.html" 
-      }
-    ];
-
-    function loadUpdates() {
-      const startIndex = (currentPage - 1) * updatesPerPage;
-      const endIndex = startIndex + updatesPerPage;
-      const updatesToLoad = updates.slice(startIndex, endIndex);
-
-      const updatesContainer = document.getElementById("updates");
-      updatesToLoad.forEach(update => {
-        const updateElement = document.createElement("div");
-        updateElement.classList.add("update");
-        updateElement.innerHTML = `
-          <div class="update-content">
-            <h3><a href="${update.titleLink}">${update.title}</a></h3>
-            <a href="${update.imageLink}">
-              <img src="${update.image}" alt="${update.title}" class="fixed-size-image">
-            </a>
-            <p>${update.date}</p>
-          </div>
-        `;
-        updatesContainer.appendChild(updateElement);
-      });
-
-      currentPage++;
-      isLoading = false;
-
-      if (endIndex >= updates.length) {
-        const loadingElement = document.querySelector(".loading");
-        const endMessageElement = document.querySelector(".end-message");
-        loadingElement.style.display = "none";
-        endMessageElement.style.display = "block";
-      }
+    </style>
+    <div class="sidebar" style="left: 0; transition: left 2s;">
+        <div class="sidebar-row">
+            <a href="english.html">영어표현</a>
+            <a href="english EN.html">English</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="brunch.html">소소한 일상</a>
+            <a href="brunch EN.html">Daily Life</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="pamyo.html">소설</a>
+            <a href="pamyo.html">Novel</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="usa.html">미국생활</a>
+            <a href="usa EN.html">Life in USA</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="AI_Sites.html">인공지능 사이트</a>
+            <a href="AI_Sites.html">AI Sites</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="AI_News.html">인공지능 뉴스</a>  
+            <a href="AI_News EN.html">AI News</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="fortune.html">운세</a>
+            <a href="fortune.html">Fortune</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="battery.html">배터리</a>  
+            <a href="battery.html">Battery</a>
+        </div>
+        <div class="sidebar-row">  
+            <a href="robot.html">로봇</a>
+            <a href="robot.html">Robot</a>  
+        </div>
+        <div class="sidebar-row">
+            <a href="drone.html">드론</a>
+            <a href="drone.html">Drone</a>
+        </div>
+        <div class="sidebar-row">  
+            <a href="python.html">파이선</a>
+            <a href="python EN.html">Python</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="vba.html">엑셀 VBA</a>
+            <a href="vba.html">Excel VBA</a>
+        </div>
+    </div>
+    <div class="content">
+    <script>
+       var clickCount = 0;
+    document.addEventListener('click', function(e){
+    var numCircles = 1;
+    for (var i = 0; i < numCircles; i++) {
+    var circle = document.createElement('div');
+    circle.setAttribute('class', 'circle');
+    document.body.appendChild(circle);
+        var size = (Math.random() * 1.5 + 1) * 100 + 'px';
+        circle.style.width = size;
+        circle.style.height = size;
+    
+        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+        circle.style.borderColor = color;
+        circle.style.borderWidth = '1px';
+    
+        circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';
+        circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';
+    
+        var moveX = Math.floor(Math.random() *5 )-2;
+        var moveY = Math.floor(Math.random() *5 )-2;
+    
+        var intervalID = setInterval(function(){
+            var left = parseInt(circle.style.left);
+            var top = parseInt(circle.style.top);
+            if (isNaN(left) || isNaN(top)) {
+                clearInterval(intervalID);
+            } else {
+                circle.style.left = (left + moveX) + 'px';
+                circle.style.top = (top + moveY) + 'px';
+            }
+        }, 1);
+    
+        setTimeout(function(){
+            clearInterval(intervalID);
+            circle.parentNode.removeChild(circle);
+        }, 3000);
     }
-
-    function handleScroll() {
-      if (isLoading) return;
-
-      const scrollPosition = window.innerHeight + window.pageYOffset;
-      const pageHeight = document.documentElement.scrollHeight;
-
-      if (scrollPosition >= pageHeight - 100) {
-        isLoading = true;
-        const loadingElement = document.querySelector(".loading");
-        loadingElement.style.display = "block";
-
-        setTimeout(() => {
-          loadUpdates();
-          loadingElement.style.display = "none";
-        }, 1000);
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll);
-    loadUpdates();
-  </script>
-</body>
-</html>
+    });
+    </script>
+    <footer class="footer"><p>Copyright © 2023~2024 </p></footer>
+    <script>
+    document.addEventListener('click', function(e){
+        var img = document.querySelector('img');
+        img.style.display = 'block';
+    });
+    </script>
+    <script>
+    document.addEventListener('click', function(e){
+        var img1 = document.querySelector('img');
+        var img2 = document.querySelectorAll('img')[1];
+        var rect = img1.getBoundingClientRect();
+        var dx = e.clientX - (rect.left + rect.width / 2);
+        var dy = e.clientY - (rect.top + rect.height / 2);
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 100) {
+            img1.style.display = 'none';
+            img2.style.display = 'block';
+        }
+    });
+    </script>
+    </div>
+    </html>
+    <style>
+        .notice-box {
+          position: fixed !important;
+          bottom: 20px !important;
+          right: 20px !important;
+          width: 500px;
+          background-color: rgba(241, 241, 241, 0);
+          border: 1px solid rgba(204, 204, 204, 0);
+          padding: 30px;
+          display: none;
+          font-size: 40px;
+          overflow-y: auto;
+          max-height: calc(100vh - 40px);
+        }
+        
+        .notice-box p {
+          background-color: rgba(241, 241, 241, 0);
+          border: 1px solid rgba(204, 204, 204, 0);
+          margin: 0 0 30px;
+        }
+        
+        .notice-box button {
+          font-size: 48px;
+        }
+      </style>
+      <div class="notice-box">
+        <p><strong></strong></p>
+        <p></p>
+      </div>
+      <script>
+        window.onload = function() {
+          var images = [];
+          
+          // Add F001.jpeg to F013.jpeg
+          for (var i = 1; i <= 13; i++) {
+            var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
+            images.push('image/index/flower/' + imageName);
+          }
+          
+          // Add J001.jpg to J008.jpg
+          for (var j = 1; j <= 8; j++) {
+            var imageName = 'J' + ('00' + j).slice(-3) + '.jpg';
+            images.push('image/index/flower/' + imageName);
+          }
+          
+          var img = document.getElementById('randomImage');
+          var randomIndex = Math.floor(Math.random() * images.length);
+          img.src = images[randomIndex];
+          document.querySelector('.notice-box').style.display = 'block';
+        };
+        </script>
+    </body>
+    </html></document_content>
+    </document>
