@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRED 경제 지표 대시보드 - Ultimate 2025</title>
+    <title>FRED 확장 경제 지표 대시보드</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,31 +24,6 @@
             color: #666;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             z-index: 1000;
-        }
-        .home-btn {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .home-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
-            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
         }
         .container { 
             max-width: 1400px; 
@@ -281,11 +256,6 @@
         .category.sentiment h2 { border-bottom-color: #f39c12; }
         .category.demographics h2 { border-bottom-color: #9b59b6; }
         .category.lending h2 { border-bottom-color: #16a085; }
-        .category.production h2 { border-bottom-color: #8e44ad; }
-        .category.wealth h2 { border-bottom-color: #d35400; }
-        .category.energy h2 { border-bottom-color: #d68910; }
-        .category.precious-metals h2 { border-bottom-color: #884ea0; }
-        .category.industrial-metals h2 { border-bottom-color: #af7ac5; }
         
         @media (max-width: 768px) { 
             .container { padding: 20px; margin: 10px; } 
@@ -298,19 +268,14 @@
     </style>
 </head>
 <body>
-    <!-- 홈페이지 버튼 -->
-    <a href="https://stberry.us/" class="home-btn" target="_blank">
-        🏠 Home
-    </a>
-    
     <!-- 버전 정보 -->
     <div class="version-info">
-        FRED Ultimate v3.0 | 2025-08-27 01:00
+        FRED Extended v2.0 | 2025-08-26 18:00
     </div>
 
     <div class="container">
-        <h1>🏛️ FRED 경제 지표 대시보드</h1>
-        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 | 종합 경제지표 53개</div>
+        <h1>🏛️ FRED 확장 경제 지표 대시보드</h1>
+        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 | U.S. Federal Reserve Economic Data</div>
         <div class="last-updated" id="lastUpdated">
             마지막 업데이트: <span id="currentTime"></span>
         </div>
@@ -416,7 +381,7 @@
                 </div>
             </div>
 
-            <!-- 금융 조건 지표 -->
+            <!-- 금융 조건 지표 (NEW) -->
             <div class="category financial-conditions">
                 <h2>🏦 금융 조건 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('NFCI', '시카고 연은 금융상황지수')">
@@ -439,7 +404,7 @@
                 </div>
             </div>
 
-            <!-- 대출 기준 -->
+            <!-- 대출 기준 (NEW) -->
             <div class="category lending">
                 <h2>🏛️ 신용 & 대출 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('DRTSCILM', '은행 대출 기준 (중대기업)')">
@@ -453,7 +418,7 @@
                 </div>
             </div>
 
-            <!-- 소비자 심리 -->
+            <!-- 소비자 심리 (NEW) -->
             <div class="category sentiment">
                 <h2>🧠 소비자 심리 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('UMCSENT', '미시간대 소비자심리지수')">
@@ -469,7 +434,7 @@
 
             <!-- GDP & 성장 -->
             <div class="category">
-                <h2>📊 GDP & 경제성장 <span class="fred-logo">FRED</span></h2>
+                <h2>📊 GDP & 성장 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('GDP', '실질 GDP')">
                     <div>
                         <div class="indicator-name">실질 GDP
@@ -478,15 +443,6 @@
                         <div class="indicator-date" id="GDP-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="GDP">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('A939RX0Q048SBEA', '1인당 실질 GDP')">
-                    <div>
-                        <div class="indicator-name">1인당 실질 GDP
-                            <div class="indicator-name-eng">Real GDP Per Capita</div>
-                        </div>
-                        <div class="indicator-date" id="A939RX0Q048SBEA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="A939RX0Q048SBEA">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('GDPPOT', '잠재 GDP')">
                     <div>
@@ -497,28 +453,14 @@
                     </div>
                     <div class="indicator-value loading" id="GDPPOT">로딩중...</div>
                 </div>
-            </div>
-
-            <!-- 산업생산 지표 -->
-            <div class="category production">
-                <h2>🏭 산업생산 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('INDPRO', '산업생산지수 (전체)')">
+                <div class="indicator" onclick="showDetails('INDPRO', '산업생산지수')">
                     <div>
-                        <div class="indicator-name">산업생산지수 (전체)
+                        <div class="indicator-name">산업생산지수
                             <div class="indicator-name-eng">Industrial Production Index</div>
                         </div>
                         <div class="indicator-date" id="INDPRO-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="INDPRO">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('IPMAN', '제조업 생산지수')">
-                    <div>
-                        <div class="indicator-name">제조업 생산지수
-                            <div class="indicator-name-eng">Industrial Production: Manufacturing</div>
-                        </div>
-                        <div class="indicator-date" id="IPMAN-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="IPMAN">로딩중...</div>
                 </div>
             </div>
 
@@ -533,24 +475,6 @@
                         <div class="indicator-date" id="HOUST-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="HOUST">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('HSN1F', '신규주택 판매')">
-                    <div>
-                        <div class="indicator-name">신규주택 판매
-                            <div class="indicator-name-eng">New One Family Houses Sold</div>
-                        </div>
-                        <div class="indicator-date" id="HSN1F-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="HSN1F">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('EXHOSLUSM495S', '기존주택 판매')">
-                    <div>
-                        <div class="indicator-name">기존주택 판매
-                            <div class="indicator-name-eng">Existing Home Sales</div>
-                        </div>
-                        <div class="indicator-date" id="EXHOSLUSM495S-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="EXHOSLUSM495S">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('CSUSHPISA', '케이스-쉴러 주택가격지수')">
                     <div>
@@ -604,258 +528,7 @@
                 </div>
             </div>
 
-            <!-- 달러 지수 (NEW) -->
-            <div class="category">
-                <h2>💵 달러 지수 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('DTWEXBGS', '달러지수 (범위)')">
-                    <div>
-                        <div class="indicator-name">달러지수 (범위)
-                            <div class="indicator-name-eng">Nominal Broad U.S. Dollar Index (2006=100)</div>
-                        </div>
-                        <div class="indicator-date" id="DTWEXBGS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DTWEXBGS">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DTWEXAFEGS', '달러지수 (선진국)')">
-                    <div>
-                        <div class="indicator-name">달러지수 (선진국)
-                            <div class="indicator-name-eng">Dollar Index: Advanced Foreign Economies (2006=100)</div>
-                        </div>
-                        <div class="indicator-date" id="DTWEXAFEGS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DTWEXAFEGS">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DTWEXEMEGS', '달러지수 (신흥국)')">
-                    <div>
-                        <div class="indicator-name">달러지수 (신흥국)
-                            <div class="indicator-name-eng">Dollar Index: Emerging Market Economies (2006=100)</div>
-                        </div>
-                        <div class="indicator-date" id="DTWEXEMEGS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DTWEXEMEGS">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 에너지 & 원유 (NEW) -->
-            <div class="category">
-                <h2>⚡ 에너지 & 원유 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('DCOILWTICO', 'WTI 원유')">
-                    <div>
-                        <div class="indicator-name">WTI 원유
-                            <div class="indicator-name-eng">WTI Crude Oil Price (Cushing, Oklahoma)</div>
-                        </div>
-                        <div class="indicator-date" id="DCOILWTICO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DCOILWTICO">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DCOILBRENTEU', '브렌트 원유')">
-                    <div>
-                        <div class="indicator-name">브렌트 원유
-                            <div class="indicator-name-eng">Brent Crude Oil Price (Europe)</div>
-                        </div>
-                        <div class="indicator-date" id="DCOILBRENTEU-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DCOILBRENTEU">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DHHNGSP', '천연가스')">
-                    <div>
-                        <div class="indicator-name">천연가스
-                            <div class="indicator-name-eng">Henry Hub Natural Gas Spot Price</div>
-                        </div>
-                        <div class="indicator-date" id="DHHNGSP-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DHHNGSP">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 주거비 상세 (NEW) -->
-            <div class="category">
-                <h2>🏘️ 주거비 상세 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHA', '실제 월세')">
-                    <div>
-                        <div class="indicator-name">실제 월세
-                            <div class="indicator-name-eng">CPI: Rent of Primary Residence</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHA">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHC', '집주인 환산 임대료')">
-                    <div>
-                        <div class="indicator-name">집주인 환산 임대료
-                            <div class="indicator-name-eng">CPI: Owners Equivalent Rent</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHC-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHC">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SAH1', '전체 주거비')">
-                    <div>
-                        <div class="indicator-name">전체 주거비
-                            <div class="indicator-name-eng">CPI: Shelter</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SAH1-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SAH1">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 유틸리티 비용 (NEW) -->
-            <div class="category">
-                <h2>⚡ 유틸리티 비용 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHF01', '전기비 CPI')">
-                    <div>
-                        <div class="indicator-name">전기비 CPI
-                            <div class="indicator-name-eng">CPI: Electricity</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHF01-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHF01">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('APU000072610', '전기단가')">
-                    <div>
-                        <div class="indicator-name">전기단가
-                            <div class="indicator-name-eng">Average Price: Electricity per KWH</div>
-                        </div>
-                        <div class="indicator-date" id="APU000072610-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="APU000072610">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHF02', '천연가스비 CPI')">
-                    <div>
-                        <div class="indicator-name">천연가스비 CPI
-                            <div class="indicator-name-eng">CPI: Utility (piped) gas service</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHF02-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHF02">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHG', '수도·쓰래기 CPI')">
-                    <div>
-                        <div class="indicator-name">수도·쓰래기 CPI
-                            <div class="indicator-name-eng">CPI: Water, sewer, trash collection services</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHG-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHG">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHF', '가정용 에너지')">
-                    <div>
-                        <div class="indicator-name">가정용 에너지
-                            <div class="indicator-name-eng">CPI: Household energy</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEHF-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEHF">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 시장 공포 & 경기과열 지표 (NEW) -->
-            <div class="category">
-                <h2>🚨 시장 공포 & 경기과열 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('VIXCLS', '공포지수 (VIX)')">
-                    <div>
-                        <div class="indicator-name">공포지수 (VIX)
-                            <div class="indicator-name-eng">CBOE Volatility Index: VIX</div>
-                        </div>
-                        <div class="indicator-date" id="VIXCLS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="VIXCLS">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('T10Y2Y', '장단기 금리 스프레드')">
-                    <div>
-                        <div class="indicator-name">장단기 금리 스프레드
-                            <div class="indicator-name-eng">10-Year Treasury minus 2-Year Treasury Yield</div>
-                        </div>
-                        <div class="indicator-date" id="T10Y2Y-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="T10Y2Y">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('TEDRATE', 'TED 스프레드')">
-                    <div>
-                        <div class="indicator-name">TED 스프레드
-                            <div class="indicator-name-eng">TED Spread</div>
-                        </div>
-                        <div class="indicator-date" id="TEDRATE-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="TEDRATE">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('BAMLH0A0HYM2', '하이일드 스프레드')">
-                    <div>
-                        <div class="indicator-name">하이일드 스프레드
-                            <div class="indicator-name-eng">ICE BofA US High Yield Spread</div>
-                        </div>
-                        <div class="indicator-date" id="BAMLH0A0HYM2-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="BAMLH0A0HYM2">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('STLFSI2', '금융스트레스지수')">
-                    <div>
-                        <div class="indicator-name">금융스트레스지수
-                            <div class="indicator-name-eng">St. Louis Fed Financial Stress Index</div>
-                        </div>
-                        <div class="indicator-date" id="STLFSI2-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="STLFSI2">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('TCU', '설비가동률')">
-                    <div>
-                        <div class="indicator-name">설비가동률
-                            <div class="indicator-name-eng">Capacity Utilization: Total Index</div>
-                        </div>
-                        <div class="indicator-date" id="TCU-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="TCU">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('SAHMREALTIME', 'Sahm 규칙 (실시간)')">
-                    <div>
-                        <div class="indicator-name">Sahm 규칙 (실시간)
-                            <div class="indicator-name-eng">Real-time Sahm Rule Recession Indicator</div>
-                        </div>
-                        <div class="indicator-date" id="SAHMREALTIME-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="SAHMREALTIME">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 상품 (귀금속 & 산업금속) (NEW) -->
-            <div class="category">
-                <h2>🥇 상품 (금속) <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('PCU2122221222', '금은 생산자물가지수')">
-                    <div>
-                        <div class="indicator-name">금은 생산자물가지수
-                            <div class="indicator-name-eng">Producer Price Index: Gold Ore and Silver Ore Mining</div>
-                        </div>
-                        <div class="indicator-date" id="PCU2122221222-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCU2122221222">로딩중...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PCOPPUSDM', '구리 가격')">
-                    <div>
-                        <div class="indicator-name">구리 가격
-                            <div class="indicator-name-eng">Global Copper Price</div>
-                        </div>
-                        <div class="indicator-date" id="PCOPPUSDM-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCOPPUSDM">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 가계 자산 (NEW) -->
-            <div class="category wealth">
-                <h2>💰 가계 자산 <span class="fred-logo">FRED</span></h2>
-                <div class="indicator" onclick="showDetails('TNWBSHNO', '가계 순자산')">
-                    <div>
-                        <div class="indicator-name">가계 순자산
-                            <div class="indicator-name-eng">Households Net Worth</div>
-                        </div>
-                        <div class="indicator-date" id="TNWBSHNO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="TNWBSHNO">로딩중...</div>
-                </div>
-            </div>
-
-            <!-- 인구학적 지표 -->
+            <!-- 인구학적 지표 (NEW) -->
             <div class="category demographics">
                 <h2>👥 인구 지표 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('LFWA64TTUSM647S', '노동가능인구 (15-64세)')">
@@ -871,7 +544,7 @@
         </div>
 
         <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredData()">
-            🔄 FRED 데이터 새로고침 (53개 지표)
+            🔄 FRED 데이터 새로고침 (25개 지표)
         </button>
     </div>
 
@@ -901,10 +574,10 @@
     </div>
 
     <script>
-        // FRED API 설정 (보안상 숨겨진 키)
-        const FRED_API_KEY = atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
+        // FRED API 설정
+        const FRED_API_KEY = '39dae7267bc84ca5d2c22fc434172933';
         
-        // 가져올 FRED 시리즈 목록 (최종 정리된 버전)
+        // 가져올 FRED 시리즈 목록 (확장판)
         const FRED_SERIES = {
             // 인플레이션 & 물가
             'CPIAUCSL': { name: '소비자물가지수 (CPI)', nameEng: 'Consumer Price Index', unit: 'Index' },
@@ -921,29 +594,23 @@
             'DGS10': { name: '10년 국채 수익률', nameEng: '10-Year Treasury Yield', unit: '%' },
             'DGS2': { name: '2년 국채 수익률', nameEng: '2-Year Treasury Yield', unit: '%' },
             
-            // 금융 조건
+            // 금융 조건 (NEW)
             'NFCI': { name: '시카고 연은 금융상황지수', nameEng: 'Chicago Fed National Financial Conditions Index', unit: 'Index' },
             'BAMLH0A0HYM2EY': { name: '하이일드 회사채 수익률', nameEng: 'ICE BofA US High Yield Index Effective Yield', unit: '%' },
             
-            // 신용 & 대출
+            // 신용 & 대출 (NEW)
             'DRTSCILM': { name: '은행 대출 기준', nameEng: 'Net % Banks Tightening C&I Loans to Large & Mid Firms', unit: 'Net Percent' },
             
-            // 소비자 심리
+            // 소비자 심리 (NEW)
             'UMCSENT': { name: '미시간대 소비자심리지수', nameEng: 'University of Michigan Consumer Sentiment', unit: 'Index' },
             
-            // GDP & 성장 (확장)
+            // GDP & 성장
             'GDP': { name: '실질 GDP', nameEng: 'Real Gross Domestic Product', unit: 'Billions of 2017 Dollars' },
-            'A939RX0Q048SBEA': { name: '1인당 실질 GDP', nameEng: 'Real GDP Per Capita', unit: 'Chained 2017 Dollars' },
             'GDPPOT': { name: '잠재 GDP', nameEng: 'Real Potential GDP', unit: 'Billions of 2017 Dollars' },
-            
-            // 산업생산 (확장)
             'INDPRO': { name: '산업생산지수', nameEng: 'Industrial Production Index', unit: 'Index' },
-            'IPMAN': { name: '제조업 생산지수', nameEng: 'Industrial Production: Manufacturing', unit: 'Index' },
             
-            // 주택 (확장)
+            // 주택
             'HOUST': { name: '주택 착공 건수', nameEng: 'Housing Starts', unit: 'Thousands' },
-            'HSN1F': { name: '신규주택 판매', nameEng: 'New One Family Houses Sold', unit: 'Thousands' },
-            'EXHOSLUSM495S': { name: '기존주택 판매', nameEng: 'Existing Home Sales', unit: 'Thousands' },
             'CSUSHPISA': { name: '케이스-쉴러 지수', nameEng: 'Case-Shiller Home Price Index', unit: 'Index' },
             'MORTGAGE30US': { name: '30년 모기지 금리', nameEng: '30-Year Fixed Rate Mortgage', unit: '%' },
             
@@ -952,52 +619,10 @@
             'TOTALSA': { name: '소비자 신용 잔액', nameEng: 'Consumer Credit Outstanding', unit: 'Billions of Dollars' },
             'DEXUSEU': { name: 'USD/EUR 환율', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
             
-            // 달러 지수 (2006 기준) - NEW
-            'DTWEXBGS': { name: '달러지수 (범위)', nameEng: 'Nominal Broad U.S. Dollar Index', unit: 'Index 2006=100' },
-            'DTWEXAFEGS': { name: '달러지수 (선진국)', nameEng: 'Nominal Advanced Foreign Economies Dollar Index', unit: 'Index 2006=100' },
-            'DTWEXEMEGS': { name: '달러지수 (신흥국)', nameEng: 'Nominal Emerging Market Economies Dollar Index', unit: 'Index 2006=100' },
-            
-            // 원유 종류별 - NEW
-            'DCOILWTICO': { name: 'WTI 원유', nameEng: 'WTI Crude Oil Price (Cushing, Oklahoma)', unit: 'Dollars per Barrel' },
-            'DCOILBRENTEU': { name: '브렌트 원유', nameEng: 'Brent Crude Oil Price (Europe)', unit: 'Dollars per Barrel' },
-            'DHHNGSP': { name: '천연가스', nameEng: 'Henry Hub Natural Gas Spot Price', unit: 'Dollars per Million Btu' },
-            
-            // 주거비 상세 지표 - NEW
-            'CUSR0000SEHA': { name: '실제 월세', nameEng: 'CPI: Rent of Primary Residence', unit: 'Index' },
-            'CUSR0000SEHC': { name: '집주인 환산 임대료', nameEng: 'CPI: Owners Equivalent Rent', unit: 'Index' },
-            'CUSR0000SAH1': { name: '전체 주거비', nameEng: 'CPI: Shelter', unit: 'Index' },
-            
-            // 유틸리티 비용 - NEW  
-            'CUSR0000SEHF01': { name: '전기비 CPI', nameEng: 'CPI: Electricity', unit: 'Index' },
-            'APU000072610': { name: '전기단가', nameEng: 'Average Price: Electricity per KWH', unit: 'Cents per Kilowatt-hour' },
-            'CUSR0000SEHF02': { name: '천연가스비 CPI', nameEng: 'CPI: Utility (piped) gas service', unit: 'Index' },
-            'CUSR0000SEHG': { name: '수도·쓰레기 CPI', nameEng: 'CPI: Water and sewer and trash collection services', unit: 'Index' },
-            'CUSR0000SEHF': { name: '가정용 에너지', nameEng: 'CPI: Household energy', unit: 'Index' },
-            
-            // 시장 공포 & 경기과열 지표 - NEW
-            'VIXCLS': { name: '공포지수 (VIX)', nameEng: 'CBOE Volatility Index: VIX', unit: 'Index' },
-            'T10Y2Y': { name: '장단기 금리 스프레드', nameEng: '10-Year Treasury minus 2-Year Treasury Yield', unit: 'Percent' },
-            'TEDRATE': { name: 'TED 스프레드', nameEng: 'TED Spread', unit: 'Percent' },
-            'BAMLH0A0HYM2': { name: '하이일드 스프레드', nameEng: 'ICE BofA US High Yield Index Option-Adjusted Spread', unit: 'Percent' },
-            'STLFSI2': { name: '금융스트레스지수', nameEng: 'St. Louis Fed Financial Stress Index', unit: 'Index' },
-            'TCU': { name: '설비가동률', nameEng: 'Capacity Utilization: Total Index', unit: 'Percent' },
-            'SAHMREALTIME': { name: 'Sahm 규칙 (실시간)', nameEng: 'Real-time Sahm Rule Recession Indicator', unit: 'Percent' },
-            
-            // 상품 (귀금속 & 산업금속) - NEW (대체 시리즈 사용)
-            'PCU2122221222': { name: '금은 생산자물가지수', nameEng: 'Producer Price Index: Gold Ore and Silver Ore Mining', unit: 'Index' },
-            'PCOPPUSDM': { name: '구리 가격', nameEng: 'Global Copper Price', unit: 'U.S. Dollars per Metric Ton' },
-            
-            // 가계 자산 (NEW)
-            'TNWBSHNO': { name: '가계 순자산', nameEng: 'Households Net Worth', unit: 'Billions of Dollars' },
-            
-            // 인구학적 지표
+            // 인구학적 지표 (NEW)
             'LFWA64TTUSM647S': { name: '노동가능인구', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Thousands of Persons' }
         };
 
-        // 자동 재시도 설정
-        let isLoading = false;
-        let retryCount = 0;
-        const MAX_RETRIES = 2;
         let loadResults = { success: 0, failed: 0, errors: [] };
         let currentSeriesId = '';
         let chartInstance = null;
@@ -1013,42 +638,21 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // FRED 데이터 가져오기 (개선된 버전)
-        async function fetchFredDataViaProxy(seriesId, isHistorical = false, limit = 1, startDate = null, endDate = null) {
-            let fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
-            
-            // 상세 타임라인 차트에 대해 날짜 범위 지정
-            if (isHistorical && startDate && endDate) {
-                fredUrl += `&observation_start=${startDate}&observation_end=${endDate}`;
-            }
+        // FRED 데이터 가져오기
+        async function fetchFredDataViaProxy(seriesId, isHistorical = false, limit = 1) {
+            const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
             
             const proxies = [
                 `https://api.allorigins.win/get?url=${encodeURIComponent(fredUrl)}`,
                 `https://cors.sh/${fredUrl}`,
-                `https://everyorigin.jwvbremen.nl/get?url=${encodeURIComponent(fredUrl)}`,
-                // 추가 프록시 서비스로 안정성 향상
-                `https://proxy.cors.sh/${fredUrl}`,
-                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(fredUrl)}`
+                `https://everyorigin.jwvbremen.nl/get?url=${encodeURIComponent(fredUrl)}`
             ];
 
             for (const proxyUrl of proxies) {
                 try {
-                    const proxyName = proxyUrl.includes('allorigins') ? 'AllOrigins' : 
-                                     proxyUrl.includes('proxy.cors.sh') ? 'Proxy-CORS' :
-                                     proxyUrl.includes('cors.sh') ? 'CORS.sh' : 
-                                     proxyUrl.includes('codetabs') ? 'CodeTabs' : 'EveryOrigin';
-                    console.log(`${seriesId}: ${proxyName} 프록시 시도...`);
+                    console.log(`${seriesId}: ${proxyUrl.includes('allorigins') ? 'AllOrigins' : proxyUrl.includes('cors.sh') ? 'CORS.sh' : 'EveryOrigin'} 프록시 시도...`);
                     
-                    const response = await fetch(proxyUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache',
-                            'User-Agent': 'FRED-Dashboard/1.0'
-                        },
-                        timeout: 15000  // 15초 타임아웃 연장
-                    });
-                    
+                    const response = await fetch(proxyUrl);
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}`);
                     }
@@ -1056,13 +660,9 @@
                     const data = await response.json();
                     let fredData;
                     
-                    // 다양한 프록시 응답 형태 처리
+                    // AllOrigins & EveryOrigin 응답 형태
                     if (data.contents) {
-                        // AllOrigins & EveryOrigin 응답 형태
                         fredData = JSON.parse(data.contents);
-                    } else if (data.data) {
-                        // CodeTabs 응답 형태
-                        fredData = JSON.parse(data.data);
                     } else {
                         // CORS.sh 직접 응답 형태
                         fredData = data;
@@ -1088,9 +688,7 @@
                     throw new Error('유효한 데이터 없음');
                     
                 } catch (error) {
-                    console.warn(`❌ ${seriesId} ${proxyName} 실패:`, error.message);
-                    // 다음 프록시를 시도하기 전 짧은 지연
-                    await new Promise(resolve => setTimeout(resolve, 100));
+                    console.warn(`❌ ${seriesId} 프록시 실패:`, error.message);
                     continue;
                 }
             }
@@ -1111,82 +709,12 @@
                 // 특별 처리: 금융상황지수 (NFCI)
                 if (seriesId === 'NFCI') {
                     displayValue = `${data.value.toFixed(2)}`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive';
+                    colorClass = data.value > 0 ? 'negative' : 'positive'; // 양수 = 긴축, 음수 = 완화
                 }
                 // 특별 처리: 대출 기준 (DRTSCILM)
                 else if (seriesId === 'DRTSCILM') {
                     displayValue = `${data.value.toFixed(1)}%`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive';
-                }
-                // 특별 처리: 1인당 GDP
-                else if (seriesId === 'A939RX0Q048SBEA') {
-                    displayValue = `$${(data.value / 1000).toFixed(1)}K`;
-                    colorClass = 'positive';
-                }
-                // 특별 처리: 가계 순자산
-                else if (seriesId === 'TNWBSHNO') {
-                    displayValue = `$${(data.value / 1000000).toFixed(1)}T`;
-                    colorClass = 'positive';
-                }
-                // 특별 처리: 달러 지수 (2006=100 기준)
-                else if (seriesId === 'DTWEXBGS' || seriesId === 'DTWEXAFEGS' || seriesId === 'DTWEXEMEGS') {
-                    displayValue = `${data.value.toFixed(1)}`;
-                    colorClass = data.value > 100 ? 'positive' : 'negative'; // 100 이상이면 달러 강세
-                }
-                // 특별 처리: 원유 가격
-                else if (seriesId === 'DCOILWTICO' || seriesId === 'DCOILBRENTEU') {
-                    displayValue = `$${data.value.toFixed(2)}`;
-                    colorClass = 'neutral';
-                }
-                // 특별 처리: 천연가스
-                else if (seriesId === 'DHHNGSP') {
-                    displayValue = `$${data.value.toFixed(2)}`;
-                    colorClass = 'neutral';
-                }
-                // 특별 처리: 전기 단가 (cents/kWh)
-                else if (seriesId === 'APU000072610') {
-                    displayValue = `${data.value.toFixed(2)}¢`;
-                    colorClass = 'neutral';
-                }
-                // 특별 처리: VIX 공포지수
-                else if (seriesId === 'VIXCLS') {
-                    displayValue = `${data.value.toFixed(1)}`;
-                    colorClass = data.value > 30 ? 'negative' : data.value > 20 ? 'warning' : 'positive';
-                }
-                // 특별 처리: 장단기 금리 스프레드
-                else if (seriesId === 'T10Y2Y') {
-                    displayValue = `${data.value.toFixed(2)}%`;
-                    colorClass = data.value < 0 ? 'negative' : data.value < 1 ? 'warning' : 'positive';
-                }
-                // 특별 처리: TED 스프레드
-                else if (seriesId === 'TEDRATE') {
-                    displayValue = `${data.value.toFixed(2)}%`;
-                    colorClass = data.value > 1 ? 'negative' : data.value > 0.5 ? 'warning' : 'positive';
-                }
-                // 특별 처리: 하이일드 스프레드
-                else if (seriesId === 'BAMLH0A0HYM2') {
-                    displayValue = `${data.value.toFixed(2)}%`;
-                    colorClass = data.value > 10 ? 'negative' : data.value > 5 ? 'warning' : 'positive';
-                }
-                // 특별 처리: 금융스트레스지수
-                else if (seriesId === 'STLFSI2') {
-                    displayValue = `${data.value.toFixed(2)}`;
-                    colorClass = data.value > 1 ? 'negative' : data.value > 0 ? 'warning' : 'positive';
-                }
-                // 특별 처리: 설비가동률
-                else if (seriesId === 'TCU') {
-                    displayValue = `${data.value.toFixed(1)}%`;
-                    colorClass = data.value > 85 ? 'warning' : data.value > 75 ? 'positive' : 'negative';
-                }
-                // 특별 처리: Sahm 규칙
-                else if (seriesId === 'SAHMREALTIME') {
-                    displayValue = `${data.value.toFixed(2)}%`;
-                    colorClass = data.value >= 0.5 ? 'negative' : data.value > 0.3 ? 'warning' : 'positive';
-                }
-                // 특별 처리: 구리 - 메트릭톤당
-                else if (seriesId === 'PCOPPUSDM') {
-                    displayValue = `$${data.value.toLocaleString()}`;
-                    colorClass = 'neutral';
+                    colorClass = data.value > 0 ? 'negative' : 'positive'; // 양수 = 긴축, 음수 = 완화
                 }
                 // 값에 따른 포맷팅
                 else if (seriesInfo.unit === '%') {
@@ -1196,10 +724,7 @@
                     displayValue = `${(data.value / 1000).toFixed(1)}T`;
                     colorClass = 'positive';
                 } else if (seriesInfo.unit.includes('Thousands')) {
-                    // 특별 처리: 노동가능인구는 이미 천 단위
-                    if (seriesId === 'LFWA64TTUSM647S') {
-                        displayValue = `${(data.value / 1000).toFixed(1)}M명`;
-                    } else if (data.value > 1000000) {
+                    if (data.value > 1000000) {
                         displayValue = `${(data.value / 1000).toFixed(0)}M`;
                     } else {
                         displayValue = `${data.value.toLocaleString()}K`;
@@ -1237,22 +762,16 @@
             }
         }
 
-        // 모든 FRED 데이터 로딩 (개선된 버전)
-        async function loadAllFredData(isRetry = false) {
-            if (isLoading && !isRetry) {
-                console.log('이미 로딩 중입니다...');
-                return;
-            }
-            
-            isLoading = true;
+        // 모든 FRED 데이터 로딩
+        async function loadAllFredData() {
             const refreshBtn = document.getElementById('refreshBtn');
             const statusInfo = document.getElementById('statusInfo');
             
             refreshBtn.disabled = true;
-            refreshBtn.innerHTML = '<span class="spinner"></span>달러지수 및 원자재 FRED 데이터 로딩 중...';
+            refreshBtn.innerHTML = '<span class="spinner"></span>FRED 확장 데이터 로딩 중...';
             
             loadResults = { success: 0, failed: 0, errors: [] };
-            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">53개 지표 로딩 중...</span>';
+            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">25개 지표 로딩 중...</span>';
 
             // 모든 지표를 병렬로 로딩
             const promises = Object.keys(FRED_SERIES).map(async (seriesId) => {
@@ -1268,15 +787,15 @@
                 }
             });
 
-            // 모든 요청 완료 대기 (개선된 에러 처리)
-            await Promise.allSettled(promises);
+            // 모든 요청 완료 대기
+            await Promise.all(promises);
             
             // 결과 표시
             const total = loadResults.success + loadResults.failed;
             const successRate = ((loadResults.success / total) * 100).toFixed(1);
             
             statusInfo.innerHTML = `
-                📊 FRED API 로딩 완료 (53개 지표): 
+                📊 FRED API 로딩 완료 (25개 지표): 
                 <span class="success-count">성공 ${loadResults.success}개</span> / 
                 <span class="error-count">실패 ${loadResults.failed}개</span> 
                 (성공률: ${successRate}%)
@@ -1288,37 +807,12 @@
                 console.groupEnd();
             }
             
-            // 실패율이 높으면 자동 재시도
-            const successRateNum = ((loadResults.success / (loadResults.success + loadResults.failed)) * 100);
-            
-            if (successRateNum < 80 && retryCount < MAX_RETRIES && !isRetry) {
-                retryCount++;
-                console.log(`성공률 ${successRateNum.toFixed(1)}% 낮음. 자동 재시도 ${retryCount}/${MAX_RETRIES}...`);
-                
-                refreshBtn.innerHTML = `🔄 재시도 중... (${retryCount}/${MAX_RETRIES})`;
-                
-                // 3초 후 재시도
-                setTimeout(() => {
-                    loadAllFredData(true);
-                }, 3000);
-                
-                return;
-            }
-            
-            // 로딩 완료
-            isLoading = false;
-            retryCount = 0;
             refreshBtn.disabled = false;
-            refreshBtn.innerHTML = '🔄 FRED 데이터 새로고침 (53개 지표)';
+            refreshBtn.innerHTML = '🔄 FRED 데이터 새로고침 (25개 지표)';
             updateClock();
-            
-            // 성공률이 낮으면 사용자에게 알림
-            if (successRateNum < 90) {
-                statusInfo.innerHTML += '<br><small>🔄 성공률이 낮습니다. 잠시 후 다시 시도해주세요.</small>';
-            }
         }
 
-        // 차트 업데이트 (날짜 범위 기반)
+        // 차트 업데이트
         async function updateChart(period) {
             if (!currentSeriesId) return;
             
@@ -1327,46 +821,21 @@
             event.target.classList.add('active');
             
             try {
-                // 기간에 따른 실제 날짜 범위 설정 (limit이 아닌 날짜 범위)
-                const today = new Date();
-                let startDate;
-                
+                // 기간에 따른 limit 설정
+                let limit;
                 switch(period) {
-                    case '1M': 
-                        startDate = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-                        break;
-                    case '3M': 
-                        startDate = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
-                        break;
-                    case '6M': 
-                        startDate = new Date(today.getFullYear(), today.getMonth() - 6, today.getDate());
-                        break;
-                    case '1Y': 
-                        startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-                        break;
-                    case '3Y': 
-                        startDate = new Date(today.getFullYear() - 3, today.getMonth(), today.getDate());
-                        break;
-                    case '5Y': 
-                        startDate = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate());
-                        break;
-                    case '10Y': 
-                        startDate = new Date(today.getFullYear() - 10, today.getMonth(), today.getDate());
-                        break;
-                    case 'MAX': 
-                        startDate = new Date('1900-01-01'); // 최대한 멀로 가져오기
-                        break;
-                    default: 
-                        startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+                    case '1M': limit = 30; break;
+                    case '3M': limit = 90; break;
+                    case '6M': limit = 180; break;
+                    case '1Y': limit = 365; break;
+                    case '3Y': limit = 1095; break;
+                    case '5Y': limit = 1825; break;
+                    case '10Y': limit = 3650; break;
+                    case 'MAX': limit = 100000; break;
+                    default: limit = 365;
                 }
                 
-                const startDateStr = startDate.toISOString().split('T')[0];
-                const endDateStr = today.toISOString().split('T')[0];
-                
-                // 큰 limit을 설정하여 전체 기간 데이터를 가져오고 자바스크립트에서 필터링
-                const limit = 10000;
-                
-                const historicalData = await fetchFredDataViaProxy(currentSeriesId, true, limit, period !== 'MAX' ? startDateStr : null, period !== 'MAX' ? endDateStr : null);
+                const historicalData = await fetchFredDataViaProxy(currentSeriesId, true, limit);
                 
                 if (historicalData && historicalData.length > 0) {
                     const labels = historicalData.reverse().map(item => item.date);
@@ -1434,41 +903,20 @@
             const seriesInfo = FRED_SERIES[seriesId];
             let specialInfo = '';
             
-            // 데이터 해석 가이드 및 특별 지표들에 대한 상세 설명
+            // 특별 지표들에 대한 추가 설명
             if (seriesId === 'NFCI') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 양수 = 금융환경 긴축, 음수 = 금융환경 완화
-                <br><strong>시계열 분석:</strong> 상승 트렌드는 금융 시스템 스트레스 증가, 하락 트렌드는 시장 안정성 개선을 의미`;
+                specialInfo = '<br><strong>해석:</strong> 양수 = 금융환경 긴축, 음수 = 금융환경 완화';
             } else if (seriesId === 'DRTSCILM') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 양수 = 대출기준 강화, 음수 = 대출기준 완화
-                <br><strong>시계열 분석:</strong> 기준 강화 트렌드는 경기 위축 신호, 완화 트렌드는 경기 확장 지원`;
-            } else if (seriesId === 'DCOILWTICO' || seriesId === 'DCOILBRENTEU') {
-                specialInfo = `<br><strong>설명:</strong> 국제 원유 가격의 주요 벤치마크
-                <br><strong>시계열 분석:</strong> 가격 상승은 경제성장/수요 증가 또는 공급 부족, 하락은 경기 둔화/수요 감소 또는 공급 과다를 시사`;
-            } else if (seriesId === 'UNRATE') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 실업률 상승은 경기 위축, 하락은 경기 회복을 의미
-                <br><strong>시계열 분석:</strong> 저점세 후 상승전환은 경기 위축 초기 신호, 반대는 경제 회복 지속성 시사`;
-            } else if (seriesId === 'FEDFUNDS') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 연준의 기준금리로, 예금금리와 대출금리의 기준
-                <br><strong>시계열 분석:</strong> 급격한 상승은 인플레이션 압박, 급격한 하락은 경기 둔화/금융 위기 대응을 의미`;
-            } else if (seriesId === 'CPIAUCSL') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 소비자물가 변동을 측정하는 핵심인플레이션 지표
-                <br><strong>시계열 분석:</strong> 지속적 상승은 인플레이션 압박, 하락은 디플레이션 위험을 시사`;
-            } else if (seriesId === 'GDP') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 국가 전체 경제 성장률을 측정하는 가장 중요한 지표
-                <br><strong>시계열 분석:</strong> 2사분기 연속 감소는 기술적 경기침체, 지속적 성장은 경제 확장 지속성을 의미`;
-            } else if (seriesId === 'DTWEXBGS' || seriesId === 'DTWEXAFEGS' || seriesId === 'DTWEXEMEGS') {
-                specialInfo = `<br><strong>해석 가이드:</strong> 2006년=100 기준, 지수 상승은 달러 강세, 하락은 달러 약세
-                <br><strong>시계열 분석:</strong> 급격한 상승은 경제 불안에 따른 안전자산 선호, 하락은 경기 회복/위험자산 선호 경향을 시사`;
+                specialInfo = '<br><strong>해석:</strong> 양수 = 대출기준 강화, 음수 = 대출기준 완화';
             }
             
             document.getElementById('seriesInfo').innerHTML = `
                 <strong>시리즈 ID:</strong> ${seriesId}<br>
-                <strong>한국어:</strong> ${seriesInfo.name}<br>
-                <strong>영어:</strong> ${seriesInfo.nameEng}<br>
                 <strong>단위:</strong> ${seriesInfo.unit}<br>
                 <strong>데이터 소스:</strong> 미국 연방준비은행 (FRED)<br>
-                <strong>API 키:</strong> [보안상 숨김]<br>
-                <strong>업데이트:</strong> 실시간 API 호출${specialInfo}
+                <strong>API 키:</strong> ${FRED_API_KEY}<br>
+                <strong>업데이트:</strong> 실시간 API 호출<br>
+                <strong>트렌드 범위:</strong> 최대 10만개 관측값${specialInfo}
             `;
             
             document.getElementById('detailModal').style.display = 'block';
