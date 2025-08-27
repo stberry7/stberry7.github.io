@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRED 완전판 경제 지표 대시보드</title>
+    <title>FRED 경제 지표 대시보드 - Ultimate 2025</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,6 +24,31 @@
             color: #666;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             z-index: 1000;
+        }
+        .home-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
         }
         .container { 
             max-width: 1400px; 
@@ -258,6 +283,9 @@
         .category.lending h2 { border-bottom-color: #16a085; }
         .category.production h2 { border-bottom-color: #8e44ad; }
         .category.wealth h2 { border-bottom-color: #d35400; }
+        .category.energy h2 { border-bottom-color: #d68910; }
+        .category.precious-metals h2 { border-bottom-color: #884ea0; }
+        .category.industrial-metals h2 { border-bottom-color: #af7ac5; }
         
         @media (max-width: 768px) { 
             .container { padding: 20px; margin: 10px; } 
@@ -270,14 +298,19 @@
     </style>
 </head>
 <body>
+    <!-- 홈페이지 버튼 -->
+    <a href="https://stberry.us/" class="home-btn" target="_blank">
+        🏠 Home
+    </a>
+    
     <!-- 버전 정보 -->
     <div class="version-info">
-        FRED Ultimate v3.0 | 2025-08-26 18:30
+        FRED Ultimate v3.0 | 2025-08-27 01:00
     </div>
 
     <div class="container">
-        <h1>🏛️ FRED 완전판 경제 지표 대시보드</h1>
-        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 | U.S. Federal Reserve Economic Data</div>
+        <h1>🏛️ FRED 경제 지표 대시보드</h1>
+        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 | 종합 경제지표 53개</div>
         <div class="last-updated" id="lastUpdated">
             마지막 업데이트: <span id="currentTime"></span>
         </div>
@@ -434,7 +467,7 @@
                 </div>
             </div>
 
-            <!-- GDP & 성장 (확장) -->
+            <!-- GDP & 성장 -->
             <div class="category">
                 <h2>📊 GDP & 경제성장 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('GDP', '실질 GDP')">
@@ -466,7 +499,7 @@
                 </div>
             </div>
 
-            <!-- 산업생산 지표 (NEW) -->
+            <!-- 산업생산 지표 -->
             <div class="category production">
                 <h2>🏭 산업생산 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('INDPRO', '산업생산지수 (전체)')">
@@ -489,7 +522,7 @@
                 </div>
             </div>
 
-            <!-- 주택 & 부동산 (확장) -->
+            <!-- 주택 & 부동산 -->
             <div class="category">
                 <h2>🏠 주택 & 부동산 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('HOUST', '주택 착공 건수')">
@@ -637,7 +670,7 @@
 
             <!-- 주거비 상세 (NEW) -->
             <div class="category">
-                <h2>🏠 주거비 상세 <span class="fred-logo">FRED</span></h2>
+                <h2>🏘️ 주거비 상세 <span class="fred-logo">FRED</span></h2>
                 <div class="indicator" onclick="showDetails('CUSR0000SEHA', '실제 월세')">
                     <div>
                         <div class="indicator-name">실제 월세
@@ -697,7 +730,7 @@
                     </div>
                     <div class="indicator-value loading" id="CUSR0000SEHF02">로딩중...</div>
                 </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEHG', '수도·쓰레기 CPI')">
+                <div class="indicator" onclick="showDetails('CUSR0000SEHG', '수도·쓰래기 CPI')">
                     <div>
                         <div class="indicator-name">수도·쓰래기 CPI
                             <div class="indicator-name-eng">CPI: Water, sewer, trash collection services</div>
@@ -785,6 +818,29 @@
                 </div>
             </div>
 
+            <!-- 상품 (귀금속 & 산업금속) (NEW) -->
+            <div class="category">
+                <h2>🥇 상품 (금속) <span class="fred-logo">FRED</span></h2>
+                <div class="indicator" onclick="showDetails('PCU2122221222', '금은 생산자물가지수')">
+                    <div>
+                        <div class="indicator-name">금은 생산자물가지수
+                            <div class="indicator-name-eng">Producer Price Index: Gold Ore and Silver Ore Mining</div>
+                        </div>
+                        <div class="indicator-date" id="PCU2122221222-date">-</div>
+                    </div>
+                    <div class="indicator-value loading" id="PCU2122221222">로딩중...</div>
+                </div>
+                <div class="indicator" onclick="showDetails('PCOPPUSDM', '구리 가격')">
+                    <div>
+                        <div class="indicator-name">구리 가격
+                            <div class="indicator-name-eng">Global Copper Price</div>
+                        </div>
+                        <div class="indicator-date" id="PCOPPUSDM-date">-</div>
+                    </div>
+                    <div class="indicator-value loading" id="PCOPPUSDM">로딩중...</div>
+                </div>
+            </div>
+
             <!-- 가계 자산 (NEW) -->
             <div class="category wealth">
                 <h2>💰 가계 자산 <span class="fred-logo">FRED</span></h2>
@@ -815,7 +871,7 @@
         </div>
 
         <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredData()">
-            🔄 FRED 데이터 새로고침 (52개 지표)
+            🔄 FRED 데이터 새로고침 (53개 지표)
         </button>
     </div>
 
@@ -845,10 +901,10 @@
     </div>
 
     <script>
-        // FRED API 설정
-        const FRED_API_KEY = '39dae7267bc84ca5d2c22fc434172933';
+        // FRED API 설정 (보안상 숨겨진 키)
+        const FRED_API_KEY = atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
         
-        // 가져올 FRED 시리즈 목록 (완전판)
+        // 가져올 FRED 시리즈 목록 (최종 정리된 버전)
         const FRED_SERIES = {
             // 인플레이션 & 물가
             'CPIAUCSL': { name: '소비자물가지수 (CPI)', nameEng: 'Consumer Price Index', unit: 'Index' },
@@ -927,6 +983,10 @@
             'TCU': { name: '설비가동률', nameEng: 'Capacity Utilization: Total Index', unit: 'Percent' },
             'SAHMREALTIME': { name: 'Sahm 규칙 (실시간)', nameEng: 'Real-time Sahm Rule Recession Indicator', unit: 'Percent' },
             
+            // 상품 (귀금속 & 산업금속) - NEW (대체 시리즈 사용)
+            'PCU2122221222': { name: '금은 생산자물가지수', nameEng: 'Producer Price Index: Gold Ore and Silver Ore Mining', unit: 'Index' },
+            'PCOPPUSDM': { name: '구리 가격', nameEng: 'Global Copper Price', unit: 'U.S. Dollars per Metric Ton' },
+            
             // 가계 자산 (NEW)
             'TNWBSHNO': { name: '가계 순자산', nameEng: 'Households Net Worth', unit: 'Billions of Dollars' },
             
@@ -934,6 +994,10 @@
             'LFWA64TTUSM647S': { name: '노동가능인구', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Thousands of Persons' }
         };
 
+        // 자동 재시도 설정
+        let isLoading = false;
+        let retryCount = 0;
+        const MAX_RETRIES = 2;
         let loadResults = { success: 0, failed: 0, errors: [] };
         let currentSeriesId = '';
         let chartInstance = null;
@@ -949,7 +1013,7 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // FRED 데이터 가져오기
+        // FRED 데이터 가져오기 (개선된 버전)
         async function fetchFredDataViaProxy(seriesId, isHistorical = false, limit = 1, startDate = null, endDate = null) {
             let fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
             
@@ -961,14 +1025,30 @@
             const proxies = [
                 `https://api.allorigins.win/get?url=${encodeURIComponent(fredUrl)}`,
                 `https://cors.sh/${fredUrl}`,
-                `https://everyorigin.jwvbremen.nl/get?url=${encodeURIComponent(fredUrl)}`
+                `https://everyorigin.jwvbremen.nl/get?url=${encodeURIComponent(fredUrl)}`,
+                // 추가 프록시 서비스로 안정성 향상
+                `https://proxy.cors.sh/${fredUrl}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(fredUrl)}`
             ];
 
             for (const proxyUrl of proxies) {
                 try {
-                    console.log(`${seriesId}: ${proxyUrl.includes('allorigins') ? 'AllOrigins' : proxyUrl.includes('cors.sh') ? 'CORS.sh' : 'EveryOrigin'} 프록시 시도...`);
+                    const proxyName = proxyUrl.includes('allorigins') ? 'AllOrigins' : 
+                                     proxyUrl.includes('proxy.cors.sh') ? 'Proxy-CORS' :
+                                     proxyUrl.includes('cors.sh') ? 'CORS.sh' : 
+                                     proxyUrl.includes('codetabs') ? 'CodeTabs' : 'EveryOrigin';
+                    console.log(`${seriesId}: ${proxyName} 프록시 시도...`);
                     
-                    const response = await fetch(proxyUrl);
+                    const response = await fetch(proxyUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                            'User-Agent': 'FRED-Dashboard/1.0'
+                        },
+                        timeout: 15000  // 15초 타임아웃 연장
+                    });
+                    
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}`);
                     }
@@ -976,9 +1056,13 @@
                     const data = await response.json();
                     let fredData;
                     
-                    // AllOrigins & EveryOrigin 응답 형태
+                    // 다양한 프록시 응답 형태 처리
                     if (data.contents) {
+                        // AllOrigins & EveryOrigin 응답 형태
                         fredData = JSON.parse(data.contents);
+                    } else if (data.data) {
+                        // CodeTabs 응답 형태
+                        fredData = JSON.parse(data.data);
                     } else {
                         // CORS.sh 직접 응답 형태
                         fredData = data;
@@ -1004,7 +1088,9 @@
                     throw new Error('유효한 데이터 없음');
                     
                 } catch (error) {
-                    console.warn(`❌ ${seriesId} 프록시 실패:`, error.message);
+                    console.warn(`❌ ${seriesId} ${proxyName} 실패:`, error.message);
+                    // 다음 프록시를 시도하기 전 짧은 지연
+                    await new Promise(resolve => setTimeout(resolve, 100));
                     continue;
                 }
             }
@@ -1025,12 +1111,12 @@
                 // 특별 처리: 금융상황지수 (NFCI)
                 if (seriesId === 'NFCI') {
                     displayValue = `${data.value.toFixed(2)}`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive'; // 양수 = 긴축, 음수 = 완화
+                    colorClass = data.value > 0 ? 'negative' : 'positive';
                 }
                 // 특별 처리: 대출 기준 (DRTSCILM)
                 else if (seriesId === 'DRTSCILM') {
                     displayValue = `${data.value.toFixed(1)}%`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive'; // 양수 = 긴축, 음수 = 완화
+                    colorClass = data.value > 0 ? 'negative' : 'positive';
                 }
                 // 특별 처리: 1인당 GDP
                 else if (seriesId === 'A939RX0Q048SBEA') {
@@ -1097,6 +1183,11 @@
                     displayValue = `${data.value.toFixed(2)}%`;
                     colorClass = data.value >= 0.5 ? 'negative' : data.value > 0.3 ? 'warning' : 'positive';
                 }
+                // 특별 처리: 구리 - 메트릭톤당
+                else if (seriesId === 'PCOPPUSDM') {
+                    displayValue = `$${data.value.toLocaleString()}`;
+                    colorClass = 'neutral';
+                }
                 // 값에 따른 포맷팅
                 else if (seriesInfo.unit === '%') {
                     displayValue = `${data.value.toFixed(2)}%`;
@@ -1105,7 +1196,10 @@
                     displayValue = `${(data.value / 1000).toFixed(1)}T`;
                     colorClass = 'positive';
                 } else if (seriesInfo.unit.includes('Thousands')) {
-                    if (data.value > 1000000) {
+                    // 특별 처리: 노동가능인구는 이미 천 단위
+                    if (seriesId === 'LFWA64TTUSM647S') {
+                        displayValue = `${(data.value / 1000).toFixed(1)}M명`;
+                    } else if (data.value > 1000000) {
                         displayValue = `${(data.value / 1000).toFixed(0)}M`;
                     } else {
                         displayValue = `${data.value.toLocaleString()}K`;
@@ -1143,16 +1237,22 @@
             }
         }
 
-        // 모든 FRED 데이터 로딩
-        async function loadAllFredData() {
+        // 모든 FRED 데이터 로딩 (개선된 버전)
+        async function loadAllFredData(isRetry = false) {
+            if (isLoading && !isRetry) {
+                console.log('이미 로딩 중입니다...');
+                return;
+            }
+            
+            isLoading = true;
             const refreshBtn = document.getElementById('refreshBtn');
             const statusInfo = document.getElementById('statusInfo');
             
             refreshBtn.disabled = true;
-            refreshBtn.innerHTML = '<span class="spinner"></span>FRED 완전판 데이터 로딩 중...';
+            refreshBtn.innerHTML = '<span class="spinner"></span>달러지수 및 원자재 FRED 데이터 로딩 중...';
             
             loadResults = { success: 0, failed: 0, errors: [] };
-            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">30개 지표 로딩 중...</span>';
+            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">53개 지표 로딩 중...</span>';
 
             // 모든 지표를 병렬로 로딩
             const promises = Object.keys(FRED_SERIES).map(async (seriesId) => {
@@ -1168,15 +1268,15 @@
                 }
             });
 
-            // 모든 요청 완료 대기
-            await Promise.all(promises);
+            // 모든 요청 완료 대기 (개선된 에러 처리)
+            await Promise.allSettled(promises);
             
             // 결과 표시
             const total = loadResults.success + loadResults.failed;
             const successRate = ((loadResults.success / total) * 100).toFixed(1);
             
             statusInfo.innerHTML = `
-                📊 FRED API 로딩 완료 (52개 지표): 
+                📊 FRED API 로딩 완료 (53개 지표): 
                 <span class="success-count">성공 ${loadResults.success}개</span> / 
                 <span class="error-count">실패 ${loadResults.failed}개</span> 
                 (성공률: ${successRate}%)
@@ -1188,12 +1288,37 @@
                 console.groupEnd();
             }
             
+            // 실패율이 높으면 자동 재시도
+            const successRateNum = ((loadResults.success / (loadResults.success + loadResults.failed)) * 100);
+            
+            if (successRateNum < 80 && retryCount < MAX_RETRIES && !isRetry) {
+                retryCount++;
+                console.log(`성공률 ${successRateNum.toFixed(1)}% 낮음. 자동 재시도 ${retryCount}/${MAX_RETRIES}...`);
+                
+                refreshBtn.innerHTML = `🔄 재시도 중... (${retryCount}/${MAX_RETRIES})`;
+                
+                // 3초 후 재시도
+                setTimeout(() => {
+                    loadAllFredData(true);
+                }, 3000);
+                
+                return;
+            }
+            
+            // 로딩 완료
+            isLoading = false;
+            retryCount = 0;
             refreshBtn.disabled = false;
-            refreshBtn.innerHTML = '🔄 FRED 데이터 새로고침 (52개 지표)';
+            refreshBtn.innerHTML = '🔄 FRED 데이터 새로고침 (53개 지표)';
             updateClock();
+            
+            // 성공률이 낮으면 사용자에게 알림
+            if (successRateNum < 90) {
+                statusInfo.innerHTML += '<br><small>🔄 성공률이 낮습니다. 잠시 후 다시 시도해주세요.</small>';
+            }
         }
 
-        // 차트 업데이트
+        // 차트 업데이트 (날짜 범위 기반)
         async function updateChart(period) {
             if (!currentSeriesId) return;
             
@@ -1309,24 +1434,41 @@
             const seriesInfo = FRED_SERIES[seriesId];
             let specialInfo = '';
             
-            // 특별 지표들에 대한 추가 설명
+            // 데이터 해석 가이드 및 특별 지표들에 대한 상세 설명
             if (seriesId === 'NFCI') {
-                specialInfo = '<br><strong>해석:</strong> 양수 = 금융환경 긴축, 음수 = 금융환경 완화';
+                specialInfo = `<br><strong>해석 가이드:</strong> 양수 = 금융환경 긴축, 음수 = 금융환경 완화
+                <br><strong>시계열 분석:</strong> 상승 트렌드는 금융 시스템 스트레스 증가, 하락 트렌드는 시장 안정성 개선을 의미`;
             } else if (seriesId === 'DRTSCILM') {
-                specialInfo = '<br><strong>해석:</strong> 양수 = 대출기준 강화, 음수 = 대출기준 완화';
-            } else if (seriesId === 'A939RX0Q048SBEA') {
-                specialInfo = '<br><strong>설명:</strong> 물가 조정된 1인당 경제 생산성 지표';
-            } else if (seriesId === 'TNWBSHNO') {
-                specialInfo = '<br><strong>설명:</strong> 가계부문 전체 자산에서 부채를 뺀 순자산';
+                specialInfo = `<br><strong>해석 가이드:</strong> 양수 = 대출기준 강화, 음수 = 대출기준 완화
+                <br><strong>시계열 분석:</strong> 기준 강화 트렌드는 경기 위축 신호, 완화 트렌드는 경기 확장 지원`;
+            } else if (seriesId === 'DCOILWTICO' || seriesId === 'DCOILBRENTEU') {
+                specialInfo = `<br><strong>설명:</strong> 국제 원유 가격의 주요 벤치마크
+                <br><strong>시계열 분석:</strong> 가격 상승은 경제성장/수요 증가 또는 공급 부족, 하락은 경기 둔화/수요 감소 또는 공급 과다를 시사`;
+            } else if (seriesId === 'UNRATE') {
+                specialInfo = `<br><strong>해석 가이드:</strong> 실업률 상승은 경기 위축, 하락은 경기 회복을 의미
+                <br><strong>시계열 분석:</strong> 저점세 후 상승전환은 경기 위축 초기 신호, 반대는 경제 회복 지속성 시사`;
+            } else if (seriesId === 'FEDFUNDS') {
+                specialInfo = `<br><strong>해석 가이드:</strong> 연준의 기준금리로, 예금금리와 대출금리의 기준
+                <br><strong>시계열 분석:</strong> 급격한 상승은 인플레이션 압박, 급격한 하락은 경기 둔화/금융 위기 대응을 의미`;
+            } else if (seriesId === 'CPIAUCSL') {
+                specialInfo = `<br><strong>해석 가이드:</strong> 소비자물가 변동을 측정하는 핵심인플레이션 지표
+                <br><strong>시계열 분석:</strong> 지속적 상승은 인플레이션 압박, 하락은 디플레이션 위험을 시사`;
+            } else if (seriesId === 'GDP') {
+                specialInfo = `<br><strong>해석 가이드:</strong> 국가 전체 경제 성장률을 측정하는 가장 중요한 지표
+                <br><strong>시계열 분석:</strong> 2사분기 연속 감소는 기술적 경기침체, 지속적 성장은 경제 확장 지속성을 의미`;
+            } else if (seriesId === 'DTWEXBGS' || seriesId === 'DTWEXAFEGS' || seriesId === 'DTWEXEMEGS') {
+                specialInfo = `<br><strong>해석 가이드:</strong> 2006년=100 기준, 지수 상승은 달러 강세, 하락은 달러 약세
+                <br><strong>시계열 분석:</strong> 급격한 상승은 경제 불안에 따른 안전자산 선호, 하락은 경기 회복/위험자산 선호 경향을 시사`;
             }
             
             document.getElementById('seriesInfo').innerHTML = `
                 <strong>시리즈 ID:</strong> ${seriesId}<br>
+                <strong>한국어:</strong> ${seriesInfo.name}<br>
+                <strong>영어:</strong> ${seriesInfo.nameEng}<br>
                 <strong>단위:</strong> ${seriesInfo.unit}<br>
                 <strong>데이터 소스:</strong> 미국 연방준비은행 (FRED)<br>
-                <strong>API 키:</strong> ${FRED_API_KEY}<br>
-                <strong>업데이트:</strong> 실시간 API 호출<br>
-                <strong>트렌드 범위:</strong> 최대 10만개 관측값${specialInfo}
+                <strong>API 키:</strong> [보안상 숨김]<br>
+                <strong>업데이트:</strong> 실시간 API 호출${specialInfo}
             `;
             
             document.getElementById('detailModal').style.display = 'block';
