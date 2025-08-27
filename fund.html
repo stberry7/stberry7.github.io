@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hedge Fund Investment Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .control-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        select, input {
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #2a5298;
+        }
+
+        .stats-card h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .stats-card .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .holdings-table th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .holdings-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .holdings-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .change-positive {
+            color: #51cf66;
+            font-weight: 600;
+        }
+
+        .change-negative {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2a5298;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #d63384;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #d63384;
+        }
+
+        .fund-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .fund-info h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .fund-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #2a5298;
+        }
+
+        .chart-container h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .tab-btn {
+            padding: 8px 14px;
+            border: 2px solid #2a5298;
+            background: white;
+            color: #2a5298;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            margin: 2px;
+            white-space: nowrap;
+            min-width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #2a5298;
+        }
+
+        .metric-card .label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .metric-card .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        /* Mobile Specific Styles */
+        .mobile-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chart-tabs-mobile {
+            display: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+
+        .chart-tabs-mobile .tab-btn {
+            display: inline-block;
+            white-space: nowrap;
+            margin-right: 10px;
+            min-width: auto;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .mobile-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mobile-stats-card {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .mobile-stats-card h4 {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .mobile-stats-card .value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .mobile-table {
+            font-size: 12px;
+            width: 100%;
+            min-width: 600px;
+        }
+
+        .mobile-table th,
+        .mobile-table td {
+            padding: 8px 6px;
+            white-space: nowrap;
+        }
+
+        .mobile-table th {
+            font-size: 11px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        
+        .mobile-holding-info {
+            text-align: left;
+        }
+        
+        .mobile-company-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+        
+        .mobile-ticker {
+            font-size: 11px;
+            color: #666;
+            font-weight: 700;
+        }
+
+        /* Period Comparison Styles */
+        .period-comparison {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .period-comparison h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .comparison-table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .comparison-table small {
+            color: #666;
+            font-size: 11px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Position Change Visual Indicators */
+        .position-cell {
+            position: relative;
+            padding: 15px 8px !important;
+        }
+
+        .position-value {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .position-percentage {
+            font-size: 12px;
+            color: #2a5298;
+            font-weight: 600;
+        }
+
+        .position-shares {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .position-change-bar {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .position-change-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.8s ease;
+        }
+
+        .change-increase { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+        .change-decrease { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .change-neutral { background: linear-gradient(90deg, #95a5a6, #7f8c8d); }
+
+        .trend-arrow {
+            display: inline-block;
+            font-size: 12px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        .arrow-up { color: #27ae60; }
+        .arrow-down { color: #e74c3c; }
+        .arrow-neutral { color: #95a5a6; }
+
+        .position-highlight {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(39, 174, 96, 0.1) 100%);
+            border-left: 4px solid #27ae60;
+        }
+
+        .position-lowlight {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .market-value-large {
+            font-size: 15px;
+            font-weight: 800;
+            color: #1e3c72;
+        }
+
+        .market-value-medium {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2a5298;
+        }
+
+        .market-value-small {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        /* Heatmap styling */
+        .heatmap-cell {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.3) 100%);
+        }
+
+        .heatmap-hot { background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.4) 100%); }
+        .heatmap-warm { background: linear-gradient(135deg, rgba(243, 156, 18, 0.2) 0%, rgba(243, 156, 18, 0.3) 100%); }
+        .heatmap-cool { background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(52, 152, 219, 0.3) 100%); }
+        .heatmap-cold { background: linear-gradient(135deg, rgba(149, 165, 166, 0.2) 0%, rgba(149, 165, 166, 0.3) 100%); }
+
+        .total-value-comparison {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .value-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 160px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .value-card .period {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .value-card .amount {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                background: #f5f5f5;
+            }
+
+            .container {
+                border-radius: 10px;
+                margin: 0;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .control-panel {
+                background: white;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 10px;
+            }
+
+            .control-panel h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .form-row {
+                display: block;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .stats-cards {
+                display: none; /* Hide desktop stats, use mobile version */
+            }
+
+            .chart-tabs {
+                display: none; /* Hide desktop tabs */
+            }
+
+            .chart-tabs-mobile {
+                display: block; /* Show mobile tabs */
+            }
+
+            .chart-container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .chart-container h3 {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .chart-wrapper {
+                height: 250px;
+            }
+
+            .performance-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .metric-card {
+                padding: 10px;
+            }
+
+            .metric-card .label {
+                font-size: 11px;
+            }
+
+            .metric-card .value {
+                font-size: 16px;
+            }
+
+            .holdings-table {
+                display: none; /* Hide desktop table */
+            }
+
+            .fund-info {
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+
+            .fund-info h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .fund-info p {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+
+            .loading {
+                padding: 30px;
+            }
+
+            .loading p {
+                font-size: 14px;
+            }
+
+            .error-message {
+                margin: 15px 0;
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 13px;
+            }
+
+            .chart-wrapper {
+                height: 200px;
+            }
+
+            .mobile-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-tabs-mobile .tab-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            /* Mobile comparison table */
+            .comparison-table {
+                font-size: 11px;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px 4px;
+            }
+            
+            .comparison-table td:first-child {
+                min-width: 100px;
+            }
+            
+            .value-card {
+                min-width: 140px;
+                padding: 15px;
+            }
+            
+            .value-card .amount {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Hedge Fund Investment Tracker</h1>
+            <p>Track major hedge fund portfolios and 13F filings from SEC EDGAR database</p>
+        </div>
+
+        <div class="content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2 style="margin-bottom: 20px; color: #333;">Select Hedge Fund & Period</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hedge-fund">Hedge Fund</label>
+                        <select id="hedge-fund" required>
+                            <option value="">Select a Hedge Fund</option>
+                            <optgroup label="🏆 Legendary Funds">
+                                <option value="0000315066">Berkshire Hathaway (Warren Buffett)</option>
+                                <option value="0001067983">Bridgewater Associates (Ray Dalio)</option>
+                                <option value="0001103804">Renaissance Technologies (Jim Simons)</option>
+                                <option value="0001423053">Citadel (Ken Griffin)</option>
+                                <option value="0001649339">Two Sigma Investments</option>
+                                <option value="0001937764">Point72 Asset Management (Steve Cohen)</option>
+                            </optgroup>
+                            <optgroup label="💼 Multi-Strategy Platforms">
+                                <option value="MILLENNIUM">Millennium Management</option>
+                                <option value="DE_SHAW">D.E. Shaw & Co</option>
+                                <option value="BALYASNY">Balyasny Asset Management (BAM)</option>
+                                <option value="SCHONFELD">Schonfeld Strategic Advisors</option>
+                                <option value="EXODUSPOINT">ExodusPoint Capital</option>
+                                <option value="VERITION">Verition Fund Management</option>
+                            </optgroup>
+                            <optgroup label="🎯 Activist / Special Situations">
+                                <option value="ELLIOTT">Elliott Management (Paul Singer)</option>
+                                <option value="0001061768">Third Point (Dan Loeb)</option>
+                                <option value="0001336528">Pershing Square (Bill Ackman)</option>
+                                <option value="0001350694">Icahn Associates (Carl Icahn)</option>
+                                <option value="APPALOOSA">Appaloosa Management (David Tepper)</option>
+                            </optgroup>
+                            <optgroup label="🚀 Tech & Growth Focused">
+                                <option value="TIGER_GLOBAL">Tiger Global Management</option>
+                                <option value="COATUE">Coatue Management</option>
+                                <option value="LONE_PINE">Lone Pine Capital</option>
+                                <option value="VIKING">Viking Global Investors</option>
+                                <option value="ARK_INVEST">ARK Invest (Cathie Wood)</option>
+                            </optgroup>
+                            <optgroup label="📊 Quantitative Funds">
+                                <option value="AQR">AQR Capital Management</option>
+                                <option value="MAN_GROUP">Man Group (AHL)</option>
+                                <option value="0001040273">Baupost Group</option>
+                            </optgroup>
+                            <optgroup label="🌍 Global Macro">
+                                <option value="BREVAN_HOWARD">Brevan Howard</option>
+                                <option value="ROKOS">Rokos Capital Management</option>
+                                <option value="CAXTON">Caxton Associates</option>
+                                <option value="GRAHAM">Graham Capital Management</option>
+                                <option value="CAPULA">Capula Investment Management</option>
+                            </optgroup>
+                            <optgroup label="🏢 Private Equity Giants">
+                                <option value="BLACKSTONE">Blackstone</option>
+                                <option value="KKR">KKR & Co</option>
+                                <option value="CARLYLE">Carlyle Group</option>
+                                <option value="APOLLO">Apollo Global Management</option>
+                                <option value="TPG">TPG Inc</option>
+                                <option value="BROOKFIELD">Brookfield Asset Management</option>
+                            </optgroup>
+                            <optgroup label="📈 Traditional Asset Management">
+                                <option value="BLACKROCK">BlackRock</option>
+                                <option value="VANGUARD">Vanguard Group</option>
+                                <option value="FIDELITY">Fidelity Investments</option>
+                                <option value="WELLINGTON">Wellington Management</option>
+                            </optgroup>
+                            <optgroup label="⚡ Prop Trading (Reference)">
+                                <option value="JANE_STREET">Jane Street Capital</option>
+                                <option value="JUMP">Jump Trading</option>
+                                <option value="HUDSON_RIVER">Hudson River Trading</option>
+                                <option value="OPTIVER">Optiver</option>
+                            </optgroup>
+                            <optgroup label="🇺🇸 Trump-Related Investment Firms">
+                                <option value="AFFINITY">Affinity Partners (Jared Kushner)</option>
+                                <option value="TMTG">Trump Media & Technology Group</option>
+                                <option value="DIGITALBRIDGE">DigitalBridge (Tom Barrack)</option>
+                                <option value="CERBERUS">Cerberus Capital Management</option>
+                                <option value="DOMINARI">Dominari Holdings</option>
+                                <option value="WLFI">World Liberty Financial</option>
+                                <option value="AMERICAN_BTC">American Bitcoin</option>
+                            </optgroup>
+                            <optgroup label="🌟 Other Notable Funds">
+                                <option value="FARALLON">Farallon Capital Management</option>
+                                <option value="DAVIDSON_KEMPNER">Davidson Kempner Capital</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filing-period">Filing Period</label>
+                        <select id="filing-period" required>
+                            <option value="">Select Period</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: end;">
+                        <button type="button" class="btn" id="fetch-data">📊 Get Portfolio Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fund Information -->
+            <div id="fund-info" class="fund-info" style="display: none;">
+                <h3 id="fund-name">Fund Name</h3>
+                <p><strong>CIK:</strong> <span id="fund-cik"></span></p>
+                <p><strong>Filing Period:</strong> <span id="fund-period"></span></p>
+                <p><strong>Last Updated:</strong> <span id="fund-updated"></span></p>
+            </div>
+
+            <!-- Statistics -->
+            <div id="stats-section" style="display: none;">
+                <!-- Desktop Stats -->
+                <div class="stats-cards">
+                    <div class="stats-card">
+                        <h3>총 보유종목수</h3>
+                        <div class="value" id="total-holdings">0</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>총 자산가치</h3>
+                        <div class="value" id="total-value">$0</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>최대 보유종목</h3>
+                        <div class="value" id="top-holding">-</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>집중투자도 (CR5)</h3>
+                        <div class="value" id="concentration">0%</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>HHI 지수</h3>
+                        <div class="value" id="hhi-index">0.00</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>Active Share</h3>
+                        <div class="value" id="active-share">0%</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>회전율 (Turnover)</h3>
+                        <div class="value" id="turnover">0%</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3>평균 청산일수</h3>
+                        <div class="value" id="avg-liquidation">0일</div>
+                    </div>
+                </div>
+
+                <!-- Mobile Stats -->
+                <div id="mobile-stats" class="mobile-stats-grid" style="display: none;">
+                    <div class="mobile-stats-card">
+                        <h4>총 보유종목수</h4>
+                        <div class="value" id="mobile-total-holdings">0</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>총 자산가치</h4>
+                        <div class="value" id="mobile-total-value">$0</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>최대 보유종목</h4>
+                        <div class="value" id="mobile-top-holding">-</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>집중투자도</h4>
+                        <div class="value" id="mobile-concentration">0%</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>HHI 지수</h4>
+                        <div class="value" id="mobile-hhi-index">0.00</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>Active Share</h4>
+                        <div class="value" id="mobile-active-share">0%</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>회전율</h4>
+                        <div class="value" id="mobile-turnover">0%</div>
+                    </div>
+                    <div class="mobile-stats-card">
+                        <h4>평균 청산일수</h4>
+                        <div class="value" id="mobile-avg-liquidation">0일</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Fetching hedge fund data from SEC EDGAR...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="error-message" style="display: none;">
+                <strong>Error:</strong> <span id="error-text"></span>
+            </div>
+
+            <!-- Desktop Chart Tabs -->
+            <div id="chart-tabs" class="chart-tabs" style="display: none;">
+                <button class="tab-btn active" onclick="hedgeFundTracker.showChart('allocation')">📊 포트폴리오 구성비</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('sectors')">🏢 섹터별 분포</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('performance')">📈 수익률 추이</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('comparison')">🔄 보유종목 비교</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('changes')">📈 포지션 변화</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('concentration')">🎯 집중도 분석</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('activeShare')">⚡ Active Share</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('liquidity')">💧 유동성 분석</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('risk')">🛡️ 리스크 관리</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('marketResponse')">📰 시장반응</button>
+            </div>
+
+            <!-- Mobile Chart Tabs -->
+            <div id="chart-tabs-mobile" class="chart-tabs-mobile" style="display: none;">
+                <button class="tab-btn active" onclick="hedgeFundTracker.showChart('allocation')">📊 구성비</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('sectors')">🏢 섹터</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('performance')">📈 수익률</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('comparison')">🔄 비교</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('changes')">📊 변화</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('concentration')">🎯 집중도</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('activeShare')">⚡ Active</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('liquidity')">💧 유동성</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('risk')">🛡️ 리스크</button>
+                <button class="tab-btn" onclick="hedgeFundTracker.showChart('marketResponse')">📰 시장</button>
+            </div>
+
+            <!-- Charts Section -->
+            <div id="charts-section" class="charts-section" style="display: none;">
+                <div class="chart-container">
+                    <h3 id="current-chart-title">Portfolio Allocation</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="main-chart"></canvas>
+                    </div>
+                    <div id="performance-metrics" class="performance-metrics" style="display: none;">
+                        <div class="metric-card">
+                            <div class="label">샤프 지수</div>
+                            <div class="value" id="sharpe-ratio">1.23</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="label">베타 (β)</div>
+                            <div class="value" id="beta">0.87</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="label">알파 (α)</div>
+                            <div class="value" id="alpha">2.4%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="label">최대 손실폭</div>
+                            <div class="value" id="max-drawdown">-12.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Holdings Table -->
+            <div id="holdings-container" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Portfolio Holdings</h3>
+                    <div>
+                        <button type="button" class="btn btn-success" id="export-csv">📋 Export CSV</button>
+                        <button type="button" class="btn btn-warning" id="compare-periods">🔄 Compare Periods</button>
+                    </div>
+                </div>
+                
+                <div class="mobile-scroll">
+                    <!-- Desktop Table -->
+                    <table class="holdings-table" id="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>회사명</th>
+                                <th>티커</th>
+                                <th>보유주식수</th>
+                                <th>시장가치</th>
+                                <th>포트폴리오 비중</th>
+                                <th>전분기 대비</th>
+                            </tr>
+                        </thead>
+                        <tbody id="holdings-tbody">
+                        </tbody>
+                    </table>
+
+                    <!-- Mobile Table -->
+                    <table class="mobile-table" id="mobile-holdings-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>회사명</th>
+                                <th>티커</th>
+                                <th>시장가치</th>
+                                <th>비중</th>
+                                <th>변동</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mobile-holdings-tbody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="no-holdings" class="no-expenses" style="display: none;">
+                    <h3>보유종목이 없습니다</h3>
+                    <p>상단에서 헤지펀드를 선택하여 데이터를 조회하세요</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class HedgeFundTracker {
+            constructor() {
+                this.currentData = null;
+                this.previousData = null;
+                this.currentChart = null;
+                this.currentChartType = 'allocation';
+                this.benchmarkWeights = this.getSP500BenchmarkWeights();
+                this.dataCache = new Map(); // 캐시 저장소 추가
+                this.fundNames = {
+                    // Legendary Funds
+                    '0000315066': 'Berkshire Hathaway Inc',
+                    '0001067983': 'Bridgewater Associates',
+                    '0001103804': 'Renaissance Technologies',
+                    '0001423053': 'Citadel LLC',
+                    '0001649339': 'Two Sigma Investments',
+                    '0001937764': 'Point72 Asset Management',
+                    
+                    // Multi-Strategy Platforms
+                    'MILLENNIUM': 'Millennium Management',
+                    'DE_SHAW': 'D.E. Shaw & Co',
+                    'BALYASNY': 'Balyasny Asset Management',
+                    'SCHONFELD': 'Schonfeld Strategic Advisors',
+                    'EXODUSPOINT': 'ExodusPoint Capital Management',
+                    'VERITION': 'Verition Fund Management',
+                    
+                    // Activist / Special Situations
+                    'ELLIOTT': 'Elliott Management Corporation',
+                    '0001061768': 'Third Point LLC',
+                    '0001336528': 'Pershing Square Capital Management',
+                    '0001350694': 'Icahn Associates Corp',
+                    'APPALOOSA': 'Appaloosa Management',
+                    
+                    // Tech & Growth Focused
+                    'TIGER_GLOBAL': 'Tiger Global Management',
+                    'COATUE': 'Coatue Management',
+                    'LONE_PINE': 'Lone Pine Capital',
+                    'VIKING': 'Viking Global Investors',
+                    'ARK_INVEST': 'ARK Investment Management',
+                    
+                    // Quantitative Funds
+                    'AQR': 'AQR Capital Management',
+                    'MAN_GROUP': 'Man Group plc',
+                    '0001040273': 'Baupost Group',
+                    
+                    // Global Macro
+                    'BREVAN_HOWARD': 'Brevan Howard Asset Management',
+                    'ROKOS': 'Rokos Capital Management',
+                    'CAXTON': 'Caxton Associates',
+                    'GRAHAM': 'Graham Capital Management',
+                    'CAPULA': 'Capula Investment Management',
+                    
+                    // Private Equity Giants
+                    'BLACKSTONE': 'Blackstone Inc',
+                    'KKR': 'KKR & Co Inc',
+                    'CARLYLE': 'Carlyle Group Inc',
+                    'APOLLO': 'Apollo Global Management',
+                    'TPG': 'TPG Inc',
+                    'BROOKFIELD': 'Brookfield Asset Management',
+                    
+                    // Traditional Asset Management
+                    'BLACKROCK': 'BlackRock Inc',
+                    'VANGUARD': 'Vanguard Group',
+                    'FIDELITY': 'Fidelity Investments',
+                    'WELLINGTON': 'Wellington Management',
+                    
+                    // Prop Trading
+                    'JANE_STREET': 'Jane Street Capital',
+                    'JUMP': 'Jump Trading',
+                    'HUDSON_RIVER': 'Hudson River Trading',
+                    'OPTIVER': 'Optiver',
+                    
+                    // Trump-Related
+                    'AFFINITY': 'Affinity Partners',
+                    'TMTG': 'Trump Media & Technology Group',
+                    'DIGITALBRIDGE': 'DigitalBridge Group Inc',
+                    'CERBERUS': 'Cerberus Capital Management',
+                    'DOMINARI': 'Dominari Holdings',
+                    'WLFI': 'World Liberty Financial',
+                    'AMERICAN_BTC': 'American Bitcoin',
+                    
+                    // Other Notable
+                    'FARALLON': 'Farallon Capital Management',
+                    'DAVIDSON_KEMPNER': 'Davidson Kempner Capital Management'
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.populateFilingPeriods();
+            }
+
+            populateFilingPeriods() {
+                const periodSelect = document.getElementById('filing-period');
+                const periods = this.generateFilingPeriods();
+                
+                // Clear existing options except the first one
+                while (periodSelect.children.length > 1) {
+                    periodSelect.removeChild(periodSelect.lastChild);
+                }
+                
+                periods.forEach(period => {
+                    const option = document.createElement('option');
+                    option.value = period.value;
+                    option.textContent = period.label;
+                    periodSelect.appendChild(option);
+                });
+
+                // Auto-select the latest (first) period
+                if (periods.length > 0) {
+                    const latestPeriod = periods[0];
+                    periodSelect.value = latestPeriod.value;
+                }
+            }
+
+            generateFilingPeriods() {
+                const periods = [];
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth() + 1; // JavaScript months are 0-indexed
+                
+                // Determine current quarter and if we should include it
+                let currentQuarter;
+                let quarterEndMonth;
+                let quarterLabel;
+                
+                if (currentMonth <= 3) {
+                    currentQuarter = 1;
+                    quarterEndMonth = 3;
+                    quarterLabel = 'Q1';
+                } else if (currentMonth <= 6) {
+                    currentQuarter = 2;
+                    quarterEndMonth = 6;
+                    quarterLabel = 'Q2';
+                } else if (currentMonth <= 9) {
+                    currentQuarter = 3;
+                    quarterEndMonth = 9;
+                    quarterLabel = 'Q3';
+                } else {
+                    currentQuarter = 4;
+                    quarterEndMonth = 12;
+                    quarterLabel = 'Q4';
+                }
+                
+                // Add current year quarters (if reporting period has likely passed)
+                // 13F filings are due 45 days after quarter end
+                const quarterEndDate = new Date(currentYear, quarterEndMonth - 1, this.getLastDayOfMonth(currentYear, quarterEndMonth));
+                const filingDueDate = new Date(quarterEndDate);
+                filingDueDate.setDate(filingDueDate.getDate() + 45);
+                
+                // Generate periods for current and past years
+                for (let year = currentYear; year >= currentYear - 3; year--) {
+                    const isCurrentYear = year === currentYear;
+                    const startQuarter = isCurrentYear ? currentQuarter : 4;
+                    
+                    for (let quarter = startQuarter; quarter >= 1; quarter--) {
+                        // Skip current quarter if filing due date hasn't passed yet
+                        if (isCurrentYear && quarter === currentQuarter && today < filingDueDate) {
+                            continue;
+                        }
+                        
+                        const quarterEnd = this.getQuarterEndDate(year, quarter);
+                        const quarterName = `Q${quarter}`;
+                        
+                        periods.push({
+                            value: quarterEnd,
+                            label: `${quarterName} ${year}`,
+                            year: year,
+                            quarter: quarter
+                        });
+                    }
+                }
+                
+                return periods;
+            }
+
+            getQuarterEndDate(year, quarter) {
+                const month = quarter * 3; // Q1=3, Q2=6, Q3=9, Q4=12
+                const lastDay = this.getLastDayOfMonth(year, month);
+                return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
+            }
+
+            getLastDayOfMonth(year, month) {
+                return new Date(year, month, 0).getDate();
+            }
+
+            setupEventListeners() {
+                document.getElementById('fetch-data').addEventListener('click', () => {
+                    this.fetchHedgeFundData();
+                });
+
+                document.getElementById('export-csv').addEventListener('click', () => {
+                    this.exportToCSV();
+                });
+
+                document.getElementById('compare-periods').addEventListener('click', () => {
+                    this.comparePeriods();
+                });
+            }
+
+            async fetchHedgeFundData() {
+                const cik = document.getElementById('hedge-fund').value;
+                const period = document.getElementById('filing-period').value;
+
+                if (!cik || !period) {
+                    this.showError('헤지펀드와 기간을 모두 선택해주세요.');
+                    return;
+                }
+
+                // 캐시 키 생성
+                const cacheKey = `${cik}_${period}`;
+                
+                // 캐시에서 데이터 확인
+                if (this.dataCache.has(cacheKey)) {
+                    console.log('캐시에서 데이터 로드:', cacheKey);
+                    const cachedData = this.dataCache.get(cacheKey);
+                    this.displayCachedData(cachedData);
+                    this.showNotification('캐시된 포트폴리오 데이터가 로드되었습니다! 🚀');
+                    return;
+                }
+
+                this.showLoading(true);
+                this.hideError();
+
+                try {
+                    // 시뮬레이션 데이터 생성
+                    const data = await this.simulateDataFetch(cik, period);
+                    
+                    // 데이터 캐시에 저장
+                    this.dataCache.set(cacheKey, data);
+                    console.log('데이터 캐시에 저장됨:', cacheKey);
+                    
+                    this.showNotification('포트폴리오 데이터가 성공적으로 로드되었습니다! 📊');
+                    
+                } catch (error) {
+                    console.error('데이터 생성 오류:', error);
+                    this.showError('데이터 생성 중 오류가 발생했습니다: ' + error.message);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async simulateDataFetch(cik, period) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Generate sample data for demonstration
+                const sampleHoldings = this.generateSampleData(cik);
+                
+                const data = {
+                    cik: cik,
+                    period: period,
+                    holdings: sampleHoldings,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Display the data
+                this.displayFundInfo(cik, period);
+                this.displayStatistics(sampleHoldings);
+                this.displayCharts(sampleHoldings);
+                this.displayHoldings(sampleHoldings);
+                
+                this.currentData = data;
+                return data;
+            }
+
+            displayCachedData(cachedData) {
+                console.log('캐시된 데이터 표시 중:', cachedData);
+                
+                // Display the cached data immediately (no loading delay)
+                this.displayFundInfo(cachedData.cik, cachedData.period);
+                this.displayStatistics(cachedData.holdings);
+                this.displayCharts(cachedData.holdings);
+                this.displayHoldings(cachedData.holdings);
+                
+                this.currentData = cachedData;
+            }
+
+            getCacheStatus() {
+                const cacheSize = this.dataCache.size;
+                const cacheKeys = Array.from(this.dataCache.keys());
+                console.log(`📦 캐시 상태: ${cacheSize}개 항목 저장됨`);
+                console.log('저장된 키:', cacheKeys);
+                return { size: cacheSize, keys: cacheKeys };
+            }
+
+            clearCache() {
+                this.dataCache.clear();
+                console.log('🗑️ 캐시가 모두 삭제되었습니다.');
+                this.showNotification('캐시가 삭제되었습니다.');
+            }
+
+            generateSampleData(cik) {
+                let companies = [];
+                
+                // Generate different portfolio compositions based on fund type
+                if (cik === 'MILLENNIUM' || cik === 'DE_SHAW' || cik === 'BALYASNY' || cik === 'SCHONFELD' || cik === 'EXODUSPOINT' || cik === 'VERITION') {
+                    // Multi-Strategy: Diversified across all sectors
+                    companies = [
+                        { name: 'Apple Inc', ticker: 'AAPL', sector: 'Technology' },
+                        { name: 'Microsoft Corporation', ticker: 'MSFT', sector: 'Technology' },
+                        { name: 'Amazon.com Inc', ticker: 'AMZN', sector: 'Consumer Discretionary' },
+                        { name: 'JPMorgan Chase & Co', ticker: 'JPM', sector: 'Financial Services' },
+                        { name: 'Johnson & Johnson', ticker: 'JNJ', sector: 'Healthcare' },
+                        { name: 'Procter & Gamble Co', ticker: 'PG', sector: 'Consumer Staples' },
+                        { name: 'Exxon Mobil Corporation', ticker: 'XOM', sector: 'Energy' },
+                        { name: 'Home Depot Inc', ticker: 'HD', sector: 'Consumer Discretionary' },
+                        { name: 'Visa Inc', ticker: 'V', sector: 'Financial Services' },
+                        { name: 'UnitedHealth Group Inc', ticker: 'UNH', sector: 'Healthcare' }
+                    ];
+                } else if (cik === 'ELLIOTT' || cik === 'APPALOOSA') {
+                    // Activist: Focus on undervalued companies
+                    companies = [
+                        { name: 'AT&T Inc', ticker: 'T', sector: 'Telecommunications' },
+                        { name: 'General Electric Company', ticker: 'GE', sector: 'Industrial' },
+                        { name: 'Ford Motor Company', ticker: 'F', sector: 'Automotive' },
+                        { name: 'Viacom Inc', ticker: 'VIAC', sector: 'Media' },
+                        { name: 'Nielsen Holdings plc', ticker: 'NLSN', sector: 'Media' },
+                        { name: 'Xerox Holdings Corp', ticker: 'XRX', sector: 'Technology' },
+                        { name: 'Campbell Soup Company', ticker: 'CPB', sector: 'Consumer Staples' }
+                    ];
+                } else if (cik === 'TIGER_GLOBAL' || cik === 'COATUE' || cik === 'LONE_PINE' || cik === 'VIKING' || cik === 'ARK_INVEST') {
+                    // Tech & Growth Focus
+                    companies = [
+                        { name: 'Tesla Inc', ticker: 'TSLA', sector: 'Automotive' },
+                        { name: 'NVIDIA Corporation', ticker: 'NVDA', sector: 'Technology' },
+                        { name: 'Meta Platforms Inc', ticker: 'META', sector: 'Technology' },
+                        { name: 'Netflix Inc', ticker: 'NFLX', sector: 'Entertainment' },
+                        { name: 'Zoom Video Communications', ticker: 'ZM', sector: 'Technology' },
+                        { name: 'Shopify Inc', ticker: 'SHOP', sector: 'E-commerce' },
+                        { name: 'Square Inc', ticker: 'SQ', sector: 'Financial Technology' },
+                        { name: 'Roku Inc', ticker: 'ROKU', sector: 'Entertainment' },
+                        { name: 'Peloton Interactive Inc', ticker: 'PTON', sector: 'Consumer Discretionary' }
+                    ];
+                } else if (cik === 'AQR' || cik === 'MAN_GROUP') {
+                    // Quantitative: Systematic exposure
+                    companies = [
+                        { name: 'SPDR S&P 500 ETF Trust', ticker: 'SPY', sector: 'ETF' },
+                        { name: 'iShares Core S&P 500 ETF', ticker: 'IVV', sector: 'ETF' },
+                        { name: 'Invesco QQQ Trust', ticker: 'QQQ', sector: 'ETF' },
+                        { name: 'Apple Inc', ticker: 'AAPL', sector: 'Technology' },
+                        { name: 'Microsoft Corporation', ticker: 'MSFT', sector: 'Technology' },
+                        { name: 'Alphabet Inc Class A', ticker: 'GOOGL', sector: 'Technology' },
+                        { name: 'Amazon.com Inc', ticker: 'AMZN', sector: 'Consumer Discretionary' }
+                    ];
+                } else if (cik === 'BREVAN_HOWARD' || cik === 'ROKOS' || cik === 'CAXTON' || cik === 'GRAHAM' || cik === 'CAPULA') {
+                    // Global Macro: Currencies, bonds, commodities
+                    companies = [
+                        { name: 'SPDR Gold Shares', ticker: 'GLD', sector: 'Commodities' },
+                        { name: 'iShares 20+ Year Treasury Bond', ticker: 'TLT', sector: 'Fixed Income' },
+                        { name: 'United States Oil Fund', ticker: 'USO', sector: 'Energy' },
+                        { name: 'Invesco CurrencyShares Euro', ticker: 'FXE', sector: 'Currency' },
+                        { name: 'iShares MSCI Emerging Markets', ticker: 'EEM', sector: 'International' },
+                        { name: 'VanEck Vectors Gold Miners', ticker: 'GDX', sector: 'Mining' }
+                    ];
+                } else if (cik === 'BLACKSTONE' || cik === 'KKR' || cik === 'CARLYLE' || cik === 'APOLLO' || cik === 'TPG' || cik === 'BROOKFIELD') {
+                    // Private Equity: Focus on buyout targets
+                    companies = [
+                        { name: 'Blackstone Inc', ticker: 'BX', sector: 'Asset Management' },
+                        { name: 'KKR & Co Inc', ticker: 'KKR', sector: 'Asset Management' },
+                        { name: 'Apollo Global Management', ticker: 'APO', sector: 'Asset Management' },
+                        { name: 'Brookfield Asset Management', ticker: 'BAM', sector: 'Asset Management' },
+                        { name: 'American Express Company', ticker: 'AXP', sector: 'Financial Services' },
+                        { name: 'Hilton Worldwide Holdings', ticker: 'HLT', sector: 'Hospitality' }
+                    ];
+                } else if (cik === 'BLACKROCK' || cik === 'VANGUARD' || cik === 'FIDELITY' || cik === 'WELLINGTON') {
+                    // Traditional Asset Management: Broad market exposure
+                    companies = [
+                        { name: 'Apple Inc', ticker: 'AAPL', sector: 'Technology' },
+                        { name: 'Microsoft Corporation', ticker: 'MSFT', sector: 'Technology' },
+                        { name: 'Amazon.com Inc', ticker: 'AMZN', sector: 'Consumer Discretionary' },
+                        { name: 'Alphabet Inc Class A', ticker: 'GOOGL', sector: 'Technology' },
+                        { name: 'Tesla Inc', ticker: 'TSLA', sector: 'Automotive' },
+                        { name: 'Meta Platforms Inc', ticker: 'META', sector: 'Technology' },
+                        { name: 'NVIDIA Corporation', ticker: 'NVDA', sector: 'Technology' },
+                        { name: 'Berkshire Hathaway Inc', ticker: 'BRK.B', sector: 'Financial Services' }
+                    ];
+                } else if (cik === 'JANE_STREET' || cik === 'JUMP' || cik === 'HUDSON_RIVER' || cik === 'OPTIVER') {
+                    // Prop Trading: High-frequency, market making
+                    companies = [
+                        { name: 'SPDR S&P 500 ETF Trust', ticker: 'SPY', sector: 'ETF' },
+                        { name: 'iShares Core S&P 500 ETF', ticker: 'IVV', sector: 'ETF' },
+                        { name: 'Invesco QQQ Trust', ticker: 'QQQ', sector: 'ETF' },
+                        { name: 'iShares Russell 2000 ETF', ticker: 'IWM', sector: 'ETF' },
+                        { name: 'VIX Options', ticker: 'VXX', sector: 'Volatility' },
+                        { name: 'Apple Inc', ticker: 'AAPL', sector: 'Technology' },
+                        { name: 'Tesla Inc', ticker: 'TSLA', sector: 'Automotive' }
+                    ];
+                } else if (cik === 'FARALLON' || cik === 'DAVIDSON_KEMPNER') {
+                    // Event-Driven / Special Situations
+                    companies = [
+                        { name: 'Merger Target Corp A', ticker: 'MTCA', sector: 'Special Situations' },
+                        { name: 'Spinoff Company B', ticker: 'SOCB', sector: 'Special Situations' },
+                        { name: 'Distressed Debt C', ticker: 'DDC', sector: 'Fixed Income' },
+                        { name: 'Bankruptcy Recovery D', ticker: 'BRD', sector: 'Special Situations' }
+                    ];
+                } else if (cik === 'AFFINITY') {
+                    companies = [
+                        { name: 'Saudi Aramco', ticker: 'ARAMCO', sector: 'Energy' },
+                        { name: 'Palantir Technologies', ticker: 'PLTR', sector: 'Technology' },
+                        { name: 'Uber Technologies', ticker: 'UBER', sector: 'Transportation' },
+                        { name: 'Tesla Inc', ticker: 'TSLA', sector: 'Automotive' },
+                        { name: 'Meta Platforms', ticker: 'META', sector: 'Technology' },
+                        { name: 'Amazon.com Inc', ticker: 'AMZN', sector: 'E-commerce' },
+                        { name: 'Microsoft Corporation', ticker: 'MSFT', sector: 'Technology' },
+                        { name: 'NVIDIA Corporation', ticker: 'NVDA', sector: 'Technology' }
+                    ];
+                } else if (cik === 'TMTG') {
+                    companies = [
+                        { name: 'Trump Media & Technology', ticker: 'DJT', sector: 'Media' },
+                        { name: 'Rumble Inc', ticker: 'RUM', sector: 'Media' },
+                        { name: 'Truth Social Platform', ticker: 'TRUTH', sector: 'Social Media' },
+                        { name: 'Digital World Acquisition', ticker: 'DWAC', sector: 'SPAC' },
+                        { name: 'Conservative Media Corp', ticker: 'CMC', sector: 'Media' }
+                    ];
+                } else if (cik === 'WLFI' || cik === 'AMERICAN_BTC') {
+                    companies = [
+                        { name: 'Bitcoin', ticker: 'BTC-USD', sector: 'Cryptocurrency' },
+                        { name: 'Ethereum', ticker: 'ETH-USD', sector: 'Cryptocurrency' },
+                        { name: 'MicroStrategy Inc', ticker: 'MSTR', sector: 'Business Intelligence' },
+                        { name: 'Coinbase Global Inc', ticker: 'COIN', sector: 'Cryptocurrency' },
+                        { name: 'Marathon Digital Holdings', ticker: 'MARA', sector: 'Bitcoin Mining' },
+                        { name: 'Riot Platforms Inc', ticker: 'RIOT', sector: 'Bitcoin Mining' },
+                        { name: 'CleanSpark Inc', ticker: 'CLSK', sector: 'Bitcoin Mining' }
+                    ];
+                } else if (cik === 'DIGITALBRIDGE') {
+                    companies = [
+                        { name: 'American Tower Corp', ticker: 'AMT', sector: 'REITs' },
+                        { name: 'Crown Castle Inc', ticker: 'CCI', sector: 'Infrastructure' },
+                        { name: 'Digital Realty Trust', ticker: 'DLR', sector: 'Data Centers' },
+                        { name: 'Equinix Inc', ticker: 'EQIX', sector: 'Data Centers' },
+                        { name: 'SBA Communications', ticker: 'SBAC', sector: 'Infrastructure' },
+                        { name: 'Verizon Communications', ticker: 'VZ', sector: 'Telecommunications' }
+                    ];
+                } else if (cik === 'CERBERUS') {
+                    companies = [
+                        { name: 'Lockheed Martin Corp', ticker: 'LMT', sector: 'Defense' },
+                        { name: 'Raytheon Technologies', ticker: 'RTX', sector: 'Defense' },
+                        { name: 'General Dynamics Corp', ticker: 'GD', sector: 'Defense' },
+                        { name: 'Northrop Grumman Corp', ticker: 'NOC', sector: 'Defense' },
+                        { name: 'Boeing Company', ticker: 'BA', sector: 'Aerospace' },
+                        { name: 'Bank of America Corp', ticker: 'BAC', sector: 'Banking' },
+                        { name: 'Citigroup Inc', ticker: 'C', sector: 'Banking' }
+                    ];
+                } else {
+                    // Default portfolio for traditional hedge funds
+                    companies = [
+                        { name: 'Apple Inc', ticker: 'AAPL', sector: 'Technology' },
+                        { name: 'Microsoft Corporation', ticker: 'MSFT', sector: 'Technology' },
+                        { name: 'Amazon.com Inc', ticker: 'AMZN', sector: 'Consumer Discretionary' },
+                        { name: 'NVIDIA Corporation', ticker: 'NVDA', sector: 'Technology' },
+                        { name: 'Alphabet Inc Class A', ticker: 'GOOGL', sector: 'Technology' },
+                        { name: 'Tesla Inc', ticker: 'TSLA', sector: 'Consumer Discretionary' },
+                        { name: 'Meta Platforms Inc', ticker: 'META', sector: 'Technology' },
+                        { name: 'Berkshire Hathaway Inc', ticker: 'BRK.B', sector: 'Financial Services' },
+                        { name: 'Johnson & Johnson', ticker: 'JNJ', sector: 'Healthcare' },
+                        { name: 'JPMorgan Chase & Co', ticker: 'JPM', sector: 'Financial Services' }
+                    ];
+                }
+
+                return companies.map((company, index) => {
+                    const shares = Math.floor(Math.random() * 10000000) + 1000000;
+                    const price = Math.random() * 500 + 50;
+                    const marketValue = shares * price;
+                    const change = (Math.random() - 0.5) * 50;
+                    
+                    return {
+                        name: company.name,
+                        ticker: company.ticker,
+                        sector: company.sector,
+                        shares: shares,
+                        price: price,
+                        marketValue: marketValue,
+                        change: change,
+                        rank: index + 1
+                    };
+                }).sort((a, b) => b.marketValue - a.marketValue);
+            }
+
+            displayFundInfo(cik, period) {
+                const fundInfo = document.getElementById('fund-info');
+                const fundName = this.fundNames[cik] || 'Unknown Fund';
+                
+                document.getElementById('fund-name').textContent = fundName;
+                document.getElementById('fund-cik').textContent = cik;
+                document.getElementById('fund-period').textContent = period;
+                document.getElementById('fund-updated').textContent = new Date().toLocaleDateString();
+                
+                fundInfo.style.display = 'block';
+            }
+
+            displayStatistics(holdings) {
+                const totalValue = holdings.reduce((sum, holding) => sum + holding.marketValue, 0);
+                const topHolding = holdings[0];
+                
+                // Calculate advanced metrics
+                const weights = this.calculateWeights(holdings);
+                const hhi = this.calculateHHI(weights);
+                const concentrationRatios = this.calculateConcentrationRatios(weights);
+                const activeShare = this.calculateActiveShare(weights, this.benchmarkWeights);
+                const turnover = this.calculateTurnover(holdings);
+                const liquidationDays = this.calculateLiquidationDays(holdings);
+
+                // Update desktop stats - with null checks
+                this.safeUpdateElement('total-holdings', holdings.length);
+                this.safeUpdateElement('total-value', this.formatCurrency(totalValue));
+                this.safeUpdateElement('top-holding', topHolding.ticker);
+                this.safeUpdateElement('concentration', `${concentrationRatios.CR5.toFixed(1)}%`);
+                this.safeUpdateElement('hhi-index', hhi.toFixed(3));
+                this.safeUpdateElement('active-share', `${(activeShare * 100).toFixed(1)}%`);
+                this.safeUpdateElement('turnover', `${(turnover * 100).toFixed(1)}%`);
+                this.safeUpdateElement('avg-liquidation', `${liquidationDays.toFixed(0)}일`);
+
+                // Update mobile stats - with null checks
+                this.safeUpdateElement('mobile-total-holdings', holdings.length);
+                this.safeUpdateElement('mobile-total-value', this.formatCurrency(totalValue));
+                this.safeUpdateElement('mobile-top-holding', topHolding.ticker);
+                this.safeUpdateElement('mobile-concentration', `${concentrationRatios.CR5.toFixed(1)}%`);
+                this.safeUpdateElement('mobile-hhi-index', hhi.toFixed(3));
+                this.safeUpdateElement('mobile-active-share', `${(activeShare * 100).toFixed(1)}%`);
+                this.safeUpdateElement('mobile-turnover', `${(turnover * 100).toFixed(1)}%`);
+                this.safeUpdateElement('mobile-avg-liquidation', `${liquidationDays.toFixed(0)}일`);
+
+                // Show stats section safely
+                this.safeShowElement('stats-section', 'block');
+                
+                // Show mobile stats on mobile devices
+                if (this.isMobileDevice()) {
+                    this.safeShowElement('mobile-stats', 'grid');
+                }
+            }
+
+            safeUpdateElement(id, content) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = content;
+                } else {
+                    console.warn(`Element with id '${id}' not found`);
+                }
+            }
+
+            safeShowElement(id, displayType = 'block') {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = displayType;
+                } else {
+                    console.warn(`Element with id '${id}' not found`);
+                }
+            }
+
+            displayHoldings(holdings) {
+                const tbody = document.getElementById('holdings-tbody');
+                if (!tbody) {
+                    console.warn('Holdings table body not found');
+                    return;
+                }
+                tbody.innerHTML = '';
+
+                const totalValue = holdings.reduce((sum, holding) => sum + holding.marketValue, 0);
+
+                holdings.forEach(holding => {
+                    const row = document.createElement('tr');
+                    const portfolioPercent = ((holding.marketValue / totalValue) * 100).toFixed(2);
+                    const changeClass = holding.change >= 0 ? 'change-positive' : 'change-negative';
+                    const changeSign = holding.change >= 0 ? '+' : '';
+
+                    row.innerHTML = `
+                        <td>${holding.name}</td>
+                        <td><strong>${holding.ticker}</strong></td>
+                        <td>${holding.shares.toLocaleString()}</td>
+                        <td>${this.formatCurrency(holding.marketValue)}</td>
+                        <td>${portfolioPercent}%</td>
+                        <td class="${changeClass}">${changeSign}${holding.change.toFixed(2)}%</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update mobile holdings table
+                if (this.isMobileDevice()) {
+                    const mobileTableBody = document.getElementById('mobile-holdings-tbody');
+                    if (mobileTableBody) {
+                        mobileTableBody.innerHTML = '';
+
+                        holdings.slice(0, 20).forEach((holding, index) => {
+                            const row = document.createElement('tr');
+                            const portfolioPercent = ((holding.marketValue / totalValue) * 100).toFixed(2);
+                            const changeClass = holding.change >= 0 ? 'change-positive' : 'change-negative';
+                            const changeSign = holding.change >= 0 ? '+' : '';
+
+                            row.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>
+                                    <div class="mobile-holding-info">
+                                        <div class="mobile-company-name">${holding.name}</div>
+                                        <div class="mobile-ticker">${holding.ticker}</div>
+                                    </div>
+                                </td>
+                                <td>${this.formatCurrency(holding.marketValue)}</td>
+                                <td>${portfolioPercent}%</td>
+                                <td class="${changeClass}">${changeSign}${holding.change.toFixed(2)}%</td>
+                            `;
+                            mobileTableBody.appendChild(row);
+                        });
+
+                        // Show mobile table and hide desktop table on mobile
+                        this.safeShowElement('mobile-holdings-table', 'table');
+                        const desktopTable = document.querySelector('#holdings-container .table-responsive table');
+                        if (desktopTable) desktopTable.style.display = 'none';
+                    }
+                } else {
+                    // Show desktop table and hide mobile table on desktop
+                    this.safeShowElement('mobile-holdings-table', 'none');
+                    const desktopTable = document.querySelector('#holdings-container .table-responsive table');
+                    if (desktopTable) desktopTable.style.display = 'table';
+                }
+
+                this.safeShowElement('holdings-container', 'block');
+            }
+
+            isMobileDevice() {
+                return window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+
+            displayCharts(holdings) {
+                this.safeShowElement('chart-tabs', 'flex');
+                this.safeShowElement('charts-section', 'block');
+                this.showChart('allocation', holdings);
+            }
+
+            showChart(type, holdingsData = null) {
+                const holdings = holdingsData || (this.currentData ? this.currentData.holdings : []);
+                if (!holdings.length) return;
+
+                // Update active tab
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                event?.target?.classList.add('active') || document.querySelector(`[onclick*="'${type}')"]`)?.classList.add('active');
+
+                this.currentChartType = type;
+                this.destroyCurrentChart();
+
+                switch (type) {
+                    case 'allocation':
+                        this.createAllocationChart(holdings);
+                        break;
+                    case 'sectors':
+                        this.createSectorChart(holdings);
+                        break;
+                    case 'performance':
+                        this.createPerformanceChart(holdings);
+                        break;
+                    case 'comparison':
+                        this.createComparisonChart(holdings);
+                        break;
+                    case 'changes':
+                        this.createChangesChart(holdings);
+                        break;
+                    case 'concentration':
+                        this.createConcentrationChart(holdings);
+                        break;
+                    case 'activeShare':
+                        this.createActiveShareChart(holdings);
+                        break;
+                    case 'liquidity':
+                        this.createLiquidityChart(holdings);
+                        break;
+                    case 'risk':
+                        this.createRiskChart(holdings);
+                        break;
+                    case 'marketResponse':
+                        this.createMarketResponseChart(holdings);
+                        break;
+                }
+            }
+
+            destroyCurrentChart() {
+                if (this.currentChart) {
+                    this.currentChart.destroy();
+                    this.currentChart = null;
+                }
+            }
+
+            createAllocationChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '📊 포트폴리오 구성비 - 상위 10개 종목';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const totalValue = holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                const top10 = holdings.slice(0, 10);
+                
+                const colors = [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                    '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+                ];
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: top10.map(h => h.ticker),
+                        datasets: [{
+                            data: top10.map(h => ((h.marketValue / totalValue) * 100).toFixed(2)),
+                            backgroundColor: colors,
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const holding = top10[context.dataIndex];
+                                        return `${holding.ticker}: ${context.parsed}% (${hedgeFundTracker.formatCurrency(holding.marketValue)})`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createSectorChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '🏢 섹터별 분포 현황';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const totalValue = holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                
+                const sectorData = holdings.reduce((sectors, holding) => {
+                    const sector = holding.sector || 'Other';
+                    if (!sectors[sector]) sectors[sector] = 0;
+                    sectors[sector] += holding.marketValue;
+                    return sectors;
+                }, {});
+
+                const sectorLabels = Object.keys(sectorData);
+                const sectorValues = Object.values(sectorData);
+                const sectorPercentages = sectorValues.map(value => ((value / totalValue) * 100).toFixed(1));
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sectorLabels,
+                        datasets: [{
+                            label: '섹터 배분 (%)',
+                            data: sectorPercentages,
+                            backgroundColor: 'rgba(42, 82, 152, 0.6)',
+                            borderColor: 'rgba(42, 82, 152, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = sectorValues[context.dataIndex];
+                                        return `${context.label}: ${context.parsed.y}% (${hedgeFundTracker.formatCurrency(value)})`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createPerformanceChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '📈 수익률 추이 (시뮬레이션)';
+                document.getElementById('performance-metrics').style.display = 'grid';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                
+                // Generate simulated performance data
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const portfolioReturns = months.map(() => (Math.random() - 0.5) * 20 + 5); // Random returns
+                const benchmarkReturns = months.map(() => (Math.random() - 0.5) * 15 + 3); // Benchmark
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: '포트폴리오 수익률',
+                                data: portfolioReturns,
+                                borderColor: 'rgba(42, 82, 152, 1)',
+                                backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'S&P 500 벤치마크',
+                                data: benchmarkReturns,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createComparisonChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '🔄 주요 보유종목 비교 분석';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const top8 = holdings.slice(0, 8);
+                
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: top8.map(h => h.ticker),
+                        datasets: [
+                            {
+                                label: '시장가치 (백만달러)',
+                                data: top8.map(h => (h.marketValue / 1000000).toFixed(1)),
+                                backgroundColor: 'rgba(42, 82, 152, 0.6)',
+                                borderColor: 'rgba(42, 82, 152, 1)',
+                                borderWidth: 2
+                            },
+                            {
+                                label: '보유주수 (백만주)',
+                                data: top8.map(h => (h.shares / 1000000).toFixed(1)),
+                                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 2,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: '시장가치 ($M)'
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: '보유주수 (M)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // === Advanced Portfolio Analysis Functions ===
+
+            getSP500BenchmarkWeights() {
+                // Simulated S&P 500 top holdings weights
+                return {
+                    'AAPL': 0.0720,  // Apple
+                    'MSFT': 0.0650,  // Microsoft
+                    'NVDA': 0.0580,  // NVIDIA
+                    'GOOGL': 0.0420, // Alphabet A
+                    'GOOG': 0.0400,  // Alphabet C
+                    'AMZN': 0.0380,  // Amazon
+                    'META': 0.0290,  // Meta
+                    'BRK.B': 0.0180, // Berkshire B
+                    'TSLA': 0.0170,  // Tesla
+                    'JPM': 0.0140    // JPMorgan
+                };
+            }
+
+            calculateWeights(holdings) {
+                const totalValue = holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                const weights = {};
+                holdings.forEach(holding => {
+                    weights[holding.ticker] = holding.marketValue / totalValue;
+                });
+                return weights;
+            }
+
+            calculateHHI(weights) {
+                // Herfindahl-Hirschman Index: Σ(wi²)
+                return Object.values(weights).reduce((sum, w) => sum + (w * w), 0);
+            }
+
+            calculateConcentrationRatios(weights) {
+                const sortedWeights = Object.values(weights).sort((a, b) => b - a);
+                return {
+                    CR3: sortedWeights.slice(0, 3).reduce((sum, w) => sum + w, 0),
+                    CR5: sortedWeights.slice(0, 5).reduce((sum, w) => sum + w, 0),
+                    CR10: sortedWeights.slice(0, 10).reduce((sum, w) => sum + w, 0)
+                };
+            }
+
+            calculateActiveShare(portfolioWeights, benchmarkWeights) {
+                // Active Share = 0.5 * Σ|wi - bi|
+                let activeShare = 0;
+                const allTickers = new Set([...Object.keys(portfolioWeights), ...Object.keys(benchmarkWeights)]);
+                
+                allTickers.forEach(ticker => {
+                    const portfolioWeight = portfolioWeights[ticker] || 0;
+                    const benchmarkWeight = benchmarkWeights[ticker] || 0;
+                    activeShare += Math.abs(portfolioWeight - benchmarkWeight);
+                });
+                
+                return activeShare * 0.5;
+            }
+
+            calculateTurnover(holdings) {
+                // Simulated turnover calculation (would need previous period data)
+                // For demo purposes, generate random turnover between 0.1-0.8
+                return Math.random() * 0.7 + 0.1;
+            }
+
+            calculateLiquidationDays(holdings) {
+                // Simulated liquidity analysis
+                // Average liquidation days assuming 20% of ADV
+                const avgDays = holdings.map(h => {
+                    // Larger holdings typically have better liquidity
+                    const baseLiquidity = Math.log(h.marketValue / 1000000) * 2;
+                    return Math.max(1, 30 - baseLiquidity + Math.random() * 10);
+                });
+                return avgDays.reduce((sum, days) => sum + days, 0) / avgDays.length;
+            }
+
+            diffHoldings(currentHoldings, previousHoldings) {
+                const currentWeights = this.calculateWeights(currentHoldings);
+                const previousWeights = this.calculateWeights(previousHoldings || []);
+                
+                const changes = [];
+                const allTickers = new Set([...Object.keys(currentWeights), ...Object.keys(previousWeights)]);
+                
+                allTickers.forEach(ticker => {
+                    const currentWeight = currentWeights[ticker] || 0;
+                    const previousWeight = previousWeights[ticker] || 0;
+                    const delta = currentWeight - previousWeight;
+                    
+                    let tag = '';
+                    if (previousWeight === 0 && currentWeight > 0) tag = '신규';
+                    else if (previousWeight > 0 && currentWeight === 0) tag = '청산';
+                    else if (delta > 0.001) tag = '증가';
+                    else if (delta < -0.001) tag = '감소';
+                    else tag = '유지';
+                    
+                    if (tag !== '유지') {
+                        changes.push({
+                            ticker,
+                            oldWeight: previousWeight,
+                            newWeight: currentWeight,
+                            delta: delta,
+                            tag: tag
+                        });
+                    }
+                });
+                
+                return changes.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+            }
+
+            cosineSimilarity(weights1, weights2) {
+                const tickers = new Set([...Object.keys(weights1), ...Object.keys(weights2)]);
+                let dotProduct = 0;
+                let norm1 = 0;
+                let norm2 = 0;
+                
+                tickers.forEach(ticker => {
+                    const w1 = weights1[ticker] || 0;
+                    const w2 = weights2[ticker] || 0;
+                    dotProduct += w1 * w2;
+                    norm1 += w1 * w1;
+                    norm2 += w2 * w2;
+                });
+                
+                return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+            }
+
+            createChangesChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '📈 포지션 변화 분석 (워터폴 차트)';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                
+                // Generate simulated position changes
+                const changes = this.generateSimulatedChanges(holdings);
+                
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: changes.map(c => c.ticker),
+                        datasets: [{
+                            label: '포지션 변화 (%)',
+                            data: changes.map(c => (c.delta * 100).toFixed(2)),
+                            backgroundColor: changes.map(c => 
+                                c.tag === '신규' ? '#51cf66' :
+                                c.tag === '청산' ? '#ff6b6b' :
+                                c.delta > 0 ? '#339af0' : '#ffa500'
+                            ),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const change = changes[context.dataIndex];
+                                        return `${change.ticker}: ${change.tag} (${context.parsed.y}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createConcentrationChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '🎯 집중도 분석 (HHI & CR 지수)';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const weights = this.calculateWeights(holdings);
+                const sortedHoldings = holdings.sort((a, b) => b.marketValue - a.marketValue);
+                
+                // Calculate cumulative concentration
+                let cumulative = 0;
+                const cumulativeData = sortedHoldings.slice(0, 20).map(holding => {
+                    cumulative += weights[holding.ticker];
+                    return (cumulative * 100).toFixed(1);
+                });
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: sortedHoldings.slice(0, 20).map((_, i) => `Top ${i + 1}`),
+                        datasets: [{
+                            label: '누적 집중도 (%)',
+                            data: cumulativeData,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createActiveShareChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '⚡ Active Share vs S&P 500 벤치마크';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const weights = this.calculateWeights(holdings);
+                
+                // Compare top holdings with benchmark
+                const comparison = [];
+                Object.keys(this.benchmarkWeights).forEach(ticker => {
+                    const portfolioWeight = (weights[ticker] || 0) * 100;
+                    const benchmarkWeight = this.benchmarkWeights[ticker] * 100;
+                    comparison.push({
+                        ticker,
+                        portfolio: portfolioWeight,
+                        benchmark: benchmarkWeight
+                    });
+                });
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: comparison.map(c => c.ticker),
+                        datasets: [{
+                            label: '포트폴리오 비중 (%)',
+                            data: comparison.map(c => c.portfolio.toFixed(2)),
+                            backgroundColor: 'rgba(102, 126, 234, 0.6)'
+                        }, {
+                            label: 'S&P 500 비중 (%)',
+                            data: comparison.map(c => c.benchmark.toFixed(2)),
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createLiquidityChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '💧 유동성 위험 스냅샷';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                const top10 = holdings.slice(0, 10);
+                
+                // Simulate liquidity risk (days to liquidate at 20% ADV)
+                const liquidityData = top10.map(holding => {
+                    const marketValue = holding.marketValue / 1000000; // Convert to millions
+                    const simulatedADV = Math.max(1, marketValue * (0.1 + Math.random() * 0.4)); // Simulated ADV
+                    const daysToLiquidate = (marketValue * 0.2) / (simulatedADV * 0.2); // 20% of ADV assumption
+                    return Math.max(1, Math.min(50, daysToLiquidate));
+                });
+
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: top10.map(h => h.ticker),
+                        datasets: [{
+                            label: '청산 소요일수 (20% ADV 기준)',
+                            data: liquidityData,
+                            backgroundColor: liquidityData.map(days => 
+                                days <= 5 ? '#51cf66' :
+                                days <= 15 ? '#ffa500' : '#ff6b6b'
+                            ),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const days = context.parsed.y;
+                                        const risk = days <= 5 ? '낮음' : days <= 15 ? '보통' : '높음';
+                                        return `${context.label}: ${days.toFixed(1)}일 (위험도: ${risk})`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '청산 소요일수'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createRiskChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '🛡️ 리스크 관리 분석';
+                
+                // Create risk metrics display instead of chart
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                
+                // Calculate risk metrics
+                const riskMetrics = this.calculateRiskMetrics(holdings);
+                const liquidityRisk = this.calculateLiquidityRisk(holdings);
+                
+                // Show performance metrics for risk
+                document.getElementById('performance-metrics').style.display = 'grid';
+                document.getElementById('performance-metrics').innerHTML = `
+                    <div class="metric-card">
+                        <div class="label">일간 VaR (95%)</div>
+                        <div class="value" style="color: #e74c3c;">-${riskMetrics.dailyVaR.toFixed(2)}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">일간 CVaR (95%)</div>
+                        <div class="value" style="color: #c0392b;">-${riskMetrics.dailyCVaR.toFixed(2)}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">연환산 변동성</div>
+                        <div class="value" style="color: #f39c12;">${riskMetrics.annualVolatility.toFixed(1)}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">가중 베타 (β)</div>
+                        <div class="value" style="color: #3498db;">${riskMetrics.weightedBeta.toFixed(2)}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">시장 -5% 쇼크</div>
+                        <div class="value" style="color: #e67e22;">${riskMetrics.marketShock.toFixed(2)}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">병렬 청산일수</div>
+                        <div class="value" style="color: #9b59b6;">${liquidityRisk.parallelDays}일</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">순차 청산일수</div>
+                        <div class="value" style="color: #8e44ad;">${liquidityRisk.sequentialDays}일</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">유동성 위험도</div>
+                        <div class="value" style="color: ${liquidityRisk.riskLevel === '높음' ? '#e74c3c' : liquidityRisk.riskLevel === '보통' ? '#f39c12' : '#27ae60'};">${liquidityRisk.riskLevel}</div>
+                    </div>
+                `;
+
+                // Display risk explanation chart
+                this.currentChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['변동성', '베타', '유동성', 'VaR', 'CVaR', '시장민감도'],
+                        datasets: [{
+                            label: '리스크 점수 (0-100)',
+                            data: [
+                                Math.min(100, riskMetrics.annualVolatility * 3),
+                                Math.min(100, Math.abs(riskMetrics.weightedBeta) * 50),
+                                liquidityRisk.riskScore,
+                                Math.min(100, riskMetrics.dailyVaR * 20),
+                                Math.min(100, riskMetrics.dailyCVaR * 15),
+                                Math.min(100, Math.abs(riskMetrics.marketShock) * 10)
+                            ],
+                            backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                            borderColor: 'rgba(231, 76, 60, 1)',
+                            pointBackgroundColor: 'rgba(231, 76, 60, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            createMarketResponseChart(holdings) {
+                document.getElementById('current-chart-title').textContent = '📰 시장반응 분석';
+                document.getElementById('performance-metrics').style.display = 'none';
+
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                
+                // Calculate portfolio weighted returns for different periods
+                const marketResponse = this.calculateMarketResponse(holdings);
+                
+                this.currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['1일 수익률', '5일 수익률', '20일 수익률'],
+                        datasets: [{
+                            label: '포트폴리오 가중 수익률 (%)',
+                            data: [marketResponse.day1, marketResponse.day5, marketResponse.day20],
+                            backgroundColor: [
+                                marketResponse.day1 >= 0 ? '#27ae60' : '#e74c3c',
+                                marketResponse.day5 >= 0 ? '#27ae60' : '#e74c3c',
+                                marketResponse.day20 >= 0 ? '#27ae60' : '#e74c3c'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed.y;
+                                        const sign = value >= 0 ? '+' : '';
+                                        return `${context.label}: ${sign}${value.toFixed(2)}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '수익률 (%)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            calculateRiskMetrics(holdings) {
+                const totalValue = holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                
+                // Simulate risk calculations
+                const weights = holdings.map(h => h.marketValue / totalValue);
+                const volatilities = holdings.map(() => 15 + Math.random() * 25); // 15-40% annual vol
+                const betas = holdings.map(() => 0.5 + Math.random() * 1.0); // 0.5-1.5 beta
+                
+                // Portfolio weighted volatility
+                const weightedVol = weights.reduce((sum, w, i) => sum + w * volatilities[i], 0);
+                const dailyVol = weightedVol / Math.sqrt(252); // Daily volatility
+                
+                // Portfolio weighted beta
+                const weightedBeta = weights.reduce((sum, w, i) => sum + w * betas[i], 0);
+                
+                return {
+                    dailyVaR: dailyVol * 1.645, // 95% VaR
+                    dailyCVaR: dailyVol * 2.33, // 95% CVaR (Expected Shortfall)
+                    annualVolatility: weightedVol,
+                    weightedBeta: weightedBeta,
+                    marketShock: weightedBeta * (-5) // -5% market shock
+                };
+            }
+
+            calculateLiquidityRisk(holdings) {
+                const top10 = holdings.slice(0, 10);
+                const totalValue = holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                
+                // Simulate ADV (Average Daily Volume) data
+                let totalParallelDays = 0;
+                let totalSequentialDays = 0;
+                
+                top10.forEach(holding => {
+                    const marketValue = holding.marketValue / 1000000; // Convert to millions
+                    const weight = holding.marketValue / totalValue;
+                    
+                    // Simulate ADV based on market cap proxy
+                    const simulatedADV = Math.max(1, marketValue * (0.05 + Math.random() * 0.15));
+                    
+                    // 20% of ADV assumption for liquidation
+                    const liquidationCapacity = simulatedADV * 0.2;
+                    const daysToLiquidate = Math.ceil(marketValue / liquidationCapacity);
+                    
+                    totalParallelDays = Math.max(totalParallelDays, daysToLiquidate);
+                    totalSequentialDays += daysToLiquidate * weight;
+                });
+                
+                const avgDays = (totalParallelDays + totalSequentialDays) / 2;
+                let riskLevel, riskScore;
+                
+                if (avgDays <= 10) {
+                    riskLevel = '낮음';
+                    riskScore = 25;
+                } else if (avgDays <= 30) {
+                    riskLevel = '보통';
+                    riskScore = 60;
+                } else {
+                    riskLevel = '높음';
+                    riskScore = 90;
+                }
+                
+                return {
+                    parallelDays: Math.ceil(totalParallelDays),
+                    sequentialDays: Math.ceil(totalSequentialDays),
+                    riskLevel: riskLevel,
+                    riskScore: riskScore
+                };
+            }
+
+            calculateMarketResponse(holdings) {
+                // Simulate market response data
+                // In real implementation, this would use actual price data
+                return {
+                    day1: (Math.random() - 0.5) * 4, // -2% to +2%
+                    day5: (Math.random() - 0.5) * 8, // -4% to +4%
+                    day20: (Math.random() - 0.5) * 15 // -7.5% to +7.5%
+                };
+            }
+
+            generateSimulatedChanges(holdings) {
+                // Generate simulated position changes for demo
+                return holdings.slice(0, 10).map(holding => {
+                    const changeType = Math.random();
+                    let delta = 0;
+                    let tag = '';
+                    
+                    if (changeType < 0.1) {
+                        tag = '신규';
+                        delta = Math.random() * 0.05;
+                    } else if (changeType < 0.2) {
+                        tag = '청산';
+                        delta = -Math.random() * 0.05;
+                    } else if (changeType < 0.6) {
+                        tag = '증가';
+                        delta = Math.random() * 0.03;
+                    } else {
+                        tag = '감소';
+                        delta = -Math.random() * 0.03;
+                    }
+                    
+                    return {
+                        ticker: holding.ticker,
+                        delta: delta,
+                        tag: tag
+                    };
+                });
+            }
+
+            exportToCSV() {
+                if (!this.currentData) {
+                    this.showError('No data to export. Please fetch data first.');
+                    return;
+                }
+
+                const headers = ['Rank', 'Company Name', 'Ticker', 'Shares', 'Market Value', 'Portfolio %', 'Change %'];
+                const totalValue = this.currentData.holdings.reduce((sum, h) => sum + h.marketValue, 0);
+                
+                const csvContent = [
+                    headers.join(','),
+                    ...this.currentData.holdings.map((holding, index) => [
+                        index + 1,
+                        `"${holding.name}"`,
+                        holding.ticker,
+                        holding.shares,
+                        holding.marketValue.toFixed(2),
+                        ((holding.marketValue / totalValue) * 100).toFixed(2),
+                        holding.change.toFixed(2)
+                    ].join(','))
+                ].join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const fundName = this.fundNames[this.currentData.cik] || 'HedgeFund';
+                a.href = url;
+                a.download = `${fundName.replace(/\s+/g, '_')}_${this.currentData.period}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                this.showNotification('Data exported successfully!');
+            }
+
+            comparePeriods() {
+                if (!this.currentData) {
+                    this.showError('데이터를 먼저 로드해주세요.');
+                    return;
+                }
+
+                // Generate historical data for comparison
+                const currentCik = this.currentData.cik;
+                const currentPeriod = this.currentData.period;
+                
+                this.showLoading(true);
+                
+                // Generate data for multiple periods
+                const periods = this.generateComparisonPeriods(currentPeriod);
+                const comparisonData = this.generateHistoricalData(currentCik, periods);
+                
+                this.displayPeriodComparison(comparisonData);
+                this.showLoading(false);
+                this.showNotification('분기별 포트폴리오 비교 데이터가 생성되었습니다! 📊');
+            }
+
+            generateComparisonPeriods(currentPeriod) {
+                const periods = [];
+                const currentDate = new Date(currentPeriod);
+                
+                // Generate 4 quarters including current
+                for (let i = 0; i < 4; i++) {
+                    const periodDate = new Date(currentDate);
+                    periodDate.setMonth(periodDate.getMonth() - (i * 3));
+                    
+                    const year = periodDate.getFullYear();
+                    const quarter = Math.floor(periodDate.getMonth() / 3) + 1;
+                    const quarterEnd = this.getQuarterEndDate(year, quarter);
+                    
+                    periods.unshift({
+                        label: `${year} Q${quarter}`,
+                        value: quarterEnd,
+                        date: new Date(quarterEnd)
+                    });
+                }
+                
+                return periods;
+            }
+
+            generateHistoricalData(cik, periods) {
+                const historicalData = [];
+                const baseHoldings = this.currentData.holdings;
+                
+                periods.forEach((period, index) => {
+                    // Generate variations of holdings for each period
+                    const holdings = this.generatePeriodVariation(baseHoldings, index, period);
+                    
+                    historicalData.push({
+                        period: period.label,
+                        date: period.date,
+                        holdings: holdings,
+                        totalValue: holdings.reduce((sum, h) => sum + h.marketValue, 0)
+                    });
+                });
+                
+                return historicalData;
+            }
+
+            generatePeriodVariation(baseHoldings, periodIndex, period) {
+                return baseHoldings.map(holding => {
+                    // Create realistic variations over time
+                    const volatilityFactor = 0.8 + (Math.random() * 0.4); // 0.8 - 1.2
+                    const trendFactor = 1 + (periodIndex * 0.1 * (Math.random() - 0.5)); // Growth/decline trend
+                    
+                    const newMarketValue = holding.marketValue * volatilityFactor * trendFactor;
+                    const priceChange = (volatilityFactor * trendFactor - 1) * 100;
+                    
+                    // Shares might change due to buybacks, splits, or position changes
+                    const sharesFactor = 0.9 + (Math.random() * 0.2); // 0.9 - 1.1
+                    const newShares = Math.floor(holding.shares * sharesFactor);
+                    
+                    return {
+                        ...holding,
+                        marketValue: newMarketValue,
+                        shares: newShares,
+                        change: priceChange,
+                        period: period.label
+                    };
+                });
+            }
+
+            displayPeriodComparison(comparisonData) {
+                // Show the comparison in the chart area
+                document.getElementById('current-chart-title').textContent = '🔄 분기별 포트폴리오 비교';
+                document.getElementById('performance-metrics').style.display = 'none';
+                
+                // Create comparison table
+                this.createComparisonTable(comparisonData);
+                
+                // Create trend chart
+                this.createComparisonChart(comparisonData);
+            }
+
+            createComparisonTable(comparisonData) {
+                const container = document.getElementById('holdings-container');
+                
+                // Create comparison table HTML
+                const comparisonHTML = `
+                    <div class="period-comparison">
+                        <h3>📊 분기별 주요 포지션 변화 <small style="color: #666; font-size: 14px; font-weight: 400;">(시각적 히트맵 & 트렌드 표시)</small></h3>
+                        <div class="legend-bar" style="margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: linear-gradient(135deg, rgba(231, 76, 60, 0.3), rgba(231, 76, 60, 0.5)); border-radius: 2px;"></div>
+                                <span style="font-size: 12px; color: #666;">높은 비중</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: linear-gradient(135deg, rgba(243, 156, 18, 0.3), rgba(243, 156, 18, 0.4)); border-radius: 2px;"></div>
+                                <span style="font-size: 12px; color: #666;">중간 비중</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <span style="font-size: 14px; color: #27ae60;">▲</span>
+                                <span style="font-size: 12px; color: #666;">증가</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <span style="font-size: 14px; color: #e74c3c;">▼</span>
+                                <span style="font-size: 12px; color: #666;">감소</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 4px; background: linear-gradient(90deg, #27ae60, #2ecc71); border-radius: 2px;"></div>
+                                <span style="font-size: 12px; color: #666;">변화량</span>
+                            </div>
+                        </div>
+                        <div class="comparison-table-container">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">
+                                            <div>📈 종목</div>
+                                            <small style="font-size: 10px; opacity: 0.8;">티커 & 회사명</small>
+                                        </th>
+                                        ${comparisonData.map((data, index) => `
+                                            <th>
+                                                <div>${data.period}</div>
+                                                <small style="font-size: 10px; opacity: 0.8;">
+                                                    ${index === 0 ? '기준' : index === comparisonData.length - 1 ? '최신' : '중간'}
+                                                </small>
+                                            </th>
+                                        `).join('')}
+                                        <th>
+                                            <div>📊 전체 변화</div>
+                                            <small style="font-size: 10px; opacity: 0.8;">기간 대비</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="comparison-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h3>💰 분기별 총 자산 추이</h3>
+                        <div class="total-value-comparison">
+                            ${comparisonData.map(data => `
+                                <div class="value-card">
+                                    <div class="period">${data.period}</div>
+                                    <div class="amount">${this.formatCurrency(data.totalValue)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = comparisonHTML;
+                
+                // Populate comparison table with top holdings
+                this.populateComparisonTable(comparisonData);
+                
+                container.style.display = 'block';
+            }
+
+            populateComparisonTable(comparisonData) {
+                const tbody = document.getElementById('comparison-tbody');
+                if (!tbody) return;
+                
+                // Get unique tickers from all periods
+                const allTickers = new Set();
+                comparisonData.forEach(data => {
+                    data.holdings.forEach(holding => allTickers.add(holding.ticker));
+                });
+                
+                // Focus on top 15 most significant holdings
+                const topTickers = Array.from(allTickers).slice(0, 15);
+                
+                // Calculate max values for normalization
+                const allValues = [];
+                topTickers.forEach(ticker => {
+                    comparisonData.forEach(data => {
+                        const holding = data.holdings.find(h => h.ticker === ticker);
+                        if (holding) allValues.push(holding.marketValue);
+                    });
+                });
+                const maxValue = Math.max(...allValues);
+                
+                topTickers.forEach((ticker, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // Find holding data for each period
+                    const holdingData = comparisonData.map(data => {
+                        return data.holdings.find(h => h.ticker === ticker);
+                    });
+                    
+                    const companyName = holdingData.find(h => h)?.name || ticker;
+                    
+                    // Calculate total change
+                    const firstValue = holdingData[0]?.marketValue || 0;
+                    const lastValue = holdingData[holdingData.length - 1]?.marketValue || 0;
+                    const totalChange = firstValue > 0 ? ((lastValue - firstValue) / firstValue * 100) : 0;
+                    
+                    // Apply visual styling based on performance
+                    let rowClass = '';
+                    if (totalChange > 20) rowClass = 'position-highlight';
+                    else if (totalChange < -15) rowClass = 'position-lowlight';
+                    
+                    row.className = rowClass;
+                    
+                    // Create cells with enhanced visuals
+                    const cells = [];
+                    
+                    // Company name cell
+                    cells.push(`
+                        <td style="text-align: left;">
+                            <div style="display: flex; align-items: center;">
+                                <span style="width: 20px; height: 20px; background: ${this.getTickerColor(index)}; border-radius: 50%; display: inline-block; margin-right: 8px;"></span>
+                                <div>
+                                    <strong style="font-size: 14px;">${ticker}</strong><br>
+                                    <small style="color: #666; font-size: 11px;">${companyName.substring(0, 25)}${companyName.length > 25 ? '...' : ''}</small>
+                                </div>
+                            </div>
+                        </td>
+                    `);
+                    
+                    // Period data cells
+                    holdingData.forEach((holding, periodIndex) => {
+                        if (!holding) {
+                            cells.push('<td class="position-cell">-</td>');
+                            return;
+                        }
+                        
+                        const totalValue = holding.marketValue;
+                        const percentage = (totalValue / comparisonData[periodIndex].totalValue * 100);
+                        const intensity = (totalValue / maxValue) * 100;
+                        
+                        // Determine size class
+                        let valueClass = 'market-value-small';
+                        if (percentage > 8) valueClass = 'market-value-large';
+                        else if (percentage > 4) valueClass = 'market-value-medium';
+                        
+                        // Determine heat intensity
+                        let heatClass = 'heatmap-cold';
+                        if (intensity > 75) heatClass = 'heatmap-hot';
+                        else if (intensity > 50) heatClass = 'heatmap-warm';
+                        else if (intensity > 25) heatClass = 'heatmap-cool';
+                        
+                        // Calculate change from previous period
+                        let trendArrow = '';
+                        let changePercent = 0;
+                        if (periodIndex > 0) {
+                            const prevHolding = holdingData[periodIndex - 1];
+                            if (prevHolding) {
+                                changePercent = ((totalValue - prevHolding.marketValue) / prevHolding.marketValue) * 100;
+                                if (changePercent > 2) trendArrow = '<span class="trend-arrow arrow-up">▲</span>';
+                                else if (changePercent < -2) trendArrow = '<span class="trend-arrow arrow-down">▼</span>';
+                                else trendArrow = '<span class="trend-arrow arrow-neutral">●</span>';
+                            }
+                        }
+                        
+                        cells.push(`
+                            <td class="position-cell ${heatClass}">
+                                <div class="position-value ${valueClass}">${this.formatCurrency(totalValue)}${trendArrow}</div>
+                                <div class="position-percentage">${percentage.toFixed(1)}%</div>
+                                <div class="position-shares">${holding.shares.toLocaleString()} 주</div>
+                                <div class="position-change-bar">
+                                    <div class="position-change-fill ${changePercent > 0 ? 'change-increase' : changePercent < 0 ? 'change-decrease' : 'change-neutral'}" 
+                                         style="width: ${Math.min(100, Math.abs(changePercent) * 2)}%"></div>
+                                </div>
+                            </td>
+                        `);
+                    });
+                    
+                    // Total change cell
+                    const changeIcon = totalChange > 10 ? '🚀' : totalChange > 0 ? '📈' : totalChange < -10 ? '💥' : '📉';
+                    const changeSize = Math.abs(totalChange) > 15 ? 'font-size: 16px; font-weight: 800;' : 'font-size: 14px; font-weight: 700;';
+                    
+                    cells.push(`
+                        <td class="${totalChange >= 0 ? 'change-positive' : 'change-negative'}" style="${changeSize}">
+                            ${changeIcon} ${totalChange >= 0 ? '+' : ''}${totalChange.toFixed(1)}%
+                        </td>
+                    `);
+                    
+                    row.innerHTML = cells.join('');
+                    tbody.appendChild(row);
+                });
+            }
+
+            getTickerColor(index) {
+                const colors = [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                    '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
+                    '#36A2EB', '#FFCE56', '#9966FF', '#FF9F40', '#C9CBCF'
+                ];
+                return colors[index % colors.length];
+            }
+
+            createComparisonChart(comparisonData) {
+                const ctx = document.getElementById('main-chart').getContext('2d');
+                
+                // Get top 5 holdings for chart
+                const topHoldings = comparisonData[comparisonData.length - 1].holdings.slice(0, 5);
+                const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+                
+                const datasets = topHoldings.map((holding, index) => {
+                    const data = comparisonData.map(periodData => {
+                        const periodHolding = periodData.holdings.find(h => h.ticker === holding.ticker);
+                        return periodHolding ? (periodHolding.marketValue / periodData.totalValue * 100) : 0;
+                    });
+                    
+                    return {
+                        label: holding.ticker,
+                        data: data,
+                        borderColor: colors[index],
+                        backgroundColor: colors[index] + '20',
+                        tension: 0.4,
+                        fill: false
+                    };
+                });
+                
+                this.currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: comparisonData.map(d => d.period),
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '주요 종목별 포트폴리오 비중 변화 (%)'
+                            },
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '포트폴리오 비중 (%)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+
+            showLoading(show) {
+                document.getElementById('loading').style.display = show ? 'block' : 'none';
+                document.getElementById('fetch-data').disabled = show;
+            }
+
+            showError(message) {
+                document.getElementById('error-text').textContent = message;
+                document.getElementById('error-message').style.display = 'block';
+            }
+
+            hideError() {
+                document.getElementById('error-message').style.display = 'none';
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #51cf66;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    z-index: 1000;
+                    font-weight: 600;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize the hedge fund tracker
+        const hedgeFundTracker = new HedgeFundTracker();
+    </script>
+</body>
+</html>
