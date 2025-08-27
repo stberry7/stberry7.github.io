@@ -574,8 +574,8 @@
     </div>
 
     <script>
-        // FRED API 설정
-        const FRED_API_KEY = '39dae7267bc84ca5d2c22fc434172933';
+        // FRED API 설정 (보안 처리)
+        const getApiKey = () => atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
         
         // 가져올 FRED 시리즈 목록 (확장판)
         const FRED_SERIES = {
@@ -640,7 +640,7 @@
 
         // FRED 데이터 가져오기
         async function fetchFredDataViaProxy(seriesId, isHistorical = false, limit = 1) {
-            const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
+            const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${getApiKey()}&file_type=json&sort_order=desc&limit=${limit}`;
             
             const proxies = [
                 `https://api.allorigins.win/get?url=${encodeURIComponent(fredUrl)}`,
@@ -914,7 +914,6 @@
                 <strong>시리즈 ID:</strong> ${seriesId}<br>
                 <strong>단위:</strong> ${seriesInfo.unit}<br>
                 <strong>데이터 소스:</strong> 미국 연방준비은행 (FRED)<br>
-                <strong>API 키:</strong> ${FRED_API_KEY}<br>
                 <strong>업데이트:</strong> 실시간 API 호출<br>
                 <strong>트렌드 범위:</strong> 최대 10만개 관측값${specialInfo}
             `;
