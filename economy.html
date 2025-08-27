@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRED 확장 경제 지표 대시보드</title>
+    <title>FRED 스마트 캐시 경제 지표 대시보드</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,6 +97,7 @@
             cursor: pointer; 
             transition: all 0.3s ease; 
             border-radius: 8px; 
+            position: relative;
         }
         .indicator:hover { 
             background: #f8f9fa; 
@@ -127,6 +128,36 @@
             font-size: 0.8rem;
             color: #7f8c8d;
             margin-top: 5px;
+        }
+        .cache-status {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .cache-fresh {
+            background: #27ae60;
+            color: white;
+        }
+        .cache-valid {
+            background: #f39c12;
+            color: white;
+        }
+        .cache-expired {
+            background: #e74c3c;
+            color: white;
+        }
+        .cache-loading {
+            background: #3498db;
+            color: white;
+        }
+        .update-frequency {
+            font-size: 0.75rem;
+            color: #95a5a6;
+            margin-top: 2px;
         }
         .positive { color: #27ae60; }
         .negative { color: #e74c3c; }
@@ -179,12 +210,24 @@
             font-size: 0.9rem;
             border-left: 4px solid #3498db;
         }
+        .cache-metrics {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            border-left: 4px solid #16a085;
+        }
         .success-count {
             color: #27ae60;
             font-weight: bold;
         }
         .error-count {
             color: #e74c3c;
+            font-weight: bold;
+        }
+        .cache-count {
+            color: #f39c12;
             font-weight: bold;
         }
         .modal { 
@@ -270,46 +313,56 @@
 <body>
     <!-- 버전 정보 -->
     <div class="version-info">
-        FRED Extended v2.0 | 2025-08-26 18:00
+        FRED Smart Cache v3.0 | 2025-08-27
     </div>
 
     <div class="container">
-        <h1>🏛️ FRED 확장 경제 지표 대시보드</h1>
-        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 | U.S. Federal Reserve Economic Data</div>
+        <h1>🧠 FRED 스마트 캐시 경제 지표 대시보드</h1>
+        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 + 지능형 캐싱 시스템</div>
         <div class="last-updated" id="lastUpdated">
             마지막 업데이트: <span id="currentTime"></span>
         </div>
 
         <div class="status-info" id="statusInfo">
-            📊 FRED API 상태: <span class="loading">연결 중...</span>
+            📊 FRED API 상태: <span class="loading">스마트 캐시 시스템 초기화 중...</span>
+        </div>
+
+        <div class="cache-metrics" id="cacheMetrics">
+            🚀 캐시 성능: <span class="cache-count">캐시 데이터 로딩 중...</span>
         </div>
 
         <div class="indicators-grid">
             <!-- 인플레이션 & 물가 지표 -->
             <div class="category">
-                <h2>📈 인플레이션 & 물가 <span class="fred-logo">FRED</span></h2>
+                <h2>📈 인플레이션 & 물가 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('CPIAUCSL', '소비자물가지수 (CPI)')">
+                    <div class="cache-status cache-loading" id="CPIAUCSL-cache">확인중</div>
                     <div>
                         <div class="indicator-name">소비자물가지수 (CPI)
                             <div class="indicator-name-eng">Consumer Price Index</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="CPIAUCSL-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="CPIAUCSL">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('CPILFESL', '핵심 CPI (음식&에너지 제외)')">
+                    <div class="cache-status cache-loading" id="CPILFESL-cache">확인중</div>
                     <div>
                         <div class="indicator-name">핵심 CPI (음식&에너지 제외)
                             <div class="indicator-name-eng">Core CPI (Less Food & Energy)</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="CPILFESL-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="CPILFESL">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('PCEPI', 'PCE 물가지수')">
+                    <div class="cache-status cache-loading" id="PCEPI-cache">확인중</div>
                     <div>
                         <div class="indicator-name">PCE 물가지수
                             <div class="indicator-name-eng">PCE Price Index</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="PCEPI-date">-</div>
                     </div>
@@ -319,29 +372,35 @@
 
             <!-- 고용 지표 -->
             <div class="category">
-                <h2>💼 고용 지표 <span class="fred-logo">FRED</span></h2>
+                <h2>💼 고용 지표 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('UNRATE', '실업률')">
+                    <div class="cache-status cache-loading" id="UNRATE-cache">확인중</div>
                     <div>
                         <div class="indicator-name">실업률
                             <div class="indicator-name-eng">Unemployment Rate</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="UNRATE-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="UNRATE">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('PAYEMS', '비농업 고용자 수')">
+                    <div class="cache-status cache-loading" id="PAYEMS-cache">확인중</div>
                     <div>
                         <div class="indicator-name">비농업 고용자 수
                             <div class="indicator-name-eng">Nonfarm Payrolls</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="PAYEMS-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="PAYEMS">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('CIVPART', '경제활동참가율')">
+                    <div class="cache-status cache-loading" id="CIVPART-cache">확인중</div>
                     <div>
                         <div class="indicator-name">경제활동참가율
                             <div class="indicator-name-eng">Labor Force Participation Rate</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="CIVPART-date">-</div>
                     </div>
@@ -351,29 +410,35 @@
 
             <!-- 금리 & 채권 -->
             <div class="category">
-                <h2>💰 금리 & 채권 <span class="fred-logo">FRED</span></h2>
+                <h2>💰 금리 & 채권 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('FEDFUNDS', '연방기금금리')">
+                    <div class="cache-status cache-loading" id="FEDFUNDS-cache">확인중</div>
                     <div>
                         <div class="indicator-name">연방기금금리
                             <div class="indicator-name-eng">Federal Funds Rate</div>
+                            <div class="update-frequency">업데이트: 매일</div>
                         </div>
                         <div class="indicator-date" id="FEDFUNDS-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="FEDFUNDS">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('DGS10', '10년 국채 수익률')">
+                    <div class="cache-status cache-loading" id="DGS10-cache">확인중</div>
                     <div>
                         <div class="indicator-name">10년 국채 수익률
                             <div class="indicator-name-eng">10-Year Treasury Yield</div>
+                            <div class="update-frequency">업데이트: 매일</div>
                         </div>
                         <div class="indicator-date" id="DGS10-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="DGS10">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('DGS2', '2년 국채 수익률')">
+                    <div class="cache-status cache-loading" id="DGS2-cache">확인중</div>
                     <div>
                         <div class="indicator-name">2년 국채 수익률
                             <div class="indicator-name-eng">2-Year Treasury Yield</div>
+                            <div class="update-frequency">업데이트: 매일</div>
                         </div>
                         <div class="indicator-date" id="DGS2-date">-</div>
                     </div>
@@ -381,22 +446,26 @@
                 </div>
             </div>
 
-            <!-- 금융 조건 지표 (NEW) -->
+            <!-- 금융 조건 지표 -->
             <div class="category financial-conditions">
-                <h2>🏦 금융 조건 <span class="fred-logo">FRED</span></h2>
+                <h2>🏦 금융 조건 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('NFCI', '시카고 연은 금융상황지수')">
+                    <div class="cache-status cache-loading" id="NFCI-cache">확인중</div>
                     <div>
                         <div class="indicator-name">시카고 연은 금융상황지수
                             <div class="indicator-name-eng">Chicago Fed National Financial Conditions Index</div>
+                            <div class="update-frequency">업데이트: 매주</div>
                         </div>
                         <div class="indicator-date" id="NFCI-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="NFCI">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('BAMLH0A0HYM2EY', '하이일드 회사채 수익률')">
+                    <div class="cache-status cache-loading" id="BAMLH0A0HYM2EY-cache">확인중</div>
                     <div>
                         <div class="indicator-name">하이일드 회사채 수익률
                             <div class="indicator-name-eng">ICE BofA US High Yield Index Effective Yield</div>
+                            <div class="update-frequency">업데이트: 매주</div>
                         </div>
                         <div class="indicator-date" id="BAMLH0A0HYM2EY-date">-</div>
                     </div>
@@ -404,13 +473,15 @@
                 </div>
             </div>
 
-            <!-- 대출 기준 (NEW) -->
+            <!-- 대출 기준 -->
             <div class="category lending">
-                <h2>🏛️ 신용 & 대출 <span class="fred-logo">FRED</span></h2>
+                <h2>🏛️ 신용 & 대출 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('DRTSCILM', '은행 대출 기준 (중대기업)')">
+                    <div class="cache-status cache-loading" id="DRTSCILM-cache">확인중</div>
                     <div>
                         <div class="indicator-name">은행 대출 기준 (중대기업)
                             <div class="indicator-name-eng">Net % of Banks Tightening C&I Loans to Large & Mid Firms</div>
+                            <div class="update-frequency">업데이트: 분기별</div>
                         </div>
                         <div class="indicator-date" id="DRTSCILM-date">-</div>
                     </div>
@@ -418,13 +489,15 @@
                 </div>
             </div>
 
-            <!-- 소비자 심리 (NEW) -->
+            <!-- 소비자 심리 -->
             <div class="category sentiment">
-                <h2>🧠 소비자 심리 <span class="fred-logo">FRED</span></h2>
+                <h2>🧠 소비자 심리 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('UMCSENT', '미시간대 소비자심리지수')">
+                    <div class="cache-status cache-loading" id="UMCSENT-cache">확인중</div>
                     <div>
                         <div class="indicator-name">미시간대 소비자심리지수
                             <div class="indicator-name-eng">University of Michigan Consumer Sentiment</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="UMCSENT-date">-</div>
                     </div>
@@ -434,29 +507,35 @@
 
             <!-- GDP & 성장 -->
             <div class="category">
-                <h2>📊 GDP & 성장 <span class="fred-logo">FRED</span></h2>
+                <h2>📊 GDP & 성장 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('GDP', '실질 GDP')">
+                    <div class="cache-status cache-loading" id="GDP-cache">확인중</div>
                     <div>
                         <div class="indicator-name">실질 GDP
                             <div class="indicator-name-eng">Real Gross Domestic Product</div>
+                            <div class="update-frequency">업데이트: 분기별</div>
                         </div>
                         <div class="indicator-date" id="GDP-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="GDP">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('GDPPOT', '잠재 GDP')">
+                    <div class="cache-status cache-loading" id="GDPPOT-cache">확인중</div>
                     <div>
                         <div class="indicator-name">잠재 GDP
                             <div class="indicator-name-eng">Real Potential GDP</div>
+                            <div class="update-frequency">업데이트: 분기별</div>
                         </div>
                         <div class="indicator-date" id="GDPPOT-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="GDPPOT">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('INDPRO', '산업생산지수')">
+                    <div class="cache-status cache-loading" id="INDPRO-cache">확인중</div>
                     <div>
                         <div class="indicator-name">산업생산지수
                             <div class="indicator-name-eng">Industrial Production Index</div>
+                            <div class="update-frequency">업데이트: 6개월</div>
                         </div>
                         <div class="indicator-date" id="INDPRO-date">-</div>
                     </div>
@@ -466,29 +545,35 @@
 
             <!-- 주택 & 부동산 -->
             <div class="category">
-                <h2>🏠 주택 & 부동산 <span class="fred-logo">FRED</span></h2>
+                <h2>🏠 주택 & 부동산 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('HOUST', '주택 착공 건수')">
+                    <div class="cache-status cache-loading" id="HOUST-cache">확인중</div>
                     <div>
                         <div class="indicator-name">주택 착공 건수
                             <div class="indicator-name-eng">Housing Starts</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="HOUST-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="HOUST">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('CSUSHPISA', '케이스-쉴러 주택가격지수')">
+                    <div class="cache-status cache-loading" id="CSUSHPISA-cache">확인중</div>
                     <div>
                         <div class="indicator-name">케이스-쉴러 주택가격지수
                             <div class="indicator-name-eng">Case-Shiller Home Price Index</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="CSUSHPISA-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="CSUSHPISA">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('MORTGAGE30US', '30년 모기지 금리')">
+                    <div class="cache-status cache-loading" id="MORTGAGE30US-cache">확인중</div>
                     <div>
                         <div class="indicator-name">30년 모기지 금리
                             <div class="indicator-name-eng">30-Year Fixed Rate Mortgage</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="MORTGAGE30US-date">-</div>
                     </div>
@@ -498,29 +583,35 @@
 
             <!-- 통화 & 신용 -->
             <div class="category">
-                <h2>💳 통화 & 신용 <span class="fred-logo">FRED</span></h2>
+                <h2>💳 통화 & 신용 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('M2SL', '통화공급량 M2')">
+                    <div class="cache-status cache-loading" id="M2SL-cache">확인중</div>
                     <div>
                         <div class="indicator-name">통화공급량 M2
                             <div class="indicator-name-eng">M2 Money Stock</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="M2SL-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="M2SL">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('TOTALSA', '소비자 신용 잔액')">
+                    <div class="cache-status cache-loading" id="TOTALSA-cache">확인중</div>
                     <div>
                         <div class="indicator-name">소비자 신용 잔액
                             <div class="indicator-name-eng">Consumer Credit Outstanding</div>
+                            <div class="update-frequency">업데이트: 매월</div>
                         </div>
                         <div class="indicator-date" id="TOTALSA-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="TOTALSA">로딩중...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('DEXUSEU', 'USD/EUR 환율')">
+                    <div class="cache-status cache-loading" id="DEXUSEU-cache">확인중</div>
                     <div>
                         <div class="indicator-name">USD/EUR 환율
                             <div class="indicator-name-eng">U.S./Euro Foreign Exchange Rate</div>
+                            <div class="update-frequency">업데이트: 매일</div>
                         </div>
                         <div class="indicator-date" id="DEXUSEU-date">-</div>
                     </div>
@@ -528,13 +619,15 @@
                 </div>
             </div>
 
-            <!-- 인구학적 지표 (NEW) -->
+            <!-- 인구학적 지표 -->
             <div class="category demographics">
-                <h2>👥 인구 지표 <span class="fred-logo">FRED</span></h2>
+                <h2>👥 인구 지표 <span class="fred-logo">SMART</span></h2>
                 <div class="indicator" onclick="showDetails('LFWA64TTUSM647S', '노동가능인구 (15-64세)')">
+                    <div class="cache-status cache-loading" id="LFWA64TTUSM647S-cache">확인중</div>
                     <div>
                         <div class="indicator-name">노동가능인구 (15-64세)
                             <div class="indicator-name-eng">Working-Age Population (15-64 Years)</div>
+                            <div class="update-frequency">업데이트: 6개월</div>
                         </div>
                         <div class="indicator-date" id="LFWA64TTUSM647S-date">-</div>
                     </div>
@@ -543,8 +636,8 @@
             </div>
         </div>
 
-        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredData()">
-            🔄 FRED 데이터 새로고침 (25개 지표)
+        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart()">
+            🧠 스마트 캐시 새로고침 (25개 지표)
         </button>
     </div>
 
@@ -574,10 +667,46 @@
     </div>
 
     <script>
-        // FRED API 설정 (보안 처리)
+        // FRED API 설정
         const getApiKey = () => atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
         
-        // 가져올 FRED 시리즈 목록 (확장판)
+        // 데이터 업데이트 빈도 매핑 (스마트 캐시)
+        const DATA_UPDATE_FREQUENCIES = {
+            // 일일 업데이트
+            'FEDFUNDS': { cacheDays: 1, description: '매일' },
+            'DGS10': { cacheDays: 1, description: '매일' },
+            'DGS2': { cacheDays: 1, description: '매일' },
+            'DEXUSEU': { cacheDays: 1, description: '매일' },
+            
+            // 주간 업데이트
+            'BAMLH0A0HYM2EY': { cacheDays: 7, description: '매주' },
+            'NFCI': { cacheDays: 7, description: '매주' },
+            
+            // 월간 업데이트
+            'CPIAUCSL': { cacheDays: 30, description: '매월' },
+            'CPILFESL': { cacheDays: 30, description: '매월' },
+            'PCEPI': { cacheDays: 30, description: '매월' },
+            'UNRATE': { cacheDays: 30, description: '매월' },
+            'PAYEMS': { cacheDays: 30, description: '매월' },
+            'CIVPART': { cacheDays: 30, description: '매월' },
+            'HOUST': { cacheDays: 30, description: '매월' },
+            'CSUSHPISA': { cacheDays: 30, description: '매월' },
+            'MORTGAGE30US': { cacheDays: 30, description: '매월' },
+            'M2SL': { cacheDays: 30, description: '매월' },
+            'TOTALSA': { cacheDays: 30, description: '매월' },
+            'UMCSENT': { cacheDays: 30, description: '매월' },
+            
+            // 분기 업데이트
+            'GDP': { cacheDays: 90, description: '분기별' },
+            'GDPPOT': { cacheDays: 90, description: '분기별' },
+            'DRTSCILM': { cacheDays: 90, description: '분기별' },
+            
+            // 6개월 업데이트
+            'INDPRO': { cacheDays: 180, description: '6개월' },
+            'LFWA64TTUSM647S': { cacheDays: 180, description: '6개월' }
+        };
+        
+        // FRED 시리즈 목록
         const FRED_SERIES = {
             // 인플레이션 & 물가
             'CPIAUCSL': { name: '소비자물가지수 (CPI)', nameEng: 'Consumer Price Index', unit: 'Index' },
@@ -594,14 +723,14 @@
             'DGS10': { name: '10년 국채 수익률', nameEng: '10-Year Treasury Yield', unit: '%' },
             'DGS2': { name: '2년 국채 수익률', nameEng: '2-Year Treasury Yield', unit: '%' },
             
-            // 금융 조건 (NEW)
+            // 금융 조건
             'NFCI': { name: '시카고 연은 금융상황지수', nameEng: 'Chicago Fed National Financial Conditions Index', unit: 'Index' },
             'BAMLH0A0HYM2EY': { name: '하이일드 회사채 수익률', nameEng: 'ICE BofA US High Yield Index Effective Yield', unit: '%' },
             
-            // 신용 & 대출 (NEW)
+            // 신용 & 대출
             'DRTSCILM': { name: '은행 대출 기준', nameEng: 'Net % Banks Tightening C&I Loans to Large & Mid Firms', unit: 'Net Percent' },
             
-            // 소비자 심리 (NEW)
+            // 소비자 심리
             'UMCSENT': { name: '미시간대 소비자심리지수', nameEng: 'University of Michigan Consumer Sentiment', unit: 'Index' },
             
             // GDP & 성장
@@ -619,14 +748,81 @@
             'TOTALSA': { name: '소비자 신용 잔액', nameEng: 'Consumer Credit Outstanding', unit: 'Billions of Dollars' },
             'DEXUSEU': { name: 'USD/EUR 환율', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
             
-            // 인구학적 지표 (NEW)
+            // 인구학적 지표
             'LFWA64TTUSM647S': { name: '노동가능인구', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Thousands of Persons' }
         };
 
-        let loadResults = { success: 0, failed: 0, errors: [] };
+        let loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
         let currentSeriesId = '';
         let chartInstance = null;
         let seriesData = {};
+
+        // 캐시 유틸리티 함수들
+        function getCacheKey(seriesId) {
+            return `fred_cache_${seriesId}`;
+        }
+
+        function getCachedData(seriesId) {
+            const cached = localStorage.getItem(getCacheKey(seriesId));
+            return cached ? JSON.parse(cached) : null;
+        }
+
+        function setCachedData(seriesId, data) {
+            const cacheData = {
+                ...data,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(getCacheKey(seriesId), JSON.stringify(cacheData));
+        }
+
+        function shouldUpdateIndicator(seriesId) {
+            const cached = getCachedData(seriesId);
+            if (!cached) return true;
+            
+            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
+            const cacheAge = Date.now() - cached.timestamp;
+            const maxAge = frequency.cacheDays * 24 * 60 * 60 * 1000;
+            
+            return cacheAge > maxAge;
+        }
+
+        function getCacheStatus(seriesId) {
+            const cached = getCachedData(seriesId);
+            if (!cached) return 'expired';
+            
+            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
+            const cacheAge = Date.now() - cached.timestamp;
+            const maxAge = frequency.cacheDays * 24 * 60 * 60 * 1000;
+            const halfLife = maxAge * 0.5;
+            
+            if (cacheAge < halfLife) return 'fresh';
+            if (cacheAge < maxAge) return 'valid';
+            return 'expired';
+        }
+
+        function updateCacheStatusDisplay(seriesId, status, isFromCache = false) {
+            const element = document.getElementById(`${seriesId}-cache`);
+            if (!element) return;
+            
+            if (isFromCache) {
+                switch(status) {
+                    case 'fresh':
+                        element.className = 'cache-status cache-fresh';
+                        element.textContent = '최신';
+                        break;
+                    case 'valid':
+                        element.className = 'cache-status cache-valid';
+                        element.textContent = '캐시';
+                        break;
+                    default:
+                        element.className = 'cache-status cache-expired';
+                        element.textContent = '만료';
+                }
+            } else {
+                element.className = 'cache-status cache-fresh';
+                element.textContent = '새로운';
+            }
+        }
 
         // 실시간 시계 업데이트
         function updateClock() {
@@ -697,7 +893,7 @@
         }
 
         // FRED 데이터 표시 업데이트
-        function updateIndicatorDisplay(seriesId, data) {
+        function updateIndicatorDisplay(seriesId, data, isFromCache = false) {
             const element = document.getElementById(seriesId);
             const dateElement = document.getElementById(`${seriesId}-date`);
             
@@ -742,8 +938,13 @@
                 element.className = `indicator-value ${colorClass}`;
                 
                 if (dateElement) {
-                    dateElement.textContent = `업데이트: ${data.date}`;
+                    const cacheInfo = isFromCache ? ' (캐시)' : '';
+                    dateElement.textContent = `업데이트: ${data.date}${cacheInfo}`;
                 }
+
+                // 캐시 상태 업데이트
+                const cacheStatus = getCacheStatus(seriesId);
+                updateCacheStatusDisplay(seriesId, cacheStatus, isFromCache);
             }
         }
 
@@ -751,6 +952,7 @@
         function updateErrorDisplay(seriesId, error) {
             const element = document.getElementById(seriesId);
             const dateElement = document.getElementById(`${seriesId}-date`);
+            const cacheElement = document.getElementById(`${seriesId}-cache`);
             
             if (element) {
                 element.textContent = 'API 오류';
@@ -759,46 +961,86 @@
                 if (dateElement) {
                     dateElement.textContent = `오류: ${error}`;
                 }
+
+                if (cacheElement) {
+                    cacheElement.className = 'cache-status cache-expired';
+                    cacheElement.textContent = '오류';
+                }
             }
         }
 
-        // 모든 FRED 데이터 로딩
-        async function loadAllFredData() {
+        // 스마트 캐시 데이터 로딩
+        async function loadAllFredDataSmart() {
             const refreshBtn = document.getElementById('refreshBtn');
             const statusInfo = document.getElementById('statusInfo');
+            const cacheMetrics = document.getElementById('cacheMetrics');
             
             refreshBtn.disabled = true;
-            refreshBtn.innerHTML = '<span class="spinner"></span>FRED 확장 데이터 로딩 중...';
+            refreshBtn.innerHTML = '<span class="spinner"></span>스마트 캐시 로딩 중...';
             
-            loadResults = { success: 0, failed: 0, errors: [] };
-            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">25개 지표 로딩 중...</span>';
+            loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
+            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">스마트 캐시 시스템 분석 중...</span>';
 
-            // 모든 지표를 병렬로 로딩
-            const promises = Object.keys(FRED_SERIES).map(async (seriesId) => {
-                try {
-                    const data = await fetchFredDataViaProxy(seriesId);
-                    updateIndicatorDisplay(seriesId, data);
-                    loadResults.success++;
-                } catch (error) {
-                    console.error(`${seriesId} 로딩 실패:`, error.message);
-                    updateErrorDisplay(seriesId, error.message);
-                    loadResults.failed++;
-                    loadResults.errors.push(`${seriesId}: ${error.message}`);
+            // 캐시 상태 분석
+            const toUpdate = [];
+            const fromCache = [];
+
+            Object.keys(FRED_SERIES).forEach(seriesId => {
+                if (shouldUpdateIndicator(seriesId)) {
+                    toUpdate.push(seriesId);
+                } else {
+                    fromCache.push(seriesId);
                 }
             });
 
-            // 모든 요청 완료 대기
-            await Promise.all(promises);
+            // 캐시된 데이터 즉시 표시
+            fromCache.forEach(seriesId => {
+                const cached = getCachedData(seriesId);
+                if (cached) {
+                    updateIndicatorDisplay(seriesId, cached, true);
+                    loadResults.cached++;
+                }
+            });
+
+            // API 업데이트가 필요한 지표만 로딩
+            if (toUpdate.length > 0) {
+                statusInfo.innerHTML = `📊 FRED API 상태: <span class="loading">${toUpdate.length}개 지표 업데이트 중... (${fromCache.length}개 캐시 사용)</span>`;
+                
+                const promises = toUpdate.map(async (seriesId) => {
+                    try {
+                        const data = await fetchFredDataViaProxy(seriesId);
+                        setCachedData(seriesId, data);
+                        updateIndicatorDisplay(seriesId, data, false);
+                        loadResults.success++;
+                        loadResults.apiCalls++;
+                    } catch (error) {
+                        console.error(`${seriesId} 로딩 실패:`, error.message);
+                        updateErrorDisplay(seriesId, error.message);
+                        loadResults.failed++;
+                        loadResults.errors.push(`${seriesId}: ${error.message}`);
+                    }
+                });
+
+                await Promise.all(promises);
+            }
             
             // 결과 표시
-            const total = loadResults.success + loadResults.failed;
-            const successRate = ((loadResults.success / total) * 100).toFixed(1);
+            const total = loadResults.success + loadResults.failed + loadResults.cached;
+            const cacheHitRate = ((loadResults.cached / total) * 100).toFixed(1);
+            const apiSaved = loadResults.cached;
             
             statusInfo.innerHTML = `
-                📊 FRED API 로딩 완료 (25개 지표): 
+                📊 스마트 캐시 로딩 완료 (25개 지표): 
                 <span class="success-count">성공 ${loadResults.success}개</span> / 
-                <span class="error-count">실패 ${loadResults.failed}개</span> 
-                (성공률: ${successRate}%)
+                <span class="cache-count">캐시 ${loadResults.cached}개</span> / 
+                <span class="error-count">실패 ${loadResults.failed}개</span>
+            `;
+
+            cacheMetrics.innerHTML = `
+                🚀 캐시 성능: 
+                <span class="cache-count">캐시 적중률 ${cacheHitRate}%</span> | 
+                <span class="success-count">API 절약 ${apiSaved}회</span> | 
+                <span class="neutral">실제 호출 ${loadResults.apiCalls}회</span>
             `;
             
             if (loadResults.errors.length > 0) {
@@ -808,7 +1050,7 @@
             }
             
             refreshBtn.disabled = false;
-            refreshBtn.innerHTML = '🔄 FRED 데이터 새로고침 (25개 지표)';
+            refreshBtn.innerHTML = '🧠 스마트 캐시 새로고침 (25개 지표)';
             updateClock();
         }
 
@@ -901,7 +1143,12 @@
             document.getElementById('modalTitle').textContent = `${seriesName} 상세 정보`;
             
             const seriesInfo = FRED_SERIES[seriesId];
+            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
+            const cacheStatus = getCacheStatus(seriesId);
+            const cached = getCachedData(seriesId);
+            
             let specialInfo = '';
+            let cacheInfo = '';
             
             // 특별 지표들에 대한 추가 설명
             if (seriesId === 'NFCI') {
@@ -909,19 +1156,29 @@
             } else if (seriesId === 'DRTSCILM') {
                 specialInfo = '<br><strong>해석:</strong> 양수 = 대출기준 강화, 음수 = 대출기준 완화';
             }
+
+            // 캐시 정보
+            if (cached) {
+                const cacheAge = Math.floor((Date.now() - cached.timestamp) / (1000 * 60 * 60 * 24));
+                const nextUpdate = frequency.cacheDays - cacheAge;
+                cacheInfo = `<br><strong>캐시 상태:</strong> ${cacheStatus === 'fresh' ? '최신' : cacheStatus === 'valid' ? '유효' : '만료'} (${cacheAge}일 전 캐시)`;
+                if (nextUpdate > 0) {
+                    cacheInfo += `<br><strong>다음 업데이트:</strong> ${nextUpdate}일 후`;
+                }
+            }
             
             document.getElementById('seriesInfo').innerHTML = `
                 <strong>시리즈 ID:</strong> ${seriesId}<br>
                 <strong>단위:</strong> ${seriesInfo.unit}<br>
+                <strong>업데이트 주기:</strong> ${frequency.description} (${frequency.cacheDays}일 캐시)<br>
                 <strong>데이터 소스:</strong> 미국 연방준비은행 (FRED)<br>
-                <strong>업데이트:</strong> 실시간 API 호출<br>
-                <strong>트렌드 범위:</strong> 최대 10만개 관측값${specialInfo}
+                <strong>스마트 캐시:</strong> 활성화${cacheInfo}${specialInfo}
             `;
             
             document.getElementById('detailModal').style.display = 'block';
             
-            // 기본 1년 차트 로드
-            updateChart('1Y');
+            // 기본 1개월 차트 로드 (빠른 로딩)
+            updateChart('1M');
         }
 
         // 모달 닫기
@@ -945,11 +1202,11 @@
         // 페이지 로드시 초기화
         document.addEventListener('DOMContentLoaded', function() {
             updateClock();
-            loadAllFredData();
+            loadAllFredDataSmart();
             
             setInterval(updateClock, 1000);
-            // 10분마다 자동 새로고침
-            setInterval(loadAllFredData, 600000);
+            // 30분마다 스마트 캐시 체크 (필요한 것만 업데이트)
+            setInterval(loadAllFredDataSmart, 1800000);
         });
     </script>
 
