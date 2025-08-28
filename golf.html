@@ -2,302 +2,596 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>골프 대시보드 (파일 캐시 기능)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>골프 대시보드 (모바일 최적화)</title>
 
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- PapaParse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* ===== 다크 테마 & 기본 레이아웃 ===== */
-    *{margin:0;padding:0;box-sizing:border-box}
+    /* ===== 다크 테마 & 모바일 최적화 ===== */
     :root{
-      --bg-primary:#0f1419;--bg-secondary:#1a1f27;--bg-card:#1e242c;
-      --text-primary:#e8eaed;--text-secondary:#9aa0a6;
-      --accent:#4ade80;--accent2:#60a5fa;--border:#2d3339;
+      --bs-dark: #0d1117;
+      --bs-dark-rgb: 13, 17, 23;
+      --bs-body-bg: #0d1117;
+      --bs-body-color: #f0f6fc;
+      --bs-card-bg: #161b22;
+      --bs-border-color: #30363d;
+      --bs-primary: #238636;
+      --bs-success: #238636;
+      --bs-warning: #da8b26;
+      --bs-danger: #f85149;
+      --bs-info: #1f6feb;
+      --bs-secondary: #6e7681;
     }
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
-      background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 100%);
-      color:var(--text-primary);min-height:100vh;line-height:1.6}
-    .container{max-width:1400px;margin:0 auto;padding:0 20px}
 
-    /* 캐시 상태 표시 */
-    .cache-status{
-      background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
-      padding:1.4rem;margin-bottom:1.5rem;text-align:center;
+    body {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      color: var(--bs-body-color);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    .cache-info{color:var(--text-secondary);font-size:0.9rem;margin:0.5rem 0;}
-    .cache-buttons{display:flex;gap:12px;justify-content:center;margin-top:1rem;flex-wrap:wrap;}
-    .cache-btn{padding:0.6rem 1.4rem;border:2px solid var(--accent);border-radius:8px;
-      background:var(--bg-secondary);color:var(--accent);cursor:pointer;font-weight:600;
-      transition:all 0.3s ease;}
-    .cache-btn:hover{background:var(--accent);color:#0b0f14;}
-    .cache-btn.secondary{border-color:#f59e0b;color:#f59e0b;}
-    .cache-btn.secondary:hover{background:#f59e0b;color:#0b0f14;}
 
-    /* 업로드 */
-    .upload-section{min-height:100vh;display:flex;align-items:center;justify-content:center}
-    .main-title{font-size:2.4rem;text-align:center;margin-bottom:1rem;
-      background:linear-gradient(135deg,var(--accent) 0%,#22c55e 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .subtitle{text-align:center;color:var(--text-secondary);margin-bottom:2rem;font-size:1.05rem}
-    .upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem;margin-bottom:1.5rem}
-    .upload-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;text-align:center;transition:.2s}
-    .upload-card:hover{transform:translateY(-3px)}
-    .upload-icon{font-size:2.2rem;margin-bottom:.6rem}
-    input[type="file"]{display:none}
-    .file-label{display:inline-block;padding:.6rem 1.4rem;background:var(--bg-secondary);
-      border:2px solid var(--accent);border-radius:8px;color:var(--accent);cursor:pointer;font-weight:600}
-    .file-label:hover{background:var(--accent);color:#0b0f14}
-    .file-status{margin-top:.6rem;font-size:.9rem;color:var(--text-secondary);min-height:20px;white-space:pre-line}
-    .file-status.success{color:#4ade80}.file-status.warn{color:#fbbf24}
-    .analyze-btn{display:block;margin:10px auto 0 auto;padding:.9rem 2.2rem;
-      background:linear-gradient(135deg,var(--accent) 0%,#22c55e 100%);
-      border:none;border-radius:12px;color:#0b0f14;font-weight:700;cursor:pointer}
-    .analyze-btn:disabled{opacity:.5;cursor:not-allowed}
+    /* 캐시 상태 */
+    .cache-status {
+      background: var(--bs-card-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
 
-    /* 대시보드 헤더 */
-    .dashboard-section{padding:24px 0}
-    .dashboard-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-    .dashboard-header h1{font-size:1.8rem;background:linear-gradient(135deg,var(--accent) 0%,#22c55e 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .back-btn{padding:.45rem 1.2rem;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);cursor:pointer}
+    /* 업로드 섹션 */
+    .upload-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .main-title {
+      background: linear-gradient(135deg, var(--bs-success) 0%, #2ea043 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+
+    .upload-card {
+      background: var(--bs-card-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .upload-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* 파일 업로드 */
+    .file-label {
+      border: 2px solid var(--bs-success);
+      color: var(--bs-success);
+      background: transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .file-label:hover {
+      background: var(--bs-success);
+      color: white;
+    }
+
+    /* 대시보드 */
+    .dashboard-header h1 {
+      background: linear-gradient(135deg, var(--bs-success) 0%, #2ea043 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+
+    /* KPI 카드 */
+    .kpi-card {
+      background: var(--bs-card-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .kpi-value {
+      color: var(--bs-success);
+      font-weight: 800;
+    }
+
+    /* 차트 컨테이너 */
+    .chart-container {
+      background: var(--bs-card-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
 
     /* 필터 바 */
-    .filter-bar{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:18px}
-    .filter-grid{display:grid;grid-template-columns:2fr 2fr 2fr 2fr;gap:10px}
-    .filter-group label{display:block;font-size:.85rem;color:var(--text-secondary);margin-bottom:6px}
-    .select, .input, .btn{width:100%;padding:.6rem;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;color:var(--text-primary)}
-    .check-row{display:flex;gap:10px;flex-wrap:wrap}
-    .check-row label{display:flex;align-items:center;gap:6px;background:var(--bg-secondary);border:1px solid var(--border);padding:.35rem .6rem;border-radius:8px}
-    .apply-btn{padding:.6rem 1rem;background:var(--accent2);color:#0b0f14;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+    .filter-bar {
+      background: var(--bs-card-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
 
-    /* KPI */
-    .kpi-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0 20px}
-    .kpi-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
-    .kpi-label{color:var(--text-secondary);font-size:.9rem;margin-bottom:.4rem}
-    .kpi-value{font-size:1.8rem;font-weight:800;color:var(--accent)}
+    /* 모바일 최적화 */
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 1.8rem;
+      }
+      
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .dashboard-header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .kpi-section .col-6 {
+        margin-bottom: 1rem;
+      }
+      
+      .chart-container {
+        margin-bottom: 1rem;
+      }
+      
+      .filter-bar .row > div {
+        margin-bottom: 0.75rem;
+      }
+      
+      canvas {
+        max-height: 250px;
+      }
+      
+      table {
+        font-size: 0.85rem;
+      }
+      
+      th, td {
+        padding: 0.5rem 0.25rem;
+        word-wrap: break-word;
+      }
+    }
 
-    /* 차트 */
-    .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
-    .chart-container{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px}
-    .chart-container h3{margin-bottom:8px;font-size:1.05rem}
-    .full-width{grid-column:span 2}
-    canvas{max-height:320px}
+    @media (max-width: 576px) {
+      .main-title {
+        font-size: 1.5rem;
+      }
+      
+      .dashboard-header h1 {
+        font-size: 1.3rem;
+      }
+      
+      .kpi-section .col-6 .kpi-value {
+        font-size: 1.5rem;
+      }
+      
+      canvas {
+        max-height: 200px;
+      }
+      
+      .btn {
+        font-size: 0.9rem;
+      }
+      
+      .form-control, .form-select {
+        font-size: 0.9rem;
+      }
+    }
 
-    /* 상세 */
-    .round-details{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px}
-    .round-select{width:100%;max-width:480px}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid var(--border);padding:.6rem;text-align:center}
-    th{background:var(--bg-secondary);color:var(--accent)}
-    .mode-row{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap}
-    .mode-row label{display:flex;align-items:center;gap:6px;background:var(--bg-secondary);border:1px solid var(--border);padding:.35rem .6rem;border-radius:8px}
-    .muted{color:var(--text-secondary);font-size:.9rem}
+    /* 다크 테마 Bootstrap 오버라이드 */
+    .card {
+      background: var(--bs-card-bg);
+      border-color: var(--bs-border-color);
+    }
 
+    .form-control, .form-select {
+      background: var(--bs-card-bg);
+      border-color: var(--bs-border-color);
+      color: var(--bs-body-color);
+    }
 
-    @media (max-width: 1024px){.filter-grid{grid-template-columns:1fr 1fr}}
-    @media (max-width: 768px){.chart-grid{grid-template-columns:1fr}.full-width{grid-column:span 1}}
+    .form-control:focus, .form-select:focus {
+      background: var(--bs-card-bg);
+      border-color: var(--bs-success);
+      box-shadow: 0 0 0 0.25rem rgba(35, 134, 54, 0.25);
+      color: var(--bs-body-color);
+    }
+
+    .btn-success {
+      --bs-btn-bg: var(--bs-success);
+      --bs-btn-border-color: var(--bs-success);
+    }
+
+    .btn-outline-success {
+      --bs-btn-color: var(--bs-success);
+      --bs-btn-border-color: var(--bs-success);
+      --bs-btn-hover-bg: var(--bs-success);
+    }
+
+    .table-dark {
+      --bs-table-bg: var(--bs-card-bg);
+      --bs-table-border-color: var(--bs-border-color);
+    }
+
+    /* 터치 친화적 */
+    .btn, .form-control, .form-select, .file-label {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+
+    /* 스크롤바 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bs-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--bs-secondary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--bs-body-color);
+    }
+
+    /* 로딩 상태 */
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* 접근성 개선 */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
   <!-- 업로드 섹션 -->
   <div class="upload-section" id="uploadSection">
-    <div class="container">
-      <h1 class="main-title">⛳ 골프 대시보드 (캐시 기능)</h1>
-      <p class="subtitle">3개 CSV 파일을 한 번 업로드하면 다음번에 자동으로 불러옵니다!</p>
+    <div class="container-fluid px-3">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <h1 class="main-title text-center mb-3">⛳ 골프 대시보드</h1>
+          <p class="text-center text-muted mb-4">3개 CSV 파일을 한 번 업로드하면 다음번에 자동으로 불러옵니다!</p>
 
-      <!-- 캐시 상태 표시 -->
-      <div class="cache-status" id="cacheStatus" style="display:none;">
-        <div class="upload-icon">📂</div>
-        <h3>저장된 데이터 발견!</h3>
-        <div class="cache-info" id="cacheInfo">마지막 업로드: <span id="lastUploadDate"></span></div>
-        <div class="cache-info">파일 크기: <span id="cacheSize"></span></div>
-        <div class="cache-buttons">
-          <button id="useCacheBtn" class="cache-btn">💾 저장된 데이터 사용</button>
-          <button id="uploadNewBtn" class="cache-btn secondary">🔄 새 파일 업로드</button>
-          <button id="clearCacheBtn" class="cache-btn secondary">🗑️ 캐시 삭제</button>
-        </div>
-      </div>
+          <!-- 캐시 상태 표시 -->
+          <div class="cache-status p-4 mb-4 d-none" id="cacheStatus">
+            <div class="fs-1 mb-3">📂</div>
+            <h4 class="mb-3">저장된 데이터 발견!</h4>
+            <div class="text-muted mb-2">마지막 업로드: <span id="lastUploadDate"></span></div>
+            <div class="text-muted mb-3">파일 크기: <span id="cacheSize"></span></div>
+            <div class="d-flex gap-2 flex-wrap justify-content-center">
+              <button id="useCacheBtn" class="btn btn-success">
+                <i class="fas fa-save"></i> 저장된 데이터 사용
+              </button>
+              <button id="uploadNewBtn" class="btn btn-outline-warning">
+                <i class="fas fa-sync"></i> 새 파일 업로드
+              </button>
+              <button id="clearCacheBtn" class="btn btn-outline-danger">
+                <i class="fas fa-trash"></i> 캐시 삭제
+              </button>
+            </div>
+          </div>
 
-      <!-- 파일 업로드 영역 -->
-      <div id="uploadArea">
-        <div class="upload-grid">
-          <div class="upload-card">
-            <div class="upload-icon">📦</div>
-            <h3>세트 업로드 (3개 파일)</h3>
-            <input type="file" id="allFiles" accept=".csv" multiple/>
-            <label class="file-label" for="allFiles">파일 3개 선택</label>
-            <div id="allStatus" class="file-status"></div>
+          <!-- 파일 업로드 영역 -->
+          <div id="uploadArea">
+            <div class="card upload-card p-4 text-center">
+              <div class="fs-1 mb-3">📦</div>
+              <h4 class="mb-3">세트 업로드 (3개 파일)</h4>
+              <input type="file" id="allFiles" accept=".csv" multiple class="d-none"/>
+              <label class="file-label fw-bold" for="allFiles">
+                <i class="fas fa-upload"></i> 파일 3개 선택
+              </label>
+              <div id="allStatus" class="mt-3 text-muted"></div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button id="analyzeBtn" class="btn btn-success btn-lg px-5" disabled>
+                <i class="fas fa-chart-line"></i> 분석 대시보드 보기
+              </button>
+              <p class="text-muted mt-2 small">
+                * 라운드 연결 키: <code>date</code> + <code>course name</code>
+              </p>
+            </div>
           </div>
         </div>
-
-        <button id="analyzeBtn" class="analyze-btn" disabled>분석 대시보드 보기</button>
-        <p class="muted" style="text-align:center;margin-top:8px">
-          * 라운드 연결 키: <code>date</code> + <code>course name</code>
-        </p>
       </div>
     </div>
   </div>
 
   <!-- 대시보드 -->
-  <div class="dashboard-section" id="dashboardSection" style="display:none;">
-    <div class="container">
-      <div class="dashboard-header">
-        <h1>골프 퍼포먼스 대시보드 <span class="muted">(캐시 사용중)</span></h1>
-        <button id="backBtn" class="back-btn">새로운 데이터 업로드</button>
+  <div class="dashboard-section d-none" id="dashboardSection">
+    <div class="container-fluid px-3">
+      <div class="dashboard-header d-flex justify-content-between align-items-center mb-4">
+        <h1>골프 퍼포먼스 대시보드 <small class="text-muted">(캐시 사용중)</small></h1>
+        <button id="backBtn" class="btn btn-outline-secondary">
+          <i class="fas fa-arrow-left"></i> 새로운 데이터 업로드
+        </button>
       </div>
 
       <!-- 필터 바 -->
-      <div class="filter-bar">
-        <div class="filter-grid">
-          <div class="filter-group">
-            <label>골프장 선택</label>
-            <select id="courseSelect" class="select"></select>
+      <div class="filter-bar card p-3 mb-4">
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label small">골프장 선택</label>
+            <select id="courseSelect" class="form-select"></select>
           </div>
 
-          <div class="filter-group">
-            <label>홀 타입 선택</label>
-            <div class="check-row">
-              <label><input type="checkbox" class="parCheck" value="3" checked>Par 3</label>
-              <label><input type="checkbox" class="parCheck" value="4" checked>Par 4</label>
-              <label><input type="checkbox" class="parCheck" value="5" checked>Par 5</label>
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label small">홀 타입</label>
+            <div class="d-flex gap-2 flex-wrap">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input parCheck" value="3" checked id="par3">
+                <label class="form-check-label small" for="par3">Par 3</label>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input parCheck" value="4" checked id="par4">
+                <label class="form-check-label small" for="par4">Par 4</label>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input parCheck" value="5" checked id="par5">
+                <label class="form-check-label small" for="par5">Par 5</label>
+              </div>
             </div>
           </div>
 
-          <div class="filter-group">
-            <label>기간 보기</label>
-            <select id="periodMode" class="select">
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label small">기간 보기</label>
+            <select id="periodMode" class="form-select">
               <option value="round">라운드별</option>
               <option value="month">월별</option>
               <option value="quarter">분기별</option>
             </select>
           </div>
 
-          <div class="filter-group">
-            <label>날짜 범위(월 단위)</label>
-            <div style="display:flex;gap:8px">
-              <input type="month" id="startMonth" class="input"/>
-              <input type="month" id="endMonth" class="input"/>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <label>라운드 길이</label>
-            <select id="roundLength" class="select">
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label small">라운드 길이</label>
+            <select id="roundLength" class="form-select">
               <option value="all">전체</option>
               <option value="9">9홀만</option>
               <option value="18">18홀만</option>
             </select>
           </div>
 
-          <div class="filter-group">
-            <label>슬로프 보정 사용</label>
-            <label class="check-row"><input type="checkbox" id="useSlope"> rounds CSV의 <em>slope</em>/<em>course rating</em> 사용</label>
+          <div class="col-12 col-md-6">
+            <label class="form-label small">날짜 범위</label>
+            <div class="row g-2">
+              <div class="col">
+                <input type="month" id="startMonth" class="form-control"/>
+              </div>
+              <div class="col">
+                <input type="month" id="endMonth" class="form-control"/>
+              </div>
+            </div>
           </div>
 
-          <div class="filter-group">
-            <label>컷오프 모드</label>
-            <select id="cutoffMode" class="select">
+          <div class="col-12 col-md-6">
+            <label class="form-label small">옵션</label>
+            <div class="d-flex gap-3 flex-wrap">
+              <div class="form-check">
+                <input type="checkbox" id="useSlope" class="form-check-input">
+                <label class="form-check-label small" for="useSlope">슬로프 보정</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label small">컷오프 모드</label>
+            <select id="cutoffMode" class="form-select">
               <option value="global" selected>전역 컷오프</option>
               <option value="percat">클럽군별 컷오프</option>
             </select>
           </div>
 
-          <div class="filter-group" id="globalCutoffGroup">
-            <label>노이즈 컷오프 (yd, ≥ 제외)</label>
-            <input type="number" id="globalCutoff" class="input" value="300" min="100" max="600" step="10"/>
+          <div class="col-12 col-md-6 col-lg-3" id="globalCutoffGroup">
+            <label class="form-label small">노이즈 컷오프 (yd)</label>
+            <input type="number" id="globalCutoff" class="form-control" value="300" min="100" max="600" step="10"/>
           </div>
 
-          <div class="filter-group" id="perCatWrap" style="grid-column:span 2; display:none">
-            <label>군별 컷오프 (yd, ≥ 제외)</label>
-            <div class="check-row" style="gap:8px">
-              <span>Driver</span><input type="number" id="cutD" class="input" value="330" style="width:90px">
-              <span>Wood</span><input type="number" id="cutW" class="input" value="300" style="width:90px">
-              <span>Hybrid</span><input type="number" id="cutH" class="input" value="280" style="width:90px">
-              <span>Iron</span><input type="number" id="cutI" class="input" value="260" style="width:90px">
-              <span>Wedge</span><input type="number" id="cutG" class="input" value="200" style="width:90px">
+          <div class="col-12 d-none" id="perCatWrap">
+            <label class="form-label small">군별 컷오프 (yd)</label>
+            <div class="row g-2">
+              <div class="col-4 col-sm-2">
+                <label class="form-label small">Driver</label>
+                <input type="number" id="cutD" class="form-control" value="330">
+              </div>
+              <div class="col-4 col-sm-2">
+                <label class="form-label small">Wood</label>
+                <input type="number" id="cutW" class="form-control" value="300">
+              </div>
+              <div class="col-4 col-sm-2">
+                <label class="form-label small">Hybrid</label>
+                <input type="number" id="cutH" class="form-control" value="280">
+              </div>
+              <div class="col-4 col-sm-2">
+                <label class="form-label small">Iron</label>
+                <input type="number" id="cutI" class="form-control" value="260">
+              </div>
+              <div class="col-4 col-sm-2">
+                <label class="form-label small">Wedge</label>
+                <input type="number" id="cutG" class="form-control" value="200">
+              </div>
             </div>
           </div>
         </div>
-        <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-          <button id="applyFilters" class="apply-btn">필터 적용</button>
+        
+        <div class="mt-3 text-end">
+          <button id="applyFilters" class="btn btn-info">
+            <i class="fas fa-filter"></i> 필터 적용
+          </button>
         </div>
       </div>
 
       <!-- KPI -->
-      <div class="kpi-section">
-        <div class="kpi-card"><div class="kpi-label">평균 스코어<span id="slopeBadge" class="muted"></span><br><span class="muted">(※ 18홀만 계산)</span></div><div id="avgScore" class="kpi-value">-</div></div>
-        <div class="kpi-card"><div class="kpi-label">페어웨이 안착률</div><div id="fairwayRate" class="kpi-value">-</div></div>
-        <div class="kpi-card"><div class="kpi-label">그린 적중률</div><div id="girRate" class="kpi-value">-</div></div>
-        <div class="kpi-card"><div class="kpi-label">평균 퍼팅</div><div id="avgPutts" class="kpi-value">-</div></div>
+      <div class="kpi-section row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="kpi-card card text-center p-3">
+            <div class="card-body p-0">
+              <div class="text-muted small mb-1">
+                평균 스코어<span id="slopeBadge"></span><br>
+                <span class="small">(18홀만 계산)</span>
+              </div>
+              <div id="avgScore" class="kpi-value fs-3 fw-bold">-</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="kpi-card card text-center p-3">
+            <div class="card-body p-0">
+              <div class="text-muted small mb-1">페어웨이 안착률</div>
+              <div id="fairwayRate" class="kpi-value fs-3 fw-bold">-</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="kpi-card card text-center p-3">
+            <div class="card-body p-0">
+              <div class="text-muted small mb-1">그린 적중률</div>
+              <div id="girRate" class="kpi-value fs-3 fw-bold">-</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="kpi-card card text-center p-3">
+            <div class="card-body p-0">
+              <div class="text-muted small mb-1">평균 퍼팅</div>
+              <div id="avgPutts" class="kpi-value fs-3 fw-bold">-</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 차트 그리드 1 -->
-      <div class="chart-grid">
-        <div class="chart-container">
-          <h3>스코어 트렌드 (※ 18H ≤ 70 제외)</h3>
-          <canvas id="scoreTrendChart"></canvas>
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">스코어 트렌드 (18H ≤ 70 제외)</h6>
+            <canvas id="scoreTrendChart"></canvas>
+          </div>
         </div>
-        <div class="chart-container">
-          <h3>라운드당 평균 퍼팅 트렌드</h3>
-          <canvas id="puttTrendChart"></canvas>
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">라운드당 평균 퍼팅 트렌드</h6>
+            <canvas id="puttTrendChart"></canvas>
+          </div>
         </div>
-
-        <div class="chart-container">
-          <h3>라운드당 평균 웨지 거리 트렌드</h3>
-          <canvas id="wedgeTrendChart"></canvas>
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">라운드당 평균 웨지 거리 트렌드</h6>
+            <canvas id="wedgeTrendChart"></canvas>
+          </div>
         </div>
-        <div class="chart-container">
-          <h3>코스 경험 비교: 첫 방문 vs 이후 평균</h3>
-          <canvas id="courseFirstVsLaterChart"></canvas>
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">코스 경험 비교: 첫 방문 vs 이후 평균</h6>
+            <canvas id="courseFirstVsLaterChart"></canvas>
+          </div>
         </div>
-
-        <div class="chart-container full-width">
-          <h3>방문 횟수(1,2,3...)별 평균 스코어</h3>
-          <canvas id="visitCountTrendChart"></canvas>
+        <div class="col-12">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">방문 횟수별 평균 스코어</h6>
+            <canvas id="visitCountTrendChart"></canvas>
+          </div>
         </div>
       </div>
 
-      <!-- 홀/드라이빙/클럽 -->
-      <div class="chart-grid">
-        <div class="chart-container">
-          <h3>홀 타입별 성적 (버디/파/보기/더블/트리플/쿼드+)</h3>
-          <canvas id="parTypeRatesChart"></canvas>
+      <!-- 차트 그리드 2 -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">홀 타입별 성적</h6>
+            <canvas id="parTypeRatesChart"></canvas>
+          </div>
         </div>
-
-        <div class="chart-container">
-          <h3>드라이빙 분석 (Hit / Left / Right)</h3>
-          <canvas id="drivingDoughnutChart"></canvas>
+        <div class="col-12 col-lg-6">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">드라이빙 분석</h6>
+            <canvas id="drivingDoughnutChart"></canvas>
+          </div>
         </div>
-
-        <div class="chart-container full-width">
-          <h3>클럽별 비거리 (평균 & 최대, 컷오프 적용)</h3>
-          <canvas id="clubDistanceChart"></canvas>
-          <div id="clubAvgTableContainer" class="muted" style="margin-top:6px"></div>
+        <div class="col-12">
+          <div class="chart-container card p-3">
+            <h6 class="card-title">클럽별 비거리 (평균 & 최대)</h6>
+            <canvas id="clubDistanceChart"></canvas>
+            <div id="clubAvgTableContainer" class="mt-3"></div>
+          </div>
         </div>
       </div>
 
       <!-- 상세 라운드 -->
-      <div class="round-details" style="margin-top:16px">
-        <h3>상세 라운드 기록</h3>
-        <select id="roundSelect" class="select round-select">
-          <option value="">라운드를 선택하세요</option>
-        </select>
-        <div class="mode-row">
-          <label><input type="radio" name="detailMode" id="viewSingle" value="single" checked>선택 라운드만</label>
-          <label><input type="radio" name="detailMode" id="viewCourseAgg" value="course">같은 코스 전체 라운드(필터 적용)</label>
+      <div class="card p-3">
+        <h6 class="card-title">상세 라운드 기록</h6>
+        <div class="row g-3">
+          <div class="col-12 col-md-8">
+            <select id="roundSelect" class="form-select">
+              <option value="">라운드를 선택하세요</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input type="radio" name="detailMode" id="viewSingle" value="single" checked class="form-check-input">
+                <label class="form-check-label small" for="viewSingle">선택 라운드만</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" name="detailMode" id="viewCourseAgg" value="course" class="form-check-input">
+                <label class="form-check-label small" for="viewCourseAgg">같은 코스 전체</label>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="selectedRoundMemo" class="muted" style="margin-top:6px"></div>
-        <ul id="selectedRoundSummary" style="margin-top:6px"></ul>
-        <div id="roundTableContainer"></div>
+        <div id="selectedRoundMemo" class="text-muted mt-2"></div>
+        <ul id="selectedRoundSummary" class="mt-2"></ul>
+        <div id="roundTableContainer" class="mt-3 table-responsive">
+          <p class="text-muted">라운드를 선택하면 상세 테이블이 표시됩니다.</p>
+        </div>
       </div>
-
     </div>
   </div>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script>
     /* =====================
        캐시 관리 상수 & 함수
@@ -362,12 +656,12 @@
       
       document.getElementById('lastUploadDate').textContent = lastDate;
       document.getElementById('cacheSize').textContent = size;
-      document.getElementById('cacheStatus').style.display = 'block';
+      document.getElementById('cacheStatus').classList.remove('d-none');
       document.getElementById('uploadArea').style.display = 'none';
     }
 
     function hideCacheStatus() {
-      document.getElementById('cacheStatus').style.display = 'none';
+      document.getElementById('cacheStatus').classList.add('d-none');
       document.getElementById('uploadArea').style.display = 'block';
     }
 
@@ -378,7 +672,6 @@
         return;
       }
       
-      // 전역 변수에 캐시 데이터 설정
       roundsData = cached.rounds;
       holesData = cached.holes;
       shotsData = cached.shots;
@@ -410,7 +703,11 @@
     const rk = (r)=> `${normalize(r.date)}__${normalize(r.courseName)}`;
     const rkRaw = (date, course)=> `${normalize(date)}__${normalize(course)}`;
 
-    function updateStatusAll(message, css=''){ const el=document.getElementById('allStatus'); el.textContent=message; el.className=`file-status ${css}`; }
+    function updateStatusAll(message, css='') { 
+      const el=document.getElementById('allStatus'); 
+      el.textContent=message; 
+      el.className=`mt-3 ${css ? 'text-'+css : 'text-muted'}`; 
+    }
 
     /* =====================
        이벤트 리스너 등록
@@ -439,7 +736,7 @@
     function onCutoffModeChange(){
       const mode=document.getElementById('cutoffMode').value;
       document.getElementById('globalCutoffGroup').style.display = (mode==='global')? 'block':'none';
-      document.getElementById('perCatWrap').style.display = (mode==='percat')? 'block':'none';
+      document.getElementById('perCatWrap').classList.toggle('d-none', mode !== 'percat');
     }
 
     /* =====================
@@ -448,6 +745,12 @@
     async function handleAllFilesUpload(event){
       const files = Array.from(event.target.files||[]);
       if (!files.length){ updateStatusAll('선택된 파일이 없습니다.'); return; }
+
+      // 로딩 상태 표시
+      const btn = document.querySelector('.file-label');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 처리중...';
+      btn.style.pointerEvents = 'none';
 
       roundsData = null; holesData = null; shotsData = null;
       const logs = [];
@@ -472,13 +775,24 @@
       if (!shotsData)  missing.push('샷');
 
       const ok = missing.length===0;
-      updateStatusAll((ok? '3개 세트 로드 완료\n' : '로드 결과 (누락 있음)\n') + logs.join('\n') + (ok? '' : `\n누락: ${missing.join(', ')}`), ok? 'success':'warn');
+      const statusClass = ok ? 'success' : 'warning';
+      updateStatusAll(
+        (ok? '✅ 3개 세트 로드 완료\n' : '⚠️ 로드 결과 (누락 있음)\n') + 
+        logs.join('\n') + 
+        (ok? '' : `\n누락: ${missing.join(', ')}`), 
+        statusClass
+      );
+      
       document.getElementById('analyzeBtn').disabled = !ok;
       
       // 성공적으로 로드되면 캐시에 저장
       if (ok) {
         saveFilesToCache(roundsData, holesData, shotsData);
       }
+
+      // 로딩 상태 해제
+      btn.innerHTML = originalText;
+      btn.style.pointerEvents = 'auto';
     }
 
     async function parseCSVSmart(file){
@@ -533,17 +847,25 @@
        분석 시작: CSV→golfData
     ===================== */
     function startAnalysis(){
-      buildGolfData();
-      initFiltersFromData();
-      document.getElementById('uploadSection').style.display='none';
-      document.getElementById('dashboardSection').style.display='block';
-      applyFiltersAndRender();
+      // 로딩 표시
+      document.body.classList.add('loading');
+      
+      setTimeout(() => {
+        buildGolfData();
+        initFiltersFromData();
+        document.getElementById('uploadSection').style.display='none';
+        document.getElementById('dashboardSection').classList.remove('d-none');
+        applyFiltersAndRender();
+        
+        // 로딩 해제
+        document.body.classList.remove('loading');
+      }, 100);
     }
 
     function resetApp(){
       Object.values(charts).forEach(c=>{try{c.destroy()}catch(e){}});
       charts={}; golfData=[]; firstFilterApplied=false;
-      document.getElementById('dashboardSection').style.display='none';
+      document.getElementById('dashboardSection').classList.add('d-none');
       document.getElementById('uploadSection').style.display='flex';
       document.getElementById('analyzeBtn').disabled=true;
       document.getElementById('allFiles').value='';
@@ -757,7 +1079,7 @@
       populateRoundSelect(rounds);
       document.getElementById('selectedRoundMemo').textContent = '';
       document.getElementById('selectedRoundSummary').innerHTML = '';
-      document.getElementById('roundTableContainer').innerHTML = '<p class="muted">라운드를 선택하면 상세 테이블이 표시됩니다.</p>';
+      document.getElementById('roundTableContainer').innerHTML = '<p class="text-muted">라운드를 선택하면 상세 테이블이 표시됩니다.</p>';
     }
 
     /* =====================
@@ -811,16 +1133,48 @@
       return {labels, scoreAvg, puttAvg};
     }
 
+    const chartDefaults = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#f0f6fc',
+            font: { size: 12 }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#9aa0a6', font: { size: 11 } },
+          grid: { color: 'rgba(255,255,255,.08)' }
+        },
+        y: {
+          ticks: { color: '#9aa0a6', font: { size: 11 } },
+          grid: { color: 'rgba(255,255,255,.08)' }
+        }
+      }
+    };
+
     function renderScoreTrend(rounds, period, useSlope){
       const ctx = document.getElementById('scoreTrendChart').getContext('2d');
       const g = groupRounds(rounds, period, useSlope);
       if (charts.scoreTrend) charts.scoreTrend.destroy();
       charts.scoreTrend = new Chart(ctx,{
         type:'line',
-        data:{labels:g.labels, datasets:[{label:'스코어', data:g.scoreAvg, borderColor:'#4ade80', backgroundColor:'rgba(74,222,128,.12)', tension:.35, pointRadius:3}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'},grid:{color:'rgba(255,255,255,.08)'}}, y:{ticks:{color:'#9aa0a6'},grid:{color:'rgba(255,255,255,.08)'}}}
-        }
+        data:{
+          labels:g.labels, 
+          datasets:[{
+            label:'스코어', 
+            data:g.scoreAvg, 
+            borderColor:'#238636', 
+            backgroundColor:'rgba(35,134,54,.12)', 
+            tension:.35, 
+            pointRadius:3,
+            fill: true
+          }]
+        },
+        options: chartDefaults
       });
     }
 
@@ -830,10 +1184,19 @@
       if (charts.puttTrend) charts.puttTrend.destroy();
       charts.puttTrend = new Chart(ctx,{
         type:'line',
-        data:{labels:g.labels, datasets:[{label:'라운드 평균 퍼팅', data:g.puttAvg, borderColor:'#fbbf24', backgroundColor:'rgba(251,191,36,.12)', tension:.35, pointRadius:3}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'},grid:{color:'rgba(255,255,255,.08)'}}, y:{ticks:{color:'#9aa0a6'},grid:{color:'rgba(255,255,255,.08)'}}}
-        }
+        data:{
+          labels:g.labels, 
+          datasets:[{
+            label:'라운드 평균 퍼팅', 
+            data:g.puttAvg, 
+            borderColor:'#da8b26', 
+            backgroundColor:'rgba(218,139,38,.12)', 
+            tension:.35, 
+            pointRadius:3,
+            fill: true
+          }]
+        },
+        options: chartDefaults
       });
     }
 
@@ -852,10 +1215,19 @@
       if (charts.wedgeTrend) charts.wedgeTrend.destroy();
       charts.wedgeTrend = new Chart(ctx,{
         type:'line',
-        data:{labels, datasets:[{label:'평균 웨지(yd)', data:values, borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,.12)', tension:.35, pointRadius:3}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'}}, y:{ticks:{color:'#9aa0a6'}}}
-        }
+        data:{
+          labels, 
+          datasets:[{
+            label:'평균 웨지(yd)', 
+            data:values, 
+            borderColor:'#1f6feb', 
+            backgroundColor:'rgba(31,111,235,.12)', 
+            tension:.35, 
+            pointRadius:3,
+            fill: true
+          }]
+        },
+        options: chartDefaults
       });
     }
 
@@ -870,11 +1242,17 @@
       if (charts.firstLater) charts.firstLater.destroy();
       charts.firstLater = new Chart(ctx,{
         type:'bar',
-        data:{labels:['첫 방문','이후 평균'],
-          datasets:[{label:'평균 스코어', data:[firstAvg, laterAvg], backgroundColor:['rgba(96,165,250,.7)','rgba(74,222,128,.7)'], borderColor:'#2d3339', borderWidth:1}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'}}, y:{ticks:{color:'#9aa0a6'}}}
-        }
+        data:{
+          labels:['첫 방문','이후 평균'],
+          datasets:[{
+            label:'평균 스코어', 
+            data:[firstAvg, laterAvg], 
+            backgroundColor:['rgba(31,111,235,.7)','rgba(35,134,54,.7)'], 
+            borderColor:'#30363d', 
+            borderWidth:1
+          }]
+        },
+        options: chartDefaults
       });
     }
 
@@ -889,10 +1267,19 @@
       if (charts.visitTrend) charts.visitTrend.destroy();
       charts.visitTrend = new Chart(ctx,{
         type:'line',
-        data:{labels:visits.map(String), datasets:[{label:'평균 스코어', data:avg, borderColor:'#60a5fa', backgroundColor:'rgba(96,165,250,.12)', tension:.35, pointRadius:3}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'}}, y:{ticks:{color:'#9aa0a6'}}}
-        }
+        data:{
+          labels:visits.map(String), 
+          datasets:[{
+            label:'평균 스코어', 
+            data:avg, 
+            borderColor:'#1f6feb', 
+            backgroundColor:'rgba(31,111,235,.12)', 
+            tension:.35, 
+            pointRadius:3,
+            fill: true
+          }]
+        },
+        options: chartDefaults
       });
     }
 
@@ -918,16 +1305,24 @@
       if (charts.parRates) charts.parRates.destroy();
       charts.parRates = new Chart(ctx,{
         type:'bar',
-        data:{labels, datasets:[
-          {label:'버디(%)',   data:bird, backgroundColor:'rgba(34,197,94,.85)'},
-          {label:'파(%)',     data:par,  backgroundColor:'rgba(148,163,184,.85)'},
-          {label:'보기(%)',   data:bog,  backgroundColor:'rgba(234,179,8,.85)'},
-          {label:'더블(%)',   data:dbl,  backgroundColor:'rgba(249,115,22,.85)'},
-          {label:'트리플(%)', data:tri,  backgroundColor:'rgba(244,63,94,.85)'},
-          {label:'쿼드+(%)',  data:quad, backgroundColor:'rgba(99,102,241,.85)'}
-        ]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{stacked:true,ticks:{color:'#9aa0a6'}}, y:{stacked:true,ticks:{color:'#9aa0a6'}, suggestedMax:100}}
+        data:{
+          labels, 
+          datasets:[
+            {label:'버디(%)',   data:bird, backgroundColor:'rgba(35,134,54,.85)'},
+            {label:'파(%)',     data:par,  backgroundColor:'rgba(110,118,129,.85)'},
+            {label:'보기(%)',   data:bog,  backgroundColor:'rgba(218,139,38,.85)'},
+            {label:'더블(%)',   data:dbl,  backgroundColor:'rgba(248,81,73,.85)'},
+            {label:'트리플(%)', data:tri,  backgroundColor:'rgba(244,63,94,.85)'},
+            {label:'쿼드+(%)',  data:quad, backgroundColor:'rgba(31,111,235,.85)'}
+          ]
+        },
+        options:{
+          ...chartDefaults,
+          scales:{
+            ...chartDefaults.scales,
+            x:{...chartDefaults.scales.x, stacked:true}, 
+            y:{...chartDefaults.scales.y, stacked:true, suggestedMax:100}
+          }
         }
       });
     }
@@ -944,8 +1339,18 @@
       if (charts.drive) charts.drive.destroy();
       charts.drive = new Chart(ctx,{
         type:'doughnut',
-        data:{labels:['Hit','Left','Right'], datasets:[{data:[d.Hit,d.Left,d.Right], backgroundColor:['rgba(74,222,128,.85)','rgba(248,113,113,.85)','rgba(59,130,246,.85)']}]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}}}
+        data:{
+          labels:['Hit','Left','Right'], 
+          datasets:[{
+            data:[d.Hit,d.Left,d.Right], 
+            backgroundColor:['rgba(35,134,54,.85)','rgba(248,81,73,.85)','rgba(31,111,235,.85)']
+          }]
+        },
+        options:{
+          responsive:true, 
+          maintainAspectRatio:false, 
+          plugins:{legend:{labels:{color:'#f0f6fc', font: { size: 12 }}}}
+        }
       });
     }
 
@@ -980,18 +1385,19 @@
       if (charts.club) charts.club.destroy();
       charts.club = new Chart(ctx,{
         type:'bar',
-        data:{labels:clubs, datasets:[
-          {label:'평균(yd)', data:avg, backgroundColor:'rgba(74,222,128,.8)', borderColor:'#2d3339', borderWidth:1},
-          {label:'최대(yd)', data:max, backgroundColor:'rgba(59,130,246,.7)', borderColor:'#2d3339', borderWidth:1}
-        ]},
-        options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#e8eaed'}}},
-          scales:{x:{ticks:{color:'#9aa0a6'}}, y:{ticks:{color:'#9aa0a6'}}}
-        }
+        data:{
+          labels:clubs, 
+          datasets:[
+            {label:'평균(yd)', data:avg, backgroundColor:'rgba(35,134,54,.8)', borderColor:'#30363d', borderWidth:1},
+            {label:'최대(yd)', data:max, backgroundColor:'rgba(31,111,235,.7)', borderColor:'#30363d', borderWidth:1}
+          ]
+        },
+        options: chartDefaults
       });
 
-      const tbl = `<table><thead><tr><th>클럽</th><th>샷 수</th><th>평균(yd)</th><th>최대(yd)</th></tr></thead>
-        <tbody>${clubs.map((c,i)=>`<tr><td>${c}</td><td>${clubAgg.get(c).cnt}</td><td>${avg[i]}</td><td>${max[i]}</td></tr>`).join('')}</tbody></table>`;
-      document.getElementById('clubAvgTableContainer').innerHTML = tbl || '<span class="muted">데이터가 없습니다.</span>';
+      const tbl = `<div class="table-responsive"><table class="table table-dark table-sm"><thead><tr><th>클럽</th><th>샷 수</th><th>평균(yd)</th><th>최대(yd)</th></tr></thead>
+        <tbody>${clubs.map((c,i)=>`<tr><td>${c}</td><td>${clubAgg.get(c).cnt}</td><td>${avg[i]}</td><td>${max[i]}</td></tr>`).join('')}</tbody></table></div>`;
+      document.getElementById('clubAvgTableContainer').innerHTML = tbl || '<span class="text-muted">데이터가 없습니다.</span>';
     }
 
     function populateRoundSelect(rounds){
@@ -1013,9 +1419,9 @@
       const container=document.getElementById('roundTableContainer');
       memoBox.textContent=''; sumList.innerHTML=''; container.innerHTML='';
 
-      if (!key){ container.innerHTML='<p class="muted">라운드를 선택하세요.</p>'; return; }
+      if (!key){ container.innerHTML='<p class="text-muted">라운드를 선택하세요.</p>'; return; }
       const r0 = golfData.find(g=> rk(g)===key);
-      if (!r0){ container.innerHTML='<p class="muted">라운드 데이터를 찾을 수 없습니다.</p>'; return; }
+      if (!r0){ container.innerHTML='<p class="text-muted">라운드 데이터를 찾을 수 없습니다.</p>'; return; }
 
       if (mode==='single'){
         memoBox.textContent = (r0.memo && r0.memo.length)? `메모: ${r0.memo.join(' | ')}` : '메모 없음';
@@ -1043,11 +1449,12 @@
     }
 
     function renderRoundTable(roundList, container, aggregate=false){
-      if (!roundList.length){ container.innerHTML='<p class="muted">표시할 라운드가 없습니다.</p>'; return; }
+      if (!roundList.length){ container.innerHTML='<p class="text-muted">표시할 라운드가 없습니다.</p>'; return; }
       const byHole = new Map();
       roundList.forEach(r=>{ r.holes.forEach(h=>{ const hh={...h, __course:r.courseName, __date:r.date}; if (!byHole.has(hh.hole)) byHole.set(hh.hole,[]); byHole.get(hh.hole).push(hh); }); });
       const holeNos = Array.from(byHole.keys()).sort((a,b)=> a-b);
       const table=document.createElement('table');
+      table.className = 'table table-dark table-sm';
       table.innerHTML = aggregate? `
         <thead><tr><th>홀</th><th>대표 파</th><th>평균 스코어(±)</th><th>평균 퍼팅</th><th>FW Hit%</th><th>GIR%</th><th>평균 접근(yd)</th></tr></thead><tbody></tbody>
       `: `
@@ -1102,7 +1509,6 @@
       }
       container.appendChild(table);
     }
-
 
     function summarizeRound(r, useSlope){
       const holes = r.holes;
