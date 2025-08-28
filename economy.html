@@ -54,17 +54,17 @@
         }
         .indicators-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-            gap: 25px; 
-            margin-bottom: 30px; 
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 20px; 
         }
         .category { 
             background: #fff; 
-            border-radius: 15px; 
-            padding: 25px; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); 
-            border: 1px solid #e0e0e0; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); 
+            border: 1px solid #e8e8e8; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
         }
         .category:hover { 
             transform: translateY(-5px); 
@@ -92,11 +92,11 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 15px 10px; 
-            border-bottom: 1px solid #f0f0f0; 
+            padding: 12px 8px; 
+            border-bottom: 1px solid #f5f5f5; 
             cursor: pointer; 
-            transition: all 0.3s ease; 
-            border-radius: 8px; 
+            transition: all 0.2s ease; 
+            border-radius: 6px; 
             position: relative;
         }
         .indicator:hover { 
@@ -130,13 +130,7 @@
             margin-top: 5px;
         }
         .cache-status {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: bold;
+            display: none;
         }
         .cache-fresh {
             background: #27ae60;
@@ -155,9 +149,7 @@
             color: white;
         }
         .update-frequency {
-            font-size: 0.75rem;
-            color: #95a5a6;
-            margin-top: 2px;
+            display: none;
         }
         .positive { color: #27ae60; }
         .negative { color: #e74c3c; }
@@ -317,18 +309,14 @@
     </div>
 
     <div class="container">
-        <h1>🧠 FRED 스마트 캐시 경제 지표 대시보드</h1>
-        <div class="subtitle">미국 연방준비은행 공식 경제 데이터 + 지능형 캐싱 시스템</div>
+        <h1>📊 경제 지표 대시보드</h1>
+        <div class="subtitle">미국 연방준비은행 (FRED) 경제 데이터</div>
         <div class="last-updated" id="lastUpdated">
-            마지막 업데이트: <span id="currentTime"></span>
+            <span id="currentTime"></span>
         </div>
 
         <div class="status-info" id="statusInfo">
-            📊 FRED API 상태: <span class="loading">스마트 캐시 시스템 초기화 중...</span>
-        </div>
-
-        <div class="cache-metrics" id="cacheMetrics">
-            🚀 캐시 성능: <span class="cache-count">캐시 데이터 로딩 중...</span>
+            📊 <span class="loading">로딩 중...</span>
         </div>
 
         <div class="indicators-grid">
@@ -416,7 +404,7 @@
                     <div>
                         <div class="indicator-name">연방기금금리
                             <div class="indicator-name-eng">Federal Funds Rate</div>
-                            <div class="update-frequency">업데이트: 매일</div>
+                            <div class="update-frequency">발표: 주말제외 매일 (FOMC 반영)</div>
                         </div>
                         <div class="indicator-date" id="FEDFUNDS-date">-</div>
                     </div>
@@ -522,9 +510,9 @@
                 <div class="indicator" onclick="showDetails('GDPPOT', '잠재 GDP')">
                     <div class="cache-status cache-loading" id="GDPPOT-cache">확인중</div>
                     <div>
-                        <div class="indicator-name">잠재 GDP
-                            <div class="indicator-name-eng">Real Potential GDP</div>
-                            <div class="update-frequency">업데이트: 분기별</div>
+                        <div class="indicator-name">잠재 GDP (현재 추정치)
+                            <div class="indicator-name-eng">Real Potential GDP (Current Estimate)</div>
+                            <div class="update-frequency">발표: 분기별 추정 (CBO)</div>
                         </div>
                         <div class="indicator-date" id="GDPPOT-date">-</div>
                     </div>
@@ -611,7 +599,7 @@
                     <div>
                         <div class="indicator-name">USD/EUR 환율
                             <div class="indicator-name-eng">U.S./Euro Foreign Exchange Rate</div>
-                            <div class="update-frequency">업데이트: 매일</div>
+                            <div class="update-frequency">발표: 주말제외 매일 (시장마감후)</div>
                         </div>
                         <div class="indicator-date" id="DEXUSEU-date">-</div>
                     </div>
@@ -636,8 +624,8 @@
             </div>
         </div>
 
-        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart()">
-            🧠 스마트 캐시 새로고침 (25개 지표)
+        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart(true)">
+            🔄 새로고침
         </button>
     </div>
 
@@ -670,36 +658,36 @@
         // FRED API 설정
         const getApiKey = () => atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
         
-        // 데이터 업데이트 빈도 매핑 (스마트 캐시)
+        // 데이터 업데이트 빈도 매핑 (실제 FRED 발표 주기 반영)
         const DATA_UPDATE_FREQUENCIES = {
-            // 일일 업데이트
-            'FEDFUNDS': { cacheDays: 1, description: '매일' },
-            'DGS10': { cacheDays: 1, description: '매일' },
-            'DGS2': { cacheDays: 1, description: '매일' },
-            'DEXUSEU': { cacheDays: 1, description: '매일' },
+            // 일일 업데이트 (주말/공휴일 제외)
+            'FEDFUNDS': { cacheDays: 1, description: '매일 (주말제외)', realFreq: '월간 FOMC 회의 결과 반영' },
+            'DGS10': { cacheDays: 1, description: '매일 (주말제외)', realFreq: '매일 시장 마감 후' },
+            'DGS2': { cacheDays: 1, description: '매일 (주말제외)', realFreq: '매일 시장 마감 후' },
+            'DEXUSEU': { cacheDays: 1, description: '매일 (주말제외)', realFreq: '매일 시장 마감 후' },
             
             // 주간 업데이트
             'BAMLH0A0HYM2EY': { cacheDays: 7, description: '매주' },
             'NFCI': { cacheDays: 7, description: '매주' },
             
-            // 월간 업데이트
-            'CPIAUCSL': { cacheDays: 30, description: '매월' },
-            'CPILFESL': { cacheDays: 30, description: '매월' },
-            'PCEPI': { cacheDays: 30, description: '매월' },
-            'UNRATE': { cacheDays: 30, description: '매월' },
-            'PAYEMS': { cacheDays: 30, description: '매월' },
-            'CIVPART': { cacheDays: 30, description: '매월' },
-            'HOUST': { cacheDays: 30, description: '매월' },
-            'CSUSHPISA': { cacheDays: 30, description: '매월' },
-            'MORTGAGE30US': { cacheDays: 30, description: '매월' },
-            'M2SL': { cacheDays: 30, description: '매월' },
-            'TOTALSA': { cacheDays: 30, description: '매월' },
-            'UMCSENT': { cacheDays: 30, description: '매월' },
+            // 월간 업데이트 (실제 발표는 1-2달 지연)
+            'CPIAUCSL': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +14일, BLS)', delay: '약 14일 지연' },
+            'CPILFESL': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +14일, BLS)', delay: '약 14일 지연' },
+            'PCEPI': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +30일, BEA)', delay: '약 30일 지연' },
+            'UNRATE': { cacheDays: 30, description: '매월', realFreq: '월간 (첫째 금요일, BLS)', delay: '약 7일 지연' },
+            'PAYEMS': { cacheDays: 30, description: '매월', realFreq: '월간 (첫째 금요일, BLS)', delay: '약 7일 지연' },
+            'CIVPART': { cacheDays: 30, description: '매월', realFreq: '월간 (첫째 금요일, BLS)', delay: '약 7일 지연' },
+            'HOUST': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +17일, Census)', delay: '약 17일 지연' },
+            'CSUSHPISA': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +60일, S&P)', delay: '약 60일 지연' },
+            'MORTGAGE30US': { cacheDays: 7, description: '매주', realFreq: '주간 (목요일, FHLMC)', delay: '약 1주 지연' },
+            'M2SL': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +10일, FED)', delay: '약 10일 지연' },
+            'TOTALSA': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +5일, FED)', delay: '약 5일 지연' },
+            'UMCSENT': { cacheDays: 30, description: '매월', realFreq: '월간 (당월 +14일, UM)', delay: '약 14일 지연' },
             
             // 분기 업데이트
-            'GDP': { cacheDays: 90, description: '분기별' },
-            'GDPPOT': { cacheDays: 90, description: '분기별' },
-            'DRTSCILM': { cacheDays: 90, description: '분기별' },
+            'GDP': { cacheDays: 90, description: '분기별', realFreq: '분기별 (익월 말, BEA)', delay: '약 30일 지연' },
+            'GDPPOT': { cacheDays: 90, description: '분기별 (예측)', realFreq: '분기별 예측 (CBO)', delay: '현재 시점 기준 추정' },
+            'DRTSCILM': { cacheDays: 90, description: '분기별', realFreq: '분기별 (FED 은행 설문)', delay: '약 14일 지연' },
             
             // 6개월 업데이트
             'INDPRO': { cacheDays: 180, description: '6개월' },
@@ -749,7 +737,7 @@
             'DEXUSEU': { name: 'USD/EUR 환율', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
             
             // 인구학적 지표
-            'LFWA64TTUSM647S': { name: '노동가능인구', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Thousands of Persons' }
+            'LFWA64TTUSM647S': { name: '노동가능인구', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Persons' }
         };
 
         let loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
@@ -865,7 +853,19 @@
                     }
                     
                     if (fredData.observations && fredData.observations.length > 0) {
-                        const observations = fredData.observations.filter(obs => obs.value !== '.');
+                        let observations = fredData.observations.filter(obs => obs.value !== '.');
+                        
+                        // 잠재 GDP의 경우 미래 데이터가 아닌 현재 시점 기준 데이터 사용
+                        if (seriesId === 'GDPPOT' && !isHistorical) {
+                            const currentDate = new Date();
+                            const currentYear = currentDate.getFullYear();
+                            const currentQuarter = Math.floor(currentDate.getMonth() / 3);
+                            const currentQuarterDate = `${currentYear}-${(currentQuarter * 3 + 1).toString().padStart(2, '0')}-01`;
+                            
+                            // 현재 시점 이전 또는 동일한 데이터만 필터링
+                            observations = observations.filter(obs => obs.date <= currentQuarterDate);
+                        }
+                        
                         if (observations.length > 0) {
                             console.log(`✅ ${seriesId}: ${observations.length}개 관측값 성공`);
                             if (isHistorical) {
@@ -926,6 +926,10 @@
                         displayValue = `${data.value.toLocaleString()}K`;
                     }
                     colorClass = 'positive';
+                } else if (seriesInfo.unit === 'Persons') {
+                    // 노동가능인구 등 전체 인원 수 (단위: 명)
+                    displayValue = `${(data.value / 1000000).toFixed(1)}M명`;
+                    colorClass = 'positive';
                 } else if (seriesInfo.unit === 'Index') {
                     displayValue = `${data.value.toFixed(1)}`;
                     colorClass = 'neutral';
@@ -939,7 +943,20 @@
                 
                 if (dateElement) {
                     const cacheInfo = isFromCache ? ' (캐시)' : '';
-                    dateElement.textContent = `업데이트: ${data.date}${cacheInfo}`;
+                    let dateLabel = '기준 데이터';
+                    
+                    // 잠재 GDP의 경우 현재 시점 이후 데이터인지 확인
+                    if (seriesId === 'GDPPOT') {
+                        const dataDate = new Date(data.date);
+                        const currentDate = new Date();
+                        if (dataDate > currentDate) {
+                            dateLabel = '예측 기준';
+                        } else {
+                            dateLabel = '추정 기준';
+                        }
+                    }
+                    
+                    dateElement.textContent = `${dateLabel}: ${data.date}${cacheInfo}`;
                 }
 
                 // 캐시 상태 업데이트
@@ -959,7 +976,7 @@
                 element.className = 'indicator-value error';
                 
                 if (dateElement) {
-                    dateElement.textContent = `오류: ${error}`;
+                    dateElement.textContent = `데이터 오류: ${error}`;
                 }
 
                 if (cacheElement) {
@@ -970,23 +987,25 @@
         }
 
         // 스마트 캐시 데이터 로딩
-        async function loadAllFredDataSmart() {
+        async function loadAllFredDataSmart(forceUpdate = false) {
+            console.log('🔄 새로고침 시작', forceUpdate ? '(강제 업데이트)' : '(스마트 캐시)');
+            
             const refreshBtn = document.getElementById('refreshBtn');
             const statusInfo = document.getElementById('statusInfo');
-            const cacheMetrics = document.getElementById('cacheMetrics');
             
             refreshBtn.disabled = true;
-            refreshBtn.innerHTML = '<span class="spinner"></span>스마트 캐시 로딩 중...';
+            refreshBtn.innerHTML = '<span class="spinner"></span>로딩 중...';
             
             loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
-            statusInfo.innerHTML = '📊 FRED API 상태: <span class="loading">스마트 캐시 시스템 분석 중...</span>';
+            statusInfo.style.display = 'block'; // 로딩 시작시 상태 메시지 표시
+            statusInfo.innerHTML = '📊 <span class="loading">분석 중...</span>';
 
             // 캐시 상태 분석
             const toUpdate = [];
             const fromCache = [];
 
             Object.keys(FRED_SERIES).forEach(seriesId => {
-                if (shouldUpdateIndicator(seriesId)) {
+                if (shouldUpdateIndicator(seriesId, forceUpdate)) {
                     toUpdate.push(seriesId);
                 } else {
                     fromCache.push(seriesId);
@@ -1004,7 +1023,7 @@
 
             // API 업데이트가 필요한 지표만 로딩
             if (toUpdate.length > 0) {
-                statusInfo.innerHTML = `📊 FRED API 상태: <span class="loading">${toUpdate.length}개 지표 업데이트 중... (${fromCache.length}개 캐시 사용)</span>`;
+                statusInfo.innerHTML = `📊 <span class="loading">업데이트 중... (${toUpdate.length}개)</span>`;
                 
                 const promises = toUpdate.map(async (seriesId) => {
                     try {
@@ -1029,19 +1048,7 @@
             const cacheHitRate = ((loadResults.cached / total) * 100).toFixed(1);
             const apiSaved = loadResults.cached;
             
-            statusInfo.innerHTML = `
-                📊 스마트 캐시 로딩 완료 (25개 지표): 
-                <span class="success-count">성공 ${loadResults.success}개</span> / 
-                <span class="cache-count">캐시 ${loadResults.cached}개</span> / 
-                <span class="error-count">실패 ${loadResults.failed}개</span>
-            `;
-
-            cacheMetrics.innerHTML = `
-                🚀 캐시 성능: 
-                <span class="cache-count">캐시 적중률 ${cacheHitRate}%</span> | 
-                <span class="success-count">API 절약 ${apiSaved}회</span> | 
-                <span class="neutral">실제 호출 ${loadResults.apiCalls}회</span>
-            `;
+            statusInfo.style.display = 'none'; // 로딩 완료 후 상태 메시지 숨김
             
             if (loadResults.errors.length > 0) {
                 console.group('❌ FRED API 로딩 오류 상세:');
@@ -1050,7 +1057,7 @@
             }
             
             refreshBtn.disabled = false;
-            refreshBtn.innerHTML = '🧠 스마트 캐시 새로고침 (25개 지표)';
+            refreshBtn.innerHTML = '🔄 새로고침';
             updateClock();
         }
 
@@ -1167,10 +1174,13 @@
                 }
             }
             
+            const realFreqInfo = frequency.realFreq ? `<br><strong>실제 발표 주기:</strong> ${frequency.realFreq}` : '';
+            const delayInfo = frequency.delay ? `<br><strong>데이터 지연:</strong> ${frequency.delay}` : '';
+            
             document.getElementById('seriesInfo').innerHTML = `
                 <strong>시리즈 ID:</strong> ${seriesId}<br>
                 <strong>단위:</strong> ${seriesInfo.unit}<br>
-                <strong>업데이트 주기:</strong> ${frequency.description} (${frequency.cacheDays}일 캐시)<br>
+                <strong>캐시 업데이트:</strong> ${frequency.description} (${frequency.cacheDays}일 캐시)${realFreqInfo}${delayInfo}<br>
                 <strong>데이터 소스:</strong> 미국 연방준비은행 (FRED)<br>
                 <strong>스마트 캐시:</strong> 활성화${cacheInfo}${specialInfo}
             `;
@@ -1199,14 +1209,38 @@
             }
         }
 
+        // 매일 자동 업데이트 체크
+        function checkDailyUpdate() {
+            const lastUpdate = localStorage.getItem('lastDailyUpdate');
+            const today = new Date().toDateString();
+            
+            if (lastUpdate !== today) {
+                console.log('🔄 일일 자동 업데이트 실행 (강제)');
+                loadAllFredDataSmart(true);
+                localStorage.setItem('lastDailyUpdate', today);
+                return true;
+            } else {
+                console.log('📊 일일 업데이트 이미 완료, 스킵');
+                return false;
+            }
+        }
+
         // 페이지 로드시 초기화
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 대시보드 로드 시작');
             updateClock();
-            loadAllFredDataSmart();
+            cleanExpiredCache(); // 만료된 캐시 정리
+            
+            // 페이지 로드시 항상 데이터 로드
+            console.log('📊 초기 데이터 로딩 시작');
+            loadAllFredDataSmart(); // 캐시 우선 로딩
+            
+            // 매일 한 번 자동 업데이트 체크 (백그라운드)
+            setTimeout(checkDailyUpdate, 5000); // 5초 후 일일 업데이트 체크
             
             setInterval(updateClock, 1000);
-            // 30분마다 스마트 캐시 체크 (필요한 것만 업데이트)
-            setInterval(loadAllFredDataSmart, 1800000);
+            // 1시간마다 일일 업데이트 체크 (페이지가 계속 열려있을 경우)
+            setInterval(checkDailyUpdate, 3600000); // 1시간 = 3600000ms
         });
     </script>
 
