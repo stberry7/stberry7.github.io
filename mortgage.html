@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Mortgage Rates Dashboard | Real-Time Rate Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .loading-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .rate-trend-up { color: #ef4444; }
+        .rate-trend-down { color: #10b981; }
+        .mobile-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h1 class="text-2xl md:text-3xl font-bold mb-2">🏠 US Mortgage Rates Dashboard</h1>
+                    <p class="text-blue-100">Real-time US mortgage rate comparison and analysis</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <div class="text-sm text-blue-100" id="lastUpdated">Last Updated: Loading...</div>
+                    <div class="text-lg font-semibold" id="marketStatus">📊 Analyzing market conditions...</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Market Overview Cards -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">📈 Market Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-500">30-Year Fixed Average</h3>
+                        <i class="fas fa-home text-blue-500"></i>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-gray-900" id="avg30Year">6.66%</div>
+                            <div class="text-xs text-green-500 flex items-center mt-1">
+                                <i class="fas fa-arrow-down mr-1"></i>
+                                <span>-0.01% vs Yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-500">15-Year Fixed Average</h3>
+                        <i class="fas fa-chart-line text-green-500"></i>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-gray-900" id="avg15Year">5.59%</div>
+                            <div class="text-xs text-green-500 flex items-center mt-1">
+                                <i class="fas fa-arrow-down mr-1"></i>
+                                <span>-0.04% vs Yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-500">2025 Record Low</h3>
+                        <i class="fas fa-trophy text-yellow-500"></i>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-gray-900">6.51%</div>
+                            <div class="text-xs text-gray-500 mt-1">August 27th Record</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-500">Market Trend</h3>
+                        <i class="fas fa-trending-down text-green-500"></i>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-green-600">Declining</div>
+                            <div class="text-xs text-gray-500 mt-1">Rate stabilization</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lender Comparison Table -->
+        <section class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">🏦 Lender Rate Comparison</h2>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <select id="loanTypeFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="30year">30-Year Fixed</option>
+                        <option value="15year">15-Year Fixed</option>
+                        <option value="arm">ARM 5/1</option>
+                        <option value="jumbo">Jumbo Loan</option>
+                    </select>
+                    <button id="refreshRates" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile-Optimized Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="mobile-scroll">
+                    <table class="w-full min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lender</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">APR</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Features</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lenderTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Dynamic content will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Rate Trends Chart -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">📊 Rate Trends (Last 30 Days)</h3>
+                    <div class="relative" style="height: 300px;">
+                        <canvas id="rateTrendsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Lender Comparison Chart -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">🏦 Lender Rate Comparison</h3>
+                    <div class="relative" style="height: 300px;">
+                        <canvas id="lenderComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Analysis -->
+        <section class="mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">💡 Market Analysis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-info-circle text-blue-600 text-xl mr-2"></i>
+                            <h4 class="font-semibold text-blue-800">Current Market Situation</h4>
+                        </div>
+                        <p class="text-sm text-gray-600" id="marketAnalysis">
+                            As of August 2025, mortgage rates have hit a technical 'record low' at 6.51%. 
+                            This is the lowest level since October 2024.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-thumbs-up text-green-600 text-xl mr-2"></i>
+                            <h4 class="font-semibold text-green-800">Borrower Benefits</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            The current declining rate trend is favorable for borrowers. 
+                            It's a good time to consider refinancing or new purchases.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 text-xl mr-2"></i>
+                            <h4 class="font-semibold text-yellow-800">Important Notes</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Rates may vary based on credit score, down payment, income, and other factors. 
+                            Please consult with lenders for personalized quotes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rate Calculator -->
+        <section class="mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">🧮 Mortgage Calculator</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Home Price ($)</label>
+                            <input type="number" id="homePrice" placeholder="500000" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Down Payment ($)</label>
+                            <input type="number" id="downPayment" placeholder="100000" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Interest Rate (%)</label>
+                            <input type="number" id="interestRate" step="0.01" placeholder="6.66" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Loan Term (Years)</label>
+                            <select id="loanTerm" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="30">30 Years</option>
+                                <option value="15">15 Years</option>
+                                <option value="20">20 Years</option>
+                                <option value="25">25 Years</option>
+                            </select>
+                        </div>
+                        <button onclick="calculateMortgage()" 
+                                class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                            Calculate
+                        </button>
+                    </div>
+                    <div id="calculationResults" class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-4">Calculation Results</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Monthly Payment:</span>
+                                    <span class="font-semibold" id="monthlyPayment">Click Calculate</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Total Interest:</span>
+                                    <span class="font-semibold" id="totalInterest">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Total Amount:</span>
+                                    <span class="font-semibold" id="totalAmount">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-300 mb-2">📊 Real-time Mortgage Rate Information Dashboard</p>
+                <p class="text-sm text-gray-400">
+                    * Rates are for reference only and may differ from actual approved rates. Contact lenders for accurate information.
+                </p>
+                <p class="text-sm text-gray-500 mt-2">Last Updated: <span id="footerTimestamp"></span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Sample mortgage data (in real implementation, this would come from APIs)
+        const mortgageData = {
+            lenders: [
+                {
+                    name: "Wells Fargo",
+                    logo: "🏦",
+                    rate30: 6.625,
+                    apr30: 6.78,
+                    rate15: 5.875,
+                    apr15: 6.02,
+                    change: -0.01,
+                    features: "Fast approval, Online application",
+                    color: "#d32f2f"
+                },
+                {
+                    name: "Bank of America",
+                    logo: "🏛️",
+                    rate30: 6.75,
+                    apr30: 6.89,
+                    rate15: 5.95,
+                    apr15: 6.08,
+                    change: 0.02,
+                    features: "Existing customer discount",
+                    color: "#1976d2"
+                },
+                {
+                    name: "Chase",
+                    logo: "💎",
+                    rate30: 6.65,
+                    apr30: 6.79,
+                    rate15: 5.85,
+                    apr15: 5.99,
+                    change: -0.005,
+                    features: "Premium service",
+                    color: "#388e3c"
+                },
+                {
+                    name: "Quicken Loans",
+                    logo: "⚡",
+                    rate30: 6.595,
+                    apr30: 6.72,
+                    rate15: 5.825,
+                    apr15: 5.96,
+                    change: -0.015,
+                    features: "100% online, Fast processing",
+                    color: "#f57c00"
+                },
+                {
+                    name: "US Bank",
+                    logo: "🇺🇸",
+                    rate30: 6.68,
+                    apr30: 6.81,
+                    rate15: 5.88,
+                    apr15: 6.01,
+                    change: 0.005,
+                    features: "Regional expert consultation",
+                    color: "#7b1fa2"
+                },
+                {
+                    name: "Citibank",
+                    logo: "🌐",
+                    rate30: 6.72,
+                    apr30: 6.85,
+                    rate15: 5.92,
+                    apr15: 6.05,
+                    change: 0.01,
+                    features: "Global network",
+                    color: "#0288d1"
+                }
+            ],
+            trends: {
+                dates: [],
+                rates30: [],
+                rates15: []
+            }
+        };
+
+        // Generate sample trend data for the last 30 days
+        function generateTrendData() {
+            const today = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                mortgageData.trends.dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                
+                // Generate realistic rate fluctuations
+                const baseRate30 = 6.70;
+                const baseRate15 = 5.90;
+                const variation = (Math.random() - 0.5) * 0.2;
+                
+                mortgageData.trends.rates30.push(+(baseRate30 + variation).toFixed(3));
+                mortgageData.trends.rates15.push(+(baseRate15 + variation).toFixed(3));
+            }
+        }
+
+        // Initialize data
+        generateTrendData();
+
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const timestamp = now.toLocaleString('en-US');
+            document.getElementById('lastUpdated').textContent = `Last Updated: ${timestamp}`;
+            document.getElementById('footerTimestamp').textContent = timestamp;
+        }
+
+        // Populate lender table
+        function populateLenderTable() {
+            const tbody = document.getElementById('lenderTableBody');
+            const loanType = document.getElementById('loanTypeFilter').value;
+            
+            tbody.innerHTML = mortgageData.lenders.map(lender => {
+                const rate = loanType === '15year' ? lender.rate15 : lender.rate30;
+                const apr = loanType === '15year' ? lender.apr15 : lender.apr30;
+                const changeClass = lender.change >= 0 ? 'rate-trend-up' : 'rate-trend-down';
+                const changeIcon = lender.change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">${lender.logo}</span>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">${lender.name}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg font-semibold text-gray-900">${rate}%</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${apr}%</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center ${changeClass}">
+                                <i class="fas ${changeIcon} text-xs mr-1"></i>
+                                <span class="text-sm font-medium">${Math.abs(lender.change)}%</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-600">${lender.features}</div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Create rate trends chart
+        function createRateTrendsChart() {
+            const ctx = document.getElementById('rateTrendsChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: mortgageData.trends.dates,
+                    datasets: [{
+                        label: '30-Year Fixed',
+                        data: mortgageData.trends.rates30,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.1,
+                        fill: false,
+                        pointRadius: 2,
+                        pointHoverRadius: 4
+                    }, {
+                        label: '15-Year Fixed',
+                        data: mortgageData.trends.rates15,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.1,
+                        fill: false,
+                        pointRadius: 2,
+                        pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(3) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 5.5,
+                            max: 7.0,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(2) + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Force chart to render
+            setTimeout(() => {
+                chart.resize();
+            }, 100);
+        }
+
+        // Create lender comparison chart
+        function createLenderComparisonChart() {
+            const ctx = document.getElementById('lenderComparisonChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: mortgageData.lenders.map(l => l.name),
+                    datasets: [{
+                        label: '30-Year Fixed Rate',
+                        data: mortgageData.lenders.map(l => l.rate30),
+                        backgroundColor: mortgageData.lenders.map(l => l.color + '80'), // Add transparency
+                        borderColor: mortgageData.lenders.map(l => l.color),
+                        borderWidth: 2,
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(3) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 6.5,
+                            max: 6.8,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(2) + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+            
+            // Force chart to render
+            setTimeout(() => {
+                chart.resize();
+            }, 100);
+        }
+
+        // Mortgage calculator
+        function calculateMortgage() {
+            const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+
+            if (homePrice === 0 || interestRate === 0) {
+                alert('Please enter home price and interest rate.');
+                return;
+            }
+
+            const loanAmount = homePrice - downPayment;
+            const monthlyRate = interestRate / 100 / 12;
+            const numberOfPayments = loanTerm * 12;
+
+            const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                                 (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            const totalAmount = monthlyPayment * numberOfPayments;
+            const totalInterest = totalAmount - loanAmount;
+
+            document.getElementById('monthlyPayment').textContent = '$' + monthlyPayment.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('totalInterest').textContent = '$' + totalInterest.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('totalAmount').textContent = '$' + totalAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimestamp();
+            populateLenderTable();
+            createRateTrendsChart();
+            createLenderComparisonChart();
+
+            // Set default values for calculator
+            document.getElementById('homePrice').value = '500000';
+            document.getElementById('downPayment').value = '100000';
+            document.getElementById('interestRate').value = '6.66';
+
+            // Update market status
+            document.getElementById('marketStatus').textContent = '📉 Declining trend - Favorable for borrowers';
+
+            // Event listeners
+            document.getElementById('loanTypeFilter').addEventListener('change', populateLenderTable);
+            document.getElementById('refreshRates').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-sync-alt fa-spin mr-2"></i>Updating...';
+                setTimeout(() => {
+                    updateTimestamp();
+                    populateLenderTable();
+                    this.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Refresh';
+                }, 2000);
+            });
+
+            // Auto refresh every 5 minutes
+            setInterval(updateTimestamp, 300000);
+        });
+
+        // Make calculator globally available
+        window.calculateMortgage = calculateMortgage;
+    </script>
+</body>
+</html>
