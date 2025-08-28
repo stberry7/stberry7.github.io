@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>개인 골프 데이터 분석 대시보드 (All-in-One Upload + Wedge Trend)</title>
+  <title>골프 대시보드 (파일 캐시 기능)</title>
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,6 +22,20 @@
       background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 100%);
       color:var(--text-primary);min-height:100vh;line-height:1.6}
     .container{max-width:1400px;margin:0 auto;padding:0 20px}
+
+    /* 캐시 상태 표시 */
+    .cache-status{
+      background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+      padding:1.4rem;margin-bottom:1.5rem;text-align:center;
+    }
+    .cache-info{color:var(--text-secondary);font-size:0.9rem;margin:0.5rem 0;}
+    .cache-buttons{display:flex;gap:12px;justify-content:center;margin-top:1rem;flex-wrap:wrap;}
+    .cache-btn{padding:0.6rem 1.4rem;border:2px solid var(--accent);border-radius:8px;
+      background:var(--bg-secondary);color:var(--accent);cursor:pointer;font-weight:600;
+      transition:all 0.3s ease;}
+    .cache-btn:hover{background:var(--accent);color:#0b0f14;}
+    .cache-btn.secondary{border-color:#f59e0b;color:#f59e0b;}
+    .cache-btn.secondary:hover{background:#f59e0b;color:#0b0f14;}
 
     /* 업로드 */
     .upload-section{min-height:100vh;display:flex;align-items:center;justify-content:center}
@@ -83,38 +97,48 @@
     .mode-row label{display:flex;align-items:center;gap:6px;background:var(--bg-secondary);border:1px solid var(--border);padding:.35rem .6rem;border-radius:8px}
     .muted{color:var(--text-secondary);font-size:.9rem}
 
-    /* 하단 메모/요약 */
-    .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
-    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px}
-    .card h3{margin-bottom:8px;font-size:1.05rem}
-    .memo-item{border-top:1px dashed var(--border);padding-top:8px;margin-top:8px}
 
     @media (max-width: 1024px){.filter-grid{grid-template-columns:1fr 1fr}}
     @media (max-width: 768px){.chart-grid{grid-template-columns:1fr}.full-width{grid-column:span 1}}
-    @media (max-width: 700px){.bottom-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <!-- 업로드 섹션 -->
   <div class="upload-section" id="uploadSection">
     <div class="container">
-      <h1 class="main-title">⛳ 개인 골프 데이터 분석 대시보드</h1>
-      <p class="subtitle">이제 <b>라운드/홀/샷 CSV 3개</b>를 <b>한 번에</b> 업로드하세요. (거리 단위: <b>yd</b>)</p>
+      <h1 class="main-title">⛳ 골프 대시보드 (캐시 기능)</h1>
+      <p class="subtitle">3개 CSV 파일을 한 번 업로드하면 다음번에 자동으로 불러옵니다!</p>
 
-      <div class="upload-grid">
-        <div class="upload-card">
-          <div class="upload-icon">📦</div>
-          <h3>세트 업로드 (3개 파일)</h3>
-          <input type="file" id="allFiles" accept=".csv" multiple/>
-          <label class="file-label" for="allFiles">파일 3개 선택</label>
-          <div id="allStatus" class="file-status"></div>
+      <!-- 캐시 상태 표시 -->
+      <div class="cache-status" id="cacheStatus" style="display:none;">
+        <div class="upload-icon">📂</div>
+        <h3>저장된 데이터 발견!</h3>
+        <div class="cache-info" id="cacheInfo">마지막 업로드: <span id="lastUploadDate"></span></div>
+        <div class="cache-info">파일 크기: <span id="cacheSize"></span></div>
+        <div class="cache-buttons">
+          <button id="useCacheBtn" class="cache-btn">💾 저장된 데이터 사용</button>
+          <button id="uploadNewBtn" class="cache-btn secondary">🔄 새 파일 업로드</button>
+          <button id="clearCacheBtn" class="cache-btn secondary">🗑️ 캐시 삭제</button>
         </div>
       </div>
 
-      <button id="analyzeBtn" class="analyze-btn" disabled>분석 대시보드 보기</button>
-      <p class="muted" style="text-align:center;margin-top:8px">
-        * 라운드 연결 키: <code>date</code> + <code>course name</code>
-      </p>
+      <!-- 파일 업로드 영역 -->
+      <div id="uploadArea">
+        <div class="upload-grid">
+          <div class="upload-card">
+            <div class="upload-icon">📦</div>
+            <h3>세트 업로드 (3개 파일)</h3>
+            <input type="file" id="allFiles" accept=".csv" multiple/>
+            <label class="file-label" for="allFiles">파일 3개 선택</label>
+            <div id="allStatus" class="file-status"></div>
+          </div>
+        </div>
+
+        <button id="analyzeBtn" class="analyze-btn" disabled>분석 대시보드 보기</button>
+        <p class="muted" style="text-align:center;margin-top:8px">
+          * 라운드 연결 키: <code>date</code> + <code>course name</code>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -122,7 +146,7 @@
   <div class="dashboard-section" id="dashboardSection" style="display:none;">
     <div class="container">
       <div class="dashboard-header">
-        <h1>골프 퍼포먼스 대시보드</h1>
+        <h1>골프 퍼포먼스 대시보드 <span class="muted">(캐시 사용중)</span></h1>
         <button id="backBtn" class="back-btn">새로운 데이터 업로드</button>
       </div>
 
@@ -271,28 +295,105 @@
         <div id="roundTableContainer"></div>
       </div>
 
-      <!-- 하단: 메모 & 라운드 요약(필터 후 표시) -->
-      <div class="bottom-grid">
-        <div class="card">
-          <h3>메모 (필터 적용 결과)</h3>
-          <div id="memoContainer" class="muted">필터된 라운드의 메모가 여기에 표시됩니다.</div>
-        </div>
-        <div class="card">
-          <h3>라운드 요약 (필터 적용 시 표시)</h3>
-          <div id="roundSummariesContainer" class="muted"></div>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
     /* =====================
+       캐시 관리 상수 & 함수
+    ===================== */
+    const CACHE_KEY = 'golf_dashboard_cache_v2';
+    const CACHE_EXPIRY_DAYS = 30;
+
+    function saveFilesToCache(roundsData, holesData, shotsData) {
+      try {
+        const cacheData = {
+          timestamp: Date.now(),
+          rounds: roundsData,
+          holes: holesData,
+          shots: shotsData,
+          filesInfo: {
+            roundsCount: roundsData?.length || 0,
+            holesCount: holesData?.length || 0,
+            shotsCount: shotsData?.length || 0
+          }
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+        console.log('✅ 파일 데이터가 캐시에 저장되었습니다.');
+        return true;
+      } catch (e) {
+        console.error('❌ 캐시 저장 실패:', e);
+        return false;
+      }
+    }
+
+    function loadFilesFromCache() {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (!cached) return null;
+        
+        const data = JSON.parse(cached);
+        const ageInDays = (Date.now() - data.timestamp) / (1000 * 60 * 60 * 24);
+        
+        if (ageInDays > CACHE_EXPIRY_DAYS) {
+          localStorage.removeItem(CACHE_KEY);
+          console.log('⏰ 캐시 만료로 삭제했습니다.');
+          return null;
+        }
+        
+        console.log(`📂 캐시에서 데이터 로드 (${ageInDays.toFixed(1)}일 전 저장)`);
+        return data;
+      } catch (e) {
+        console.error('❌ 캐시 로드 실패:', e);
+        return null;
+      }
+    }
+
+    function clearCache() {
+      localStorage.removeItem(CACHE_KEY);
+      console.log('🗑️ 캐시가 삭제되었습니다.');
+      hideCacheStatus();
+    }
+
+    function showCacheStatus(cacheData) {
+      const lastDate = new Date(cacheData.timestamp).toLocaleString('ko-KR');
+      const info = cacheData.filesInfo;
+      const size = `라운드: ${info.roundsCount}개, 홀: ${info.holesCount}개, 샷: ${info.shotsCount}개`;
+      
+      document.getElementById('lastUploadDate').textContent = lastDate;
+      document.getElementById('cacheSize').textContent = size;
+      document.getElementById('cacheStatus').style.display = 'block';
+      document.getElementById('uploadArea').style.display = 'none';
+    }
+
+    function hideCacheStatus() {
+      document.getElementById('cacheStatus').style.display = 'none';
+      document.getElementById('uploadArea').style.display = 'block';
+    }
+
+    function useCachedData() {
+      const cached = loadFilesFromCache();
+      if (!cached) {
+        alert('캐시된 데이터를 찾을 수 없습니다.');
+        return;
+      }
+      
+      // 전역 변수에 캐시 데이터 설정
+      roundsData = cached.rounds;
+      holesData = cached.holes;
+      shotsData = cached.shots;
+      
+      console.log('💾 캐시된 데이터를 사용합니다.');
+      startAnalysis();
+    }
+
+    /* =====================
        전역 상태 & 유틸
     ===================== */
     let roundsData=null, holesData=null, shotsData=null;
-    let golfData=[];                // [{courseName, date, visitCount, totalScore, slope, cr, memo, holes:[...]}]
+    let golfData=[];
     let charts={};
-    let firstFilterApplied = false; // 라운드요약은 첫 필터 이후 노출
+    let firstFilterApplied = false;
 
     const n = (v)=> (typeof v==='number' && !isNaN(v)) ? v : (v? parseFloat(v): 0) || 0;
     const normalize = (s)=> (s??'').toString().trim().toLowerCase();
@@ -312,16 +413,28 @@
     function updateStatusAll(message, css=''){ const el=document.getElementById('allStatus'); el.textContent=message; el.className=`file-status ${css}`; }
 
     /* =====================
-       CSV 파서 (일괄 업로드)
+       이벤트 리스너 등록
     ===================== */
-    document.getElementById('allFiles').addEventListener('change', handleAllFilesUpload);
-    document.getElementById('analyzeBtn').addEventListener('click', startAnalysis);
-    document.getElementById('backBtn').addEventListener('click', resetApp);
-    document.getElementById('applyFilters').addEventListener('click', ()=>{ firstFilterApplied = true; applyFiltersAndRender(); });
-    document.getElementById('roundSelect').addEventListener('change', onRoundSelectChange);
-    document.getElementById('viewSingle').addEventListener('change', renderRoundDetails);
-    document.getElementById('viewCourseAgg').addEventListener('change', renderRoundDetails);
-    document.getElementById('cutoffMode').addEventListener('change', onCutoffModeChange);
+    document.addEventListener('DOMContentLoaded', function() {
+      // 캐시 확인
+      const cached = loadFilesFromCache();
+      if (cached) {
+        showCacheStatus(cached);
+      }
+      
+      // 이벤트 리스너들
+      document.getElementById('allFiles').addEventListener('change', handleAllFilesUpload);
+      document.getElementById('analyzeBtn').addEventListener('click', startAnalysis);
+      document.getElementById('backBtn').addEventListener('click', resetApp);
+      document.getElementById('useCacheBtn').addEventListener('click', useCachedData);
+      document.getElementById('uploadNewBtn').addEventListener('click', hideCacheStatus);
+      document.getElementById('clearCacheBtn').addEventListener('click', clearCache);
+      document.getElementById('applyFilters').addEventListener('click', ()=>{ firstFilterApplied = true; applyFiltersAndRender(); });
+      document.getElementById('roundSelect').addEventListener('change', onRoundSelectChange);
+      document.getElementById('viewSingle').addEventListener('change', renderRoundDetails);
+      document.getElementById('viewCourseAgg').addEventListener('change', renderRoundDetails);
+      document.getElementById('cutoffMode').addEventListener('change', onCutoffModeChange);
+    });
 
     function onCutoffModeChange(){
       const mode=document.getElementById('cutoffMode').value;
@@ -329,6 +442,9 @@
       document.getElementById('perCatWrap').style.display = (mode==='percat')? 'block':'none';
     }
 
+    /* =====================
+       CSV 파서 (일괄 업로드)
+    ===================== */
     async function handleAllFilesUpload(event){
       const files = Array.from(event.target.files||[]);
       if (!files.length){ updateStatusAll('선택된 파일이 없습니다.'); return; }
@@ -358,6 +474,11 @@
       const ok = missing.length===0;
       updateStatusAll((ok? '3개 세트 로드 완료\n' : '로드 결과 (누락 있음)\n') + logs.join('\n') + (ok? '' : `\n누락: ${missing.join(', ')}`), ok? 'success':'warn');
       document.getElementById('analyzeBtn').disabled = !ok;
+      
+      // 성공적으로 로드되면 캐시에 저장
+      if (ok) {
+        saveFilesToCache(roundsData, holesData, shotsData);
+      }
     }
 
     async function parseCSVSmart(file){
@@ -393,7 +514,6 @@
       const has = (key)=> fields.includes(key);
       const any = (...keys)=> keys.some(k=> fields.includes(k));
 
-      // Holes vs Shots disambiguation first (둘 다 hole number가 있을 수 있으므로 shots 신호를 우선)
       const looksLikeShots = any('shot number','club','shot length yards','lie');
       const hasHoleNo = has('hole number');
       const looksLikeHoles = hasHoleNo && any('total strokes','putts','fairway','gir','girs','gir?');
@@ -403,7 +523,6 @@
       if (looksLikeHoles) return 'holes';
       if (looksLikeRounds && !hasHoleNo) return 'rounds';
 
-      // 파일명 휴리스틱
       if (name.includes('round')) return 'rounds';
       if (name.includes('hole'))  return 'holes';
       if (name.includes('shot'))  return 'shots';
@@ -418,7 +537,6 @@
       initFiltersFromData();
       document.getElementById('uploadSection').style.display='none';
       document.getElementById('dashboardSection').style.display='block';
-      // 초기 렌더(요약은 표시하지 않음)
       applyFiltersAndRender();
     }
 
@@ -428,9 +546,16 @@
       document.getElementById('dashboardSection').style.display='none';
       document.getElementById('uploadSection').style.display='flex';
       document.getElementById('analyzeBtn').disabled=true;
-      document.getElementById('roundSummariesContainer').innerHTML='';
       document.getElementById('allFiles').value='';
       updateStatusAll('');
+      
+      // 캐시 상태 다시 확인
+      const cached = loadFilesFromCache();
+      if (cached) {
+        showCacheStatus(cached);
+      } else {
+        hideCacheStatus();
+      }
     }
 
     function pickNum(obj, keys){
@@ -440,10 +565,9 @@
 
     function buildGolfData(){
       golfData=[];
-      const keyToRound = new Map(); // key -> {courseName,date,totalScore,slope,cr,memo,holes:[]}
+      const keyToRound = new Map();
       const key = (o)=> rkRaw(o['date'], o['course name']);
 
-      // rounds: 점수/메모/슬로프/CR
       (roundsData||[]).forEach(r=>{
         const k=key(r);
         if (!keyToRound.has(k)) keyToRound.set(k,{courseName:r['course name'], date:r['date'], totalScore:null, slope:null, cr:null, memo:[], holes:[]});
@@ -451,12 +575,10 @@
         if (n(r['gross score'])>0) obj.totalScore = n(r['gross score']);
         const memo = r['memo']?? r['notes']?? r['note']?? r['comment']?? r['comments'];
         if (memo){ obj.memo.push(String(memo)); }
-        // slope & course rating
         obj.slope = pickNum(r, ['slope','slope rating','slope_rating','Slope','Slope Rating']);
         obj.cr    = pickNum(r, ['course rating','course_rating','CR','Course Rating']);
       });
 
-      // holes: 스탯/메모 (어프로치 필드는 shots에서 채움)
       (holesData||[]).forEach(h=>{
         if (!h['date'] || !h['course name']) return;
         const k=key(h);
@@ -472,7 +594,6 @@
         if (memo){ keyToRound.get(k).memo.push(`Hole ${n(h['hole number'])}: ${String(memo)}`); }
       });
 
-      // shots 인덱스: key(date,course,hole) -> shots[]
       const shotsIndex = new Map();
       (shotsData||[]).forEach(s=>{
         if (!s['date'] || !s['course name']) return;
@@ -482,7 +603,6 @@
       });
       shotsIndex.forEach(a=> a.sort((a,b)=> n(a['shot number']) - n(b['shot number'])));
 
-      // 어프로치 샷 판정
       keyToRound.forEach(r=>{
         r.holes.forEach(h=>{
           const hk=`${rkRaw(r.date, r.courseName)}__${h.hole}`;
@@ -492,12 +612,10 @@
         });
       });
 
-      // 총스코어 보정
       keyToRound.forEach(r=>{
         if (r.totalScore==null && r.holes.length){ r.totalScore = r.holes.reduce((s,h)=> s + (n(h.score)||0), 0); }
       });
 
-      // 방문차수(코스별 오름차순)
       const byCourse = {};
       keyToRound.forEach(r=>{
         const d=parseDateSafe(r.date);
@@ -507,7 +625,6 @@
       Object.values(byCourse).forEach(list=> list.sort((a,b)=> a.t-b.t));
       Object.values(byCourse).forEach(list=>{ let cnt=0; list.forEach(w=>{ w.r.visitCount=(++cnt); }); });
 
-      // 배열화
       keyToRound.forEach(r=>{
         golfData.push({
           courseName:r.courseName,
@@ -522,15 +639,12 @@
       golfData.sort((a,b)=> (parseDateSafe(a.date)-parseDateSafe(b.date)));
     }
 
-    // 어프로치 판정: Par3=티샷, Par4/5=티샷 제외하고 퍼팅 전 샷 중 30~200yd의 "마지막" 샷, 없으면 마지막 비퍼팅 샷
     function determineApproach(shots, par){
       if (!shots || !shots.length) return null;
       const firstPuttIdx = shots.findIndex(s=> isPutter(s['club']));
       const cutoffIdx = (firstPuttIdx>=0? firstPuttIdx: shots.length);
-      // 후보: 비퍼팅 & 퍼팅 전
       let cand = shots.filter((s,i)=> !isPutter(s['club']) && i < cutoffIdx);
       if (par>=4){
-        // 티샷 제외 (lie가 Tee이거나 shot number==1)
         cand = cand.filter((s,i)=> {
           const lie=(s['lie']||'').toString().toLowerCase();
           const sn = n(s['shot number']);
@@ -538,21 +652,16 @@
         });
       }
       if (!cand.length) return null;
-      // 30~200yd 범위의 마지막 샷
       let preferred = [...cand].reverse().find(s=> { const d=n(s['shot length yards']); return d>=30 && d<=200; });
       if (!preferred) preferred = cand[cand.length-1];
       return {dist:n(preferred['shot length yards']), club:(preferred['club']||'').toString()};
     }
 
-    /* =====================
-       필터 초기화 & 적용
-    ===================== */
     function initFiltersFromData(){
       const courses = Array.from(new Set(golfData.map(g=>g.courseName))).sort((a,b)=>a.localeCompare(b));
       const courseSel=document.getElementById('courseSelect');
       courseSel.innerHTML = `<option value="__ALL__">전체</option>` + courses.map(c=>`<option value="${c}">${c}</option>`).join('');
 
-      // 날짜 범위(월)
       const dates = golfData.map(g=>parseDateSafe(g.date)).filter(Boolean);
       if (dates.length){
         const minD = new Date(Math.min(...dates)), maxD = new Date(Math.max(...dates));
@@ -563,11 +672,11 @@
 
     function currentFilter(){
       const course = document.getElementById('courseSelect').value;
-      const period = document.getElementById('periodMode').value; // round|month|quarter
+      const period = document.getElementById('periodMode').value;
       const startM = document.getElementById('startMonth').value;
       const endM   = document.getElementById('endMonth').value;
       const pars = Array.from(document.querySelectorAll('.parCheck:checked')).map(c=>parseInt(c.value,10));
-      const rlen = document.getElementById('roundLength').value;  // all|9|18
+      const rlen = document.getElementById('roundLength').value;
       const useSlope = document.getElementById('useSlope').checked;
 
       const cutoffMode = document.getElementById('cutoffMode').value;
@@ -612,7 +721,6 @@
       if (!useSlope) return n(r.totalScore);
       const slope = r.slope, cr = r.cr;
       if (!slope || !cr) return n(r.totalScore);
-      // Equivalent gross at slope 113:
       return cr + (n(r.totalScore)-cr) * 113 / slope;
     }
 
@@ -620,12 +728,10 @@
       const {course, period, startM, endM, pars, rlen, useSlope, cut} = currentFilter();
       document.getElementById('slopeBadge').textContent = useSlope? ' (Slope 보정)': '';
 
-      // 날짜 범위
       const startDate = startM? new Date(startM+'-01'): null;
       const endDate   = endM? new Date(endM+'-01'): null;
       if (endDate){ endDate.setMonth(endDate.getMonth()+1); endDate.setDate(0); }
 
-      // 라운드 필터(코스·날짜·길이)
       let rounds = golfData.filter(g=>{
         if (course!=='__ALL__' && g.courseName!==course) return false;
         const d=parseDateSafe(g.date); if (!d) return false;
@@ -636,30 +742,22 @@
         return true;
       });
 
-      // 홀 필터(홀타입)
       let holes=[]; rounds.forEach(g=>{ holes.push(...g.holes.filter(h=> pars.includes(h.par))); });
 
-      // ===== KPI & 차트 =====
-      renderKPIs(rounds, holes, useSlope);             // 평균 스코어는 18홀만 계산
-      renderScoreTrend(rounds, period, useSlope);      // 18H ≤ 70 outlier 제외
+      renderKPIs(rounds, holes, useSlope);
+      renderScoreTrend(rounds, period, useSlope);
       renderPuttTrend(rounds, period);
-      renderWedgeTrend(rounds, cut);                   // 신규: 라운드당 평균 웨지 트렌드
+      renderWedgeTrend(rounds, cut);
       renderCourseFirstVsLater(rounds, (course!=='__ALL__')? course: null, useSlope);
       renderVisitCountTrend(rounds, (course!=='__ALL__')? course: null, useSlope);
       renderParTypeRates(holes);
       renderDrivingDoughnut(holes);
-      renderClubDistance(rounds, cut);                 // 어프로치 기반 평균/최대 (컷오프 적용)
+      renderClubDistance(rounds, cut);
 
-      // 상세 라운드
       populateRoundSelect(rounds);
       document.getElementById('selectedRoundMemo').textContent = '';
       document.getElementById('selectedRoundSummary').innerHTML = '';
       document.getElementById('roundTableContainer').innerHTML = '<p class="muted">라운드를 선택하면 상세 테이블이 표시됩니다.</p>';
-
-      // 하단 메모 & 라운드 요약
-      renderMemos(rounds);
-      if (firstFilterApplied) renderRoundSummaries(rounds, useSlope);
-      else document.getElementById('roundSummariesContainer').innerHTML = '<span class="muted">필터를 적용하면 요약이 표시됩니다.</span>';
     }
 
     /* =====================
@@ -683,24 +781,24 @@
     }
 
     /* =====================
-       그룹핑 & 공통 차트 (스코어트렌드 outlier 제외)
+       그룹핑 & 공통 차트
     ===================== */
-    function groupRounds(rounds, mode, useSlope){ // round|month|quarter
+    function groupRounds(rounds, mode, useSlope){
       const isOutlier = (r)=> (getRoundHolesType(r)===18 && adjustedScore(r,useSlope) <= 70);
 
       if (mode==='round'){
         const labels = []; const scoreAvg=[]; const puttAvg=[];
         rounds.forEach(r=>{
-          if (isOutlier(r)) return; // 제외
+          if (isOutlier(r)) return;
           labels.push(`${r.date}`);
           scoreAvg.push(adjustedScore(r,useSlope));
           puttAvg.push(r.holes.reduce((s,h)=>s+n(h.putts),0));
         });
         return {labels, scoreAvg, puttAvg};
       }
-      const map = new Map(); // key-> {scores[], putts[]}
+      const map = new Map();
       rounds.forEach(r=>{
-        if (isOutlier(r)) return; // 제외
+        if (isOutlier(r)) return;
         const d=parseDateSafe(r.date); if(!d) return;
         const key = (mode==='month')? fmtYM(d): fmtQ(d);
         if (!map.has(key)) map.set(key,{scores:[], putts:[]});
@@ -725,6 +823,7 @@
         }
       });
     }
+
     function renderPuttTrend(rounds, period){
       const ctx = document.getElementById('puttTrendChart').getContext('2d');
       const g = groupRounds(rounds, period, false);
@@ -738,7 +837,6 @@
       });
     }
 
-    // 신규: 라운드당 평균 웨지 트렌드 (컷오프 적용)
     function renderWedgeTrend(rounds, cut){
       const ctx = document.getElementById('wedgeTrendChart').getContext('2d');
       const labels = []; const values = [];
@@ -783,7 +881,7 @@
     function renderVisitCountTrend(rounds, course, useSlope){
       const ctx = document.getElementById('visitCountTrendChart').getContext('2d');
       let list = course? rounds.filter(r=> r.courseName===course): rounds;
-      const map=new Map(); // visitCount -> scores[]
+      const map=new Map();
       list.forEach(r=>{ if (!map.has(r.visitCount)) map.set(r.visitCount,[]); map.get(r.visitCount).push(adjustedScore(r,useSlope)); });
       const visits = Array.from(map.keys()).sort((a,b)=>a-b);
       const avg = visits.map(v=> { const arr=map.get(v); return arr.reduce((a,b)=>a+b,0)/arr.length; });
@@ -798,9 +896,6 @@
       });
     }
 
-    /* =====================
-       홀 타입 성적(세분화)
-    ===================== */
     function renderParTypeRates(holes){
       const ctx = document.getElementById('parTypeRatesChart').getContext('2d');
       const acc = {3:{b:0,p:0,b1:0,d2:0,t3:0,q4:0,t:0}, 4:{b:0,p:0,b1:0,d2:0,t3:0,q4:0,t:0}, 5:{b:0,p:0,b1:0,d2:0,t3:0,q4:0,t:0}};
@@ -837,9 +932,6 @@
       });
     }
 
-    /* =====================
-       드라이빙 도넛
-    ===================== */
     function renderDrivingDoughnut(holes){
       const d = {Hit:0, Left:0, Right:0};
       holes.filter(h=> h.par!==3).forEach(h=>{
@@ -857,9 +949,6 @@
       });
     }
 
-    /* =====================
-       클럽별 비거리 (어프로치 기반, 컷오프 적용)
-    ===================== */
     function clubOrderIndex(name){
       const s=(name||'').toString().toUpperCase().replace(/\s+/g,'');
       if (['D','DR','DRIVER'].includes(s)) return 0;
@@ -870,14 +959,15 @@
       const deg=s.match(/^(48|50|52|54|56|58|60|62|64)$/); if (deg) return 51+ (+deg[1])/10;
       return 100;
     }
+
     function renderClubDistance(rounds, cut){
-      const clubAgg=new Map(); // club -> {sum,cnt,max}
+      const clubAgg=new Map();
       rounds.forEach(r=>{
         r.holes.forEach(h=>{
           const c=(h.approachClub||'').toString().trim(); const d=n(h.approachDist);
           if (!c || !d || d<=0 || isPutter(c)) return;
           const thr = cutoffForClub(c, cut);
-          if (thr && d>=thr) return; // 노이즈 제거
+          if (thr && d>=thr) return;
           if (!clubAgg.has(c)) clubAgg.set(c,{sum:0,cnt:0,max:0});
           const g=clubAgg.get(c); g.sum+=d; g.cnt+=1; if (d>g.max) g.max=d;
         });
@@ -899,15 +989,11 @@
         }
       });
 
-      // 요약 테이블
       const tbl = `<table><thead><tr><th>클럽</th><th>샷 수</th><th>평균(yd)</th><th>최대(yd)</th></tr></thead>
         <tbody>${clubs.map((c,i)=>`<tr><td>${c}</td><td>${clubAgg.get(c).cnt}</td><td>${avg[i]}</td><td>${max[i]}</td></tr>`).join('')}</tbody></table>`;
       document.getElementById('clubAvgTableContainer').innerHTML = tbl || '<span class="muted">데이터가 없습니다.</span>';
     }
 
-    /* =====================
-       상세 라운드
-    ===================== */
     function populateRoundSelect(rounds){
       const sel=document.getElementById('roundSelect');
       sel.innerHTML='<option value="">라운드를 선택하세요</option>';
@@ -916,7 +1002,9 @@
         const opt=document.createElement('option'); opt.value=rk(r); opt.textContent=label; sel.appendChild(opt);
       });
     }
+
     function onRoundSelectChange(){ renderRoundDetails(); }
+
     function renderRoundDetails(){
       const key=document.getElementById('roundSelect').value;
       const mode = document.getElementById('viewCourseAgg').checked? 'course':'single';
@@ -1015,32 +1103,6 @@
       container.appendChild(table);
     }
 
-    /* =====================
-       메모 & 라운드 요약(하단)
-    ===================== */
-    function renderMemos(rounds){
-      const box=document.getElementById('memoContainer');
-      const entries = rounds
-        .map(r=> ({ key:rk(r), title:`${r.date} · ${r.courseName} (${getRoundHolesType(r)}H)`, memo:r.memo?.filter(Boolean)||[] }))
-        .filter(e=> e.memo.length>0);
-      if (!entries.length){ box.innerHTML='<span class="muted">표시할 메모가 없습니다.</span>'; return; }
-      box.innerHTML='';
-      entries.forEach(e=>{
-        const div=document.createElement('div'); div.className='memo-item';
-        div.innerHTML = `<b>${e.title}</b><ul style="margin-top:6px">${e.memo.map(m=>`<li>${m}</li>`).join('')}</ul>`;
-        box.appendChild(div);
-      });
-    }
-
-    function renderRoundSummaries(rounds, useSlope){
-      const box=document.getElementById('roundSummariesContainer');
-      if (!rounds.length){ box.innerHTML='<span class="muted">라운드가 없습니다.</span>'; return; }
-      const html = rounds.map(r=>{
-        const sum = summarizeRound(r, useSlope);
-        return `<div class="memo-item"><b>${r.date} · ${r.courseName} (${getRoundHolesType(r)}H, ${r.visitCount}회차)</b><div class="muted" style="margin-top:6px">${sum}</div></div>`;
-      }).join('');
-      box.innerHTML = html;
-    }
 
     function summarizeRound(r, useSlope){
       const holes = r.holes;
@@ -1068,6 +1130,7 @@
            + `FW ${fwT? (fwH/fwT*100).toFixed(0)+'%':'-'}, GIR ${(girH/holes.length*100).toFixed(0)}%, `
            + `퍼팅 ${putt}, 어프로치 On-Green ${apprTot? (apprHit/apprTot*100).toFixed(0)+'%':'-'}, 드라이빙 ${biasTxt}`;
     }
+
   </script>
 </body>
 </html>
