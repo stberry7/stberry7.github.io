@@ -315,6 +315,9 @@
             font-family: monospace;
             font-size: 0.9rem;
         }
+        .series-info-mobile {
+            display: none;
+        }
         .time-selector {
             display: flex;
             justify-content: center;
@@ -421,8 +424,21 @@
                 border-radius: 25px;
             }
             .chart-container {
-                height: 300px;
+                height: 350px;
                 margin: 15px 0;
+            }
+            .series-info {
+                display: none;
+            }
+            .series-info-mobile {
+                display: block;
+                background: #f8f9fa;
+                padding: 8px;
+                border-radius: 6px;
+                margin: 10px 0;
+                font-size: 0.75rem;
+                font-family: monospace;
+                text-align: center;
             }
             .fred-logo {
                 font-size: 0.6rem;
@@ -483,8 +499,21 @@
                 border-radius: 8px;
             }
             .chart-container {
-                height: 250px;
+                height: 280px;
                 margin: 10px 0;
+            }
+            .series-info {
+                display: none;
+            }
+            .series-info-mobile {
+                display: block;
+                background: #f8f9fa;
+                padding: 6px;
+                border-radius: 4px;
+                margin: 8px 0;
+                font-size: 0.7rem;
+                font-family: monospace;
+                text-align: center;
             }
             .time-btn {
                 padding: 6px 10px;
@@ -834,6 +863,7 @@
             <h2 id="modalTitle">FRED Indicator Details</h2>
             
             <div class="series-info" id="seriesInfo"></div>
+            <div class="series-info-mobile" id="seriesInfoMobile"></div>
             
             <div class="time-selector" id="timeSelector">
                 <button class="time-btn active" onclick="updateChart('1M')">1M</button>
@@ -1394,12 +1424,18 @@
             const realFreqInfo = frequency.realFreq ? `<br><strong>Actual Release Schedule:</strong> ${frequency.realFreq}` : '';
             const delayInfo = frequency.delay ? `<br><strong>Data Delay:</strong> ${frequency.delay}` : '';
             
+            // Desktop version - full info
             document.getElementById('seriesInfo').innerHTML = `
                 <strong>Series ID:</strong> ${seriesId}<br>
                 <strong>Unit:</strong> ${seriesInfo.unit}<br>
                 <strong>Cache Update:</strong> ${frequency.description} (${frequency.cacheDays} day cache)${realFreqInfo}${delayInfo}<br>
                 <strong>Data Source:</strong> Federal Reserve Bank (FRED)<br>
                 <strong>Smart Cache:</strong> Active${cacheInfo}${specialInfo}
+            `;
+
+            // Mobile version - minimal info
+            document.getElementById('seriesInfoMobile').innerHTML = `
+                <strong>${seriesId}</strong> | ${seriesInfo.unit} | ${frequency.description}
             `;
             
             document.getElementById('detailModal').style.display = 'block';
