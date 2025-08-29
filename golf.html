@@ -1151,8 +1151,10 @@
       const byCourse = {};
       keyToRound.forEach(r=>{
         const d=parseDateSafe(r.date);
-        if (!byCourse[r.courseName]) byCourse[r.courseName]=[];
-        byCourse[r.courseName].push({r, t: d? d.getTime(): Number.MAX_SAFE_INTEGER});
+        // 정규화된 코스 이름을 키로 사용
+        const normalizedName = normalizeCourse(r.courseName);
+        if (!byCourse[normalizedName]) byCourse[normalizedName]=[];
+        byCourse[normalizedName].push({r, t: d? d.getTime(): Number.MAX_SAFE_INTEGER});
       });
       Object.values(byCourse).forEach(list=> list.sort((a,b)=> a.t-b.t));
       Object.values(byCourse).forEach(list=>{ let cnt=0; list.forEach(w=>{ w.r.visitCount=(++cnt); }); });
@@ -1189,10 +1191,61 @@
       return {dist:n(preferred['shot length yards']), club:(preferred['club']||'').toString()};
     }
 
+    // 코스명 정규화 함수
+    function normalizeCourse(name) {
+      const cleaned = name.trim()
+        .replace(/\s+/g, ' ')  // 연속된 공백을 하나로
+        .replace(/\s?GC$/i, '') // 끝의 GC 제거 (대소문자 구분 안함)
+        .replace(/\s?Golf\s+Club$/i, '') // Golf Club 제거
+        .replace(/\s?Golf\s+Course$/i, '') // Golf Course 제거
+        .replace(/\s?Golf\s+Cource$/i, '') // Golf Cource (오타) 제거
+        .replace(/\s?Country\s+Club$/i, '') // Country Club 제거
+        .replace(/\s?\(.*?\)/g, '') // 괄호와 내용 제거 (예: (Bluff), (Peaks))
+        .trim();
+      
+      // 일반적인 축약어 정규화
+      return cleaned
+        .replace(/Metro\s+Park$/i, 'MetroPark')
+        .replace(/Metropolitan\s+Park$/i, 'MetroPark')
+        .toLowerCase();
+    }
+
+    // 코스별 라운드 그룹화
+    function groupCoursesByName(golfData) {
+      const courseGroups = new Map();
+      
+      golfData.forEach(round => {
+        const normalized = normalizeCourse(round.courseName);
+        if (!courseGroups.has(normalized)) {
+          courseGroups.set(normalized, {
+            displayName: round.courseName, // 첫 번째로 나타나는 이름을 대표로 사용
+            rounds: []
+          });
+        }
+        courseGroups.get(normalized).rounds.push(round);
+      });
+      
+      return courseGroups;
+    }
+
     function initFiltersFromData(){
-      const courses = Array.from(new Set(golfData.map(g=>g.courseName))).sort((a,b)=>a.localeCompare(b));
-      const courseSel=document.getElementById('courseSelect');
-      courseSel.innerHTML = `<option value="__ALL__">전체</option>` + courses.map(c=>`<option value="${c}">${c}</option>`).join('');
+      // 정규화된 코스 그룹 생성
+      const courseGroups = groupCoursesByName(golfData);
+      
+      // 그룹별로 대표 이름과 라운드 수 표시
+      const courseOptions = Array.from(courseGroups.entries())
+        .map(([normalized, group]) => ({
+          value: normalized,
+          displayName: group.displayName,
+          roundCount: group.rounds.length
+        }))
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
+      
+      const courseSel = document.getElementById('courseSelect');
+      courseSel.innerHTML = `<option value="__ALL__">전체</option>` + 
+        courseOptions.map(c => 
+          `<option value="${c.value}">${c.displayName} (${c.roundCount}라운드)</option>`
+        ).join('');
 
       const dates = golfData.map(g=>parseDateSafe(g.date)).filter(Boolean);
       if (dates.length){
@@ -1265,7 +1318,12 @@
       if (endDate){ endDate.setMonth(endDate.getMonth()+1); endDate.setDate(0); }
 
       let rounds = golfData.filter(g=>{
-        if (course!=='__ALL__' && g.courseName!==course) return false;
+        // 코스 필터링: 정규화된 이름으로 비교
+        if (course !== '__ALL__') {
+          const normalized = normalizeCourse(g.courseName);
+          if (normalized !== course) return false;
+        }
+        
         const d=parseDateSafe(g.date); if (!d) return false;
         if (startDate && d<startDate) return false;
         if (endDate && d>endDate) return false;
@@ -1442,7 +1500,7 @@
 
     function renderCourseFirstVsLater(rounds, course, useSlope){
       const ctx = document.getElementById('courseFirstVsLaterChart').getContext('2d');
-      let list = course? rounds.filter(r=> r.courseName===course): rounds;
+      let list = course? rounds.filter(r=> normalizeCourse(r.courseName) === course): rounds;
       const first = list.filter(r=> r.visitCount===1).map(r=>adjustedScore(r,useSlope));
       const later = list.filter(r=> r.visitCount>=2).map(r=>adjustedScore(r,useSlope));
       const firstAvg = first.length? first.reduce((a,b)=>a+b,0)/first.length : 0;
@@ -1467,7 +1525,7 @@
 
     function renderVisitCountTrend(rounds, course, useSlope){
       const ctx = document.getElementById('visitCountTrendChart').getContext('2d');
-      let list = course? rounds.filter(r=> r.courseName===course): rounds;
+      let list = course? rounds.filter(r=> normalizeCourse(r.courseName) === course): rounds;
       const map=new Map();
       list.forEach(r=>{ if (!map.has(r.visitCount)) map.set(r.visitCount,[]); map.get(r.visitCount).push(adjustedScore(r,useSlope)); });
       const visits = Array.from(map.keys()).sort((a,b)=>a-b);
@@ -1642,7 +1700,7 @@
         const startDate = startM? new Date(startM+'-01'): null;
         const endDate   = endM? new Date(endM+'-01'): null;
         if (endDate){ endDate.setMonth(endDate.getMonth()+1); endDate.setDate(0); }
-        let same = golfData.filter(g=> g.courseName===r0.courseName);
+        let same = golfData.filter(g=> normalizeCourse(g.courseName) === normalizeCourse(r0.courseName));
         same = same.filter(g=>{
           const d=parseDateSafe(g.date);
           if (startDate && d<startDate) return false;
