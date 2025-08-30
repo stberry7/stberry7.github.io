@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Economic Indicators Dashboard 2025 | World Bank Data | GDP, Trade, Investment | Free Economic Charts</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="FREE Global Economic Dashboard 2025 | Monitor GDP, Trade, and Investment indicators from World Bank | Track global economic data for US, China, Japan, Germany, South Korea, and more with interactive charts">
+    <meta name="keywords" content="World Bank data dashboard, global economic indicators, GDP growth rate, trade data, FDI inflows, international economic data, global economic charts, World Bank API, economic analysis tools, global GDP tracker, trade balance, investment flows, economic forecasting">
+    <meta name="author" content="Global Economic Dashboard">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="en">
+    
+    <!-- Open Graph Meta Tags (for social media sharing) -->
+    <meta property="og:title" content="FREE Global Economic Dashboard 2025 | World Bank Data">
+    <meta property="og:description" content="Track global economic indicators FREE! World Bank data including GDP, trade, investment data for major economies. Updated annually with interactive charts.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Global Economic Indicators Dashboard">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FREE Global Economic Dashboard | World Bank Data">
+    <meta name="twitter:description" content="Track global economic indicators FREE! GDP, trade, investment data from World Bank for major economies.">
+    
+    <!-- Search Engine Optimization -->
+    <meta name="theme-color" content="#1f77b4">
+    <link rel="canonical" href="https://yourdomain.com/worldbank">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="WORLD">
+    <meta name="geo.placename" content="Global">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    <meta name="revisit-after" content="1 month">
+    <meta name="expires" content="never">
+    <meta http-equiv="content-language" content="en-us">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
+    <link rel="dns-prefetch" href="//api.worldbank.org">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Global Economic Indicators Dashboard 2025",
+        "description": "FREE comprehensive global economic dashboard monitoring GDP, trade, and investment indicators from World Bank Open Data. Track economic performance across major economies including United States, China, Japan, Germany, South Korea, India, and Brazil with interactive charts and historical analysis.",
+        "url": "",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Global Economic Dashboard"
+        },
+        "keywords": [
+            "World Bank data",
+            "global economic indicators",
+            "GDP growth rate",
+            "trade data",
+            "FDI inflows",
+            "gross fixed capital formation",
+            "economic analysis",
+            "international economics",
+            "global GDP tracker",
+            "trade balance",
+            "investment flows",
+            "economic comparison"
+        ],
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "featureList": [
+            "Global economic indicators monitoring",
+            "GDP (Nominal, Real, Per Capita, Growth Rate)",
+            "Trade data (Exports, Imports, Trade Balance)",
+            "Investment data (FDI inflows, Capital Formation)",
+            "Multi-country comparison charts",
+            "World Bank Open Data integration",
+            "Interactive historical charts",
+            "Mobile responsive design",
+            "Data download functionality (CSV/Excel)",
+            "Annual data updates",
+            "Free access with no registration required"
+        ]
+    }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #1f77b4 0%, #2980b9 100%); 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #1f77b4; 
+            margin-bottom: 20px; 
+            font-size: 2.5rem; 
+            font-weight: bold; 
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .last-updated { 
+            text-align: center; 
+            color: #666; 
+            margin-bottom: 30px; 
+            font-size: 0.9rem; 
+        }
+        .indicators-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .category { 
+            background: #fff; 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); 
+            border: 1px solid #e8e8e8; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+        }
+        .category:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); 
+        }
+        .category h2 { 
+            color: #1f77b4; 
+            margin-bottom: 15px; 
+            font-size: 1.3rem; 
+            border-bottom: 2px solid #e8e8e8; 
+            padding-bottom: 8px; 
+        }
+        .indicator { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px; 
+            margin-bottom: 8px; 
+            background: #f8f9fa; 
+            border-radius: 8px; 
+            border: 1px solid #e9ecef; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+        }
+        .indicator:hover { 
+            background: #e3f2fd; 
+            border-color: #1f77b4; 
+            transform: translateX(3px); 
+        }
+        .indicator-name { 
+            font-weight: bold; 
+            color: #2c3e50; 
+            font-size: 0.95rem; 
+        }
+        .indicator-name-eng { 
+            font-size: 0.75rem; 
+            color: #7f8c8d; 
+            font-weight: normal; 
+            margin-top: 2px; 
+        }
+        .indicator-value { 
+            font-weight: bold; 
+            font-size: 1rem; 
+            min-width: 80px; 
+            text-align: right; 
+        }
+        .indicator-date { 
+            font-size: 0.7rem; 
+            color: #999; 
+            margin-top: 2px; 
+        }
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #3498db; }
+        .warning { color: #f39c12; }
+        .loading { 
+            color: #95a5a6; 
+            animation: pulse 1.5s infinite; 
+        }
+        @keyframes pulse { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.5; } 
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .cache-status { 
+            font-size: 0.65rem; 
+            padding: 2px 6px; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+        }
+        .cache-hit { 
+            background: #d4edda; 
+            color: #155724; 
+        }
+        .cache-fresh { 
+            background: #cce5ff; 
+            color: #004085; 
+        }
+        .cache-loading { 
+            background: #f8f9fa; 
+            color: #6c757d; 
+            animation: pulse 1s infinite; 
+        }
+        
+        /* World Bank Specific Styles */
+        .world-bank-section {
+            margin-top: 20px;
+        }
+        
+        .world-bank-gdp, .world-bank-trade, .world-bank-investment {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #1f77b4;
+        }
+        
+        .wb-country-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .wb-indicator-group {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #dee2e6;
+        }
+        
+        .wb-indicator-group h3 {
+            color: #1f77b4;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+        
+        .wb-indicators {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .wb-indicator {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease;
+        }
+        
+        .wb-indicator:hover {
+            background: #e3f2fd;
+            border-color: #1f77b4;
+            transform: translateY(-2px);
+        }
+        
+        .wb-logo {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Chart Container Styles */
+        .chart-container {
+            margin-top: 15px;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .chart-content {
+            width: 100%;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        
+        .chart-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+        
+        .download-btn {
+            background: #1f77b4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .download-btn:hover {
+            background: #1565c0;
+        }
+        
+        .chart-explanation {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .chart-explanation h4 {
+            color: #1f77b4;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .explanation-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .data-info {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .data-info strong {
+            color: #1f77b4;
+        }
+        
+        /* Large Desktop Layout: Side-by-side charts and explanations */
+        @media (min-width: 1200px) {
+            .chart-content {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            
+            .chart-wrapper {
+                flex: 1;
+                min-height: 400px;
+            }
+            
+            .chart-explanation {
+                flex: 0 0 350px;
+                border-top: none;
+                border-left: 1px solid #e9ecef;
+            }
+        }
+        
+        /* Tablet Layout: Side-by-side with smaller explanation panel */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .chart-content {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            
+            .chart-wrapper {
+                flex: 1;
+                min-height: 350px;
+            }
+            
+            .chart-explanation {
+                flex: 0 0 300px;
+                border-top: none;
+                border-left: 1px solid #e9ecef;
+            }
+            
+            .explanation-text {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Mobile Layout: Explanations below charts */
+        @media (max-width: 767px) {
+            .chart-container {
+                margin-top: 15px;
+            }
+            
+            .chart-wrapper {
+                padding: 15px;
+                min-height: 250px;
+            }
+            
+            .chart-explanation {
+                padding: 15px;
+            }
+            
+            .chart-explanation h4 {
+                font-size: 1rem;
+            }
+            
+            .explanation-text {
+                font-size: 0.9rem;
+            }
+            
+            .data-info {
+                font-size: 0.8rem;
+            }
+            
+            .download-btn {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .wb-country-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .indicators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .wb-indicator-group {
+                padding: 15px;
+            }
+            
+            .wb-indicator-group h3 {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Chart loading states */
+        .chart-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .chart-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: #e74c3c;
+            font-style: italic;
+        }
+        
+        /* Animation for auto-loading charts */
+        .chart-container.loading {
+            opacity: 0.7;
+        }
+        
+        .chart-container.loaded {
+            opacity: 1;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #1f77b4, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(31, 119, 180, 0.3);
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(31, 119, 180, 0.4);
+        }
+        
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1200px;
+            height: 85%;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            color: #1f77b4;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+        
+        .close-btn:hover {
+            background: #c0392b;
+        }
+        
+        .time-range-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .time-btn {
+            background: #f8f9fa;
+            border: 2px solid #1f77b4;
+            color: #1f77b4;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .time-btn:hover {
+            background: #e3f2fd;
+        }
+        
+        .time-btn.active {
+            background: #1f77b4;
+            color: white;
+        }
+        
+        .modal-chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .modal-chart-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .modal-explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #1f77b4;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                height: 90%;
+                margin: 5% auto;
+                padding: 15px;
+            }
+            
+            .modal-chart-container {
+                height: 350px;
+            }
+            
+            .time-range-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🌍 Global Economic Indicators Dashboard 2025</h1>
+            <div class="subtitle">Real-time global economic data from World Bank Open Data</div>
+            <div class="last-updated">Last updated: <span id="currentTime">Loading...</span></div>
+        </header>
+
+        <!-- World Bank Economic Data Section -->
+        <div class="world-bank-section">
+            
+            <!-- World Bank GDP Data -->
+            <div class="category world-bank-gdp">
+                <h2>📈 Global GDP Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
+                <div class="wb-country-grid">
+                    <div class="wb-indicator-group">
+                        <h3>GDP (Nominal) - Current US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-US-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-CN-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-JP-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-DE-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-KR-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-IN-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-GB-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-FR-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
+                                <div class="cache-status cache-loading" id="wb-IT-NY.GDP.MKTP.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-NY.GDP.MKTP.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-NY.GDP.MKTP.CD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wb-indicator-group">
+                        <h3>GDP Growth Rate - Annual %</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-US-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-CN-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-KR-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-IN-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('BR', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-BR-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇧🇷 Brazil</div>
+                                    <div class="indicator-date" id="wb-BR-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-BR-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- World Bank Trade Data -->
+            <div class="category world-bank-trade">
+                <h2>🚀 Global Trade Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
+                <div class="wb-country-grid">
+                    <div class="wb-indicator-group">
+                        <h3>Exports - Current US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-US-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-CN-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-DE-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-JP-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-GB-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-FR-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-IT-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CA', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-CA-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇦 Canada</div>
+                                    <div class="indicator-date" id="wb-CA-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CA-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-KR-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'NE.EXP.GNFS.CD', 'Exports')">
+                                <div class="cache-status cache-loading" id="wb-IN-NE.EXP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-NE.EXP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-NE.EXP.GNFS.CD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wb-indicator-group">
+                        <h3>Imports - Current US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-US-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-CN-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-DE-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-JP-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-GB-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-FR-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-IT-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CA', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-CA-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇦 Canada</div>
+                                    <div class="indicator-date" id="wb-CA-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CA-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-KR-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'NE.IMP.GNFS.CD', 'Imports')">
+                                <div class="cache-status cache-loading" id="wb-IN-NE.IMP.GNFS.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-NE.IMP.GNFS.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-NE.IMP.GNFS.CD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- World Bank Investment Data -->
+            <div class="category world-bank-investment">
+                <h2>💼 Global Investment Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
+                <div class="wb-country-grid">
+                    <div class="wb-indicator-group">
+                        <h3>Foreign Direct Investment - Current US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-US-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-CN-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-KR-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wb-indicator-group">
+                        <h3>Gross Fixed Capital Formation - Current US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-US-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-CN-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-KR-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Economic Indicators -->
+            <div class="category world-bank-additional">
+                <h2>📊 Additional Economic Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
+                <div class="wb-country-grid">
+                    <div class="wb-indicator-group">
+                        <h3>Population - Total</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-US-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-CN-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-IN-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-SP.POP.TOTL">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wb-indicator-group">
+                        <h3>Unemployment Rate - %</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-US-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-DE-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-KR-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wb-indicator-group">
+                        <h3>Current Account Balance - US$</h3>
+                        <div class="wb-indicators">
+                            <div class="indicator wb-indicator" onclick="showWBDetails('US', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-US-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇺🇸 United States</div>
+                                    <div class="indicator-date" id="wb-US-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-US-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-CN-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-DE-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="refresh-btn" id="refreshBtn" onclick="loadAllWorldBankData(true)">
+            🔄 Refresh Global Economic Data
+        </button>
+    </div>
+    
+    <!-- Chart Modal -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title">Economic Indicator Chart</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="time-range-buttons">
+                <button class="time-btn active" onclick="setTimeRange('all')">All Years</button>
+                <button class="time-btn" onclick="setTimeRange('20')">Last 20 Years</button>
+                <button class="time-btn" onclick="setTimeRange('10')">Last 10 Years</button>
+                <button class="time-btn" onclick="setTimeRange('5')">Last 5 Years</button>
+            </div>
+            
+            <div class="modal-chart-container">
+                <div id="modalChartLoading" class="modal-chart-loading">📊 Loading chart data...</div>
+                <canvas id="modalChart" style="display: none; width: 100%; height: 100%;"></canvas>
+            </div>
+            
+            <div id="modalExplanation" class="modal-explanation">
+                <h3>About this indicator</h3>
+                <p id="modalExplanationText">Loading explanation...</p>
+                <div id="modalDataInfo">
+                    <small><strong>Source:</strong> World Bank Open Data</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer with additional SEO content -->
+    <footer style="background: #1f77b4; color: white; padding: 30px; margin-top: 40px; border-radius: 15px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: #ffffff; margin-bottom: 20px; text-align: center;">🌍 About This Global Economic Dashboard</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <h3 style="color: #e3f2fd; font-size: 1.1rem; margin-bottom: 10px;">🎯 Data Sources</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.5;">All economic data sourced directly from the World Bank Open Data platform, covering GDP, trade, and investment indicators for major global economies.</p>
+                </div>
+                <div>
+                    <h3 style="color: #e3f2fd; font-size: 1.1rem; margin-bottom: 10px;">⏰ Update Frequency</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.5;">Data is updated annually based on World Bank release schedules. Historical data spans from 2000 to the most recent available year.</p>
+                </div>
+                <div>
+                    <h3 style="color: #e3f2fd; font-size: 1.1rem; margin-bottom: 10px;">💡 Usage Tips</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.5;">Click any indicator for detailed historical charts. Compare economic performance across countries. Download data in CSV/Excel format for analysis.</p>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #2980b9; padding-top: 20px; font-size: 0.8rem; color: #e3f2fd;">
+                <p>© 2025 Global Economic Dashboard | Free Economic Data from World Bank Open Data | Educational and Research Use</p>
+                <p>Keywords: World Bank data, global economic indicators, GDP growth, trade data, FDI inflows, economic analysis, global dashboard</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // World Bank API Integration
+        const WORLD_BANK_INDICATORS = {
+            // GDP Indicators
+            'NY.GDP.MKTP.CD': { name: 'GDP (Nominal)', nameEng: 'GDP (current US$)', unit: 'Current US$', category: 'GDP' },
+            'NY.GDP.MKTP.KD': { name: 'GDP (Real)', nameEng: 'GDP (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GDP' },
+            'NY.GDP.PCAP.CD': { name: 'GDP Per Capita', nameEng: 'GDP per capita (current US$)', unit: 'Current US$', category: 'GDP' },
+            'NY.GDP.MKTP.KD.ZG': { name: 'GDP Growth Rate', nameEng: 'GDP growth (annual %)', unit: '%', category: 'GDP' },
+            
+            // Trade Indicators
+            'NE.EXP.GNFS.CD': { name: 'Exports', nameEng: 'Exports of goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
+            'NE.IMP.GNFS.CD': { name: 'Imports', nameEng: 'Imports of goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
+            'NE.RSB.GNFS.CD': { name: 'Trade Balance', nameEng: 'External balance on goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
+            'TG.VAL.TOTL.GD.ZS': { name: 'Trade (% of GDP)', nameEng: 'Trade (% of GDP)', unit: '% of GDP', category: 'Trade' },
+            
+            // Investment Indicators
+            'BX.KLT.DINV.CD.WD': { name: 'FDI Inflows', nameEng: 'Foreign direct investment, net inflows (current US$)', unit: 'Current US$', category: 'Investment' },
+            'NE.GDI.FTOT.CD': { name: 'Gross Fixed Capital Formation', nameEng: 'Gross fixed capital formation (current US$)', unit: 'Current US$', category: 'Investment' },
+            'NE.GDI.TOTL.ZS': { name: 'Gross Capital Formation (% of GDP)', nameEng: 'Gross capital formation (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            'BX.KLT.DINV.WD.GD.ZS': { name: 'FDI Inflows (% of GDP)', nameEng: 'Foreign direct investment, net inflows (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            
+            // Additional Economic Indicators
+            'SP.POP.TOTL': { name: 'Population', nameEng: 'Population, total', unit: 'People', category: 'Demographics' },
+            'NY.GNP.PCAP.CD': { name: 'GNI Per Capita', nameEng: 'GNI per capita (current US$)', unit: 'Current US$', category: 'Income' },
+            'SL.UEM.TOTL.ZS': { name: 'Unemployment Rate', nameEng: 'Unemployment, total (% of total labor force)', unit: '% of labor force', category: 'Labor' },
+            'FP.CPI.TOTL.ZG': { name: 'Inflation Rate', nameEng: 'Inflation, consumer prices (annual %)', unit: '% annual', category: 'Monetary' },
+            'GC.BAL.CASH.GD.ZS': { name: 'Government Balance (% of GDP)', nameEng: 'Cash surplus/deficit (% of GDP)', unit: '% of GDP', category: 'Fiscal' },
+            'DT.DOD.DECT.CD': { name: 'External Debt', nameEng: 'External debt stocks, total (current US$)', unit: 'Current US$', category: 'Debt' },
+            'BN.CAB.XOKA.CD': { name: 'Current Account Balance', nameEng: 'Current account balance (BoP, current US$)', unit: 'Current US$', category: 'Balance' },
+            'NY.GDP.DEFL.ZS': { name: 'GDP Deflator', nameEng: 'GDP deflator (base year varies by country)', unit: 'Index', category: 'Price' }
+        };
+        
+        const WORLD_BANK_COUNTRIES = {
+            'US': { name: 'United States', flag: '🇺🇸' },
+            'KR': { name: 'South Korea', flag: '🇰🇷' },
+            'CN': { name: 'China', flag: '🇨🇳' },
+            'JP': { name: 'Japan', flag: '🇯🇵' },
+            'DE': { name: 'Germany', flag: '🇩🇪' },
+            'GB': { name: 'United Kingdom', flag: '🇬🇧' },
+            'FR': { name: 'France', flag: '🇫🇷' },
+            'IT': { name: 'Italy', flag: '🇮🇹' },
+            'AU': { name: 'Australia', flag: '🇦🇺' },
+            'RU': { name: 'Russia', flag: '🇷🇺' },
+            'MX': { name: 'Mexico', flag: '🇲🇽' },
+            'ES': { name: 'Spain', flag: '🇪🇸' },
+            'NL': { name: 'Netherlands', flag: '🇳🇱' },
+            'CH': { name: 'Switzerland', flag: '🇨🇭' },
+            'SE': { name: 'Sweden', flag: '🇸🇪' },
+            'IN': { name: 'India', flag: '🇮🇳' },
+            'BR': { name: 'Brazil', flag: '🇧🇷' },
+            'CA': { name: 'Canada', flag: '🇨🇦' }
+        };
+        
+        const WB_UPDATE_FREQUENCIES = {
+            'NY.GDP.MKTP.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NY.GDP.MKTP.KD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NY.GDP.PCAP.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NY.GDP.MKTP.KD.ZG': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NE.EXP.GNFS.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NE.IMP.GNFS.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NE.RSB.GNFS.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'TG.VAL.TOTL.GD.ZS': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'BX.KLT.DINV.CD.WD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NE.GDI.FTOT.CD': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'NE.GDI.TOTL.ZS': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' },
+            'BX.KLT.DINV.WD.GD.ZS': { cacheDays: 90, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 6 months delay' }
+        };
+
+        let loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+
+        // Clock update function
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleString('en-US', {
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // World Bank API Functions
+        async function fetchWorldBankData(countryCode, indicatorCode, isHistorical = false) {
+            try {
+                const perPage = isHistorical ? 200 : 1; // Last 200 data points for historical (covers 1960-2025), 1 for latest
+                // Get current year and fetch data from 1960 to current year (World Bank historical range)
+                const currentYear = new Date().getFullYear();
+                const url = `https://api.worldbank.org/v2/country/${countryCode}/indicator/${indicatorCode}?format=json&per_page=${perPage}&date=1960:${currentYear}&source=2`;
+                
+                console.log(`🌍 Fetching World Bank data: ${countryCode}-${indicatorCode}`);
+                
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'User-Agent': 'EconomicDashboard/1.0'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.length >= 2 && data[1] && data[1].length > 0) {
+                    const observations = data[1].filter(obs => obs.value !== null && obs.value !== '');
+                    
+                    if (observations.length > 0) {
+                        if (isHistorical) {
+                            // Return all historical data
+                            return observations.map(obs => ({
+                                date: obs.date,
+                                value: parseFloat(obs.value),
+                                country: obs.country.value,
+                                countryCode: obs.countryiso3code,
+                                indicator: obs.indicator.value,
+                                indicatorCode: obs.indicator.id
+                            })).reverse(); // Reverse to get chronological order
+                        } else {
+                            // Return latest value
+                            const latest = observations[0];
+                            return {
+                                value: parseFloat(latest.value),
+                                date: latest.date,
+                                country: latest.country.value,
+                                countryCode: latest.countryiso3code,
+                                indicator: latest.indicator.value,
+                                indicatorCode: latest.indicator.id
+                            };
+                        }
+                    }
+                }
+                
+                throw new Error('No valid data found');
+                
+            } catch (error) {
+                console.error(`❌ World Bank API error for ${countryCode}-${indicatorCode}:`, error.message);
+                throw error;
+            }
+        }
+        
+        // World Bank cache functions
+        function getWBCacheKey(countryCode, indicatorCode) {
+            return `wb_${countryCode}_${indicatorCode}`;
+        }
+        
+        function getCachedWBData(countryCode, indicatorCode) {
+            const cacheKey = getWBCacheKey(countryCode, indicatorCode);
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                const data = JSON.parse(cached);
+                const age = Date.now() - data.timestamp;
+                const maxAge = (WB_UPDATE_FREQUENCIES[indicatorCode]?.cacheDays || 90) * 24 * 60 * 60 * 1000;
+                if (age < maxAge) {
+                    return data.value;
+                }
+            }
+            return null;
+        }
+        
+        function setCachedWBData(countryCode, indicatorCode, data) {
+            const cacheKey = getWBCacheKey(countryCode, indicatorCode);
+            localStorage.setItem(cacheKey, JSON.stringify({
+                value: data,
+                timestamp: Date.now()
+            }));
+        }
+        
+        // Update World Bank data display
+        function updateWBIndicatorDisplay(countryCode, indicatorCode, data, isFromCache = false) {
+            const elementId = `wb-${countryCode}-${indicatorCode}`;
+            const element = document.getElementById(elementId);
+            const dateElement = document.getElementById(`${elementId}-date`);
+            
+            if (element) {
+                const indicatorInfo = WORLD_BANK_INDICATORS[indicatorCode];
+                const countryInfo = WORLD_BANK_COUNTRIES[countryCode];
+                let displayValue = '';
+                let colorClass = 'neutral';
+                
+                // Format display values based on indicator type
+                if (indicatorCode.includes('.ZG')) {
+                    // Growth rates and percentages
+                    displayValue = `${data.value.toFixed(2)}%`;
+                    colorClass = data.value > 0 ? 'positive' : data.value < 0 ? 'negative' : 'neutral';
+                } else if (indicatorCode.includes('.CD') && !indicatorCode.includes('.ZS')) {
+                    // Dollar amounts
+                    if (data.value >= 1e12) {
+                        displayValue = `$${(data.value / 1e12).toFixed(2)}T`;
+                    } else if (data.value >= 1e9) {
+                        displayValue = `$${(data.value / 1e9).toFixed(1)}B`;
+                    } else if (data.value >= 1e6) {
+                        displayValue = `$${(data.value / 1e6).toFixed(0)}M`;
+                    } else {
+                        displayValue = `$${data.value.toLocaleString()}`;
+                    }
+                    colorClass = 'positive';
+                } else if (indicatorCode.includes('.ZS')) {
+                    // Percentage of GDP
+                    displayValue = `${data.value.toFixed(1)}%`;
+                    colorClass = 'neutral';
+                } else {
+                    // Default formatting
+                    displayValue = `${data.value.toLocaleString()}`;
+                    colorClass = 'neutral';
+                }
+                
+                element.textContent = displayValue;
+                element.className = `indicator-value ${colorClass}`;
+                
+                if (dateElement) {
+                    const cacheInfo = isFromCache ? ' (cached)' : '';
+                    dateElement.textContent = `${data.date}${cacheInfo}`;
+                }
+                
+                // Update cache status
+                const cacheElement = document.getElementById(`${elementId}-cache`);
+                if (cacheElement) {
+                    if (isFromCache) {
+                        cacheElement.className = 'cache-status cache-hit';
+                        cacheElement.textContent = 'Cached';
+                    } else {
+                        cacheElement.className = 'cache-status cache-fresh';
+                        cacheElement.textContent = 'New';
+                    }
+                }
+            }
+        }
+        
+        // Load all World Bank data
+        async function loadAllWorldBankData(forceUpdate = false) {
+            console.log('🌍 Loading World Bank data...');
+            
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading...';
+            
+            const countries = ['US', 'CN', 'JP', 'DE', 'GB', 'IN', 'FR', 'IT', 'BR', 'CA', 'KR', 'AU', 'RU', 'MX'];
+            const indicators = Object.keys(WORLD_BANK_INDICATORS);
+            
+            const promises = [];
+            loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+            
+            countries.forEach(countryCode => {
+                indicators.forEach(indicatorCode => {
+                    promises.push(loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate));
+                });
+            });
+            
+            try {
+                const results = await Promise.allSettled(promises);
+                console.log(`✅ World Bank data loading completed`);
+                
+                // Charts will only load when clicked by user
+                console.log('✅ Data loaded. Click any indicator to view historical chart.');
+                
+                return results;
+            } catch (error) {
+                console.error('❌ World Bank data loading failed:', error);
+                throw error;
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
+            }
+        }
+        
+        // Load individual World Bank indicator
+        async function loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate = false) {
+            try {
+                let data;
+                
+                // Check cache first
+                if (!forceUpdate) {
+                    data = getCachedWBData(countryCode, indicatorCode);
+                    if (data) {
+                        updateWBIndicatorDisplay(countryCode, indicatorCode, data, true);
+                        loadResults.wbCached++;
+                        return;
+                    }
+                }
+                
+                // Fetch from API
+                data = await fetchWorldBankData(countryCode, indicatorCode);
+                setCachedWBData(countryCode, indicatorCode, data);
+                updateWBIndicatorDisplay(countryCode, indicatorCode, data, false);
+                loadResults.wbSuccess++;
+                
+            } catch (error) {
+                console.error(`❌ ${countryCode}-${indicatorCode} failed:`, error.message);
+                const elementId = `wb-${countryCode}-${indicatorCode}`;
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = 'N/A';
+                    element.className = 'indicator-value warning';
+                }
+                loadResults.wbFailed++;
+                loadResults.errors.push(`${countryCode}-${indicatorCode}: ${error.message}`);
+            }
+        }
+        
+        // Global variables for modal
+        let currentModalData = null;
+        let currentModalChart = null;
+        let currentTimeRange = 'all';
+        
+        // Show World Bank details in modal popup
+        function showWBDetails(countryCode, indicatorCode, indicatorName) {
+            const countryInfo = WORLD_BANK_COUNTRIES[countryCode] || {name: countryCode, flag: '🌐'};
+            const indicatorInfo = WORLD_BANK_INDICATORS[indicatorCode] || {name: indicatorCode, unit: 'N/A'};
+            
+            // Set modal title and content
+            document.getElementById('modalTitle').textContent = 
+                `${countryInfo.flag} ${countryInfo.name} - ${indicatorInfo.name}`;
+            
+            document.getElementById('modalExplanationText').textContent = 
+                getWBIndicatorExplanation(indicatorCode);
+                
+            document.getElementById('modalDataInfo').innerHTML = 
+                `<small><strong>Source:</strong> World Bank Open Data | <strong>Unit:</strong> ${indicatorInfo.unit} | <strong>Frequency:</strong> Annual</small>`;
+            
+            // Show modal
+            document.getElementById('chartModal').style.display = 'block';
+            
+            // Store current data for time range filtering
+            currentModalData = {countryCode, indicatorCode, countryInfo, indicatorInfo};
+            currentTimeRange = 'all';
+            
+            // Reset time range buttons
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.time-btn[onclick="setTimeRange(\'all\')"]').classList.add('active');
+            
+            // Load chart data
+            loadModalChart();
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('chartModal').style.display = 'none';
+            if (currentModalChart) {
+                currentModalChart.destroy();
+                currentModalChart = null;
+            }
+        }
+        
+        // Set time range filter
+        function setTimeRange(range) {
+            currentTimeRange = range;
+            
+            // Update active button
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="setTimeRange('${range}')"]`).classList.add('active');
+            
+            // Reload chart with new range
+            if (currentModalData) {
+                loadModalChart();
+            }
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('chartModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Load World Bank chart with historical data
+        async function loadWBChart(countryCode, indicatorCode) {
+            const loadingDiv = document.getElementById(`loading-${countryCode}-${indicatorCode}`);
+            const canvas = document.getElementById(`chart-${countryCode}-${indicatorCode}`);
+            
+            try {
+                console.log(`🔄 Loading chart for ${countryCode}-${indicatorCode}`);
+                
+                // Fetch historical data
+                const historicalData = await fetchWorldBankData(countryCode, indicatorCode, true);
+                
+                if (historicalData && historicalData.length > 0) {
+                    console.log(`✅ Got ${historicalData.length} data points for ${countryCode}-${indicatorCode}`);
+                    
+                    // Hide loading and show canvas
+                    loadingDiv.style.display = 'none';
+                    canvas.style.display = 'block';
+                    
+                    // Prepare chart data
+                    const labels = historicalData.map(item => item.date);
+                    const values = historicalData.map(item => item.value);
+                    
+                    // Create chart
+                    const ctx = canvas.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                borderColor: '#1f77b4',
+                                backgroundColor: 'rgba(31, 119, 180, 0.1)',
+                                borderWidth: 2,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: { title: { display: true, text: 'Year' } },
+                                y: { 
+                                    title: { display: true, text: WORLD_BANK_INDICATORS[indicatorCode]?.unit || '' },
+                                    ticks: {
+                                        callback: function(value) {
+                                            // Format large numbers
+                                            if (Math.abs(value) >= 1e12) {
+                                                return (value / 1e12).toFixed(1) + 'T';
+                                            } else if (Math.abs(value) >= 1e9) {
+                                                return (value / 1e9).toFixed(1) + 'B';
+                                            } else if (Math.abs(value) >= 1e6) {
+                                                return (value / 1e6).toFixed(1) + 'M';
+                                            } else if (Math.abs(value) >= 1e3) {
+                                                return (value / 1e3).toFixed(1) + 'K';
+                                            }
+                                            return value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    console.log(`✅ Chart created successfully for ${countryCode}-${indicatorCode}`);
+                    
+                } else {
+                    loadingDiv.innerHTML = '❌ No historical data available';
+                    console.log(`❌ No data for ${countryCode}-${indicatorCode}`);
+                }
+                
+            } catch (error) {
+                console.error(`❌ Chart error for ${countryCode}-${indicatorCode}:`, error);
+                loadingDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Load chart in modal with time range filtering
+        async function loadModalChart() {
+            if (!currentModalData) return;
+            
+            const { countryCode, indicatorCode, countryInfo, indicatorInfo } = currentModalData;
+            const loadingDiv = document.getElementById('modalChartLoading');
+            const canvas = document.getElementById('modalChart');
+            
+            try {
+                // Show loading
+                loadingDiv.style.display = 'block';
+                canvas.style.display = 'none';
+                
+                // Destroy existing chart
+                if (currentModalChart) {
+                    currentModalChart.destroy();
+                    currentModalChart = null;
+                }
+                
+                console.log(`🔄 Loading modal chart for ${countryCode}-${indicatorCode} (${currentTimeRange} years)`);
+                
+                // Fetch data for multiple countries for comparison
+                const comparisonCountries = ['US', 'CN', 'JP', 'DE', 'GB', 'FR', 'IN', 'KR'];
+                const datasets = [];
+                const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'];
+                
+                let dataCount = 0;
+                for (let i = 0; i < comparisonCountries.length && dataCount < 5; i++) {
+                    const country = comparisonCountries[i];
+                    try {
+                        const historicalData = await fetchWorldBankData(country, indicatorCode, true);
+                        
+                        if (historicalData && historicalData.length > 0) {
+                            // Filter data based on time range
+                            let filteredData = historicalData;
+                            if (currentTimeRange !== 'all') {
+                                const currentYear = new Date().getFullYear();
+                                const startYear = currentYear - parseInt(currentTimeRange);
+                                filteredData = historicalData.filter(item => parseInt(item.date) >= startYear);
+                            }
+                            
+                            if (filteredData.length > 0) {
+                                const labels = filteredData.map(item => item.date);
+                                const values = filteredData.map(item => item.value);
+                                const countryName = WORLD_BANK_COUNTRIES[country]?.name || country;
+                                const countryFlag = WORLD_BANK_COUNTRIES[country]?.flag || '🌐';
+                                
+                                datasets.push({
+                                    label: `${countryFlag} ${countryName}`,
+                                    data: values,
+                                    borderColor: colors[dataCount],
+                                    backgroundColor: colors[dataCount] + '20',
+                                    borderWidth: 3,
+                                    fill: false,
+                                    tension: 0.1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 6
+                                });
+                                dataCount++;
+                            }
+                        }
+                    } catch (error) {
+                        console.log(`No data for ${country}-${indicatorCode}`);
+                    }
+                }
+                
+                if (datasets.length > 0) {
+                    // Hide loading and show canvas
+                    loadingDiv.style.display = 'none';
+                    canvas.style.display = 'block';
+                    
+                    // Use the first dataset's labels for x-axis
+                    const labels = datasets[0].data.length > 0 ? 
+                        Array.from({length: datasets[0].data.length}, (_, i) => {
+                            const currentYear = new Date().getFullYear();
+                            if (currentTimeRange === 'all') {
+                                return (1960 + i).toString();
+                            } else {
+                                const startYear = currentYear - parseInt(currentTimeRange);
+                                return (startYear + i).toString();
+                            }
+                        }) : [];
+                    
+                    // Create chart
+                    const ctx = canvas.getContext('2d');
+                    currentModalChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: `${indicatorInfo.name} - Multi-Country Comparison`,
+                                    font: { size: 16, weight: 'bold' },
+                                    color: '#1f77b4',
+                                    padding: 20
+                                },
+                                legend: { 
+                                    display: true,
+                                    position: 'top',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 15,
+                                        font: { size: 12 }
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0,0,0,0.8)',
+                                    titleColor: 'white',
+                                    bodyColor: 'white',
+                                    borderColor: '#1f77b4',
+                                    borderWidth: 1,
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 13 },
+                                    padding: 12,
+                                    cornerRadius: 8
+                                }
+                            },
+                            scales: {
+                                x: { 
+                                    title: { 
+                                        display: true, 
+                                        text: 'Year',
+                                        font: { size: 14, weight: 'bold' }
+                                    },
+                                    grid: { color: 'rgba(0,0,0,0.1)' }
+                                },
+                                y: { 
+                                    title: { 
+                                        display: true, 
+                                        text: indicatorInfo.unit,
+                                        font: { size: 14, weight: 'bold' }
+                                    },
+                                    grid: { color: 'rgba(0,0,0,0.1)' },
+                                    ticks: {
+                                        callback: function(value) {
+                                            // Format large numbers
+                                            if (Math.abs(value) >= 1e12) {
+                                                return (value / 1e12).toFixed(1) + 'T';
+                                            } else if (Math.abs(value) >= 1e9) {
+                                                return (value / 1e9).toFixed(1) + 'B';
+                                            } else if (Math.abs(value) >= 1e6) {
+                                                return (value / 1e6).toFixed(1) + 'M';
+                                            } else if (Math.abs(value) >= 1e3) {
+                                                return (value / 1e3).toFixed(1) + 'K';
+                                            }
+                                            return value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    console.log(`✅ Multi-country comparison chart created for ${indicatorCode}`);
+                    
+                } else {
+                    loadingDiv.innerHTML = '❌ No historical data available for comparison';
+                }
+                
+            } catch (error) {
+                console.error(`❌ Modal chart error:`, error);
+                loadingDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Get World Bank indicator explanations
+        function getWBIndicatorExplanation(indicatorCode) {
+            const explanations = {
+                'NY.GDP.MKTP.CD': 'Gross Domestic Product at current market prices in US dollars. Represents the total value of all goods and services produced within a country in a given year.',
+                'NY.GDP.MKTP.KD': 'Gross Domestic Product in constant 2015 US dollars, adjusted for inflation. Useful for comparing economic growth across different time periods.',
+                'NY.GDP.PCAP.CD': 'GDP divided by total population. Provides a measure of average economic output per person and standard of living.',
+                'NY.GDP.MKTP.KD.ZG': 'Annual percentage growth rate of GDP at market prices based on constant local currency. Key indicator of economic expansion or contraction.',
+                'NE.EXP.GNFS.CD': 'Value of all goods and services exported to the rest of the world. Includes merchandise exports and service exports.',
+                'NE.IMP.GNFS.CD': 'Value of all goods and services imported from the rest of the world. Includes merchandise imports and service imports.',
+                'NE.RSB.GNFS.CD': 'Exports minus imports of goods and services. Positive values indicate trade surplus, negative values indicate trade deficit.',
+                'TG.VAL.TOTL.GD.ZS': 'Sum of exports and imports as a share of GDP. Indicates the degree of economic integration with the global economy.',
+                'BX.KLT.DINV.CD.WD': 'Net inflows of foreign direct investment. Represents capital provided by foreign investors to acquire lasting management interest in domestic enterprises.',
+                'NE.GDI.FTOT.CD': 'Expenditures on additions to fixed assets plus net changes in inventories. Key indicator of domestic investment and future productive capacity.',
+                'NE.GDI.TOTL.ZS': 'Gross capital formation as percentage of GDP. Indicates the share of economic output devoted to increasing productive capacity.',
+                'BX.KLT.DINV.WD.GD.ZS': 'Foreign direct investment as percentage of GDP. Shows the relative importance of FDI in the national economy.',
+                'SP.POP.TOTL': 'Total population count including all residents regardless of legal status or citizenship. Key demographic indicator for economic analysis.',
+                'NY.GNP.PCAP.CD': 'Gross National Income per capita in current US dollars. Measures average income earned by residents including income from abroad.',
+                'SL.UEM.TOTL.ZS': 'Unemployment rate as percentage of total labor force. Key indicator of labor market health and economic performance.',
+                'FP.CPI.TOTL.ZG': 'Annual inflation rate based on consumer price index. Measures the rate at which general price level increases.',
+                'GC.BAL.CASH.GD.ZS': 'Government cash surplus or deficit as percentage of GDP. Indicates fiscal health and sustainability.',
+                'DT.DOD.DECT.CD': 'Total external debt stocks in current US dollars. Measures country\'s total debt owed to non-residents.',
+                'BN.CAB.XOKA.CD': 'Current account balance in current US dollars. Difference between exports and imports plus net income and transfers.',
+                'NY.GDP.DEFL.ZS': 'GDP deflator index measuring price changes in domestic production. Used to convert nominal GDP to real GDP.'
+            };
+            
+            return explanations[indicatorCode] || `This indicator tracks ${WORLD_BANK_INDICATORS[indicatorCode]?.nameEng || WORLD_BANK_INDICATORS[indicatorCode]?.name || indicatorCode}. Data is sourced from the World Bank Open Data platform.`;
+        }
+        
+        // Auto-load World Bank charts on page load
+        function autoLoadWBCharts() {
+            const priorityWBCharts = [
+                {country: 'US', indicator: 'NY.GDP.MKTP.KD.ZG'}, // US GDP Growth
+                {country: 'CN', indicator: 'NY.GDP.MKTP.KD.ZG'}, // China GDP Growth
+                {country: 'US', indicator: 'NY.GDP.MKTP.CD'},    // US GDP Nominal
+                {country: 'CN', indicator: 'NY.GDP.MKTP.CD'},    // China GDP Nominal
+                {country: 'KR', indicator: 'NY.GDP.MKTP.KD.ZG'}, // Korea GDP Growth
+            ];
+            
+            priorityWBCharts.forEach((chart, index) => {
+                setTimeout(() => {
+                    showWBDetails(chart.country, chart.indicator, WORLD_BANK_INDICATORS[chart.indicator]?.name || chart.indicator);
+                }, index * 800); // Stagger loading by 800ms each for World Bank API rate limits
+            });
+        }
+        
+        // Download World Bank data
+        async function downloadWBData(countryCode, indicatorCode, format) {
+            try {
+                console.log(`Downloading ${countryCode}-${indicatorCode} data in ${format} format...`);
+                
+                const historicalData = await fetchWorldBankData(countryCode, indicatorCode, true);
+                
+                if (!historicalData || historicalData.length === 0) {
+                    alert('No data available for download');
+                    return;
+                }
+                
+                const countryInfo = WORLD_BANK_COUNTRIES[countryCode];
+                const indicatorInfo = WORLD_BANK_INDICATORS[indicatorCode];
+                const filename = `WB_${countryCode}_${indicatorCode}_${indicatorInfo?.name?.replace(/[^a-zA-Z0-9]/g, '_') || indicatorCode}_${new Date().toISOString().split('T')[0]}`;
+                
+                if (format === 'csv') {
+                    downloadWBAsCSV(historicalData, filename, countryInfo, indicatorInfo);
+                } else if (format === 'excel') {
+                    downloadWBAsExcel(historicalData, filename, countryInfo, indicatorInfo);
+                }
+                
+            } catch (error) {
+                console.error('World Bank download error:', error);
+                alert('Download failed. Please try again.');
+            }
+        }
+        
+        // Download World Bank data as CSV
+        function downloadWBAsCSV(data, filename, countryInfo, indicatorInfo) {
+            const headers = ['Year', 'Value', 'Country', 'Country_Code', 'Indicator', 'Indicator_Code', 'Unit'];
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => [
+                    row.date,
+                    row.value,
+                    `"${row.country}"`,
+                    row.countryCode,
+                    `"${row.indicator}"`,
+                    row.indicatorCode,
+                    `"${indicatorInfo?.unit || ''}"`
+                ].join(','))
+            ].join('\n');
+            
+            downloadFile(csvContent, `${filename}.csv`, 'text/csv');
+        }
+        
+        // Download World Bank data as Excel
+        function downloadWBAsExcel(data, filename, countryInfo, indicatorInfo) {
+            const headers = ['Year', 'Value', 'Country', 'Country_Code', 'Indicator', 'Indicator_Code', 'Unit', 'Source'];
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => [
+                    row.date,
+                    row.value,
+                    `"${row.country}"`,
+                    row.countryCode,
+                    `"${row.indicator}"`,
+                    row.indicatorCode,
+                    `"${indicatorInfo?.unit || ''}"`,
+                    '"World Bank Open Data"'
+                ].join(','))
+            ].join('\n');
+            
+            const bomContent = '\uFEFF' + csvContent;
+            downloadFile(bomContent, `${filename}.csv`, 'text/csv');
+        }
+        
+        // Generic file download function
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Page load initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌍 Global Economic Dashboard 2025 loading started');
+            
+            updateClock();
+            setInterval(updateClock, 1000); // Update clock every second
+            
+            // Load World Bank data
+            loadAllWorldBankData();
+        });
+    </script>
+</body>
+</html>
