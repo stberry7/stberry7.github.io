@@ -1,1532 +1,323 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time US Economic Indicators Dashboard | FRED Data | GDP, CPI, Interest Rates, Employment</title>
+<document index="1">
+    <!-- <source>paste.txt</source> -->
+    <document_content><!DOCTYPE html>
+    <html>
+    <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-P5MQZ5LK');</script>
+        <!-- End Google Tag Manager -->
+    <meta name="google-site-verification" content="0FQ31nRdW_zrYw3eGVUBRThIigXE3GOrr06OSQ5_5qk" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMQ4MLP54Y"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Monitor real-time US economic indicators from the Federal Reserve (FRED) in one place. Track 25 key economic metrics including GDP, CPI, interest rates, employment, inflation, and housing market data.">
-    <meta name="keywords" content="US economic indicators, FRED, GDP, CPI, federal funds rate, unemployment rate, inflation, economic data, real-time charts, federal reserve, economic dashboard">
-    <meta name="author" content="Economic Dashboard">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="en">
-    
-    <!-- Open Graph Meta Tags (for social media sharing) -->
-    <meta property="og:title" content="Real-Time US Economic Indicators Dashboard">
-    <meta property="og:description" content="Monitor real-time US economic indicators from the Federal Reserve (FRED). Track 25 key economic metrics including GDP, CPI, interest rates, and employment data.">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:site_name" content="US Economic Indicators Dashboard">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Real-Time US Economic Indicators Dashboard">
-    <meta name="twitter:description" content="Monitor US economic indicators with real-time FRED data tracking">
-    
-    <!-- Search Engine Optimization -->
-    <meta name="theme-color" content="#2c3e50">
-    <link rel="canonical" href="">
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Real-Time US Economic Indicators Dashboard",
-        "description": "Monitor real-time US economic indicators from the Federal Reserve (FRED) in one comprehensive dashboard. Track 25 key economic metrics including GDP, CPI, interest rates, employment, inflation, and housing market data in real-time.",
-        "url": "",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "Economic Dashboard"
-        },
-        "keywords": [
-            "US economic indicators",
-            "FRED",
-            "GDP",
-            "CPI",
-            "federal funds rate",
-            "unemployment rate",
-            "inflation",
-            "economic data",
-            "real-time charts",
-            "federal reserve"
-        ],
-        "inLanguage": "en",
-        "isAccessibleForFree": true,
-        "featureList": [
-            "Real-time economic indicators monitoring",
-            "25 key economic indicators provided",
-            "Official FRED data integration",
-            "Interactive charts",
-            "Mobile responsive design"
-        ]
-    }
+    gtag('config', 'G-HMQ4MLP54Y');
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>.sidebar { background-color: rgba(255, 255, 255, 0.9); }</style>
+    <script>
+    window.onload = function() {
+        var images = ['image/index/engineering/image (1).png', 'image/index/engineering/image (2).png', 'image/index/engineering/image (3).png', 'image/index/engineering/image (4).png'];
+        var img = document.getElementById('randomImage');
+        var randomIndex = Math.floor(Math.random() * images.length);
+        img.src = images[randomIndex];
+    };
+    </script>
+    <style>.sidebar { background-color: rgba(255, 255, 255, 0.5); }</style>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Arial', sans-serif; 
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); 
-            min-height: 100vh; 
-            padding: 20px; 
+        .notice-box {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          width: 300px;
+          background-color: #f1f1f1;
+          border: 1px solid #ccc;
+          padding: 10px;
+          display: none;
         }
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            background: rgba(255, 255, 255, 0.95); 
-            border-radius: 20px; 
-            padding: 30px; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
+      </style>
+    </head>
+    <style>
+        html, body {
+            margin: 0; /* 여백 제거 */
+            padding: 0; /* 여백 제거 */
+            overflow: hidden; /* 스크롤 제거 */
+            width: 100%; /* 가로 크기 고정 */
+            height: 100%; /* 세로 크기 고정 */
         }
-        h1 { 
-            text-align: center; 
-            color: #2c3e50; 
-            margin-bottom: 20px; 
-            font-size: 2.5rem; 
-            font-weight: bold; 
-        }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-        .last-updated { 
-            text-align: center; 
-            color: #666; 
-            margin-bottom: 30px; 
-            font-size: 0.9rem; 
-        }
-        .indicators-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 15px; 
-            margin-bottom: 20px; 
-        }
-        .category { 
-            background: #fff; 
-            border-radius: 12px; 
-            padding: 20px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); 
-            border: 1px solid #e8e8e8; 
-            transition: transform 0.2s ease, box-shadow 0.2s ease; 
-        }
-        .category:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); 
-        }
-        .category h2 { 
-            color: #2c3e50; 
-            margin-bottom: 20px; 
-            font-size: 1.4rem; 
-            border-bottom: 3px solid #3498db; 
-            padding-bottom: 10px; 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .fred-logo {
-            font-size: 0.7rem;
-            background: #e74c3c;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-        .indicator { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 8px; 
-            border-bottom: 1px solid #f5f5f5; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            border-radius: 6px; 
-            position: relative;
-        }
-        .indicator:hover { 
-            background: #f8f9fa; 
-            transform: translateX(5px); 
-        }
-        .indicator:last-child { 
-            border-bottom: none; 
-        }
-        .indicator-name { 
-            font-weight: 600; 
-            color: #555; 
-            flex: 1; 
-            font-size: 0.95rem;
-        }
-        .indicator-name-eng {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            font-weight: 400;
-            margin-top: 2px;
-        }
-        .indicator-value { 
-            font-weight: bold; 
-            font-size: 1.2rem; 
-            min-width: 120px; 
-            text-align: right; 
-        }
-        .indicator-date {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        .cache-status {
-            display: none;
-        }
-        .cache-fresh {
-            background: #27ae60;
-            color: white;
-        }
-        .cache-valid {
-            background: #f39c12;
-            color: white;
-        }
-        .cache-expired {
-            background: #e74c3c;
-            color: white;
-        }
-        .cache-loading {
-            background: #3498db;
-            color: white;
-        }
-        .update-frequency {
-            display: none;
-        }
-        .positive { color: #27ae60; }
-        .negative { color: #e74c3c; }
-        .neutral { color: #7f8c8d; }
-        .loading { color: #3498db; }
-        .error { color: #e74c3c; }
-        .warning { color: #f39c12; }
-        .trend-arrow { margin-left: 8px; font-size: 0.9rem; }
-        .refresh-btn { 
-            display: block; 
-            margin: 30px auto 0; 
-            padding: 15px 40px; 
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-size: 1.1rem; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-        }
-        .refresh-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4); 
-        }
-        .refresh-btn:disabled { 
-            background: #bdc3c7; 
-            cursor: not-allowed; 
-            transform: none; 
-        }
-        .spinner { 
-            display: inline-block; 
-            width: 20px; 
-            height: 20px; 
-            border: 2px solid #f3f3f3; 
-            border-top: 2px solid #3498db; 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            margin-right: 10px; 
-        }
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
-        .status-info {
-            background: #ecf0f1;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.9rem;
-            border-left: 4px solid #3498db;
-        }
-        .cache-metrics {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            font-size: 0.85rem;
-            border-left: 4px solid #16a085;
-        }
-        .success-count {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        .error-count {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        .cache-count {
-            color: #f39c12;
-            font-weight: bold;
-        }
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0, 0, 0, 0.5); 
-        }
-        .modal-content { 
-            background-color: #fff; 
-            margin: 3% auto; 
-            padding: 30px; 
-            border-radius: 15px; 
-            width: 95%; 
-            max-width: 1000px; 
-            max-height: 85%; 
-            overflow-y: auto; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
-        }
-        .close { 
-            color: #aaa; 
-            float: right; 
-            font-size: 28px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            line-height: 1; 
-        }
-        .close:hover { color: #000; }
-        .series-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        .series-info-mobile {
-            display: none;
-        }
-        .time-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        .time-btn {
-            padding: 8px 16px;
-            border: 2px solid #3498db;
-            background: white;
-            color: #3498db;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .time-btn:hover, .time-btn.active {
-            background: #3498db;
-            color: white;
-        }
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin: 20px 0;
-        }
-        .category.financial-conditions h2 { border-bottom-color: #e74c3c; }
-        .category.sentiment h2 { border-bottom-color: #f39c12; }
-        .category.demographics h2 { border-bottom-color: #9b59b6; }
-        .category.lending h2 { border-bottom-color: #16a085; }
-        
-        /* Enhanced Mobile Responsiveness */
-        @media (max-width: 768px) { 
-            body { padding: 8px; }
-            .container { 
-                padding: 12px; 
-                margin: 4px; 
-                border-radius: 15px;
-            } 
-            h1 { 
-                font-size: 1.8rem; 
-                line-height: 1.2; 
-                margin-bottom: 15px;
-            }
-            .subtitle { 
-                font-size: 0.9rem; 
-                margin-bottom: 15px; 
-                line-height: 1.4;
-            }
-            .indicators-grid { 
-                grid-template-columns: 1fr; 
-                gap: 10px;
-                margin-bottom: 15px;
-            }
-            .category { 
-                padding: 12px; 
-                margin-bottom: 8px;
-            }
-            .category h2 {
-                font-size: 1.3rem;
-                margin-bottom: 15px;
-                padding-bottom: 8px;
-            }
-            .indicator { 
-                padding: 8px 6px; 
-                font-size: 0.9rem;
-            }
-            .indicator-name { 
-                font-size: 0.85rem; 
-                line-height: 1.3;
-                flex: 1;
-                margin-right: 10px;
-            }
-            .indicator-value { 
-                font-size: 1rem; 
-                min-width: 85px;
-                text-align: right;
-                font-weight: 600;
-            }
-            .modal-content { 
-                margin: 1% auto; 
-                width: 98%; 
-                padding: 15px;
-                max-height: 90%;
-                border-radius: 12px;
-            } 
-            .time-selector { 
-                gap: 8px; 
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .time-btn { 
-                padding: 8px 12px; 
-                font-size: 0.8rem;
-                border-radius: 15px;
-            }
-            .refresh-btn { 
-                padding: 14px 25px; 
-                font-size: 1rem;
-                width: 100%;
-                max-width: 280px;
-                margin: 20px auto 0;
-                border-radius: 25px;
-            }
-            .chart-container {
-                height: 350px;
-                margin: 15px 0;
-            }
-            .series-info {
-                display: none;
-            }
-            .series-info-mobile {
-                display: block;
+    </style>
+    <body>
+    <!-- <img id="randomImage" src="" style="height: 130vh; width: 130vw; object-fit: cover; position: absolute; top: -15vh; left: -15vw; z-index: -1;"/> -->
+    <img id="randomImage" src="" style="width: 100%; height: 100%; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1;"/>
+    <!DOCTYPE html>
+    <html lang="ko">
+    <meta charset="utf-8"/>
+    <title>Economy Indicator</title>
+    <style>
+       body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                display: flex;
+                /* align-items: center; */
+                /* justify-content: center; */
+                height: 80vh;
                 background: #f8f9fa;
-                padding: 8px;
-                border-radius: 6px;
-                margin: 10px 0;
-                font-size: 0.75rem;
-                font-family: monospace;
-                text-align: center;
             }
-            .fred-logo {
-                font-size: 0.6rem;
-                padding: 3px 6px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body { padding: 5px; }
-            .container { 
-                padding: 8px; 
-                margin: 2px;
-                border-radius: 12px;
-            }
-            h1 { 
-                font-size: 1.4rem;
-                margin-bottom: 10px;
-                text-align: center;
-            }
-            .subtitle {
-                font-size: 0.8rem;
-                margin-bottom: 12px;
-                text-align: center;
-                line-height: 1.4;
-            }
-            .category { 
-                padding: 10px;
-                margin-bottom: 6px;
-            }
-            .category h2 { 
-                font-size: 1.1rem;
-                margin-bottom: 12px;
-                padding-bottom: 6px;
-            }
-            .indicator { 
-                padding: 6px 4px;
-                font-size: 0.85rem;
-                border-radius: 4px;
-            }
-            .indicator-name { 
-                font-size: 0.8rem;
-                line-height: 1.2;
-            }
-            .indicator-value { 
-                font-size: 0.9rem;
-                min-width: 75px;
-                font-weight: 600;
-            }
-            .refresh-btn {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-                margin: 15px auto 0;
-            }
-            .modal-content {
-                margin: 0.5% auto;
-                width: 99%;
-                padding: 10px;
-                border-radius: 8px;
-            }
-            .chart-container {
-                height: 280px;
-                margin: 10px 0;
-            }
-            .series-info {
-                display: none;
-            }
-            .series-info-mobile {
-                display: block;
-                background: #f8f9fa;
-                padding: 6px;
-                border-radius: 4px;
-                margin: 8px 0;
-                font-size: 0.7rem;
-                font-family: monospace;
-                text-align: center;
-            }
-            .time-btn {
-                padding: 6px 10px;
-                font-size: 0.75rem;
-                margin: 2px;
-            }
-            .fred-logo {
-                font-size: 0.55rem;
-                padding: 2px 4px;
-            }
-            .last-updated {
-                font-size: 0.8rem;
-                margin-bottom: 15px;
-            }
+
+        .sidebar {
+            position: fixed; /* 화면에 고정 */
+            top: 0; /* 위쪽부터 시작 */
+            left: 0; /* 왼쪽부터 시작 */
+            width: 300px; /* 너비 */
+            height: 100%; /* 높이를 화면 전체로 설정 */
+            background: #343a40; /* 배경 색상 */
+            color: #fff;
+            opacity: 0.9; /* 투명도 */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto; /* 콘텐츠가 넘치면 스크롤 추가 */
         }
 
-        /* Extra small phones */
-        @media (max-width: 360px) {
-            .container { 
-                padding: 6px;
-                margin: 1px;
+        .sidebar-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    
+        .sidebar a {
+            padding: 13px;
+            background: rgba(108, 117, 125, 1.0);
+            border: none;
+            color: #fff;
+            height: 52px; 
+            height: auto; 
+            
+            width: 90%; /* 너비를 45%로 변경 */
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.95em;
             }
-            h1 { 
-                font-size: 1.2rem;
-                line-height: 1.1;
+    
+        .sidebar a:hover {
+            background: #495057;
+        }
+    
+        .content {
+            text-align: center;
+            width: 50%;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .sidebar a {
+                width: 200px;
+                font-size: 4em;
+                height: 100px;
+                width: 300px;
+                font-size: 5em;
             }
-            .subtitle {
-                font-size: 0.75rem;
+            
+            .content {
+                font-size: 2em;
             }
-            .indicator-name {
-                font-size: 0.75rem;
-            }
-            .indicator-value {
-                font-size: 0.85rem;
-                min-width: 65px;
-            }
-            .category h2 {
-                font-size: 1rem;
+            
+            .footer {
+                font-size: 2em;
             }
         }
     </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>📊 Real-Time US Economic Indicators Dashboard</h1>
-        <div class="subtitle">Federal Reserve (FRED) Official Economic Data | Real-time monitoring of GDP, CPI, Interest Rates & Employment</div>
-        <div class="last-updated" id="lastUpdated">
-            <span id="currentTime"></span>
+    <style>
+    .circle {
+        position: absolute;
+        border: 3px solid;
+        border-radius: 50%;
+        animation: fadeout 1s forwards;
+        animation-delay: 1s;
+    }
+    .message {
+    position: absolute;
+    font-size: 5em;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
+    }
+    .image {
+    position: absolute;
+    width: 100px;
+    animation: fadeout 1s forwards;
+    animation-delay: 1s;
+    }
+    @keyframes fadeout {
+    to {
+    opacity: 0;
+    }
+    }
+    </style>
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(84, 84, 243);
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+    }
+    </style>
+    <div class="sidebar" style="left: 0; transition: left 2s;">
+        <div class="sidebar-row">
+            <a href="english.html">English</a>
         </div>
-
-        <div class="status-info" id="statusInfo">
-            📊 <span class="loading">Loading...</span>
+        <!-- <div class="sidebar-row">
+            <a href="brunch.html">소소한 일상</a>
+        </div> -->
+        <!-- <div class="sidebar-row">
+            <a href="pamyo.html">소설</a>
+        </div> -->
+        <div class="sidebar-row">
+            <a href="economy.html">Economic Indicator</a>
         </div>
-
-        <div class="indicators-grid">
-            <!-- Inflation & Price Indicators -->
-            <div class="category">
-                <h2>📈 Inflation & Prices <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('CPIAUCSL', 'Consumer Price Index (CPI)')">
-                    <div class="cache-status cache-loading" id="CPIAUCSL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Consumer Price Index (CPI)
-                            <div class="indicator-name-eng">Monthly inflation measure</div>
-                        </div>
-                        <div class="indicator-date" id="CPIAUCSL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPIAUCSL">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CPILFESL', 'Core CPI (Less Food & Energy)')">
-                    <div class="cache-status cache-loading" id="CPILFESL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Core CPI (Less Food & Energy)
-                            <div class="indicator-name-eng">Underlying inflation trend</div>
-                        </div>
-                        <div class="indicator-date" id="CPILFESL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPILFESL">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PCEPI', 'PCE Price Index')">
-                    <div class="cache-status cache-loading" id="PCEPI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">PCE Price Index
-                            <div class="indicator-name-eng">Fed's preferred inflation gauge</div>
-                        </div>
-                        <div class="indicator-date" id="PCEPI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCEPI">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Employment Indicators -->
-            <div class="category">
-                <h2>💼 Employment <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('UNRATE', 'Unemployment Rate')">
-                    <div class="cache-status cache-loading" id="UNRATE-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Unemployment Rate
-                            <div class="indicator-name-eng">Percent of labor force unemployed</div>
-                        </div>
-                        <div class="indicator-date" id="UNRATE-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="UNRATE">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PAYEMS', 'Nonfarm Payrolls')">
-                    <div class="cache-status cache-loading" id="PAYEMS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Nonfarm Payrolls
-                            <div class="indicator-name-eng">Monthly job creation measure</div>
-                        </div>
-                        <div class="indicator-date" id="PAYEMS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PAYEMS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CIVPART', 'Labor Force Participation Rate')">
-                    <div class="cache-status cache-loading" id="CIVPART-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Labor Force Participation Rate
-                            <div class="indicator-name-eng">Percent of population in labor force</div>
-                        </div>
-                        <div class="indicator-date" id="CIVPART-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CIVPART">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Interest Rates & Bonds -->
-            <div class="category">
-                <h2>💰 Interest Rates & Bonds <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('FEDFUNDS', 'Federal Funds Rate')">
-                    <div class="cache-status cache-loading" id="FEDFUNDS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Federal Funds Rate
-                            <div class="indicator-name-eng">Fed's benchmark interest rate</div>
-                        </div>
-                        <div class="indicator-date" id="FEDFUNDS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="FEDFUNDS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS10', '10-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS10-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Treasury Yield
-                            <div class="indicator-name-eng">Long-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS10-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS10">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS2', '2-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS2-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">2-Year Treasury Yield
-                            <div class="indicator-name-eng">Short-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS2-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS2">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Financial Conditions -->
-            <div class="category financial-conditions">
-                <h2>🏦 Financial Conditions <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('NFCI', 'Chicago Fed Financial Conditions Index')">
-                    <div class="cache-status cache-loading" id="NFCI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Chicago Fed Financial Conditions Index
-                            <div class="indicator-name-eng">Overall financial stress measure</div>
-                        </div>
-                        <div class="indicator-date" id="NFCI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="NFCI">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('BAMLH0A0HYM2EY', 'High Yield Corporate Bond Yield')">
-                    <div class="cache-status cache-loading" id="BAMLH0A0HYM2EY-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">High Yield Corporate Bond Yield
-                            <div class="indicator-name-eng">Junk bond risk premium</div>
-                        </div>
-                        <div class="indicator-date" id="BAMLH0A0HYM2EY-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="BAMLH0A0HYM2EY">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Credit & Lending -->
-            <div class="category lending">
-                <h2>🏛️ Credit & Lending <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('DRTSCILM', 'Bank Lending Standards (Large & Mid Firms)')">
-                    <div class="cache-status cache-loading" id="DRTSCILM-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Bank Lending Standards (Large & Mid Firms)
-                            <div class="indicator-name-eng">Net % of banks tightening standards</div>
-                        </div>
-                        <div class="indicator-date" id="DRTSCILM-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DRTSCILM">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Consumer Sentiment -->
-            <div class="category sentiment">
-                <h2>🧠 Consumer Sentiment <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('UMCSENT', 'University of Michigan Consumer Sentiment')">
-                    <div class="cache-status cache-loading" id="UMCSENT-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">University of Michigan Consumer Sentiment
-                            <div class="indicator-name-eng">Consumer confidence measure</div>
-                        </div>
-                        <div class="indicator-date" id="UMCSENT-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="UMCSENT">Loading...</div>
-                </div>
-            </div>
-
-            <!-- GDP & Growth -->
-            <div class="category">
-                <h2>📊 GDP & Growth <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('GDP', 'Real GDP')">
-                    <div class="cache-status cache-loading" id="GDP-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Real GDP
-                            <div class="indicator-name-eng">Inflation-adjusted economic output</div>
-                        </div>
-                        <div class="indicator-date" id="GDP-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="GDP">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('GDPPOT', 'Potential GDP (Current Estimate)')">
-                    <div class="cache-status cache-loading" id="GDPPOT-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Potential GDP (Current Estimate)
-                            <div class="indicator-name-eng">Maximum sustainable output level</div>
-                        </div>
-                        <div class="indicator-date" id="GDPPOT-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="GDPPOT">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('INDPRO', 'Industrial Production Index')">
-                    <div class="cache-status cache-loading" id="INDPRO-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Industrial Production Index
-                            <div class="indicator-name-eng">Manufacturing output measure</div>
-                        </div>
-                        <div class="indicator-date" id="INDPRO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="INDPRO">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Housing & Real Estate -->
-            <div class="category">
-                <h2>🏠 Housing & Real Estate <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('HOUST', 'Housing Starts')">
-                    <div class="cache-status cache-loading" id="HOUST-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Housing Starts
-                            <div class="indicator-name-eng">New home construction begins</div>
-                        </div>
-                        <div class="indicator-date" id="HOUST-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="HOUST">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CSUSHPISA', 'Case-Shiller Home Price Index')">
-                    <div class="cache-status cache-loading" id="CSUSHPISA-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Case-Shiller Home Price Index
-                            <div class="indicator-name-eng">National home price changes</div>
-                        </div>
-                        <div class="indicator-date" id="CSUSHPISA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CSUSHPISA">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('MORTGAGE30US', '30-Year Fixed Rate Mortgage')">
-                    <div class="cache-status cache-loading" id="MORTGAGE30US-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">30-Year Fixed Rate Mortgage
-                            <div class="indicator-name-eng">Average mortgage rate</div>
-                        </div>
-                        <div class="indicator-date" id="MORTGAGE30US-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="MORTGAGE30US">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Money & Credit -->
-            <div class="category">
-                <h2>💳 Money & Credit <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('M2SL', 'M2 Money Stock')">
-                    <div class="cache-status cache-loading" id="M2SL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">M2 Money Stock
-                            <div class="indicator-name-eng">Broad money supply measure</div>
-                        </div>
-                        <div class="indicator-date" id="M2SL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="M2SL">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('TOTALSA', 'Consumer Credit Outstanding')">
-                    <div class="cache-status cache-loading" id="TOTALSA-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Consumer Credit Outstanding
-                            <div class="indicator-name-eng">Total consumer debt</div>
-                        </div>
-                        <div class="indicator-date" id="TOTALSA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="TOTALSA">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DEXUSEU', 'USD/EUR Exchange Rate')">
-                    <div class="cache-status cache-loading" id="DEXUSEU-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">USD/EUR Exchange Rate
-                            <div class="indicator-name-eng">Dollar per Euro</div>
-                        </div>
-                        <div class="indicator-date" id="DEXUSEU-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DEXUSEU">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Demographics -->
-            <div class="category demographics">
-                <h2>👥 Demographics <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('LFWA64TTUSM647S', 'Working-Age Population (15-64 Years)')">
-                    <div class="cache-status cache-loading" id="LFWA64TTUSM647S-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Working-Age Population (15-64 Years)
-                            <div class="indicator-name-eng">Labor force eligible population</div>
-                        </div>
-                        <div class="indicator-date" id="LFWA64TTUSM647S-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="LFWA64TTUSM647S">Loading...</div>
-                </div>
-            </div>
+        <div class="sidebar-row">
+            <a href="cd.html">CD Rate</a>
         </div>
-
-        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart(true)">
-            🔄 Refresh Data
-        </button>
-    </div>
-
-    <!-- Detail Modal -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">FRED Indicator Details</h2>
-            
-            <div class="series-info" id="seriesInfo"></div>
-            <div class="series-info-mobile" id="seriesInfoMobile"></div>
-            
-            <div class="time-selector" id="timeSelector">
-                <button class="time-btn active" onclick="updateChart('1M')">1M</button>
-                <button class="time-btn" onclick="updateChart('3M')">3M</button>
-                <button class="time-btn" onclick="updateChart('6M')">6M</button>
-                <button class="time-btn" onclick="updateChart('1Y')">1Y</button>
-                <button class="time-btn" onclick="updateChart('3Y')">3Y</button>
-                <button class="time-btn" onclick="updateChart('5Y')">5Y</button>
-                <button class="time-btn" onclick="updateChart('10Y')">10Y</button>
-                <button class="time-btn" onclick="updateChart('MAX')">All</button>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="trendChart"></canvas>
-            </div>
+        <div class="sidebar-row">
+            <a href="mortage.html">Mortage</a>
+        </div>
+        <!-- <div class="sidebar-row">
+            <a href="battery.html">배터리</a>  
+        </div> -->
+        <div class="sidebar-row">  
+            <a href="fund.html">Hedge Fund</a>
+        </div>
+        <div class="sidebar-row">
+            <a href="golf.html">Golf Analysis</a>
         </div>
     </div>
-
+    <div class="content">
     <script>
-        // FRED API configuration
-        const getApiKey = () => atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
-        
-        // Data update frequencies (reflecting actual FRED release schedules)
-        const DATA_UPDATE_FREQUENCIES = {
-            // Daily updates (excluding weekends/holidays)
-            'FEDFUNDS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Monthly FOMC meeting results reflected', delay: 'Real-time' },
-            'DGS10': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'DGS2': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'DEXUSEU': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            
-            // Weekly updates
-            'BAMLH0A0HYM2EY': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (ICE BofA)', delay: 'About 1 week' },
-            'NFCI': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Chicago Fed)', delay: 'About 1 week' },
-            
-            // Monthly updates (actual release with 1-2 month delay)
-            'CPIAUCSL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+14 days, BLS)', delay: 'About 14 days delay' },
-            'CPILFESL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+14 days, BLS)', delay: 'About 14 days delay' },
-            'PCEPI': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+30 days, BEA)', delay: 'About 30 days delay' },
-            'UNRATE': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
-            'PAYEMS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
-            'CIVPART': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
-            'HOUST': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+17 days, Census)', delay: 'About 17 days delay' },
-            'CSUSHPISA': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+60 days, S&P)', delay: 'About 60 days delay' },
-            'MORTGAGE30US': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Thursday, FHLMC)', delay: 'About 1 week delay' },
-            'M2SL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+10 days, FED)', delay: 'About 10 days delay' },
-            'TOTALSA': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+5 days, FED)', delay: 'About 5 days delay' },
-            'UMCSENT': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+14 days, UM)', delay: 'About 14 days delay' },
-            
-            // Quarterly updates
-            'GDP': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (end of month, BEA)', delay: 'About 30 days delay' },
-            'GDPPOT': { cacheDays: 90, description: 'Quarterly (forecast)', realFreq: 'Quarterly forecast (CBO)', delay: 'Current time point estimate' },
-            'DRTSCILM': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (FED bank survey)', delay: 'About 14 days delay' },
-            
-            // 6-month updates
-            'INDPRO': { cacheDays: 180, description: '6 months', realFreq: '6 monthly (Fed)', delay: 'About 15 days delay' },
-            'LFWA64TTUSM647S': { cacheDays: 180, description: '6 months', realFreq: '6 monthly (Census)', delay: 'About 60 days delay' }
-        };
-        
-        // FRED series list
-        const FRED_SERIES = {
-            // Inflation & Prices
-            'CPIAUCSL': { name: 'Consumer Price Index (CPI)', nameEng: 'Consumer Price Index', unit: 'Index' },
-            'CPILFESL': { name: 'Core CPI', nameEng: 'Core CPI (Less Food & Energy)', unit: 'Index' },
-            'PCEPI': { name: 'PCE Price Index', nameEng: 'PCE Price Index', unit: 'Index' },
-            
-            // Employment
-            'UNRATE': { name: 'Unemployment Rate', nameEng: 'Unemployment Rate', unit: '%' },
-            'PAYEMS': { name: 'Nonfarm Payrolls', nameEng: 'Nonfarm Payrolls', unit: 'Thousands' },
-            'CIVPART': { name: 'Labor Force Participation Rate', nameEng: 'Labor Force Participation Rate', unit: '%' },
-            
-            // Interest Rates & Bonds
-            'FEDFUNDS': { name: 'Federal Funds Rate', nameEng: 'Federal Funds Rate', unit: '%' },
-            'DGS10': { name: '10-Year Treasury Yield', nameEng: '10-Year Treasury Yield', unit: '%' },
-            'DGS2': { name: '2-Year Treasury Yield', nameEng: '2-Year Treasury Yield', unit: '%' },
-            
-            // Financial Conditions
-            'NFCI': { name: 'Chicago Fed Financial Conditions Index', nameEng: 'Chicago Fed National Financial Conditions Index', unit: 'Index' },
-            'BAMLH0A0HYM2EY': { name: 'High Yield Corporate Bond Yield', nameEng: 'ICE BofA US High Yield Index Effective Yield', unit: '%' },
-            
-            // Credit & Lending
-            'DRTSCILM': { name: 'Bank Lending Standards', nameEng: 'Net % Banks Tightening C&I Loans to Large & Mid Firms', unit: 'Net Percent' },
-            
-            // Consumer Sentiment
-            'UMCSENT': { name: 'University of Michigan Consumer Sentiment', nameEng: 'University of Michigan Consumer Sentiment', unit: 'Index' },
-            
-            // GDP & Growth
-            'GDP': { name: 'Real GDP', nameEng: 'Real Gross Domestic Product', unit: 'Billions of 2017 Dollars' },
-            'GDPPOT': { name: 'Potential GDP', nameEng: 'Real Potential GDP', unit: 'Billions of 2017 Dollars' },
-            'INDPRO': { name: 'Industrial Production Index', nameEng: 'Industrial Production Index', unit: 'Index' },
-            
-            // Housing
-            'HOUST': { name: 'Housing Starts', nameEng: 'Housing Starts', unit: 'Thousands' },
-            'CSUSHPISA': { name: 'Case-Shiller Home Price Index', nameEng: 'Case-Shiller Home Price Index', unit: 'Index' },
-            'MORTGAGE30US': { name: '30-Year Fixed Rate Mortgage', nameEng: '30-Year Fixed Rate Mortgage', unit: '%' },
-            
-            // Money & Credit
-            'M2SL': { name: 'M2 Money Stock', nameEng: 'M2 Money Stock', unit: 'Billions of Dollars' },
-            'TOTALSA': { name: 'Consumer Credit Outstanding', nameEng: 'Consumer Credit Outstanding', unit: 'Billions of Dollars' },
-            'DEXUSEU': { name: 'USD/EUR Exchange Rate', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
-            
-            // Demographics
-            'LFWA64TTUSM647S': { name: 'Working-Age Population', nameEng: 'Working-Age Population (15-64 Years)', unit: 'Persons' }
-        };
-
-        let loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
-        let currentSeriesId = '';
-        let chartInstance = null;
-        let seriesData = {};
-
-        // Cache utility functions
-        function getCacheKey(seriesId) {
-            return `fred_cache_${seriesId}`;
-        }
-
-        // Load cached data immediately (for fast display on page load)
-        function loadCachedDataImmediately() {
-            console.log('⚡ Loading cached data immediately');
-            let loadedCount = 0;
-            
-            Object.keys(FRED_SERIES).forEach(seriesId => {
-                const cached = getCachedData(seriesId);
-                if (cached) {
-                    updateIndicatorDisplay(seriesId, cached, true);
-                    loadedCount++;
-                }
-            });
-            
-            console.log(`⚡ ${loadedCount} indicators displayed instantly`);
-            return loadedCount;
-        }
-
-        function getCachedData(seriesId) {
-            const cached = localStorage.getItem(getCacheKey(seriesId));
-            return cached ? JSON.parse(cached) : null;
-        }
-
-        function setCachedData(seriesId, data) {
-            const cacheData = {
-                ...data,
-                timestamp: Date.now()
-            };
-            localStorage.setItem(getCacheKey(seriesId), JSON.stringify(cacheData));
-        }
-
-        function shouldUpdateIndicator(seriesId, forceUpdate = false) {
-            if (forceUpdate) return true;
-            
-            const cached = getCachedData(seriesId);
-            if (!cached) return true;
-            
-            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
-            const cacheAge = Date.now() - cached.timestamp;
-            const maxAge = frequency.cacheDays * 24 * 60 * 60 * 1000;
-            
-            return cacheAge > maxAge;
-        }
-
-        function getCacheStatus(seriesId) {
-            const cached = getCachedData(seriesId);
-            if (!cached) return 'expired';
-            
-            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
-            const cacheAge = Date.now() - cached.timestamp;
-            const maxAge = frequency.cacheDays * 24 * 60 * 60 * 1000;
-            const halfLife = maxAge * 0.5;
-            
-            if (cacheAge < halfLife) return 'fresh';
-            if (cacheAge < maxAge) return 'valid';
-            return 'expired';
-        }
-
-        function updateCacheStatusDisplay(seriesId, status, isFromCache = false) {
-            const element = document.getElementById(`${seriesId}-cache`);
-            if (!element) return;
-            
-            if (isFromCache) {
-                switch(status) {
-                    case 'fresh':
-                        element.className = 'cache-status cache-fresh';
-                        element.textContent = 'Latest';
-                        break;
-                    case 'valid':
-                        element.className = 'cache-status cache-valid';
-                        element.textContent = 'Cached';
-                        break;
-                    default:
-                        element.className = 'cache-status cache-expired';
-                        element.textContent = 'Expired';
-                }
+       var clickCount = 0;
+    document.addEventListener('click', function(e){
+    var numCircles = 1;
+    for (var i = 0; i < numCircles; i++) {
+    var circle = document.createElement('div');
+    circle.setAttribute('class', 'circle');
+    document.body.appendChild(circle);
+        var size = (Math.random() * 1.5 + 1) * 100 + 'px';
+        circle.style.width = size;
+        circle.style.height = size;
+    
+        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+        circle.style.borderColor = color;
+        circle.style.borderWidth = '1px';
+    
+        circle.style.left = (e.pageX - parseInt(size) / 2) + 'px';
+        circle.style.top = (e.pageY - parseInt(size) / 2) + 'px';
+    
+        var moveX = Math.floor(Math.random() *5 )-2;
+        var moveY = Math.floor(Math.random() *5 )-2;
+    
+        var intervalID = setInterval(function(){
+            var left = parseInt(circle.style.left);
+            var top = parseInt(circle.style.top);
+            if (isNaN(left) || isNaN(top)) {
+                clearInterval(intervalID);
             } else {
-                element.className = 'cache-status cache-fresh';
-                element.textContent = 'New';
+                circle.style.left = (left + moveX) + 'px';
+                circle.style.top = (top + moveY) + 'px';
             }
-        }
-
-        // Real-time clock update
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleString('en-US', {
-                year: 'numeric', month: '2-digit', day: '2-digit',
-                hour: '2-digit', minute: '2-digit', second: '2-digit'
-            });
-            document.getElementById('currentTime').textContent = timeString;
-        }
-
-        // Fetch FRED data
-        async function fetchFredDataViaProxy(seriesId, isHistorical = false, limit = 1) {
-            const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${getApiKey()}&file_type=json&sort_order=desc&limit=${limit}`;
-            
-            const proxies = [
-                `https://api.allorigins.win/get?url=${encodeURIComponent(fredUrl)}`,
-                `https://cors.sh/${fredUrl}`,
-                `https://everyorigin.jwvbremen.nl/get?url=${encodeURIComponent(fredUrl)}`
-            ];
-
-            for (const proxyUrl of proxies) {
-                try {
-                    console.log(`${seriesId}: Trying ${proxyUrl.includes('allorigins') ? 'AllOrigins' : proxyUrl.includes('cors.sh') ? 'CORS.sh' : 'EveryOrigin'} proxy...`);
-                    
-                    const response = await fetch(proxyUrl);
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    let fredData;
-                    
-                    // AllOrigins & EveryOrigin response format
-                    if (data.contents) {
-                        fredData = JSON.parse(data.contents);
-                    } else {
-                        // CORS.sh direct response format
-                        fredData = data;
-                    }
-                    
-                    if (fredData.observations && fredData.observations.length > 0) {
-                        let observations = fredData.observations.filter(obs => obs.value !== '.');
-                        
-                        // For Potential GDP, use current time point data instead of future data
-                        if (seriesId === 'GDPPOT' && !isHistorical) {
-                            const currentDate = new Date();
-                            const currentYear = currentDate.getFullYear();
-                            const currentQuarter = Math.floor(currentDate.getMonth() / 3);
-                            const currentQuarterDate = `${currentYear}-${(currentQuarter * 3 + 1).toString().padStart(2, '0')}-01`;
-                            
-                            // Filter data before or equal to current time point
-                            observations = observations.filter(obs => obs.date <= currentQuarterDate);
-                        }
-                        
-                        if (observations.length > 0) {
-                            console.log(`✅ ${seriesId}: ${observations.length} observations successful`);
-                            if (isHistorical) {
-                                return observations;
-                            } else {
-                                const latest = observations[0];
-                                return {
-                                    value: parseFloat(latest.value),
-                                    date: latest.date,
-                                    series_id: seriesId
-                                };
-                            }
-                        }
-                    }
-                    
-                    throw new Error('No valid data');
-                    
-                } catch (error) {
-                    console.warn(`❌ ${seriesId} proxy failed:`, error.message);
-                    continue;
-                }
-            }
-            
-            throw new Error('All proxies failed');
-        }
-
-        // Update FRED data display
-        function updateIndicatorDisplay(seriesId, data, isFromCache = false) {
-            const element = document.getElementById(seriesId);
-            const dateElement = document.getElementById(`${seriesId}-date`);
-            
-            if (element) {
-                const seriesInfo = FRED_SERIES[seriesId];
-                let displayValue = '';
-                let colorClass = 'neutral';
-                
-                // Special handling: Financial Conditions Index (NFCI)
-                if (seriesId === 'NFCI') {
-                    displayValue = `${data.value.toFixed(2)}`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive'; // Positive = tightening, Negative = easing
-                }
-                // Special handling: Lending Standards (DRTSCILM)
-                else if (seriesId === 'DRTSCILM') {
-                    displayValue = `${data.value.toFixed(1)}%`;
-                    colorClass = data.value > 0 ? 'negative' : 'positive'; // Positive = tightening, Negative = easing
-                }
-                // Value-based formatting
-                else if (seriesInfo.unit === '%') {
-                    displayValue = `${data.value.toFixed(2)}%`;
-                    colorClass = data.value > 5 ? 'negative' : data.value > 2 ? 'neutral' : 'positive';
-                } else if (seriesInfo.unit.includes('Billions')) {
-                    displayValue = `${(data.value / 1000).toFixed(1)}T`;
-                    colorClass = 'positive';
-                } else if (seriesInfo.unit.includes('Thousands')) {
-                    if (data.value > 1000000) {
-                        displayValue = `${(data.value / 1000).toFixed(0)}M`;
-                    } else {
-                        displayValue = `${data.value.toLocaleString()}K`;
-                    }
-                    colorClass = 'positive';
-                } else if (seriesInfo.unit === 'Persons') {
-                    // Working-age population etc. total headcount (unit: people)
-                    displayValue = `${(data.value / 1000000).toFixed(1)}M`;
-                    colorClass = 'positive';
-                } else if (seriesInfo.unit === 'Index') {
-                    displayValue = `${data.value.toFixed(1)}`;
-                    colorClass = 'neutral';
-                } else {
-                    displayValue = `${data.value.toFixed(4)}`;
-                    colorClass = 'neutral';
-                }
-                
-                element.textContent = displayValue;
-                element.className = `indicator-value ${colorClass}`;
-                
-                if (dateElement) {
-                    const cacheInfo = isFromCache ? ' (cached)' : '';
-                    let dateLabel = 'Reference data';
-                    
-                    // For Potential GDP, check if data is after current time point
-                    if (seriesId === 'GDPPOT') {
-                        const dataDate = new Date(data.date);
-                        const currentDate = new Date();
-                        if (dataDate > currentDate) {
-                            dateLabel = 'Forecast basis';
-                        } else {
-                            dateLabel = 'Estimate basis';
-                        }
-                    }
-                    
-                    dateElement.textContent = `${dateLabel}: ${data.date}${cacheInfo}`;
-                }
-
-                // Update cache status
-                const cacheStatus = getCacheStatus(seriesId);
-                updateCacheStatusDisplay(seriesId, cacheStatus, isFromCache);
-            }
-        }
-
-        // Display error status
-        function updateErrorDisplay(seriesId, error) {
-            const element = document.getElementById(seriesId);
-            const dateElement = document.getElementById(`${seriesId}-date`);
-            const cacheElement = document.getElementById(`${seriesId}-cache`);
-            
-            if (element) {
-                element.textContent = 'API Error';
-                element.className = 'indicator-value error';
-                
-                if (dateElement) {
-                    dateElement.textContent = `Data error: ${error}`;
-                }
-
-                if (cacheElement) {
-                    cacheElement.className = 'cache-status cache-expired';
-                    cacheElement.textContent = 'Error';
-                }
-            }
-        }
-
-        // Smart cache data loading
-        async function loadAllFredDataSmart(forceUpdate = false) {
-            console.log('🔄 Refresh started', forceUpdate ? '(Force update)' : '(Smart cache)');
-            
-            const refreshBtn = document.getElementById('refreshBtn');
-            const statusInfo = document.getElementById('statusInfo');
-            
-            refreshBtn.disabled = true;
-            refreshBtn.innerHTML = '<span class="spinner"></span>Loading...';
-            
-            loadResults = { success: 0, failed: 0, cached: 0, apiCalls: 0, errors: [] };
-            statusInfo.style.display = 'block'; // Show status message when loading starts
-            statusInfo.innerHTML = '📊 <span class="loading">Analyzing...</span>';
-
-            // Cache status analysis
-            const toUpdate = [];
-            const fromCache = [];
-
-            Object.keys(FRED_SERIES).forEach(seriesId => {
-                if (shouldUpdateIndicator(seriesId, forceUpdate)) {
-                    toUpdate.push(seriesId);
-                } else {
-                    fromCache.push(seriesId);
-                }
-            });
-
-            // Display cached data immediately
-            fromCache.forEach(seriesId => {
-                const cached = getCachedData(seriesId);
-                if (cached) {
-                    updateIndicatorDisplay(seriesId, cached, true);
-                    loadResults.cached++;
-                }
-            });
-
-            // Load only indicators that need API updates
-            if (toUpdate.length > 0) {
-                statusInfo.innerHTML = `📊 <span class="loading">Updating... (${toUpdate.length} indicators)</span>`;
-                
-                const promises = toUpdate.map(async (seriesId) => {
-                    try {
-                        const data = await fetchFredDataViaProxy(seriesId);
-                        setCachedData(seriesId, data);
-                        updateIndicatorDisplay(seriesId, data, false);
-                        loadResults.success++;
-                        loadResults.apiCalls++;
-                    } catch (error) {
-                        console.error(`${seriesId} loading failed:`, error.message);
-                        updateErrorDisplay(seriesId, error.message);
-                        loadResults.failed++;
-                        loadResults.errors.push(`${seriesId}: ${error.message}`);
-                    }
-                });
-
-                await Promise.all(promises);
-            }
-            
-            // Display results
-            const total = loadResults.success + loadResults.failed + loadResults.cached;
-            const cacheHitRate = ((loadResults.cached / total) * 100).toFixed(1);
-            const apiSaved = loadResults.cached;
-            
-            statusInfo.style.display = 'none'; // Hide status message after loading
-            
-            if (loadResults.errors.length > 0) {
-                console.group('❌ FRED API Loading Errors:');
-                loadResults.errors.forEach(error => console.error(error));
-                console.groupEnd();
-            }
-            
-            refreshBtn.disabled = false;
-            refreshBtn.innerHTML = '🔄 Refresh Data';
-            updateClock();
-        }
-
-        // Chart update
-        async function updateChart(period) {
-            if (!currentSeriesId) return;
-            
-            // Update button status
-            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            try {
-                // Set limit based on period
-                let limit;
-                switch(period) {
-                    case '1M': limit = 30; break;
-                    case '3M': limit = 90; break;
-                    case '6M': limit = 180; break;
-                    case '1Y': limit = 365; break;
-                    case '3Y': limit = 1095; break;
-                    case '5Y': limit = 1825; break;
-                    case '10Y': limit = 3650; break;
-                    case 'MAX': limit = 100000; break;
-                    default: limit = 365;
-                }
-                
-                const historicalData = await fetchFredDataViaProxy(currentSeriesId, true, limit);
-                
-                if (historicalData && historicalData.length > 0) {
-                    const labels = historicalData.reverse().map(item => item.date);
-                    const values = historicalData.map(item => parseFloat(item.value));
-                    
-                    if (chartInstance) {
-                        chartInstance.destroy();
-                    }
-                    
-                    const ctx = document.getElementById('trendChart').getContext('2d');
-                    chartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: FRED_SERIES[currentSeriesId].name,
-                                data: values,
-                                borderColor: '#3498db',
-                                backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                                borderWidth: 2,
-                                fill: true,
-                                tension: 0.1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Date'
-                                    }
-                                },
-                                y: {
-                                    title: {
-                                        display: true,
-                                        text: FRED_SERIES[currentSeriesId].unit
-                                    }
-                                }
-                            },
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: `${FRED_SERIES[currentSeriesId].name} Trend (${period})`
-                                },
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }
-                    });
-                }
-                
-            } catch (error) {
-                console.error('Chart data loading failed:', error);
-            }
-        }
-
-        // Show detail modal
-        function showDetails(seriesId, seriesName) {
-            currentSeriesId = seriesId;
-            document.getElementById('modalTitle').textContent = `${seriesName} Details`;
-            
-            const seriesInfo = FRED_SERIES[seriesId];
-            const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
-            const cacheStatus = getCacheStatus(seriesId);
-            const cached = getCachedData(seriesId);
-            
-            let specialInfo = '';
-            let cacheInfo = '';
-            
-            // Special explanations for specific indicators
-            if (seriesId === 'NFCI') {
-                specialInfo = '<br><strong>Interpretation:</strong> Positive = Financial tightening, Negative = Financial easing';
-            } else if (seriesId === 'DRTSCILM') {
-                specialInfo = '<br><strong>Interpretation:</strong> Positive = Lending standards tightening, Negative = Lending standards easing';
-            }
-
-            // Cache information
-            if (cached) {
-                const cacheAge = Math.floor((Date.now() - cached.timestamp) / (1000 * 60 * 60 * 24));
-                const nextUpdate = frequency.cacheDays - cacheAge;
-                cacheInfo = `<br><strong>Cache Status:</strong> ${cacheStatus === 'fresh' ? 'Fresh' : cacheStatus === 'valid' ? 'Valid' : 'Expired'} (${cacheAge} days old cache)`;
-                if (nextUpdate > 0) {
-                    cacheInfo += `<br><strong>Next Update:</strong> ${nextUpdate} days later`;
-                }
-            }
-            
-            const realFreqInfo = frequency.realFreq ? `<br><strong>Actual Release Schedule:</strong> ${frequency.realFreq}` : '';
-            const delayInfo = frequency.delay ? `<br><strong>Data Delay:</strong> ${frequency.delay}` : '';
-            
-            // Desktop version - full info
-            document.getElementById('seriesInfo').innerHTML = `
-                <strong>Series ID:</strong> ${seriesId}<br>
-                <strong>Unit:</strong> ${seriesInfo.unit}<br>
-                <strong>Cache Update:</strong> ${frequency.description} (${frequency.cacheDays} day cache)${realFreqInfo}${delayInfo}<br>
-                <strong>Data Source:</strong> Federal Reserve Bank (FRED)<br>
-                <strong>Smart Cache:</strong> Active${cacheInfo}${specialInfo}
-            `;
-
-            // Mobile version - minimal info
-            document.getElementById('seriesInfoMobile').innerHTML = `
-                <strong>${seriesId}</strong> | ${seriesInfo.unit} | ${frequency.description}
-            `;
-            
-            document.getElementById('detailModal').style.display = 'block';
-            
-            // Load default 1-month chart (fast loading)
-            updateChart('1M');
-        }
-
-        // Close modal
-        function closeModal() {
-            document.getElementById('detailModal').style.display = 'none';
-            if (chartInstance) {
-                chartInstance.destroy();
-                chartInstance = null;
-            }
-            currentSeriesId = '';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('detailModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        // Clean expired cache automatically (on page load)
-        function cleanExpiredCache() {
-            let cleanedCount = 0;
-            Object.keys(FRED_SERIES).forEach(seriesId => {
-                const cached = getCachedData(seriesId);
-                if (cached) {
-                    const frequency = DATA_UPDATE_FREQUENCIES[seriesId];
-                    const cacheAge = Date.now() - cached.timestamp;
-                    const maxAge = frequency.cacheDays * 24 * 60 * 60 * 1000;
-                    
-                    // Delete cache that is more than 2x expired
-                    if (cacheAge > maxAge * 2) {
-                        localStorage.removeItem(getCacheKey(seriesId));
-                        cleanedCount++;
-                    }
-                }
-            });
-            
-            if (cleanedCount > 0) {
-                console.log(`🧹 ${cleanedCount} expired cache entries automatically cleaned`);
-            }
-        }
-
-        // Daily auto-update check
-        function checkDailyUpdate() {
-            const lastUpdate = localStorage.getItem('lastDailyUpdate');
-            const today = new Date().toDateString();
-            
-            if (lastUpdate !== today) {
-                console.log('🔄 Daily auto-update running (forced)');
-                loadAllFredDataSmart(true);
-                localStorage.setItem('lastDailyUpdate', today);
-                return true;
-            } else {
-                console.log('📊 Daily update already completed, skipping');
-                return false;
-            }
-        }
-
-        // Page load initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('📊 Dashboard loading started');
-            updateClock();
-            cleanExpiredCache(); // Clean expired cache
-            
-            // Load cached data immediately for fast display
-            const cachedCount = loadCachedDataImmediately();
-            
-            // Background update check and new data loading
-            if (cachedCount > 0) {
-                console.log('📊 Background data update started');
-                setTimeout(() => loadAllFredDataSmart(), 100); // 0.1 seconds later background update
-            } else {
-                console.log('📊 Initial data loading started (no cache)');
-                loadAllFredDataSmart(); // Load immediately if no cache
-            }
-            
-            // Daily auto-update check (background)
-            setTimeout(checkDailyUpdate, 5000); // Check daily update after 5 seconds
-            
-            setInterval(updateClock, 1000);
-            // Check daily update every hour (if page stays open)
-            setInterval(checkDailyUpdate, 3600000); // 1 hour = 3600000ms
-        });
+        }, 1);
+    
+        setTimeout(function(){
+            clearInterval(intervalID);
+            circle.parentNode.removeChild(circle);
+        }, 3000);
+    }
+    });
     </script>
-
-</body>
-</html>
+    <footer class="footer"><p>Copyright © 2023~2024 </p></footer>
+    <script>
+    document.addEventListener('click', function(e){
+        var img = document.querySelector('img');
+        img.style.display = 'block';
+    });
+    </script>
+    <script>
+    document.addEventListener('click', function(e){
+        var img1 = document.querySelector('img');
+        var img2 = document.querySelectorAll('img')[1];
+        var rect = img1.getBoundingClientRect();
+        var dx = e.clientX - (rect.left + rect.width / 2);
+        var dy = e.clientY - (rect.top + rect.height / 2);
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 100) {
+            img1.style.display = 'none';
+            img2.style.display = 'block';
+        }
+    });
+    </script>
+    </div>
+    </html>
+    <style>
+        .notice-box {
+          position: fixed !important;
+          bottom: 20px !important;
+          right: 20px !important;
+          width: 500px;
+          background-color: rgba(241, 241, 241, 0);
+          border: 1px solid rgba(204, 204, 204, 0);
+          padding: 30px;
+          display: none;
+          font-size: 40px;
+          overflow-y: auto;
+          max-height: calc(100vh - 40px);
+        }
+        
+        .notice-box p {
+          background-color: rgba(241, 241, 241, 0);
+          border: 1px solid rgba(204, 204, 204, 0);
+          margin: 0 0 30px;
+        }
+        
+        .notice-box button {
+          font-size: 48px;
+        }
+      </style>
+      <div class="notice-box">
+        <p><strong></strong></p>
+        <p></p>
+      </div>
+      <script>
+        window.onload = function() {
+          var images = [];
+          
+          // Add F001.jpeg to F013.jpeg
+          for (var i = 1; i <= 13; i++) {
+            var imageName = 'F' + ('00' + i).slice(-3) + '.jpeg';
+            images.push('image/index/flower/' + imageName);
+          }
+          
+          // Add J001.jpg to J008.jpg
+          for (var j = 1; j <= 8; j++) {
+            var imageName = 'J' + ('00' + j).slice(-3) + '.jpg';
+            images.push('image/index/flower/' + imageName);
+          }
+          
+          var img = document.getElementById('randomImage');
+          var randomIndex = Math.floor(Math.random() * images.length);
+          img.src = images[randomIndex];
+          document.querySelector('.notice-box').style.display = 'block';
+        };
+        </script>
+    </body>
+    </html></document_content>
+    </document>
