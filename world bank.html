@@ -2370,23 +2370,9 @@
         
         // Show World Bank details in modal popup
         async function showWBDetails(countryCode, indicatorCode, indicatorName) {
+            const isMobileDevice = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const countryInfo = WORLD_BANK_COUNTRIES[countryCode] || {name: countryCode, flag: '🌐'};
             const indicatorInfo = WORLD_BANK_INDICATORS[indicatorCode] || {name: indicatorCode, unit: 'N/A'};
-            
-            // Check if data exists (for mobile on-demand loading)
-            const cacheKey = `wb-${countryCode}-${indicatorCode}`;
-            let cachedData = localStorage.getItem(cacheKey);
-            
-            if (!cachedData && isMobileDevice()) {
-                // Mobile device and no cached data - load on demand
-                console.log(`📱 Loading ${indicatorCode} for ${countryCode} on-demand`);
-                try {
-                    await loadWorldBankData(countryCode, indicatorCode);
-                    cachedData = localStorage.getItem(cacheKey);
-                } catch (error) {
-                    console.error('Failed to load data on-demand:', error);
-                }
-            }
             
             // Set modal title and content
             document.getElementById('modalTitle').textContent = 
@@ -2400,6 +2386,71 @@
             
             // Show modal
             document.getElementById('chartModal').style.display = 'block';
+            
+            // Mobile-specific chart handling
+            if (isMobileDevice) {
+                const modalChart = document.getElementById('modalChart');
+                const fallbackData = MOBILE_FALLBACK_DATA[countryCode]?.[indicatorCode];
+                
+                if (fallbackData) {
+                    modalChart.innerHTML = `
+                        <div style="
+                            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+                            height: 280px; background: #f8f9fa; border-radius: 8px; text-align: center;
+                            border: 2px dashed #dee2e6; margin: 20px 0;
+                        ">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">${countryInfo.flag}</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #28a745; margin-bottom: 5px;">
+                                ${fallbackData.formatted}
+                            </div>
+                            <div style="font-size: 0.9rem; color: #6c757d; margin-bottom: 10px;">
+                                ${indicatorInfo.name}
+                            </div>
+                            <div style="font-size: 0.8rem; color: #6c757d;">
+                                📅 ${fallbackData.date} (Estimated)
+                            </div>
+                            <div style="font-size: 0.7rem; color: #6c757d; margin-top: 15px; font-style: italic;">
+                                📱 Mobile simplified view<br>
+                                Tap refresh to attempt live data
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    modalChart.innerHTML = `
+                        <div style="
+                            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+                            height: 280px; background: #fff3cd; border-radius: 8px; text-align: center;
+                            border: 2px dashed #ffc107; margin: 20px 0;
+                        ">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
+                            <div style="font-size: 1.1rem; font-weight: bold; color: #856404; margin-bottom: 10px;">
+                                Chart Not Available
+                            </div>
+                            <div style="font-size: 0.9rem; color: #856404; text-align: center;">
+                                Mobile view doesn't support<br>
+                                charts for this indicator yet
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                console.log(`📱 Mobile modal shown for ${countryCode}-${indicatorCode}`);
+                return;
+            }
+            
+            // Desktop chart loading (existing logic)
+            const cacheKey = `wb-${countryCode}-${indicatorCode}`;
+            let cachedData = localStorage.getItem(cacheKey);
+            
+            if (!cachedData) {
+                console.log(`Loading ${indicatorCode} for ${countryCode} on-demand`);
+                try {
+                    await loadWorldBankData(countryCode, indicatorCode);
+                    cachedData = localStorage.getItem(cacheKey);
+                } catch (error) {
+                    console.error('Failed to load data on-demand:', error);
+                }
+            }
             
             // Store current data for time range filtering
             currentModalData = {countryCode, indicatorCode, countryInfo, indicatorInfo};
@@ -3183,18 +3234,90 @@
             });
         }
         
-        // Set mobile loading states - simplified approach
+        // Mobile fallback with static data when API fails
+        const MOBILE_FALLBACK_DATA = {
+            'US': {
+                'NY.GDP.MKTP.CD': { value: 26854599000000, date: '2023', formatted: '$26.9T' },
+                'NY.GDP.MKTP.KD.ZG': { value: 2.5, date: '2023', formatted: '2.5%' },
+                'SP.POP.TOTL': { value: 334914895, date: '2023', formatted: '335M' },
+                'SL.UEM.TOTL.ZS': { value: 3.7, date: '2023', formatted: '3.7%' },
+                'NE.EXP.GNFS.CD': { value: 2108000000000, date: '2023', formatted: '$2.1T' },
+                'NE.IMP.GNFS.CD': { value: 3017000000000, date: '2023', formatted: '$3.0T' },
+                'FP.CPI.TOTL.ZG': { value: 4.1, date: '2023', formatted: '4.1%' }
+            },
+            'CN': {
+                'NY.GDP.MKTP.CD': { value: 17734062645371, date: '2023', formatted: '$17.7T' },
+                'NY.GDP.MKTP.KD.ZG': { value: 5.2, date: '2023', formatted: '5.2%' },
+                'SP.POP.TOTL': { value: 1425887337, date: '2023', formatted: '1.43B' },
+                'SL.UEM.TOTL.ZS': { value: 5.2, date: '2023', formatted: '5.2%' },
+                'NE.EXP.GNFS.CD': { value: 3363000000000, date: '2023', formatted: '$3.4T' },
+                'NE.IMP.GNFS.CD': { value: 2560000000000, date: '2023', formatted: '$2.6T' },
+                'FP.CPI.TOTL.ZG': { value: 0.2, date: '2023', formatted: '0.2%' }
+            },
+            'JP': {
+                'NY.GDP.MKTP.CD': { value: 4937422400000, date: '2023', formatted: '$4.9T' },
+                'NY.GDP.MKTP.KD.ZG': { value: 1.9, date: '2023', formatted: '1.9%' },
+                'SP.POP.TOTL': { value: 124516650, date: '2023', formatted: '125M' },
+                'SL.UEM.TOTL.ZS': { value: 2.6, date: '2023', formatted: '2.6%' },
+                'NE.EXP.GNFS.CD': { value: 728000000000, date: '2023', formatted: '$728B' },
+                'NE.IMP.GNFS.CD': { value: 781000000000, date: '2023', formatted: '$781B' },
+                'FP.CPI.TOTL.ZG': { value: 3.3, date: '2023', formatted: '3.3%' }
+            },
+            'DE': {
+                'NY.GDP.MKTP.CD': { value: 4259935165000, date: '2023', formatted: '$4.3T' },
+                'NY.GDP.MKTP.KD.ZG': { value: -0.3, date: '2023', formatted: '-0.3%' },
+                'SP.POP.TOTL': { value: 84482267, date: '2023', formatted: '84.5M' },
+                'SL.UEM.TOTL.ZS': { value: 3.0, date: '2023', formatted: '3.0%' },
+                'NE.EXP.GNFS.CD': { value: 1878000000000, date: '2023', formatted: '$1.9T' },
+                'NE.IMP.GNFS.CD': { value: 1725000000000, date: '2023', formatted: '$1.7T' },
+                'FP.CPI.TOTL.ZG': { value: 5.9, date: '2023', formatted: '5.9%' }
+            },
+            'KR': {
+                'NY.GDP.MKTP.CD': { value: 2080685000000, date: '2023', formatted: '$2.1T' },
+                'NY.GDP.MKTP.KD.ZG': { value: 3.1, date: '2023', formatted: '3.1%' },
+                'SP.POP.TOTL': { value: 51784059, date: '2023', formatted: '51.8M' },
+                'SL.UEM.TOTL.ZS': { value: 2.9, date: '2023', formatted: '2.9%' },
+                'NE.EXP.GNFS.CD': { value: 683000000000, date: '2023', formatted: '$683B' },
+                'NE.IMP.GNFS.CD': { value: 645000000000, date: '2023', formatted: '$645B' },
+                'FP.CPI.TOTL.ZG': { value: 3.6, date: '2023', formatted: '3.6%' }
+            }
+        };
+        
+        // Set mobile loading states - with fallback data
         function setMobileLoadingStates() {
             const mobileIndicators = [
                 'NY.GDP.MKTP.CD', 'NY.GDP.MKTP.KD.ZG', 'SP.POP.TOTL', 'SL.UEM.TOTL.ZS', 
                 'NE.EXP.GNFS.CD', 'NE.IMP.GNFS.CD', 'FP.CPI.TOTL.ZG'
             ];
             
-            const mobileCountries = ['US', 'CN', 'JP', 'DE', 'KR'];  // Reduced for mobile
+            const mobileCountries = ['US', 'CN', 'JP', 'DE', 'KR'];
             
-            console.log('📱 Setting mobile-optimized loading states');
+            console.log('📱 Setting mobile-optimized loading states with fallback data');
             
-            // Update indicators not in mobile set to show simplified message
+            // Use fallback data for mobile
+            mobileCountries.forEach(countryCode => {
+                mobileIndicators.forEach(indicatorCode => {
+                    const elementId = `wb-${countryCode}-${indicatorCode}`;
+                    const element = document.getElementById(elementId);
+                    const dateElement = document.getElementById(`${elementId}-date`);
+                    
+                    if (element && element.textContent === 'Loading...') {
+                        const fallbackData = MOBILE_FALLBACK_DATA[countryCode]?.[indicatorCode];
+                        if (fallbackData) {
+                            element.textContent = fallbackData.formatted;
+                            element.className = 'indicator-value neutral';
+                            if (dateElement) {
+                                dateElement.textContent = `${fallbackData.date} (est.)`;
+                            }
+                        } else {
+                            element.textContent = 'No Data';
+                            element.className = 'indicator-value mobile-load';
+                        }
+                    }
+                });
+            });
+            
+            // Update indicators not in mobile set
             Object.keys(WORLD_BANK_INDICATORS).forEach(indicatorCode => {
                 if (!mobileIndicators.includes(indicatorCode)) {
                     mobileCountries.forEach(countryCode => {
@@ -3211,7 +3334,7 @@
             // Show mobile-specific success message
             const refreshBtn = document.getElementById('refreshBtn');
             if (refreshBtn) {
-                refreshBtn.innerHTML = '📱 Mobile Data Ready';
+                refreshBtn.innerHTML = '📱 Mobile Data Loaded (Estimated)';
                 setTimeout(() => {
                     refreshBtn.innerHTML = '🔄 Refresh Data';
                 }, 3000);
@@ -3233,9 +3356,58 @@
             
             // Set mobile-specific loading states after initial load
             if (isMobileDevice()) {
+                console.log('📱 Mobile device detected, applying mobile optimizations');
+                
+                // Add mobile debug panel
+                const debugPanel = document.createElement('div');
+                debugPanel.id = 'mobile-debug';
+                debugPanel.style.cssText = `
+                    position: fixed; bottom: 10px; left: 10px; right: 10px; 
+                    background: rgba(0,0,0,0.8); color: white; padding: 10px; 
+                    font-size: 12px; border-radius: 8px; z-index: 1000;
+                    max-height: 100px; overflow-y: auto;
+                `;
+                debugPanel.innerHTML = '<strong>📱 Mobile Debug:</strong><br><span id="debug-text">Loading mobile data...</span>';
+                document.body.appendChild(debugPanel);
+                
+                // Update debug info
+                const updateDebug = (msg) => {
+                    const debugText = document.getElementById('debug-text');
+                    if (debugText) {
+                        debugText.innerHTML += '<br>' + msg;
+                        debugPanel.scrollTop = debugPanel.scrollHeight;
+                    }
+                };
+                
+                // Test basic API connectivity
+                setTimeout(async () => {
+                    updateDebug('Testing API connectivity...');
+                    try {
+                        const testUrl = 'https://api.worldbank.org/v2/country/US/indicator/NY.GDP.MKTP.CD?format=json&per_page=1&date=2020:2024';
+                        updateDebug('Fetching: ' + testUrl);
+                        
+                        const response = await fetch(testUrl);
+                        updateDebug('Response status: ' + response.status);
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            updateDebug('Data received: ' + (data && data.length ? 'Success' : 'No data'));
+                        } else {
+                            updateDebug('HTTP Error: ' + response.statusText);
+                        }
+                    } catch (error) {
+                        updateDebug('Error: ' + error.message);
+                    }
+                }, 1000);
+                
                 setTimeout(() => {
                     setMobileLoadingStates();
-                }, 3000); // Wait 3 seconds for core data to load
+                    updateDebug('Mobile states updated');
+                }, 3000);
+                
+                setTimeout(() => {
+                    debugPanel.remove();
+                }, 20000); // Remove debug panel after 20 seconds
             }
         });
     </script>
