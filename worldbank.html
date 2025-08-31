@@ -1948,47 +1948,62 @@
             const isMobile = isMobileDevice();
             
             if (isMobile) {
-                // Mobile: Ultra-fast loading with minimal data for instant display
-                console.log('📱 Mobile device - loading essential data only');
-                refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading Essential Data...';
+                // Mobile: Fast API loading with real data - sequential loading with progress
+                console.log('📱 Mobile device - fast API loading');
+                refreshBtn.innerHTML = '📱 Loading Real Data...';
                 
-                // Only load 3 countries and 4 core indicators = 12 API calls total
-                const essentialCountries = ['US', 'KR', 'CN'];  
-                const essentialIndicators = [
+                loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+                
+                // Only 2 countries and 3 core indicators for speed = 6 API calls
+                const mobileCountries = ['US', 'KR'];  
+                const mobileIndicators = [
                     'NY.GDP.MKTP.CD',      // GDP
-                    'NY.GDP.MKTP.KD.ZG',   // GDP Growth  
-                    'SP.POP.TOTL',         // Population
+                    'NY.GDP.MKTP.KD.ZG',   // GDP Growth
                     'SL.UEM.TOTL.ZS'       // Unemployment
                 ];
                 
-                const promises = [];
-                loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+                let completed = 0;
+                const total = mobileCountries.length * mobileIndicators.length;
                 
-                essentialCountries.forEach(countryCode => {
-                    essentialIndicators.forEach(indicatorCode => {
-                        promises.push(loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate));
-                    });
-                });
-                
+                // Load sequentially with immediate display as data comes in
                 try {
-                    const results = await Promise.allSettled(promises);
-                    console.log(`✅ Mobile essential data loaded (${promises.length} calls)`);
+                    for (const countryCode of mobileCountries) {
+                        for (const indicatorCode of mobileIndicators) {
+                            completed++;
+                            refreshBtn.innerHTML = `📱 Loading ${completed}/${total}...`;
+                            
+                            // Load data with timeout for faster failure
+                            try {
+                                const data = await Promise.race([
+                                    loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate),
+                                    new Promise((_, reject) => 
+                                        setTimeout(() => reject(new Error('Mobile timeout')), 3000)
+                                    )
+                                ]);
+                                
+                                loadResults.wbSuccess++;
+                                
+                                // Update display immediately as each data point loads
+                                updateWorldBankDisplay();
+                                
+                            } catch (error) {
+                                console.log(`⚠️ Mobile skip: ${countryCode}-${indicatorCode}`);
+                                loadResults.wbFailed++;
+                            }
+                        }
+                    }
                     
-                    // Update display immediately with available data
+                    console.log(`✅ Mobile API loading completed (${loadResults.wbSuccess} success, ${loadResults.wbFailed} failed)`);
                     updateWorldBankDisplay();
                     
-                    refreshBtn.disabled = false;
-                    refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
-                    
-                    console.log('📱 Essential data displayed. Additional data loads when you tap charts.');
-                    return results;
                 } catch (error) {
-                    console.error('❌ Mobile essential loading failed:', error);
+                    console.error('❌ Mobile API loading failed:', error);
                     loadResults.errors.push(error);
                 } finally {
                     refreshBtn.disabled = false;
                     refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
                 }
+                
                 return;
             }
             
