@@ -1625,9 +1625,11 @@
             'NY.GDP.DEFL.ZS': { name: 'GDP Deflator (annual %)', nameEng: 'GDP deflator (annual %)', unit: '%', category: 'Inflation' },
             'NY.GDP.DEFL.KD.ZG': { name: 'GDP Deflator Change Rate (%)', nameEng: 'GDP deflator growth rate (%)', unit: '%', category: 'Inflation' },
             
-            // Trade Indicators
+            // 📊 Trade Indicators - Complete Set
             'NE.EXP.GNFS.CD': { name: 'Exports', nameEng: 'Exports of goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
             'NE.IMP.GNFS.CD': { name: 'Imports', nameEng: 'Imports of goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
+            'NE.EXP.GNFS.ZS': { name: 'Exports (% of GDP)', nameEng: 'Exports of goods and services (% of GDP)', unit: '% of GDP', category: 'Trade' },
+            'NE.IMP.GNFS.ZS': { name: 'Imports (% of GDP)', nameEng: 'Imports of goods and services (% of GDP)', unit: '% of GDP', category: 'Trade' },
             'NE.RSB.GNFS.CD': { name: 'Trade Balance', nameEng: 'External balance on goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
             'TG.VAL.TOTL.GD.ZS': { name: 'Trade (% of GDP)', nameEng: 'Trade (% of GDP)', unit: '% of GDP', category: 'Trade' },
             
@@ -1945,84 +1947,46 @@
             refreshBtn.disabled = true;
             refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading...';
             
+            // Mobile optimization - load core OECD countries on mobile, all OECD on desktop
             const isMobile = isMobileDevice();
+            const countries = isMobile ? 
+                ['US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU'] :  // 10 core OECD countries on mobile
+                [
+                    // All OECD Countries
+                    'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
+                    'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
+                    'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
+                    // Major non-OECD economies
+                    'CN', 'IN', 'BR', 'RU'
+                ]; // All OECD + major economies on desktop
             
-            if (isMobile) {
-                // Mobile: Fast API loading with real data - sequential loading with progress
-                console.log('📱 Mobile device - fast API loading');
-                refreshBtn.innerHTML = '📱 Loading Real Data...';
-                
-                loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
-                
-                // Only USA and 3 core indicators for speed = 3 API calls
-                const mobileCountries = ['US'];  
-                const mobileIndicators = [
-                    'NY.GDP.MKTP.CD',      // GDP
-                    'NY.GDP.MKTP.KD.ZG',   // GDP Growth
-                    'SL.UEM.TOTL.ZS'       // Unemployment
-                ];
-                
-                let completed = 0;
-                const total = mobileCountries.length * mobileIndicators.length;
-                
-                // Load sequentially with immediate display as data comes in
-                try {
-                    for (const countryCode of mobileCountries) {
-                        for (const indicatorCode of mobileIndicators) {
-                            completed++;
-                            refreshBtn.innerHTML = `📱 Loading ${completed}/${total}...`;
-                            
-                            // Load data with timeout for faster failure
-                            try {
-                                const data = await Promise.race([
-                                    loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate),
-                                    new Promise((_, reject) => 
-                                        setTimeout(() => reject(new Error('Mobile timeout')), 3000)
-                                    )
-                                ]);
-                                
-                                loadResults.wbSuccess++;
-                                
-                                // Update display immediately as each data point loads
-                                updateWorldBankDisplay();
-                                
-                            } catch (error) {
-                                console.log(`⚠️ Mobile skip: ${countryCode}-${indicatorCode}`);
-                                loadResults.wbFailed++;
-                            }
-                        }
-                    }
-                    
-                    console.log(`✅ Mobile API loading completed (${loadResults.wbSuccess} success, ${loadResults.wbFailed} failed)`);
-                    updateWorldBankDisplay();
-                    
-                } catch (error) {
-                    console.error('❌ Mobile API loading failed:', error);
-                    loadResults.errors.push(error);
-                } finally {
-                    refreshBtn.disabled = false;
-                    refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
-                }
-                
-                return;
-            }
-            
-            // Desktop: Full data loading (unchanged for desktop experience)
-            const countries = [
-                // All OECD Countries  
-                'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL',
-                'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE',
-                'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
-                // Major non-OECD economies
-                'CN', 'IN', 'BR', 'RU'
-            ];
-            
+            // Mobile optimization - load essential indicators that are displayed on main screen
             const allIndicators = Object.keys(WORLD_BANK_INDICATORS);
+            const coreIndicators = [
+                // GDP & Economic Growth (main screen indicators)
+                'NY.GDP.MKTP.CD', 'NY.GDP.MKTP.KD.ZG', 'NY.GDP.PCAP.CD', 'NY.GNP.MKTP.CD',
+                // Trade indicators (displayed on main screen)
+                'NE.EXP.GNFS.CD', 'NE.IMP.GNFS.CD', 'BN.CAB.XOKA.CD', 'BX.KLT.DINV.CD.WD',
+                // Investment & Capital Formation (displayed sections)
+                'NE.GDI.FTOT.CD', 'NY.GNS.ICTR.ZS',
+                // Population & Demographics (main screen)
+                'SP.POP.TOTL', 'SL.UEM.TOTL.ZS',
+                // Price & Inflation (displayed sections)
+                'FP.CPI.TOTL.ZG', 'NY.GDP.DEFL.ZS'
+            ];
+            const indicators = isMobile ? coreIndicators : allIndicators;
+            
             const promises = [];
             loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
             
+            // Show mobile-friendly loading message
+            if (isMobile) {
+                console.log('📱 Mobile device detected - loading optimized data set');
+                refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading (Mobile)...';
+            }
+            
             countries.forEach(countryCode => {
-                allIndicators.forEach(indicatorCode => {
+                indicators.forEach(indicatorCode => {
                     promises.push(loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate));
                 });
             });
@@ -2030,6 +1994,22 @@
             try {
                 const results = await Promise.allSettled(promises);
                 console.log(`✅ World Bank data loading completed`);
+                
+                // On mobile, show a message about lazy loading of additional data
+                if (isMobile && !forceUpdate) {
+                    console.log('📱 Core data loaded. Additional indicators will load on-demand.');
+                    setTimeout(() => {
+                        // Preload a few additional popular indicators in background
+                        const additionalIndicators = ['FP.CPI.TOTL.ZG', 'NY.GDP.PCAP.CD', 'NY.GNP.PCAP.CD'];
+                        const additionalCountries = ['US', 'CN', 'DE'];
+                        
+                        additionalCountries.forEach(country => {
+                            additionalIndicators.forEach(indicator => {
+                                loadWorldBankIndicator(country, indicator, false);
+                            });
+                        });
+                    }, 2000);
+                }
                 
                 // Charts will only load when clicked by user
                 console.log('✅ Data loaded. Click any indicator to view historical chart.');
@@ -2353,7 +2333,7 @@
                             maintainAspectRatio: false,
                             interaction: {
                                 intersect: false,
-                                mode: 'index'
+                                mode: 'nearest'
                             },
                             plugins: {
                                 title: {
@@ -2364,13 +2344,7 @@
                                     padding: 20
                                 },
                                 legend: { 
-                                    display: true,
-                                    position: 'top',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 15,
-                                        font: { size: 12 }
-                                    }
+                                    display: false
                                 },
                                 tooltip: {
                                     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -2381,7 +2355,9 @@
                                     titleFont: { size: 14, weight: 'bold' },
                                     bodyFont: { size: 13 },
                                     padding: 12,
-                                    cornerRadius: 8
+                                    cornerRadius: 8,
+                                    mode: 'point',
+                                    intersect: true
                                 }
                             },
                             scales: {
@@ -2676,16 +2652,13 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            interaction: {
+                                intersect: false,
+                                mode: 'nearest'
+                            },
                             plugins: {
                                 legend: { 
-                                    display: true,
-                                    position: 'top',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 8,
-                                        font: { size: 10 },
-                                        boxWidth: 12
-                                    }
+                                    display: false
                                 },
                                 tooltip: {
                                     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -2696,7 +2669,9 @@
                                     titleFont: { size: 14, weight: 'bold' },
                                     bodyFont: { size: 13 },
                                     padding: 12,
-                                    cornerRadius: 8
+                                    cornerRadius: 8,
+                                    mode: 'point',
+                                    intersect: true
                                 }
                             },
                             scales: {
