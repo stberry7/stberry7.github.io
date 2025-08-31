@@ -1938,102 +1938,6 @@
         }
         
         // Load all World Bank data
-        // Enhanced API data fetching function
-        async function fetchWorldBankData(countryCode, indicatorCode) {
-            try {
-                const url = `https://api.worldbank.org/v2/country/${countryCode}/indicator/${indicatorCode}?format=json&per_page=1&date=2020:2024`;
-                console.log(`📡 Fetching ${countryCode}-${indicatorCode}`);
-                
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'User-Agent': 'EconomicDashboard/1.0'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data && data.length > 1 && data[1] && data[1].length > 0) {
-                    const validData = data[1].filter(item => item.value !== null && !isNaN(item.value));
-                    if (validData.length > 0) {
-                        const latest = validData[0];
-                        return {
-                            value: parseFloat(latest.value),
-                            date: latest.date,
-                            country: latest.country?.value || countryCode,
-                            indicator: latest.indicator?.value || indicatorCode
-                        };
-                    }
-                }
-                throw new Error('No valid data found');
-            } catch (error) {
-                console.error(`❌ Error fetching ${countryCode}-${indicatorCode}:`, error);
-                return null;
-            }
-        }
-        
-        // Format values for display
-        function formatIndicatorValue(value, indicatorCode) {
-            if (indicatorCode.includes('.ZG')) {
-                // Growth rates and percentages
-                return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
-            } else if (indicatorCode.includes('.CD') && !indicatorCode.includes('.ZS')) {
-                // Dollar amounts
-                const absValue = Math.abs(value);
-                const sign = value < 0 ? '-' : '';
-                if (absValue >= 1e12) {
-                    return `${sign}$${(absValue / 1e12).toFixed(2)}T`;
-                } else if (absValue >= 1e9) {
-                    return `${sign}$${(absValue / 1e9).toFixed(1)}B`;
-                } else if (absValue >= 1e6) {
-                    return `${sign}$${(absValue / 1e6).toFixed(0)}M`;
-                } else {
-                    return `${sign}$${absValue.toLocaleString()}`;
-                }
-            } else if (indicatorCode.includes('.ZS')) {
-                // Percentage of GDP
-                return `${value.toFixed(1)}%`;
-            } else if (indicatorCode === 'SP.POP.TOTL') {
-                // Population
-                if (value >= 1e9) return `${(value/1e9).toFixed(2)}B`;
-                if (value >= 1e6) return `${(value/1e6).toFixed(0)}M`;
-                return value.toLocaleString();
-            } else {
-                // Default formatting
-                return value.toLocaleString();
-            }
-        }
-        
-        // Update display with fetched data
-        function updateIndicatorDisplay(countryCode, indicatorCode, data) {
-            const elementId = `wb-${countryCode}-${indicatorCode}`;
-            const element = document.getElementById(elementId);
-            const dateElement = document.getElementById(`${elementId}-date`);
-            
-            if (element && data) {
-                const formattedValue = formatIndicatorValue(data.value, indicatorCode);
-                element.textContent = formattedValue;
-                
-                // Apply color coding
-                if (indicatorCode.includes('.ZG')) {
-                    element.className = `indicator-value ${data.value > 0 ? 'positive' : data.value < 0 ? 'negative' : 'neutral'}`;
-                } else {
-                    element.className = 'indicator-value positive';
-                }
-                
-                if (dateElement) {
-                    dateElement.textContent = `${data.date} (live)`;
-                }
-                
-                console.log(`✅ Updated ${countryCode}-${indicatorCode}: ${formattedValue}`);
-            }
-        }
-
         async function loadAllWorldBankData(forceUpdate = false) {
             console.log('🌍 Loading World Bank data...');
             
@@ -2041,80 +1945,87 @@
             refreshBtn.disabled = true;
             refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading...';
             
-            // Mobile optimization - load core countries and indicators
             const isMobile = isMobileDevice();
-            const countries = isMobile ? 
-                ['US', 'CN', 'JP', 'DE', 'KR', 'GB', 'FR', 'IT'] :  // 8 core countries on mobile
-                [
-                    // All OECD Countries
-                    'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
-                    'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
-                    'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
-                    // Major non-OECD economies
-                    'CN', 'IN', 'BR', 'RU'
-                ];
             
-            // Essential indicators for both mobile and desktop
-            const indicators = [
-                'NY.GDP.MKTP.CD', 'NY.GDP.MKTP.KD.ZG', 'SP.POP.TOTL', 'SL.UEM.TOTL.ZS',
-                'NE.EXP.GNFS.CD', 'NE.IMP.GNFS.CD', 'BX.KLT.DINV.CD.WD', 'NE.GDI.FTOT.CD',
-                'FP.CPI.TOTL.ZG', 'BN.CAB.XOKA.CD'
+            if (isMobile) {
+                // Mobile: Ultra-fast loading with minimal data for instant display
+                console.log('📱 Mobile device - loading essential data only');
+                refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading Essential Data...';
+                
+                // Only load 3 countries and 4 core indicators = 12 API calls total
+                const essentialCountries = ['US', 'KR', 'CN'];  
+                const essentialIndicators = [
+                    'NY.GDP.MKTP.CD',      // GDP
+                    'NY.GDP.MKTP.KD.ZG',   // GDP Growth  
+                    'SP.POP.TOTL',         // Population
+                    'SL.UEM.TOTL.ZS'       // Unemployment
+                ];
+                
+                const promises = [];
+                loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+                
+                essentialCountries.forEach(countryCode => {
+                    essentialIndicators.forEach(indicatorCode => {
+                        promises.push(loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate));
+                    });
+                });
+                
+                try {
+                    const results = await Promise.allSettled(promises);
+                    console.log(`✅ Mobile essential data loaded (${promises.length} calls)`);
+                    
+                    // Update display immediately with available data
+                    updateWorldBankDisplay();
+                    
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
+                    
+                    console.log('📱 Essential data displayed. Additional data loads when you tap charts.');
+                    return results;
+                } catch (error) {
+                    console.error('❌ Mobile essential loading failed:', error);
+                    loadResults.errors.push(error);
+                } finally {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
+                }
+                return;
+            }
+            
+            // Desktop: Full data loading (unchanged for desktop experience)
+            const countries = [
+                // All OECD Countries  
+                'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL',
+                'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE',
+                'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
+                // Major non-OECD economies
+                'CN', 'IN', 'BR', 'RU'
             ];
             
-            let loadedCount = 0;
-            let totalCount = countries.length * indicators.length;
+            const allIndicators = Object.keys(WORLD_BANK_INDICATORS);
+            const promises = [];
+            loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
             
-            // Show loading progress
-            console.log(`🔄 Loading ${totalCount} indicators...`);
-            if (isMobile) {
-                refreshBtn.innerHTML = `<span style="animation: spin 1s linear infinite;">🔄</span> Loading Mobile (0/${totalCount})...`;
-            } else {
-                refreshBtn.innerHTML = `<span style="animation: spin 1s linear infinite;">🔄</span> Loading (0/${totalCount})...`;
-            }
-            
-            // Load data sequentially to avoid overwhelming the API
-            for (const countryCode of countries) {
-                for (const indicatorCode of indicators) {
-                    try {
-                        const data = await fetchWorldBankData(countryCode, indicatorCode);
-                        if (data) {
-                            updateIndicatorDisplay(countryCode, indicatorCode, data);
-                            loadedCount++;
-                        }
-                        
-                        // Update progress
-                        refreshBtn.innerHTML = `<span style="animation: spin 1s linear infinite;">🔄</span> Loading (${loadedCount}/${totalCount})...`;
-                        
-                        // Small delay to be nice to the API
-                        await new Promise(resolve => setTimeout(resolve, isMobile ? 100 : 50));
-                        
-                    } catch (error) {
-                        console.error(`Failed to load ${countryCode}-${indicatorCode}:`, error);
-                    }
-                }
-            }
+            countries.forEach(countryCode => {
+                allIndicators.forEach(indicatorCode => {
+                    promises.push(loadWorldBankIndicator(countryCode, indicatorCode, forceUpdate));
+                });
+            });
             
             try {
-                console.log(`✅ World Bank data loading completed: ${loadedCount}/${totalCount} indicators loaded`);
-                
-                refreshBtn.innerHTML = `✅ Data Loaded (${loadedCount}/${totalCount})`;
-                setTimeout(() => {
-                    refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
-                }, 3000);
+                const results = await Promise.allSettled(promises);
+                console.log(`✅ World Bank data loading completed`);
                 
                 // Charts will only load when clicked by user
                 console.log('✅ Data loaded. Click any indicator to view historical chart.');
                 
+                return results;
             } catch (error) {
                 console.error('❌ World Bank data loading failed:', error);
-                refreshBtn.innerHTML = '❌ Loading Failed - Try Again';
+                throw error;
             } finally {
                 refreshBtn.disabled = false;
-                setTimeout(() => {
-                    if (refreshBtn.innerHTML.includes('Loading')) {
-                        refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
-                    }
-                }, 5000);
+                refreshBtn.innerHTML = '🔄 Refresh Global Economic Data';
             }
         }
         
