@@ -647,6 +647,32 @@
             margin-top: 20px;
         }
         
+        /* View All Countries Button */
+        .view-all-btn {
+            background: linear-gradient(135deg, #1f77b4, #2980b9);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(31, 119, 180, 0.3);
+        }
+        
+        .view-all-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(31, 119, 180, 0.4);
+        }
+        
+        .view-all-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(31, 119, 180, 0.3);
+        }
+        
         @media (max-width: 768px) {
             .modal-content {
                 width: 95%;
@@ -661,6 +687,68 @@
             
             .time-range-buttons {
                 justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .time-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                min-width: 70px;
+            }
+            
+            /* Mobile optimized indicators */
+            .wb-indicators {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .indicator {
+                padding: 12px;
+            }
+            
+            .indicator-name {
+                font-size: 0.95rem;
+            }
+            
+            .indicator-value {
+                font-size: 1.1rem;
+            }
+            
+            /* Mobile optimized loading */
+            .loading-container {
+                padding: 10px;
+            }
+            
+            .loading-stats {
+                font-size: 0.9rem;
+                text-align: center;
+                margin: 10px 0;
+            }
+            
+            /* Touch-friendly buttons */
+            .refresh-btn, .close-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            /* Mobile header optimization */
+            h1 {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            /* Mobile performance optimization */
+            .wb-indicator-group {
+                margin-bottom: 25px;
+            }
+            
+            .cache-status {
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -682,7 +770,9 @@
                 <h2>📈 Global GDP Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
                 <div class="wb-country-grid">
                     <div class="wb-indicator-group">
-                        <h3>GDP (Nominal) - Current US$</h3>
+                        <h3>GDP (Nominal) - Current US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('NY.GDP.MKTP.CD', 'GDP (Nominal)')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NY.GDP.MKTP.CD', 'GDP (Nominal)')">
                                 <div class="cache-status cache-loading" id="wb-US-NY.GDP.MKTP.CD-cache">Loading</div>
@@ -760,7 +850,9 @@
                     </div>
                     
                     <div class="wb-indicator-group">
-                        <h3>GDP Growth Rate - Annual %</h3>
+                        <h3>GDP Growth Rate - Annual %
+                            <button class="view-all-btn" onclick="showAllCountriesChart('NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
                                 <div class="cache-status cache-loading" id="wb-US-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
@@ -778,6 +870,22 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-CN-NY.GDP.MKTP.KD.ZG">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-JP-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-DE-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
                             <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
                                 <div class="cache-status cache-loading" id="wb-KR-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
                                 <div>
@@ -794,13 +902,29 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-IN-NY.GDP.MKTP.KD.ZG">Loading...</div>
                             </div>
-                            <div class="indicator wb-indicator" onclick="showWBDetails('BR', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
-                                <div class="cache-status cache-loading" id="wb-BR-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-GB-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
                                 <div>
-                                    <div class="indicator-name">🇧🇷 Brazil</div>
-                                    <div class="indicator-date" id="wb-BR-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-NY.GDP.MKTP.KD.ZG-date">-</div>
                                 </div>
-                                <div class="indicator-value loading" id="wb-BR-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                                <div class="indicator-value loading" id="wb-GB-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-FR-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-NY.GDP.MKTP.KD.ZG">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'NY.GDP.MKTP.KD.ZG', 'GDP Growth Rate')">
+                                <div class="cache-status cache-loading" id="wb-IT-NY.GDP.MKTP.KD.ZG-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-NY.GDP.MKTP.KD.ZG-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-NY.GDP.MKTP.KD.ZG">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -812,7 +936,9 @@
                 <h2>🚀 Global Trade Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
                 <div class="wb-country-grid">
                     <div class="wb-indicator-group">
-                        <h3>Exports - Current US$</h3>
+                        <h3>Exports - Current US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('NE.EXP.GNFS.CD', 'Exports')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.EXP.GNFS.CD', 'Exports')">
                                 <div class="cache-status cache-loading" id="wb-US-NE.EXP.GNFS.CD-cache">Loading</div>
@@ -898,7 +1024,9 @@
                     </div>
                     
                     <div class="wb-indicator-group">
-                        <h3>Imports - Current US$</h3>
+                        <h3>Imports - Current US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('NE.IMP.GNFS.CD', 'Imports')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.IMP.GNFS.CD', 'Imports')">
                                 <div class="cache-status cache-loading" id="wb-US-NE.IMP.GNFS.CD-cache">Loading</div>
@@ -990,7 +1118,9 @@
                 <h2>💼 Global Investment Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
                 <div class="wb-country-grid">
                     <div class="wb-indicator-group">
-                        <h3>Foreign Direct Investment - Current US$</h3>
+                        <h3>Foreign Direct Investment - Current US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('BX.KLT.DINV.CD.WD', 'FDI Inflows')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
                                 <div class="cache-status cache-loading" id="wb-US-BX.KLT.DINV.CD.WD-cache">Loading</div>
@@ -1008,6 +1138,22 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-CN-BX.KLT.DINV.CD.WD">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-JP-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-DE-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
                             <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
                                 <div class="cache-status cache-loading" id="wb-KR-BX.KLT.DINV.CD.WD-cache">Loading</div>
                                 <div>
@@ -1016,11 +1162,45 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-KR-BX.KLT.DINV.CD.WD">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-IN-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-GB-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-FR-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'BX.KLT.DINV.CD.WD', 'FDI Inflows')">
+                                <div class="cache-status cache-loading" id="wb-IT-BX.KLT.DINV.CD.WD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-BX.KLT.DINV.CD.WD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-BX.KLT.DINV.CD.WD">Loading...</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="wb-indicator-group">
-                        <h3>Gross Fixed Capital Formation - Current US$</h3>
+                        <h3>Gross Fixed Capital Formation - Current US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
                                 <div class="cache-status cache-loading" id="wb-US-NE.GDI.FTOT.CD-cache">Loading</div>
@@ -1038,6 +1218,22 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-CN-NE.GDI.FTOT.CD">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-JP-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-DE-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
                             <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
                                 <div class="cache-status cache-loading" id="wb-KR-NE.GDI.FTOT.CD-cache">Loading</div>
                                 <div>
@@ -1045,6 +1241,38 @@
                                     <div class="indicator-date" id="wb-KR-NE.GDI.FTOT.CD-date">-</div>
                                 </div>
                                 <div class="indicator-value loading" id="wb-KR-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-IN-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-GB-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-FR-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-NE.GDI.FTOT.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'NE.GDI.FTOT.CD', 'Gross Fixed Capital Formation')">
+                                <div class="cache-status cache-loading" id="wb-IT-NE.GDI.FTOT.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-NE.GDI.FTOT.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-NE.GDI.FTOT.CD">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -1056,7 +1284,9 @@
                 <h2>📊 Additional Economic Indicators <span class="wb-logo" style="background: #1f77b4; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">WORLD BANK</span></h2>
                 <div class="wb-country-grid">
                     <div class="wb-indicator-group">
-                        <h3>Population - Total</h3>
+                        <h3>Population - Total
+                            <button class="view-all-btn" onclick="showAllCountriesChart('SP.POP.TOTL', 'Population')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'SP.POP.TOTL', 'Population')">
                                 <div class="cache-status cache-loading" id="wb-US-SP.POP.TOTL-cache">Loading</div>
@@ -1082,11 +1312,61 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-IN-SP.POP.TOTL">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-JP-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-DE-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇩🇪 Germany</div>
+                                    <div class="indicator-date" id="wb-DE-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-DE-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-KR-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-GB-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-FR-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-SP.POP.TOTL">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'SP.POP.TOTL', 'Population')">
+                                <div class="cache-status cache-loading" id="wb-IT-SP.POP.TOTL-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-SP.POP.TOTL-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-SP.POP.TOTL">Loading...</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="wb-indicator-group">
-                        <h3>Unemployment Rate - %</h3>
+                        <h3>Unemployment Rate - % 
+                            <button class="view-all-btn" onclick="showAllCountriesChart('SL.UEM.TOTL.ZS', 'Unemployment Rate')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
                                 <div class="cache-status cache-loading" id="wb-US-SL.UEM.TOTL.ZS-cache">Loading</div>
@@ -1095,6 +1375,22 @@
                                     <div class="indicator-date" id="wb-US-SL.UEM.TOTL.ZS-date">-</div>
                                 </div>
                                 <div class="indicator-value loading" id="wb-US-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('CN', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-CN-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇨🇳 China</div>
+                                    <div class="indicator-date" id="wb-CN-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-CN-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-JP-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-SL.UEM.TOTL.ZS">Loading...</div>
                             </div>
                             <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
                                 <div class="cache-status cache-loading" id="wb-DE-SL.UEM.TOTL.ZS-cache">Loading</div>
@@ -1112,11 +1408,45 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-KR-SL.UEM.TOTL.ZS">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-IN-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-GB-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-FR-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'SL.UEM.TOTL.ZS', 'Unemployment Rate')">
+                                <div class="cache-status cache-loading" id="wb-IT-SL.UEM.TOTL.ZS-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-SL.UEM.TOTL.ZS-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-SL.UEM.TOTL.ZS">Loading...</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="wb-indicator-group">
-                        <h3>Current Account Balance - US$</h3>
+                        <h3>Current Account Balance - US$
+                            <button class="view-all-btn" onclick="showAllCountriesChart('BN.CAB.XOKA.CD', 'Current Account Balance')">📊 View All Countries</button>
+                        </h3>
                         <div class="wb-indicators">
                             <div class="indicator wb-indicator" onclick="showWBDetails('US', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
                                 <div class="cache-status cache-loading" id="wb-US-BN.CAB.XOKA.CD-cache">Loading</div>
@@ -1134,6 +1464,14 @@
                                 </div>
                                 <div class="indicator-value loading" id="wb-CN-BN.CAB.XOKA.CD">Loading...</div>
                             </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('JP', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-JP-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇯🇵 Japan</div>
+                                    <div class="indicator-date" id="wb-JP-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-JP-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
                             <div class="indicator wb-indicator" onclick="showWBDetails('DE', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
                                 <div class="cache-status cache-loading" id="wb-DE-BN.CAB.XOKA.CD-cache">Loading</div>
                                 <div>
@@ -1141,6 +1479,46 @@
                                     <div class="indicator-date" id="wb-DE-BN.CAB.XOKA.CD-date">-</div>
                                 </div>
                                 <div class="indicator-value loading" id="wb-DE-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('KR', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-KR-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇰🇷 South Korea</div>
+                                    <div class="indicator-date" id="wb-KR-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-KR-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IN', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-IN-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇳 India</div>
+                                    <div class="indicator-date" id="wb-IN-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IN-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('GB', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-GB-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇬🇧 United Kingdom</div>
+                                    <div class="indicator-date" id="wb-GB-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-GB-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('FR', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-FR-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇫🇷 France</div>
+                                    <div class="indicator-date" id="wb-FR-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-FR-BN.CAB.XOKA.CD">Loading...</div>
+                            </div>
+                            <div class="indicator wb-indicator" onclick="showWBDetails('IT', 'BN.CAB.XOKA.CD', 'Current Account Balance')">
+                                <div class="cache-status cache-loading" id="wb-IT-BN.CAB.XOKA.CD-cache">Loading</div>
+                                <div>
+                                    <div class="indicator-name">🇮🇹 Italy</div>
+                                    <div class="indicator-date" id="wb-IT-BN.CAB.XOKA.CD-date">-</div>
+                                </div>
+                                <div class="indicator-value loading" id="wb-IT-BN.CAB.XOKA.CD">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -1162,10 +1540,10 @@
             </div>
             
             <div class="time-range-buttons">
-                <button class="time-btn active" onclick="setTimeRange('all')">All Years</button>
-                <button class="time-btn" onclick="setTimeRange('20')">Last 20 Years</button>
-                <button class="time-btn" onclick="setTimeRange('10')">Last 10 Years</button>
                 <button class="time-btn" onclick="setTimeRange('5')">Last 5 Years</button>
+                <button class="time-btn" onclick="setTimeRange('10')">Last 10 Years</button>
+                <button class="time-btn" onclick="setTimeRange('20')">Last 20 Years</button>
+                <button class="time-btn active" onclick="setTimeRange('all')">All Years</button>
             </div>
             
             <div class="modal-chart-container">
@@ -1211,11 +1589,41 @@
     <script>
         // World Bank API Integration
         const WORLD_BANK_INDICATORS = {
-            // GDP Indicators
-            'NY.GDP.MKTP.CD': { name: 'GDP (Nominal)', nameEng: 'GDP (current US$)', unit: 'Current US$', category: 'GDP' },
-            'NY.GDP.MKTP.KD': { name: 'GDP (Real)', nameEng: 'GDP (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GDP' },
-            'NY.GDP.PCAP.CD': { name: 'GDP Per Capita', nameEng: 'GDP per capita (current US$)', unit: 'Current US$', category: 'GDP' },
-            'NY.GDP.MKTP.KD.ZG': { name: 'GDP Growth Rate', nameEng: 'GDP growth (annual %)', unit: '%', category: 'GDP' },
+            // 📊 GDP (Gross Domestic Product) - Complete Set
+            'NY.GDP.MKTP.CD': { name: 'GDP (Nominal, current US$)', nameEng: 'GDP (current US$)', unit: 'Current US$', category: 'GDP' },
+            'NY.GDP.MKTP.CN': { name: 'GDP (Nominal, local currency)', nameEng: 'GDP (current LCU)', unit: 'Local Currency', category: 'GDP' },
+            'NY.GDP.MKTP.KD': { name: 'GDP (Real, constant US$)', nameEng: 'GDP (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GDP' },
+            'NY.GDP.PCAP.CD': { name: 'GDP per capita (Nominal, US$)', nameEng: 'GDP per capita (current US$)', unit: 'Current US$', category: 'GDP' },
+            'NY.GDP.PCAP.KD': { name: 'GDP per capita (Real, constant US$)', nameEng: 'GDP per capita (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GDP' },
+            'NY.GDP.PCAP.PP.CD': { name: 'GDP per capita (PPP, US$)', nameEng: 'GDP per capita, PPP (current international $)', unit: 'PPP US$', category: 'GDP' },
+            'NY.GDP.MKTP.KD.ZG': { name: 'GDP Growth Rate (annual %)', nameEng: 'GDP growth (annual %)', unit: '%', category: 'GDP' },
+            'NY.GDP.PCAP.KD.ZG': { name: 'GDP per capita Growth Rate (%)', nameEng: 'GDP per capita growth (annual %)', unit: '%', category: 'GDP' },
+            
+            // 📊 GNP (Gross National Product) - Complete Set  
+            'NY.GNP.MKTP.CD': { name: 'GNP (Nominal, current US$)', nameEng: 'GNI (current US$)', unit: 'Current US$', category: 'GNP' },
+            'NY.GNP.MKTP.KD': { name: 'GNP (Real, constant US$)', nameEng: 'GNI (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GNP' },
+            'NY.GNP.PCAP.CD': { name: 'GNP per capita (Nominal, US$)', nameEng: 'GNI per capita (current US$)', unit: 'Current US$', category: 'GNP' },
+            'NY.GNP.PCAP.KD': { name: 'GNP per capita (Real, constant US$)', nameEng: 'GNI per capita (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GNP' },
+            'NY.GNP.PCAP.PP.CD': { name: 'GNP per capita (PPP, US$)', nameEng: 'GNI per capita, PPP (current international $)', unit: 'PPP US$', category: 'GNP' },
+            'NY.GNP.MKTP.PP.CD': { name: 'GNP (PPP, US$)', nameEng: 'GNI, PPP (current international $)', unit: 'PPP US$', category: 'GNP' },
+            
+            // 📊 Gross Investment (Gross Capital Formation) - Complete Set
+            'NE.GDI.TOTL.ZS': { name: 'Gross Investment (% of GDP)', nameEng: 'Gross capital formation (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            'NE.GDI.TOTL.CD': { name: 'Gross Investment (current US$)', nameEng: 'Gross capital formation (current US$)', unit: 'Current US$', category: 'Investment' },
+            'NE.GDI.FTOT.ZS': { name: 'Gross Fixed Investment (% of GDP)', nameEng: 'Gross fixed capital formation (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            'NE.GDI.FPRV.ZS': { name: 'Private Investment (% of GDP)', nameEng: 'Gross fixed capital formation, private sector (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            'NE.GDI.FGOV.ZS': { name: 'Government Investment (% of GDP)', nameEng: 'Gross fixed capital formation, public sector (% of GDP)', unit: '% of GDP', category: 'Investment' },
+            
+            // 📊 Gross Savings - Complete Set
+            'NY.GNS.ICTR.ZS': { name: 'Gross Savings (% of GDP)', nameEng: 'Gross savings (% of GDP)', unit: '% of GDP', category: 'Savings' },
+            'NY.GNS.ICTR.CD': { name: 'Gross Savings (current US$)', nameEng: 'Gross savings (current US$)', unit: 'Current US$', category: 'Savings' },
+            'NY.GNS.GNFS.ZS': { name: 'National Savings (% of GNI)', nameEng: 'Gross national savings (% of GNI)', unit: '% of GNI', category: 'Savings' },
+            
+            // 📊 Inflation / Price Indices - Complete Set  
+            'FP.CPI.TOTL': { name: 'Consumer Price Index (CPI, 2010=100)', nameEng: 'Consumer price index (2010 = 100)', unit: 'Index 2010=100', category: 'Inflation' },
+            'FP.CPI.TOTL.ZG': { name: 'Inflation Rate (Consumer Prices, %)', nameEng: 'Inflation, consumer prices (annual %)', unit: '%', category: 'Inflation' },
+            'NY.GDP.DEFL.ZS': { name: 'GDP Deflator (annual %)', nameEng: 'GDP deflator (annual %)', unit: '%', category: 'Inflation' },
+            'NY.GDP.DEFL.KD.ZG': { name: 'GDP Deflator Change Rate (%)', nameEng: 'GDP deflator growth rate (%)', unit: '%', category: 'Inflation' },
             
             // Trade Indicators
             'NE.EXP.GNFS.CD': { name: 'Exports', nameEng: 'Exports of goods and services (current US$)', unit: 'Current US$', category: 'Trade' },
@@ -1241,24 +1649,51 @@
         };
         
         const WORLD_BANK_COUNTRIES = {
+            // All OECD Countries (38 members as of 2023)
             'US': { name: 'United States', flag: '🇺🇸' },
-            'KR': { name: 'South Korea', flag: '🇰🇷' },
-            'CN': { name: 'China', flag: '🇨🇳' },
             'JP': { name: 'Japan', flag: '🇯🇵' },
             'DE': { name: 'Germany', flag: '🇩🇪' },
             'GB': { name: 'United Kingdom', flag: '🇬🇧' },
             'FR': { name: 'France', flag: '🇫🇷' },
             'IT': { name: 'Italy', flag: '🇮🇹' },
-            'AU': { name: 'Australia', flag: '🇦🇺' },
-            'RU': { name: 'Russia', flag: '🇷🇺' },
-            'MX': { name: 'Mexico', flag: '🇲🇽' },
+            'CA': { name: 'Canada', flag: '🇨🇦' },
+            'KR': { name: 'South Korea', flag: '🇰🇷' },
             'ES': { name: 'Spain', flag: '🇪🇸' },
+            'AU': { name: 'Australia', flag: '🇦🇺' },
+            'MX': { name: 'Mexico', flag: '🇲🇽' },
             'NL': { name: 'Netherlands', flag: '🇳🇱' },
             'CH': { name: 'Switzerland', flag: '🇨🇭' },
+            'BE': { name: 'Belgium', flag: '🇧🇪' },
+            'IE': { name: 'Ireland', flag: '🇮🇪' },
+            'IL': { name: 'Israel', flag: '🇮🇱' },
+            'AT': { name: 'Austria', flag: '🇦🇹' },
+            'NO': { name: 'Norway', flag: '🇳🇴' },
             'SE': { name: 'Sweden', flag: '🇸🇪' },
+            'PL': { name: 'Poland', flag: '🇵🇱' },
+            'DK': { name: 'Denmark', flag: '🇩🇰' },
+            'FI': { name: 'Finland', flag: '🇫🇮' },
+            'CZ': { name: 'Czech Republic', flag: '🇨🇿' },
+            'PT': { name: 'Portugal', flag: '🇵🇹' },
+            'NZ': { name: 'New Zealand', flag: '🇳🇿' },
+            'GR': { name: 'Greece', flag: '🇬🇷' },
+            'HU': { name: 'Hungary', flag: '🇭🇺' },
+            'SK': { name: 'Slovakia', flag: '🇸🇰' },
+            'LU': { name: 'Luxembourg', flag: '🇱🇺' },
+            'IS': { name: 'Iceland', flag: '🇮🇸' },
+            'SI': { name: 'Slovenia', flag: '🇸🇮' },
+            'EE': { name: 'Estonia', flag: '🇪🇪' },
+            'LV': { name: 'Latvia', flag: '🇱🇻' },
+            'LT': { name: 'Lithuania', flag: '🇱🇹' },
+            'CL': { name: 'Chile', flag: '🇨🇱' },
+            'TR': { name: 'Turkey', flag: '🇹🇷' },
+            'CO': { name: 'Colombia', flag: '🇨🇴' },
+            'CR': { name: 'Costa Rica', flag: '🇨🇷' },
+            
+            // Major non-OECD economies for comparison
+            'CN': { name: 'China', flag: '🇨🇳' },
             'IN': { name: 'India', flag: '🇮🇳' },
             'BR': { name: 'Brazil', flag: '🇧🇷' },
-            'CA': { name: 'Canada', flag: '🇨🇦' }
+            'RU': { name: 'Russia', flag: '🇷🇺' }
         };
         
         const WB_UPDATE_FREQUENCIES = {
@@ -1393,17 +1828,27 @@
                     displayValue = `${data.value.toFixed(2)}%`;
                     colorClass = data.value > 0 ? 'positive' : data.value < 0 ? 'negative' : 'neutral';
                 } else if (indicatorCode.includes('.CD') && !indicatorCode.includes('.ZS')) {
-                    // Dollar amounts
-                    if (data.value >= 1e12) {
-                        displayValue = `$${(data.value / 1e12).toFixed(2)}T`;
-                    } else if (data.value >= 1e9) {
-                        displayValue = `$${(data.value / 1e9).toFixed(1)}B`;
-                    } else if (data.value >= 1e6) {
-                        displayValue = `$${(data.value / 1e6).toFixed(0)}M`;
+                    // Dollar amounts - handle negative values properly
+                    const absValue = Math.abs(data.value);
+                    const sign = data.value < 0 ? '-' : '';
+                    
+                    if (absValue >= 1e12) {
+                        displayValue = `${sign}$${(absValue / 1e12).toFixed(2)}T`;
+                    } else if (absValue >= 1e9) {
+                        displayValue = `${sign}$${(absValue / 1e9).toFixed(1)}B`;
+                    } else if (absValue >= 1e6) {
+                        displayValue = `${sign}$${(absValue / 1e6).toFixed(0)}M`;
                     } else {
-                        displayValue = `$${data.value.toLocaleString()}`;
+                        displayValue = `${sign}$${absValue.toLocaleString()}`;
                     }
-                    colorClass = 'positive';
+                    
+                    // Set color based on value and indicator type
+                    if (indicatorCode === 'BN.CAB.XOKA.CD') {
+                        // Current Account Balance: negative is red, positive is green
+                        colorClass = data.value < 0 ? 'negative' : 'positive';
+                    } else {
+                        colorClass = data.value < 0 ? 'negative' : 'positive';
+                    }
                 } else if (indicatorCode.includes('.ZS')) {
                     // Percentage of GDP
                     displayValue = `${data.value.toFixed(1)}%`;
@@ -1436,6 +1881,11 @@
             }
         }
         
+        // Detect mobile device
+        function isMobileDevice() {
+            return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
         // Load all World Bank data
         async function loadAllWorldBankData(forceUpdate = false) {
             console.log('🌍 Loading World Bank data...');
@@ -1444,11 +1894,35 @@
             refreshBtn.disabled = true;
             refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading...';
             
-            const countries = ['US', 'CN', 'JP', 'DE', 'GB', 'IN', 'FR', 'IT', 'BR', 'CA', 'KR', 'AU', 'RU', 'MX'];
-            const indicators = Object.keys(WORLD_BANK_INDICATORS);
+            // Mobile optimization - load core OECD countries on mobile, all OECD on desktop
+            const isMobile = isMobileDevice();
+            const countries = isMobile ? 
+                ['US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU'] :  // 10 core OECD countries on mobile
+                [
+                    // All OECD Countries
+                    'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
+                    'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
+                    'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
+                    // Major non-OECD economies
+                    'CN', 'IN', 'BR', 'RU'
+                ]; // All OECD + major economies on desktop
+            
+            // Mobile optimization - load core indicators first
+            const allIndicators = Object.keys(WORLD_BANK_INDICATORS);
+            const coreIndicators = [
+                'NY.GDP.MKTP.CD', 'NY.GDP.MKTP.KD.ZG', 'NE.EXP.GNFS.CD', 'NE.IMP.GNFS.CD',
+                'SP.POP.TOTL', 'SL.UEM.TOTL.ZS', 'BN.CAB.XOKA.CD'
+            ];
+            const indicators = isMobile ? coreIndicators : allIndicators;
             
             const promises = [];
             loadResults = { wbSuccess: 0, wbFailed: 0, wbCached: 0, errors: [] };
+            
+            // Show mobile-friendly loading message
+            if (isMobile) {
+                console.log('📱 Mobile device detected - loading optimized data set');
+                refreshBtn.innerHTML = '<span style="animation: spin 1s linear infinite;">🔄</span> Loading (Mobile)...';
+            }
             
             countries.forEach(countryCode => {
                 indicators.forEach(indicatorCode => {
@@ -1459,6 +1933,22 @@
             try {
                 const results = await Promise.allSettled(promises);
                 console.log(`✅ World Bank data loading completed`);
+                
+                // On mobile, show a message about lazy loading of additional data
+                if (isMobile && !forceUpdate) {
+                    console.log('📱 Core data loaded. Additional indicators will load on-demand.');
+                    setTimeout(() => {
+                        // Preload a few additional popular indicators in background
+                        const additionalIndicators = ['FP.CPI.TOTL.ZG', 'NY.GDP.PCAP.CD', 'NY.GNP.PCAP.CD'];
+                        const additionalCountries = ['US', 'CN', 'DE'];
+                        
+                        additionalCountries.forEach(country => {
+                            additionalIndicators.forEach(indicator => {
+                                loadWorldBankIndicator(country, indicator, false);
+                            });
+                        });
+                    }, 2000);
+                }
                 
                 // Charts will only load when clicked by user
                 console.log('✅ Data loaded. Click any indicator to view historical chart.');
@@ -1532,11 +2022,11 @@
             
             // Store current data for time range filtering
             currentModalData = {countryCode, indicatorCode, countryInfo, indicatorInfo};
-            currentTimeRange = 'all';
+            currentTimeRange = '10';
             
-            // Reset time range buttons
+            // Reset time range buttons - set 10 years as default
             document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.time-btn[onclick="setTimeRange(\'all\')"]').classList.add('active');
+            document.querySelector('.time-btn[onclick="setTimeRange(\'10\')"]').classList.add('active');
             
             // Load chart data
             loadModalChart();
@@ -1561,7 +2051,13 @@
             
             // Reload chart with new range
             if (currentModalData) {
-                loadModalChart();
+                if (currentModalData.countryCode === 'ALL') {
+                    // Reload all countries chart
+                    loadAllCountriesModalChart(currentModalData.indicatorCode);
+                } else {
+                    // Reload single country comparison chart
+                    loadModalChart();
+                }
             }
         }
         
@@ -1673,13 +2169,19 @@
                 
                 console.log(`🔄 Loading modal chart for ${countryCode}-${indicatorCode} (${currentTimeRange} years)`);
                 
-                // Fetch data for multiple countries for comparison
-                const comparisonCountries = ['US', 'CN', 'JP', 'DE', 'GB', 'FR', 'IN', 'KR'];
+                // Fetch data for all OECD countries + major economies for comparison
+                const comparisonCountries = [
+                    // All OECD Countries
+                    'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
+                    'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
+                    'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
+                    // Major non-OECD economies
+                    'CN', 'IN', 'BR', 'RU'
+                ];
                 const datasets = [];
-                const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'];
                 
                 let dataCount = 0;
-                for (let i = 0; i < comparisonCountries.length && dataCount < 5; i++) {
+                for (let i = 0; i < comparisonCountries.length; i++) {
                     const country = comparisonCountries[i];
                     try {
                         const historicalData = await fetchWorldBankData(country, indicatorCode, true);
@@ -1699,16 +2201,24 @@
                                 const countryName = WORLD_BANK_COUNTRIES[country]?.name || country;
                                 const countryFlag = WORLD_BANK_COUNTRIES[country]?.flag || '🌐';
                                 
+                                // Highlight selected country, make others gray
+                                const isSelectedCountry = country === countryCode;
+                                const borderColor = isSelectedCountry ? '#1f77b4' : '#888888';
+                                const backgroundColor = isSelectedCountry ? 'rgba(31, 119, 180, 0.2)' : 'rgba(136, 136, 136, 0.1)';
+                                const borderWidth = isSelectedCountry ? 4 : 2;
+                                const pointRadius = isSelectedCountry ? 4 : 2;
+                                
                                 datasets.push({
                                     label: `${countryFlag} ${countryName}`,
                                     data: values,
-                                    borderColor: colors[dataCount],
-                                    backgroundColor: colors[dataCount] + '20',
-                                    borderWidth: 3,
+                                    borderColor: borderColor,
+                                    backgroundColor: backgroundColor,
+                                    borderWidth: borderWidth,
                                     fill: false,
                                     tension: 0.1,
-                                    pointRadius: 3,
-                                    pointHoverRadius: 6
+                                    pointRadius: pointRadius,
+                                    pointHoverRadius: isSelectedCountry ? 8 : 5,
+                                    _labels: labels // Store labels for this dataset
                                 });
                                 dataCount++;
                             }
@@ -1723,17 +2233,16 @@
                     loadingDiv.style.display = 'none';
                     canvas.style.display = 'block';
                     
-                    // Use the first dataset's labels for x-axis
-                    const labels = datasets[0].data.length > 0 ? 
-                        Array.from({length: datasets[0].data.length}, (_, i) => {
-                            const currentYear = new Date().getFullYear();
-                            if (currentTimeRange === 'all') {
-                                return (1960 + i).toString();
-                            } else {
-                                const startYear = currentYear - parseInt(currentTimeRange);
-                                return (startYear + i).toString();
-                            }
-                        }) : [];
+                    // Get unique labels from all datasets and sort them
+                    const allLabels = new Set();
+                    datasets.forEach(dataset => {
+                        if (dataset._labels) {
+                            dataset._labels.forEach(label => allLabels.add(label));
+                        }
+                    });
+                    
+                    // Sort labels chronologically 
+                    const labels = Array.from(allLabels).sort((a, b) => parseInt(a) - parseInt(b));
                     
                     // Create chart
                     const ctx = canvas.getContext('2d');
@@ -1830,10 +2339,41 @@
         // Get World Bank indicator explanations
         function getWBIndicatorExplanation(indicatorCode) {
             const explanations = {
-                'NY.GDP.MKTP.CD': 'Gross Domestic Product at current market prices in US dollars. Represents the total value of all goods and services produced within a country in a given year.',
-                'NY.GDP.MKTP.KD': 'Gross Domestic Product in constant 2015 US dollars, adjusted for inflation. Useful for comparing economic growth across different time periods.',
-                'NY.GDP.PCAP.CD': 'GDP divided by total population. Provides a measure of average economic output per person and standard of living.',
-                'NY.GDP.MKTP.KD.ZG': 'Annual percentage growth rate of GDP at market prices based on constant local currency. Key indicator of economic expansion or contraction.',
+                // 📊 GDP Indicators - Complete Set with English Explanations
+                'NY.GDP.MKTP.CD': 'GDP (Nominal, current US$) - Gross Domestic Product at current market prices in US dollars. Represents the total value of all goods and services produced within a country in a given year.',
+                'NY.GDP.MKTP.CN': 'GDP (Nominal, local currency) - Gross Domestic Product measured in local currency. Reflects local price levels and currency values.',
+                'NY.GDP.MKTP.KD': 'GDP (Real, constant US$) - Real Gross Domestic Product measured in constant 2015 US dollars. Removes inflation to measure actual economic growth.',
+                'NY.GDP.PCAP.CD': 'GDP per capita (Nominal, US$) - GDP divided by total population. Provides a measure of average economic output per person and standard of living.',
+                'NY.GDP.PCAP.KD': 'GDP per capita (Real, constant US$) - Real GDP divided by total population. Measures actual per-capita economic performance with inflation removed.',
+                'NY.GDP.PCAP.PP.CD': 'GDP per capita (PPP, US$) - GDP per capita based on purchasing power parity. Allows comparison of actual purchasing power across countries considering price level differences.',
+                'NY.GDP.MKTP.KD.ZG': 'GDP Growth Rate (annual %) - Annual percentage growth rate of real GDP. Key indicator of economic expansion or contraction.',
+                'NY.GDP.PCAP.KD.ZG': 'GDP per capita Growth Rate (%) - Annual growth rate of real GDP per capita. Measures improvement in individual-level economic welfare.',
+                
+                // 📊 GNP Indicators - Complete Set with English Explanations
+                'NY.GNP.MKTP.CD': 'GNP (Nominal, current US$) - Gross National Product measured in current US dollars. Represents total income of nationals including income from abroad.',
+                'NY.GNP.MKTP.KD': 'GNP (Real, constant US$) - Real Gross National Product. Measures actual changes in national income with inflation removed.',
+                'NY.GNP.PCAP.CD': 'GNP per capita (Nominal, US$) - GNP divided by total population. Shows average income level of nationals.',
+                'NY.GNP.PCAP.KD': 'GNP per capita (Real, constant US$) - Real GNP per capita. Measures changes in actual individual income levels.',
+                'NY.GNP.PCAP.PP.CD': 'GNP per capita (PPP, US$) - GNP per capita based on purchasing power parity. Enables income comparison considering actual purchasing power across countries.',
+                'NY.GNP.MKTP.PP.CD': 'GNP (PPP, US$) - Gross National Product based on purchasing power parity. Used for cross-country income comparisons considering actual purchasing power.',
+                
+                // 📊 Investment Indicators - Complete Set with English Explanations
+                'NE.GDI.TOTL.ZS': 'Gross Investment (% of GDP) - Gross capital formation as percentage of GDP. Represents investment level for expanding future productive capacity of the economy.',
+                'NE.GDI.TOTL.CD': 'Gross Investment (current US$) - Gross capital formation measured in current US dollars. Shows absolute scale of country investment.',
+                'NE.GDI.FTOT.ZS': 'Gross Fixed Investment (% of GDP) - Gross fixed capital formation as percentage of GDP. Measures investment in fixed assets like buildings and equipment.',
+                'NE.GDI.FPRV.ZS': 'Private Investment (% of GDP) - Gross fixed capital formation by private sector as percentage of GDP. Shows private sector investment activity.',
+                'NE.GDI.FGOV.ZS': 'Government Investment (% of GDP) - Gross fixed capital formation by government sector as percentage of GDP. Shows public infrastructure investment level.',
+                
+                // 📊 Savings Indicators - Complete Set with English Explanations
+                'NY.GNS.ICTR.ZS': 'Gross Savings (% of GDP) - Gross savings rate as percentage of GDP. Ratio of resources saved rather than consumed, available for future investment.',
+                'NY.GNS.ICTR.CD': 'Gross Savings (current US$) - Gross savings measured in current US dollars. Shows absolute savings capacity of the country.',
+                'NY.GNS.GNFS.ZS': 'National Savings (% of GNI) - Gross national savings rate as percentage of GNI. Measures overall savings propensity of the nation.',
+                
+                // 📊 Inflation Indicators - Complete Set with English Explanations
+                'FP.CPI.TOTL': 'Consumer Price Index (CPI, 2010=100) - Consumer Price Index with 2010 as base year. Measures price changes of goods and services purchased by consumers.',
+                'FP.CPI.TOTL.ZG': 'Inflation Rate (Consumer Prices, %) - Year-over-year price increase based on Consumer Price Index. Key indicator of general price level increases.',
+                'NY.GDP.DEFL.ZS': 'GDP Deflator (annual %) - Year-over-year change in GDP deflator. Broad price indicator measuring price level changes across the entire economy.',
+                'NY.GDP.DEFL.KD.ZG': 'GDP Deflator Change Rate (%) - Growth rate of GDP deflator. Measures economy-wide inflation through difference between nominal and real GDP.',
                 'NE.EXP.GNFS.CD': 'Value of all goods and services exported to the rest of the world. Includes merchandise exports and service exports.',
                 'NE.IMP.GNFS.CD': 'Value of all goods and services imported from the rest of the world. Includes merchandise imports and service imports.',
                 'NE.RSB.GNFS.CD': 'Exports minus imports of goods and services. Positive values indicate trade surplus, negative values indicate trade deficit.',
@@ -1853,6 +2393,209 @@
             };
             
             return explanations[indicatorCode] || `This indicator tracks ${WORLD_BANK_INDICATORS[indicatorCode]?.nameEng || WORLD_BANK_INDICATORS[indicatorCode]?.name || indicatorCode}. Data is sourced from the World Bank Open Data platform.`;
+        }
+        
+        // Show all countries chart with different colors
+        function showAllCountriesChart(indicatorCode, indicatorName) {
+            console.log(`🌍 Loading all countries chart for ${indicatorCode}`);
+            
+            const indicatorInfo = WORLD_BANK_INDICATORS[indicatorCode] || {name: indicatorCode, unit: 'N/A'};
+            
+            // Set modal title and content
+            document.getElementById('modalTitle').textContent = 
+                `🌍 All Countries - ${indicatorInfo.name}`;
+            
+            document.getElementById('modalExplanationText').textContent = 
+                getWBIndicatorExplanation(indicatorCode);
+                
+            document.getElementById('modalDataInfo').innerHTML = 
+                `<small><strong>Source:</strong> World Bank Open Data | <strong>Unit:</strong> ${indicatorInfo.unit} | <strong>Frequency:</strong> Annual</small>`;
+            
+            // Show modal
+            document.getElementById('chartModal').style.display = 'block';
+            
+            // Store current data for time range filtering
+            currentModalData = {countryCode: 'ALL', indicatorCode, countryInfo: {name: 'All Countries', flag: '🌍'}, indicatorInfo};
+            currentTimeRange = '10';
+            
+            // Reset time range buttons - set 10 years as default
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.time-btn[onclick="setTimeRange(\'10\')"]').classList.add('active');
+            
+            // Load multi-country chart
+            loadAllCountriesModalChart(indicatorCode);
+        }
+        
+        // Load multi-country chart with different colors for each country
+        async function loadAllCountriesModalChart(indicatorCode) {
+            const loadingDiv = document.getElementById('modalChartLoading');
+            const canvas = document.getElementById('modalChart');
+            
+            // Hide canvas and show loading
+            canvas.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            
+            try {
+                if (currentModalChart) {
+                    currentModalChart.destroy();
+                    currentModalChart = null;
+                }
+                
+                console.log(`🔄 Loading all countries chart for ${indicatorCode} (${currentTimeRange} years)`);
+                
+                // All OECD countries + major economies with different colors
+                const allCountries = [
+                    // All OECD Countries
+                    'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
+                    'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
+                    'LV', 'LT', 'CL', 'TR', 'CO', 'CR',
+                    // Major non-OECD economies
+                    'CN', 'IN', 'BR', 'RU'
+                ];
+                const countryColors = [
+                    '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
+                    '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94',
+                    '#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40', '#ff6384',
+                    '#c9cbcf', '#4bc0c0', '#36a2eb', '#ff6384', '#ff9f40', '#ffce56', '#4bc0c0', '#9966ff',
+                    '#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40', '#ff6384'
+                ];
+                const datasets = [];
+                
+                let dataCount = 0;
+                for (let i = 0; i < allCountries.length; i++) {
+                    const country = allCountries[i];
+                    try {
+                        const historicalData = await fetchWorldBankData(country, indicatorCode, true);
+                        
+                        if (historicalData && historicalData.length > 0) {
+                            // Filter data based on time range
+                            let filteredData = historicalData;
+                            if (currentTimeRange !== 'all') {
+                                const currentYear = new Date().getFullYear();
+                                const startYear = currentYear - parseInt(currentTimeRange);
+                                filteredData = historicalData.filter(item => parseInt(item.date) >= startYear);
+                            }
+                            
+                            if (filteredData.length > 0) {
+                                const labels = filteredData.map(item => item.date);
+                                const values = filteredData.map(item => item.value);
+                                const countryName = WORLD_BANK_COUNTRIES[country]?.name || country;
+                                const countryFlag = WORLD_BANK_COUNTRIES[country]?.flag || '🌐';
+                                
+                                datasets.push({
+                                    label: `${countryFlag} ${countryName}`,
+                                    data: values,
+                                    borderColor: countryColors[i % countryColors.length],
+                                    backgroundColor: countryColors[i % countryColors.length] + '20',
+                                    borderWidth: 2,
+                                    fill: false,
+                                    tension: 0.1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 6,
+                                    _labels: labels
+                                });
+                                dataCount++;
+                            }
+                        }
+                    } catch (error) {
+                        console.log(`No data for ${country}-${indicatorCode}`);
+                    }
+                }
+                
+                if (datasets.length > 0) {
+                    // Hide loading and show canvas
+                    loadingDiv.style.display = 'none';
+                    canvas.style.display = 'block';
+                    
+                    // Get unique labels from all datasets and sort them
+                    const allLabels = new Set();
+                    datasets.forEach(dataset => {
+                        if (dataset._labels) {
+                            dataset._labels.forEach(label => allLabels.add(label));
+                        }
+                    });
+                    
+                    // Sort labels chronologically 
+                    const labels = Array.from(allLabels).sort((a, b) => parseInt(a) - parseInt(b));
+                    
+                    // Create chart
+                    const ctx = canvas.getContext('2d');
+                    currentModalChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { 
+                                    display: true,
+                                    position: 'top',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 8,
+                                        font: { size: 10 },
+                                        boxWidth: 12
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0,0,0,0.8)',
+                                    titleColor: 'white',
+                                    bodyColor: 'white',
+                                    borderColor: '#1f77b4',
+                                    borderWidth: 1,
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 13 },
+                                    padding: 12,
+                                    cornerRadius: 8
+                                }
+                            },
+                            scales: {
+                                x: { 
+                                    title: {
+                                        display: true,
+                                        text: 'Year',
+                                        font: { size: 14, weight: 'bold' }
+                                    }
+                                },
+                                y: { 
+                                    title: {
+                                        display: true,
+                                        text: WORLD_BANK_INDICATORS[indicatorCode]?.unit || '',
+                                        font: { size: 14, weight: 'bold' }
+                                    },
+                                    ticks: {
+                                        callback: function(value) {
+                                            // Format large numbers
+                                            if (Math.abs(value) >= 1e12) {
+                                                return (value / 1e12).toFixed(1) + 'T';
+                                            } else if (Math.abs(value) >= 1e9) {
+                                                return (value / 1e9).toFixed(1) + 'B';
+                                            } else if (Math.abs(value) >= 1e6) {
+                                                return (value / 1e6).toFixed(1) + 'M';
+                                            } else if (Math.abs(value) >= 1e3) {
+                                                return (value / 1e3).toFixed(1) + 'K';
+                                            }
+                                            return value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    console.log(`✅ All countries chart loaded with ${datasets.length} countries`);
+                    
+                } else {
+                    loadingDiv.innerHTML = '❌ No historical data available for comparison';
+                }
+                
+            } catch (error) {
+                console.error(`❌ All countries chart error:`, error);
+                loadingDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
         }
         
         // Auto-load World Bank charts on page load
@@ -1955,9 +2698,65 @@
             document.body.removeChild(a);
         }
 
+        // Generate indicator HTML for all OECD countries
+        function generateOECDIndicators() {
+            const oecdCountries = [
+                'US', 'JP', 'DE', 'GB', 'FR', 'IT', 'CA', 'KR', 'ES', 'AU', 'MX', 'NL', 'CH', 'BE', 'IE', 'IL', 
+                'AT', 'NO', 'SE', 'PL', 'DK', 'FI', 'CZ', 'PT', 'NZ', 'GR', 'HU', 'SK', 'LU', 'IS', 'SI', 'EE', 
+                'LV', 'LT', 'CL', 'TR', 'CO', 'CR'
+            ];
+            
+            // Find all indicator groups and add OECD countries to them
+            const indicatorGroups = document.querySelectorAll('.wb-indicator-group .wb-indicators');
+            
+            indicatorGroups.forEach(group => {
+                const firstIndicator = group.querySelector('.wb-indicator');
+                if (!firstIndicator) return;
+                
+                // Extract indicator code from the first indicator
+                const onclick = firstIndicator.getAttribute('onclick');
+                const match = onclick.match(/showWBDetails\('([^']+)', '([^']+)', '([^']+)'/);
+                if (!match) return;
+                
+                const indicatorCode = match[2];
+                const indicatorName = match[3];
+                
+                // Get existing countries to avoid duplicates
+                const existingCountries = Array.from(group.querySelectorAll('.wb-indicator')).map(el => {
+                    const onclickAttr = el.getAttribute('onclick');
+                    const countryMatch = onclickAttr.match(/showWBDetails\('([^']+)'/);
+                    return countryMatch ? countryMatch[1] : null;
+                }).filter(Boolean);
+                
+                // Add missing OECD countries
+                oecdCountries.forEach(countryCode => {
+                    if (existingCountries.includes(countryCode)) return;
+                    
+                    const countryInfo = WORLD_BANK_COUNTRIES[countryCode];
+                    if (!countryInfo) return;
+                    
+                    const indicatorHtml = `
+                        <div class="indicator wb-indicator" onclick="showWBDetails('${countryCode}', '${indicatorCode}', '${indicatorName}')">
+                            <div class="cache-status cache-loading" id="wb-${countryCode}-${indicatorCode}-cache">Loading</div>
+                            <div>
+                                <div class="indicator-name">${countryInfo.flag} ${countryInfo.name}</div>
+                                <div class="indicator-date" id="wb-${countryCode}-${indicatorCode}-date">-</div>
+                            </div>
+                            <div class="indicator-value loading" id="wb-${countryCode}-${indicatorCode}">Loading...</div>
+                        </div>
+                    `;
+                    
+                    group.insertAdjacentHTML('beforeend', indicatorHtml);
+                });
+            });
+        }
+        
         // Page load initialization
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🌍 Global Economic Dashboard 2025 loading started');
+            
+            // Generate OECD indicators for all sections
+            generateOECDIndicators();
             
             updateClock();
             setInterval(updateClock, 1000); // Update clock every second
