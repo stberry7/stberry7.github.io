@@ -745,6 +745,23 @@
             }
         }
     </style>
+
+<style id="wb-mobile-wide">
+@media (max-width: 640px) {
+  #wb-modal { padding: 0 !important; }
+  #wb-modal .modal-content {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    margin: 1vh auto !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+  }
+  #wb-modal .modal-header { padding: 4px 6px !important; }
+  #wb-modal .modal-chart-container { padding: 0 !important; }
+  #wb-modal canvas { width: 100% !important; height: 100% !important; }
+}
+</style>
+
 </head>
 <body>
 <div class="container">
@@ -4126,6 +4143,7 @@ window.showWBDetails = function(country, indicator, titleText) {
   // View All Countries: every line colored for POOL (OECD + EXTRA)
   
 
+
 window.showAllCountriesChart = function(indicator, titleText) {
   if (!WBSTATE.ready) return;
   const modal = ensureModal();
@@ -4135,7 +4153,6 @@ window.showAllCountriesChart = function(indicator, titleText) {
   const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
   document.getElementById("wb-modal-title").textContent = `All Countries - ${titleText}`;
 
-  // Compact axis tick formatter (same as individual)
   const shortAxisLabel = (val, unitStr) => {
     if (val == null || !isFinite(val)) return "";
     const u = (unitStr||"").toLowerCase();
@@ -4152,6 +4169,51 @@ window.showAllCountriesChart = function(indicator, titleText) {
     if (u.includes("years")) return `${Number(val).toFixed(0)}`;
     return `${Number(val).toLocaleString()}`;
   };
+
+  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+
+  WBSTATE.chartRef = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "nearest", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          mode: "nearest",
+          intersect: false,
+          callbacks: {
+            title: (items) => items && items.length ? items[0].label : "",
+            label: (ctx) => {
+              const v = ctx.parsed.y;
+              const nm = ctx.dataset.label || "";
+              return v == null ? "" : `${nm}: ${fmtValue(v, unit)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: "Year" } },
+        y: {
+          title: { display: !isMobile, text: unit || "" },
+          ticks: {
+            callback: (v) => shortAxisLabel(v, unit),
+            maxTicksLimit: isMobile ? 4 : 6,
+            autoSkip: true,
+            padding: isMobile ? 2 : 4
+          },
+          grid: { drawBorder: false }
+        }
+      },
+      elements: { point: { radius: 1.8, hitRadius: 6 } },
+      layout: { padding: { left: isMobile ? 4 : 12, right: 4, top: 4, bottom: 6 } }
+    }
+  });
+  modal.style.display = "block";
+};
+
 
   const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
 
