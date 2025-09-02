@@ -4085,43 +4085,53 @@
   };
 
   // View All Countries: every line colored for POOL (OECD + EXTRA)
-  window.showAllCountriesChart = function(indicator, titleText) {
-    if (!WBSTATE.ready) return;
-    const modal = ensureModal();
-    const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
-    destroyChart();
+  
+window.showAllCountriesChart = function(indicator, titleText) {
+  if (!WBSTATE.ready) return;
+  const modal = ensureModal();
+  const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
+  destroyChart();
 
-    const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
-    document.getElementById("wb-modal-title").textContent = `${titleText} — OECD + CN/IN/BR/RU`;
+  const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
+  document.getElementById("wb-modal-title").textContent = `All Countries - ${titleText}`;
 
-    WBSTATE.chartRef = new Chart(ctx, {
-      type: "line",
-      data: { labels, datasets },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode: "index", intersect: false },
-        plugins: {
-          legend: { display: true, position: "bottom" },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => {
-                const v = ctx.parsed.y;
-                const unit = WBSTATE.units.get(indicator) || "";
-                const name = ctx.dataset.label || "";
-                return `${name}: ${fmtValue(v, unit)}`;
-              }
+  WBSTATE.chartRef = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "nearest", intersect: false },  // show tooltip for nearest point
+      plugins: {
+        legend: { display: false },  // hide country list
+        tooltip: {
+          mode: "nearest",
+          intersect: false,
+          callbacks: {
+            title: (items) => items && items.length ? items[0].label : "",
+            label: (ctx) => {
+              const v = ctx.parsed.y;
+              const nm = ctx.dataset.label || "";
+              const u  = unit || "";
+              const val = (v == null) ? "" : fmtValue(v, u);
+              return nm ? `${nm}: ${val}` : val;
             }
           }
-        },
-        scales: {
-          x: { title: { display: true, text: "Year" } },
-          y: { title: { display: true, text: unit || "" },
-               ticks: { callback: v => (v==null?'':Number(v).toLocaleString()) } }
         }
+      },
+      scales: {
+        x: { title: { display: true, text: "Year" } },
+        y: { title: { display: true, text: unit || "" },
+             ticks: { callback: v => (v==null?'':Number(v).toLocaleString()) } }
+      },
+      elements: {
+        point: { radius: 1.8, hitRadius: 6 }  // improve hover-ability
       }
-    });
-    modal.style.display = "block";
-  };
+    }
+  });
+  modal.style.display = "block";
+};
+
 
   window.addEventListener("DOMContentLoaded", async () => {
     const ct = document.getElementById("currentTime");
