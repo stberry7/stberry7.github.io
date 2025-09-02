@@ -3881,17 +3881,23 @@
 
 
 
+
+
 <script>
+// WB Loader (CN/IN/BR/RU included)
 (() => {
   const OECD = ["AU","AT","BE","CA","CL","CO","CR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IL","IT","JP","KR","LV","LT","LU","MX","NL","NZ","NO","PL","PT","SK","SI","ES","SE","CH","TR","GB","US"];
+  const EXTRA = ["CN","IN","BR","RU"]; // include China, India, Brazil, Russia
+  const POOL  = [...OECD, ...EXTRA];
+
   const BLUE = "#1f77b4";
   const GREY = "rgba(150,150,150,0.6)";
 
   const WBSTATE = {
     ready: false,
-    byKey: new Map(),
-    units: new Map(),
-    countriesByIndicator: new Map(),
+    byKey: new Map(),       // `${indicator}|${country}` -> [{year, value}]
+    units: new Map(),       // indicator -> unit
+    countriesByIndicator: new Map(), // indicator -> Set(country)
     chartRef: null
   };
 
@@ -3979,21 +3985,21 @@
     }
     return out;
   }
-  function datasetsForOECD(indicator, highlightCountry, coloredAll=false) {
+  function datasetsForPOOL(indicator, highlightCountry, coloredAll=false) {
     const avail = WBSTATE.countriesByIndicator.get(indicator) || new Set();
-    const oecdAvail = OECD.filter(c => avail.has(c));
+    const poolAvail = POOL.filter(c => avail.has(c)); // ONLY OECD + EXTRA
     const labelSet = new Set();
-    for (const c of oecdAvail) for (const p of getSeries(c, indicator).points) labelSet.add(p.year);
+    for (const c of poolAvail) for (const p of getSeries(c, indicator).points) labelSet.add(p.year);
     const labels = Array.from(labelSet).sort((a,b)=>a-b);
     const unit = WBSTATE.units.get(indicator) || "";
 
-    const colors = coloredAll ? colorWheel(oecdAvail.length) : null;
-    const datasets = oecdAvail.map((c, idx) => {
+    const colors = coloredAll ? colorWheel(poolAvail.length) : null;
+    const datasets = poolAvail.map((c, idx) => {
       const byY = new Map(getSeries(c, indicator).points.map(p=>[p.year, p.value]));
       const data = labels.map(y => byY.get(y) ?? null);
       const isHL = (c === highlightCountry);
-      const borderColor = coloredAll ? colors[idx] : (isHL ? "#1f77b4" : GREY);
-      const backgroundColor = coloredAll ? `hsla(${Math.round((360*idx)/oecdAvail.length)},70%,50%,0.15)` : (isHL ? "rgba(31,119,180,0.15)" : "rgba(150,150,150,0.15)");
+      const borderColor = coloredAll ? colors[idx] : (isHL ? BLUE : GREY);
+      const backgroundColor = coloredAll ? `hsla(${Math.round((360*idx)/poolAvail.length)},70%,50%,0.15)` : (isHL ? "rgba(31,119,180,0.15)" : "rgba(150,150,150,0.15)");
       return {
         label: c,
         data,
@@ -4006,6 +4012,7 @@
         spanGaps: true
       };
     });
+    // Push highlight to front/top
     if (highlightCountry) {
       const idx = datasets.findIndex(d => d.label === highlightCountry);
       if (idx >= 0) datasets.push(...datasets.splice(idx,1));
@@ -4037,14 +4044,15 @@
   }
   function destroyChart() { if (WBSTATE.chartRef) { WBSTATE.chartRef.destroy(); WBSTATE.chartRef = null; } }
 
+  // Individual country: others grey, tooltip values only for selected country, no legend labels
   window.showWBDetails = function(country, indicator, titleText) {
     if (!WBSTATE.ready) return;
     const modal = ensureModal();
     const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
     destroyChart();
 
-    const { labels, datasets, unit } = datasetsForOECD(indicator, country, false);
-    document.getElementById("wb-modal-title").textContent = `${titleText}`;
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, country, false);
+    document.getElementById("wb-modal-title").textContent = `${titleText}`; // hide country name
 
     WBSTATE.chartRef = new Chart(ctx, {
       type: "line",
@@ -4076,14 +4084,15 @@
     modal.style.display = "block";
   };
 
+  // View All Countries: every line colored for POOL (OECD + EXTRA)
   window.showAllCountriesChart = function(indicator, titleText) {
     if (!WBSTATE.ready) return;
     const modal = ensureModal();
     const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
     destroyChart();
 
-    const { labels, datasets, unit } = datasetsForOECD(indicator, null, true);
-    document.getElementById("wb-modal-title").textContent = `${titleText} — OECD Countries`;
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
+    document.getElementById("wb-modal-title").textContent = `${titleText} — OECD + CN/IN/BR/RU`;
 
     WBSTATE.chartRef = new Chart(ctx, {
       type: "line",
@@ -4129,5 +4138,6 @@
   });
 })();
 </script>
+
 </body>
 </html>
