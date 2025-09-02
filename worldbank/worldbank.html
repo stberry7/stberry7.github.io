@@ -3958,17 +3958,42 @@
     return { year: last?.year ?? null, value: last?.value ?? null, unit };
   }
 
+  
   function fillTiles() {
-    const allEls = Array.from(document.querySelectorAll("[id^='wb-']"));
-    const ids = Array.from(new Set(allEls.map(el => el.id)))
-      .filter(id => !id.endsWith("-date") && !id.endsWith("-cache"));
-    for (const id of ids) {
+    const cards = Array.from(document.querySelectorAll(".wb-indicator"));
+    for (const card of cards) {
+      const valEl = card.querySelector(".indicator-value[id^='wb-']");
+      if (!valEl || !valEl.id || !valEl.id.startsWith("wb-")) continue;
+
+      const id = valEl.id; // "wb-COUNTRY-INDICATOR"
       const rest = id.slice(3);
-      const dash = rest.indexOf("-"); if (dash < 0) continue;
+      const dash = rest.indexOf("-");
+      if (dash < 0) continue;
       const country = rest.slice(0, dash);
       const indicator = rest.slice(dash + 1);
-      const valEl = document.getElementById(id);
-      const dateEl = document.getElementById(`${id}-date`);
+
+      const latest = getLatest(country, indicator);
+
+      // Update value (and remove loading styles)
+      valEl.textContent = fmtValue(latest.value, latest.unit);
+      valEl.classList.remove("loading");
+
+      // Prefer specific -date element; fall back to the generic date element in the card
+      const dateById = document.getElementById(id + "-date");
+      const dateEl = dateById || card.querySelector(".indicator-date");
+      if (dateEl) dateEl.textContent = (latest.year ?? "-");
+
+      // Prefer specific -cache element; fall back to the generic cache-status in the card
+      const cacheById = document.getElementById(id + "-cache");
+      const cacheEl = cacheById || card.querySelector(".cache-status");
+      if (cacheEl) {
+        cacheEl.classList.remove("cache-loading");
+        cacheEl.classList.add("cache-fresh");
+        cacheEl.textContent = "Fresh";
+      }
+    }
+  }
+-date`);
       const cacheEl = document.getElementById(`${id}-cache`);
       const latest = getLatest(country, indicator);
       if (valEl) valEl.textContent = fmtValue(latest.value, latest.unit);
