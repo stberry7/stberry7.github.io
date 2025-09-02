@@ -2,6 +2,7 @@
 
 <html lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Global Economic Indicators Dashboard 2025 | World Bank Data | GDP, Trade, Investment | Free Economic Charts</title>
@@ -826,6 +827,28 @@
     padding:8px 14px;
     font-size:13px;
   }
+}
+</style>
+
+
+<style id="wb-mobile-fullwidth">
+@media (max-width: 640px){
+  html, body{width:100%;max-width:100%;margin:0;padding:0;overflow-x:hidden;}
+  /* Common layout wrappers */
+  .container,.container-fluid,.content,.page,.wrapper,.layout,.section,.main,.inner,.grid{
+    width:100vw !important; max-width:100vw !important;
+    margin-left:0 !important; margin-right:0 !important;
+    padding-left:8px !important; padding-right:8px !important;
+  }
+  /* Cards grid tighter on mobile */
+  .wb-indicators{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px !important;}
+  .wb-indicator{padding:10px !important; margin:0 !important;}
+  /* Headers and toolbars */
+  header,.topbar,.navbar,.wb-group-toolbar{padding-left:8px !important; padding-right:8px !important;}
+  /* Tables, images, canvases should not overflow */
+  table, img, canvas{max-width:100% !important; height:auto;}
+  /* Modal width already optimized; enforce just in case */
+  #wb-modal .modal-content{width:98vw !important; max-width:98vw !important; margin:1vh auto !important;}
 }
 </style>
 
