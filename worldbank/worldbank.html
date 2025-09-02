@@ -745,6 +745,90 @@
             }
         }
     </style>
+
+<style id="wb-collapse-style-v2">
+.wb-hidden{display:none!important;}
+.wb-toggle-btn{margin-left:8px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer}
+.wb-toggle-btn:hover{background:#eef1f4}
+@media (max-width:640px){.wb-toggle-btn{padding:8px 14px;font-size:13px}}
+</style>
+
+
+<style id="wb-beautify">
+/* Better visual spacing */
+.wb-indicators{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;align-items:stretch}
+.wb-indicator{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:transform .12s ease,box-shadow .12s ease}
+.wb-indicator:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.06)}
+.wb-group-toolbar{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
+.wb-toggle-btn,.view-all-btn{font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid #d0d7de;background:#f6f8fa;cursor:pointer}
+.wb-toggle-btn:hover,.view-all-btn:hover{background:#eef1f4}
+.wb-hidden{display:none!important;}
+@media (max-width:640px){
+  .wb-indicators{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .wb-indicator{padding:10px;border-radius:10px}
+  .wb-toggle-btn,.view-all-btn{font-size:13px;padding:8px 14px}
+  .wb-group-toolbar{margin:4px 0 6px}
+}
+</style>
+
+
+<style id="wb-contrast-align-fix">
+/* Align toolbar with title */
+.wb-indicator-group > h3{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+}
+/* Toolbar sits inline with heading text */
+.wb-indicator-group > h3 .wb-group-toolbar{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+/* Button contrast & consistent sizing */
+.wb-indicator-group > h3 .wb-toggle-btn,
+.wb-indicator-group > h3 .view-all-btn{
+  line-height:1.2;
+  padding:6px 12px;
+  border-radius:999px;
+}
+/* Explicit contrast for View All */
+.wb-indicator-group > h3 .view-all-btn{
+  background:#ffffff !important;
+  color:#111111 !important;
+  border:1px solid #d0d7de !important;
+  box-shadow:0 1px 0 rgba(0,0,0,0.02);
+}
+.wb-indicator-group > h3 .view-all-btn:hover{
+  background:#f6f8fa !important;
+}
+/* Toggle button also consistent */
+.wb-indicator-group > h3 .wb-toggle-btn{
+  background:#f6f8fa !important;
+  color:#111111 !important;
+  border:1px solid #d0d7de !important;
+}
+@media (max-width:640px){
+  .wb-indicator-group > h3{
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .wb-indicator-group > h3 .wb-group-toolbar{
+    gap:8px;
+    margin-left:6px;
+  }
+  .wb-indicator-group > h3 .wb-toggle-btn,
+  .wb-indicator-group > h3 .view-all-btn{
+    padding:8px 14px;
+    font-size:13px;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="container">
@@ -4213,6 +4297,101 @@ window.showAllCountriesChart = function(indicator, titleText) {
   });
 })();
 </script>
+
+
+
+<script id="wb-collapse-script-v2">
+(function(){
+  function setupCountryToggles(){
+    var groups = document.querySelectorAll('.wb-indicator-group');
+    groups.forEach(function(group){
+      var list = group.querySelector('.wb-indicators');
+      if(!list) return;
+
+      // Hide list initially
+      list.classList.add('wb-hidden');
+
+      // Find header and View All button
+      var h3 = group.querySelector('h3');
+      if(!h3) return;
+      var viewAll = h3.querySelector('.view-all-btn');
+
+      // Hide "View All" initially (shown only when countries are expanded)
+      if(viewAll){ viewAll.classList.add('wb-hidden'); }
+
+      // Avoid duplicates
+      if(h3.querySelector('button[data-role="toggle-countries"]')) return;
+
+      // Insert a toolbar container (keeps buttons aligned)
+      var bar = h3.querySelector('.wb-group-toolbar');
+      if(!bar){
+        bar = document.createElement('span');
+        bar.className = 'wb-group-toolbar';
+        h3.appendChild(bar);
+      }
+
+      // Toggle button
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'wb-toggle-btn';
+      btn.setAttribute('data-role','toggle-countries');
+      btn.setAttribute('aria-expanded','false');
+      btn.textContent = 'Show Countries';
+
+      btn.addEventListener('click', function(){
+        var hidden = list.classList.contains('wb-hidden');
+        if(hidden){
+          list.classList.remove('wb-hidden');
+          if(viewAll) viewAll.classList.remove('wb-hidden');
+          btn.textContent = 'Hide Countries';
+          btn.setAttribute('aria-expanded','true');
+        } else {
+          list.classList.add('wb-hidden');
+          if(viewAll) viewAll.classList.add('wb-hidden');
+          btn.textContent = 'Show Countries';
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+
+      // Place buttons: Toggle first, then View All (if exists)
+      bar.appendChild(btn);
+      if(viewAll){ bar.appendChild(viewAll); }
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setupCountryToggles);
+  } else {
+    setupCountryToggles();
+  }
+})();
+</script>
+
+
+
+
+<script id="wb-hide-worldbank-badges">
+(function(){
+  function removeWBBadgesStrict(){
+    document.querySelectorAll('.wb-indicator').forEach(function(card){
+      // remove ANY descendant element whose visible text contains 'world bank'
+      var nodes = card.querySelectorAll('*');
+      nodes.forEach(function(el){
+        var txt = (el.textContent || '').toLowerCase();
+        if (txt.includes('world bank')) {
+          el.remove();
+        }
+      });
+    });
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', removeWBBadgesStrict);
+  } else {
+    removeWBBadgesStrict();
+  }
+})();
+</script>
+
 
 </body>
 </html>
