@@ -92,6 +92,7 @@
     }
     </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -3877,5 +3878,291 @@
             loadAllWorldBankData();
         });
     </script>
+
+
+
+
+
+<script>
+// WB Loader (CN/IN/BR/RU included)
+(() => {
+  const OECD = ["AU","AT","BE","CA","CL","CO","CR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IL","IT","JP","KR","LV","LT","LU","MX","NL","NZ","NO","PL","PT","SK","SI","ES","SE","CH","TR","GB","US"];
+  const EXTRA = ["CN","IN","BR","RU"]; // include China, India, Brazil, Russia
+  const POOL  = [...OECD, ...EXTRA];
+
+  const BLUE = "#1f77b4";
+  const GREY = "rgba(150,150,150,0.6)";
+
+  const WBSTATE = {
+    ready: false,
+    byKey: new Map(),       // `${indicator}|${country}` -> [{year, value}]
+    units: new Map(),       // indicator -> unit
+    countriesByIndicator: new Map(), // indicator -> Set(country)
+    chartRef: null
+  };
+
+  function abbreviateUSD(x) {
+    if (x == null || !isFinite(x)) return "N/A";
+    const ax = Math.abs(x);
+    const sign = x < 0 ? "-" : "";
+    if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(2)} Trillion`;
+    if (ax >= 1e9)  return `${sign}${(ax/1e9 ).toFixed(2)} Billion`;
+    if (ax >= 1e6)  return `${sign}${(ax/1e6 ).toFixed(2)} Million`;
+    return sign + Number(ax).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+  function fmtValue(v, unit) {
+    if (v === null || v === undefined) return "N/A";
+    const U = (unit||"").toLowerCase();
+    if (U.includes("us$"))   return abbreviateUSD(v);
+    if (U.includes("%"))     return Number(v).toFixed(1) + "%";
+    if (U.includes("years")) return Number(v).toFixed(1);
+    if (U.includes("people"))return Number(v).toLocaleString();
+    return String(v);
+  }
+
+  async function loadWBWorkbook() {
+    const res = await fetch("./worldbank.xlsx", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load data file.");
+    const ab = await res.arrayBuffer();
+    const wb = XLSX.read(ab, { type: "array" });
+    const sheet = wb.Sheets["data"] || wb.Sheets[wb.SheetNames[0]];
+    if (!sheet) throw new Error("No 'data' sheet.");
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
+    for (const r of rows) {
+      const indicator = String(r.indicator || "").trim();
+      const country = String(r.country || "").trim();
+      const year = Number(r.year);
+      const value = (r.value === "" || r.value === null) ? null : Number(r.value);
+      const unit = r.unit == null ? "" : String(r.unit);
+
+      if (!indicator || !country || !Number.isFinite(year)) continue;
+      const key = `${indicator}|${country}`;
+      if (!WBSTATE.byKey.has(key)) WBSTATE.byKey.set(key, []);
+      WBSTATE.byKey.get(key).push({ year, value });
+
+      if (unit && !WBSTATE.units.has(indicator)) WBSTATE.units.set(indicator, unit);
+      if (!WBSTATE.countriesByIndicator.has(indicator)) WBSTATE.countriesByIndicator.set(indicator, new Set());
+      WBSTATE.countriesByIndicator.get(indicator).add(country);
+    }
+    for (const arr of WBSTATE.byKey.values()) arr.sort((a,b)=>a.year-b.year);
+    WBSTATE.ready = true;
+  }
+  function getSeries(country, indicator) {
+    const arr = WBSTATE.byKey.get(`${indicator}|${country}`) || [];
+    const unit = WBSTATE.units.get(indicator) || "";
+    return { unit, points: arr };
+  }
+  function getLatest(country, indicator) {
+    const { unit, points } = getSeries(country, indicator);
+    let last = null; for (const p of points) if (p.value != null) last = p;
+    return { year: last?.year ?? null, value: last?.value ?? null, unit };
+  }
+
+  
+  function fillTiles() {
+    const cards = Array.from(document.querySelectorAll(".wb-indicator"));
+    for (const card of cards) {
+      const valEl = card.querySelector(".indicator-value[id^='wb-']");
+      if (!valEl || !valEl.id || !valEl.id.startsWith("wb-")) continue;
+
+      const id = valEl.id; // "wb-COUNTRY-INDICATOR"
+      const rest = id.slice(3);
+      const dash = rest.indexOf("-");
+      if (dash < 0) continue;
+      const country = rest.slice(0, dash);
+      const indicator = rest.slice(dash + 1);
+
+      const latest = getLatest(country, indicator);
+
+      // Update value (and remove loading styles)
+      valEl.textContent = fmtValue(latest.value, latest.unit);
+      valEl.classList.remove("loading");
+
+      // Prefer specific -date element; fall back to the generic date element in the card
+      const dateById = document.getElementById(id + "-date");
+      const dateEl = dateById || card.querySelector(".indicator-date");
+      if (dateEl) dateEl.textContent = (latest.year ?? "-");
+
+      // Prefer specific -cache element; fall back to the generic cache-status in the card
+      const cacheById = document.getElementById(id + "-cache");
+      const cacheEl = cacheById || card.querySelector(".cache-status");
+      if (cacheEl) {
+        cacheEl.classList.remove("cache-loading");
+        cacheEl.classList.add("cache-fresh");
+        cacheEl.textContent = "Fresh";
+      }
+    }
+  }
+-date`);
+      const cacheEl = document.getElementById(`${id}-cache`);
+      const latest = getLatest(country, indicator);
+      if (valEl) valEl.textContent = fmtValue(latest.value, latest.unit);
+      if (dateEl) dateEl.textContent = latest.year ?? "-";
+      if (cacheEl) { cacheEl.classList.remove("cache-loading"); cacheEl.classList.add("cache-fresh"); cacheEl.textContent = "Fresh"; }
+    }
+  }
+
+  function colorWheel(n) {
+    const out = [];
+    for (let i=0;i<n;i++) {
+      const h = Math.round((360 * i) / n);
+      out.push(`hsl(${h},70%,50%)`);
+    }
+    return out;
+  }
+  function datasetsForPOOL(indicator, highlightCountry, coloredAll=false) {
+    const avail = WBSTATE.countriesByIndicator.get(indicator) || new Set();
+    const poolAvail = POOL.filter(c => avail.has(c)); // ONLY OECD + EXTRA
+    const labelSet = new Set();
+    for (const c of poolAvail) for (const p of getSeries(c, indicator).points) labelSet.add(p.year);
+    const labels = Array.from(labelSet).sort((a,b)=>a-b);
+    const unit = WBSTATE.units.get(indicator) || "";
+
+    const colors = coloredAll ? colorWheel(poolAvail.length) : null;
+    const datasets = poolAvail.map((c, idx) => {
+      const byY = new Map(getSeries(c, indicator).points.map(p=>[p.year, p.value]));
+      const data = labels.map(y => byY.get(y) ?? null);
+      const isHL = (c === highlightCountry);
+      const borderColor = coloredAll ? colors[idx] : (isHL ? BLUE : GREY);
+      const backgroundColor = coloredAll ? `hsla(${Math.round((360*idx)/poolAvail.length)},70%,50%,0.15)` : (isHL ? "rgba(31,119,180,0.15)" : "rgba(150,150,150,0.15)");
+      return {
+        label: c,
+        data,
+        borderColor,
+        backgroundColor,
+        borderWidth: isHL ? 3 : (coloredAll ? 2 : 1),
+        pointRadius: isHL ? 2 : 0,
+        pointHitRadius: 4,
+        fill: false,
+        spanGaps: true
+      };
+    });
+    // Push highlight to front/top
+    if (highlightCountry) {
+      const idx = datasets.findIndex(d => d.label === highlightCountry);
+      if (idx >= 0) datasets.push(...datasets.splice(idx,1));
+    }
+    return { labels, datasets, unit };
+  }
+
+  function ensureModal() {
+    let modal = document.getElementById("wb-modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "wb-modal";
+      modal.className = "modal";
+      modal.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="wb-modal-title" class="modal-title">Details</h3>
+            <button id="wb-modal-close" class="close-btn">&times;</button>
+          </div>
+          <div class="modal-chart-container">
+            <canvas id="wb-modal-canvas"></canvas>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      document.getElementById("wb-modal-close").addEventListener("click", ()=> modal.style.display="none");
+      modal.addEventListener("click", (e)=>{ if(e.target===modal) modal.style.display="none"; });
+    }
+    return modal;
+  }
+  function destroyChart() { if (WBSTATE.chartRef) { WBSTATE.chartRef.destroy(); WBSTATE.chartRef = null; } }
+
+  // Individual country: others grey, tooltip values only for selected country, no legend labels
+  window.showWBDetails = function(country, indicator, titleText) {
+    if (!WBSTATE.ready) return;
+    const modal = ensureModal();
+    const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
+    destroyChart();
+
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, country, false);
+    document.getElementById("wb-modal-title").textContent = `${titleText}`; // hide country name
+
+    WBSTATE.chartRef = new Chart(ctx, {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: "nearest", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'nearest',
+            intersect: false,
+            filter: (ctx) => ctx.dataset.label === country,
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                return v == null ? "" : `${fmtValue(v, unit)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: "Year" } },
+          y: { title: { display: true, text: unit || "" },
+               ticks: { callback: v => (v==null?'':Number(v).toLocaleString()) } }
+        }
+      }
+    });
+    modal.style.display = "block";
+  };
+
+  // View All Countries: every line colored for POOL (OECD + EXTRA)
+  window.showAllCountriesChart = function(indicator, titleText) {
+    if (!WBSTATE.ready) return;
+    const modal = ensureModal();
+    const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
+    destroyChart();
+
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
+    document.getElementById("wb-modal-title").textContent = `${titleText} — OECD + CN/IN/BR/RU`;
+
+    WBSTATE.chartRef = new Chart(ctx, {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true, position: "bottom" },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                const unit = WBSTATE.units.get(indicator) || "";
+                const name = ctx.dataset.label || "";
+                return `${name}: ${fmtValue(v, unit)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: "Year" } },
+          y: { title: { display: true, text: unit || "" },
+               ticks: { callback: v => (v==null?'':Number(v).toLocaleString()) } }
+        }
+      }
+    });
+    modal.style.display = "block";
+  };
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const ct = document.getElementById("currentTime");
+    if (ct) ct.textContent = new Date().toLocaleString();
+    try {
+      await loadWBWorkbook();
+      fillTiles();
+    } catch (err) {
+      console.error(err);
+      document.querySelectorAll(".cache-status").forEach(el => {
+        el.classList.remove("cache-loading"); el.classList.add("cache-fresh"); el.textContent = "Ready";
+      });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
