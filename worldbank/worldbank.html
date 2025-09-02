@@ -4125,6 +4125,7 @@ window.showWBDetails = function(country, indicator, titleText) {
 
   // View All Countries: every line colored for POOL (OECD + EXTRA)
   
+
 window.showAllCountriesChart = function(indicator, titleText) {
   if (!WBSTATE.ready) return;
   const modal = ensureModal();
@@ -4134,15 +4135,35 @@ window.showAllCountriesChart = function(indicator, titleText) {
   const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
   document.getElementById("wb-modal-title").textContent = `All Countries - ${titleText}`;
 
+  // Compact axis tick formatter (same as individual)
+  const shortAxisLabel = (val, unitStr) => {
+    if (val == null || !isFinite(val)) return "";
+    const u = (unitStr||"").toLowerCase();
+    const ax = Math.abs(val);
+    const sign = val < 0 ? "-" : "";
+    if (u.includes("us$") || u.includes("people")) {
+      if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(1)}T`;
+      if (ax >= 1e9 ) return `${sign}${(ax/1e9 ).toFixed(1)}B`;
+      if (ax >= 1e6 ) return `${sign}${(ax/1e6 ).toFixed(1)}M`;
+      if (ax >= 1e3 ) return `${sign}${(ax/1e3 ).toFixed(0)}K`;
+      return sign + Math.round(ax).toString();
+    }
+    if (u.includes("%"))     return `${Number(val).toFixed(0)}%`;
+    if (u.includes("years")) return `${Number(val).toFixed(0)}`;
+    return `${Number(val).toLocaleString()}`;
+  };
+
+  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+
   WBSTATE.chartRef = new Chart(ctx, {
     type: "line",
     data: { labels, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },  // show tooltip for nearest point
+      interaction: { mode: "nearest", intersect: false },
       plugins: {
-        legend: { display: false },  // hide country list
+        legend: { display: false },
         tooltip: {
           mode: "nearest",
           intersect: false,
@@ -4150,26 +4171,31 @@ window.showAllCountriesChart = function(indicator, titleText) {
             title: (items) => items && items.length ? items[0].label : "",
             label: (ctx) => {
               const v = ctx.parsed.y;
-              const nm = ctx.dataset.label || "";
-              const u  = unit || "";
-              const val = (v == null) ? "" : fmtValue(v, u);
-              return nm ? `${nm}: ${val}` : val;
+              const name = ctx.dataset.label || "";
+              return v == null ? "" : `${name}: ${fmtValue(v, unit)}`;
             }
           }
         }
       },
       scales: {
         x: { title: { display: true, text: "Year" } },
-        y: { title: { display: true, text: unit || "" },
-             ticks: { callback: v => (v==null?'':Number(v).toLocaleString()) } }
+        y: {
+          title: { display: !isMobile, text: unit || "" },
+          ticks: {
+            callback: (v) => shortAxisLabel(v, unit),
+            maxTicksLimit: isMobile ? 4 : 6,
+            autoSkip: true,
+            padding: isMobile ? 2 : 4
+          },
+          grid: { drawBorder: false }
+        }
       },
-      elements: {
-        point: { radius: 1.8, hitRadius: 6 }  // improve hover-ability
-      }
+      elements: { point: { radius: 1.8, hitRadius: 6 } }
     }
   });
   modal.style.display = "block";
 };
+
 
 
   window.addEventListener("DOMContentLoaded", async () => {
