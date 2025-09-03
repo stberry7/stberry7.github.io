@@ -191,11 +191,12 @@
 <script>
 // ====== CONFIG: Set your GitHub raw CSV URL here ======
 // Example: 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv'
-// const CSV_URL = 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv';
-// const CSV_URL = 'https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing.csv';
-const CSV_URL = 'https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing.csv';
+// // CSV_URL removed for clarity
+// // CSV_URL removed for clarity
+// CSV_URL removed for clarity
 // Fallback relative path if hosting both files together:
-const CSV_FALLBACK = 'housing/housing.csv';
+// const CSV_FALLBACK = 'housing/housing.csv';
+const CSV_FALLBACK = './housing.csv';
 
 // ====== Globals ======
 let allSeries = [];
@@ -498,7 +499,8 @@ if(searchEl){ searchEl.addEventListener('input', refreshUniverse); }
 
 // ====== CSV Loader ======
 async function loadCsvToSeries(){
-  const url = CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL;
+  // const url = CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL;
+  const url = CSV_FALLBACK + '?ts=' + Date.now(); // cache-busting
   return new Promise((resolve, reject) => {
     Papa.parse(url, {
       download: true,
