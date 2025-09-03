@@ -898,6 +898,13 @@
 }
 </style>
 
+
+<style id="wb-hide-fresh-mobile">
+@media (max-width: 640px){
+  .cache-status{ display:none !important; }
+}
+</style>
+
 </head>
 <body>
 <div class="container">
@@ -4332,15 +4339,24 @@
 
   // Individual country
   
+
 window.showWBDetails = function(country, indicator, titleText) {
-  if (!WBSTATE.ready) return;
+  try{
+    if (!WBSTATE || !WBSTATE.ready) return;
+  }catch(e){ return; }
   const modal = ensureModal();
   const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
   destroyChart();
 
-  const { labels, datasets, unit } = datasetsForPOOL(indicator, country, false);
+  const conf = datasetsForPOOL(indicator, country, false);
+  if (!conf) return;
+  const { labels, datasets, unit } = conf;
   const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
   document.getElementById("wb-modal-title").textContent = `${titleText}`;
+
+  // 차트 먼저 그리고, 표 높이에 맞춰 차트 높이를 재조정
+  const chartContainer = document.querySelector("#wb-modal .modal-chart-container");
+  if (chartContainer) chartContainer.style.height = ""; // reset
 
   WBSTATE.chartRef = new Chart(ctx, {
     type: "line",
@@ -4371,20 +4387,21 @@ window.showWBDetails = function(country, indicator, titleText) {
   });
   modal.style.display = "block";
 
-  // Multi-column grid so all values fit on one screen without vertical scroll
+  // 표: 한 화면에 모두 표시 (데스크탑 4열, 모바일 자동)
   const tableHost = document.getElementById("wb-modal-table");
   if (tableHost){
     const series = getSeries(country, indicator);
     const points = (series.points || []).slice();
 
-    const renderGrid = () => {
-      const vh = Math.max(window.innerHeight || 0, 600);
+    const renderGridFit = () => {
       const modalEl = document.getElementById("wb-modal");
       const header = modalEl.querySelector(".modal-header");
-      const chart = modalEl.querySelector(".modal-chart-container");
-      const overhead = (header?.offsetHeight || 0) + (chart?.offsetHeight || 0) + 40;
-      const avail = Math.max(120, vh - overhead);
+      const chartWrap = modalEl.querySelector(".modal-chart-container");
+      const vh = Math.max(window.innerHeight || 0, 600);
+      const headerH = (header?.offsetHeight || 0);
+      const gap = 40;
 
+      // 행 높이 추정
       const tmp = document.createElement("div");
       tmp.className = "wb-year-item";
       tmp.style.visibility = "hidden";
@@ -4394,23 +4411,42 @@ window.showWBDetails = function(country, indicator, titleText) {
       const rowH = Math.max(12, tmp.offsetHeight || 16);
       tableHost.removeChild(tmp);
 
-      const total = points.length;
-      const rowsPerCol = Math.max(1, Math.floor(avail / rowH));
-      let cols = Math.max(1, Math.ceil(total / rowsPerCol));
+      let cols;
+      const isMobileNow = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+      if (isMobileNow){
+        // 모바일: 세로/가로 크기에 따라 자동 열수
+        const minCol = 100;
+        const availForTable = Math.max(120, vh - headerH - (chartWrap?.offsetHeight || 0) - gap);
+        const rowsPerColMob = Math.max(1, Math.floor(availForTable / rowH));
+        cols = Math.max(1, Math.ceil(points.length / rowsPerColMob));
+        const maxColsByWidth = Math.max(1, Math.floor((window.innerWidth - 32) / minCol));
+        cols = Math.min(cols, maxColsByWidth);
+      } else {
+        // 데스크탑: 최대 4열 고정, 표 필요 높이에 맞춰 차트 높이 축소
+        const desiredCols = 4;
+        const minCol = 120;
+        const maxColsByWidth = Math.max(1, Math.floor((window.innerWidth - 48) / minCol));
+        cols = Math.min(desiredCols, maxColsByWidth);
+        cols = Math.max(1, cols);
+        const rowsPerCol = Math.max(1, Math.ceil(points.length / cols));
+        const tableNeeded = rowsPerCol * rowH + 16;
+        const chartNeededMin = 220; // 최소 차트 높이
+        const chartH = Math.max(chartNeededMin, vh - headerH - tableNeeded - gap);
+        if (chartWrap){
+          chartWrap.style.height = chartH + "px";
+          if (WBSTATE.chartRef) WBSTATE.chartRef.resize();
+        }
+      }
 
-      const minCol = (window.innerWidth <= 640 ? 100 : 120);
-      const maxColsByWidth = Math.max(1, Math.floor((window.innerWidth - 32) / minCol));
-      cols = Math.min(cols, maxColsByWidth);
-
-      const perCol = Math.max(1, Math.ceil(total / cols));
-
+      const perCol = Math.max(1, Math.ceil(points.length / cols));
+      const minColWidth = (window.innerWidth <= 640 ? 100 : 120);
       const grid = document.createElement("div");
       grid.className = "wb-year-grid";
-      grid.style.gridTemplateColumns = `repeat(${cols}, minmax(${minCol}px, 1fr))`;
+      grid.style.gridTemplateColumns = `repeat(${cols}, minmax(${minColWidth}px, 1fr))`;
 
       for (let c = 0; c < cols; c++){
         const start = c * perCol;
-        const end = Math.min(total, start + perCol);
+        const end = Math.min(points.length, start + perCol);
         const col = document.createElement("div");
         col.className = "wb-col";
         for (let i = start; i < end; i++){
@@ -4425,6 +4461,14 @@ window.showWBDetails = function(country, indicator, titleText) {
       tableHost.innerHTML = "";
       tableHost.appendChild(grid);
     };
+
+    renderGridFit();
+    if (window.__wbGridResize) window.removeEventListener("resize", window.__wbGridResize);
+    window.__wbGridResize = () => renderGridFit();
+    window.addEventListener("resize", window.__wbGridResize);
+  }
+};
+
 
     renderGrid();
     if (window.__wbGridResize) window.removeEventListener("resize", window.__wbGridResize);
