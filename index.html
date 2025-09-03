@@ -20,7 +20,7 @@
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="Economic Data Hub: explore U.S. Federal Reserve (FRED) indicators, World Bank global data, U.S. mortgage rates, and CD rates with clear explanations and quick links to live dashboards." />
+  <meta name="description" content="Economic Data Hub: explore U.S. Federal Reserve (FRED) indicators, World Bank global data, U.S. mortgage rates, CD rates, and Housing Price Index with clear explanations and quick links to live dashboards." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#ffffff" />
   <meta name="author" content="Economic Data Hub" />
@@ -28,15 +28,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <title>Economic Data Hub — FRED, World Bank, Mortgage &amp; CD Rates (Live Dashboards)</title>
+  <title>Economic Data Hub — FRED, World Bank, Mortgage, CD &amp; Housing Index</title>
 
   <!-- Open Graph / Twitter for better previews -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Economic Data Hub — FRED, World Bank, Mortgage &amp; CD Rates">
-  <meta property="og:description" content="Track key U.S. and global indicators with quick links to live dashboards.">
+  <meta property="og:title" content="Economic Data Hub — FRED, World Bank, Mortgage, CD &amp; Housing Index">
+  <meta property="og:description" content="Track key U.S. and global indicators with quick links to live dashboards, including a Housing Price Index tool." />
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Economic Data Hub — FRED, World Bank, Mortgage &amp; CD Rates">
-  <meta name="twitter:description" content="Track key U.S. and global indicators with quick links to live dashboards.">
+  <meta name="twitter:title" content="Economic Data Hub — FRED, World Bank, Mortgage, CD &amp; Housing Index">
+  <meta name="twitter:description" content="Track key U.S. and global indicators with quick links to live dashboards, including a Housing Price Index tool.">
 
   <!-- JSON-LD (SEO) -->
   <script type="application/ld+json">
@@ -44,12 +44,13 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Economic Data Hub",
-    "description": "Explore Federal Reserve (FRED) indicators, World Bank data, U.S. mortgage rates, and CD rates with links to live dashboards.",
+    "description": "Explore Federal Reserve (FRED), World Bank, Mortgage, CD rates, and Housing Price Index dashboards.",
     "about": [
       {"@type":"Thing","name":"Federal Reserve Economic Data"},
       {"@type":"Thing","name":"World Bank Data"},
       {"@type":"Thing","name":"Mortgage Rates"},
-      {"@type":"Thing","name":"Certificate of Deposit (CD) Rates"}
+      {"@type":"Thing","name":"Certificate of Deposit (CD) Rates"},
+      {"@type":"Thing","name":"Housing Price Index"}
     ]
   }
   </script>
@@ -154,7 +155,7 @@
   <div class="wrap">
     <header class="hero">
       <h1>Economic Data Hub</h1>
-      <p>Explore U.S. Federal Reserve (FRED) indicators, World Bank global datasets, U.S. mortgage rates, and bank CD rates — explained clearly, linked fast.</p>
+      <p>Explore U.S. Federal Reserve (FRED) indicators, World Bank global datasets, U.S. mortgage rates, CD rates, and the Housing Price Index — explained clearly, linked fast.</p>
     </header>
 
     <section class="grid" aria-label="Data dashboards">
@@ -225,13 +226,31 @@
         </div>
       </article>
 
+      <!-- Housing Price Index (NEW) -->
+      <article class="card" id="housing">
+        <h2>Housing Price Index</h2>
+        <p>
+          Explore regional housing price indexes with state filters, Top/Bottom rankings, and percentile views.
+          Single‑file dashboard optimized for GitHub Pages.
+        </p>
+        <ul>
+          <li>Large legend + search</li>
+          <li>Top/Bottom N &amp; percentiles</li>
+          <li>PNG &amp; CSV export</li>
+        </ul>
+        <div class="cta">
+          <a class="btn" href="housing.html" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a>
+        </div>
+      </article>
+
       <!-- Full-width explainer -->
       <aside class="explainer" id="how-to">
         <h3>How to use this hub</h3>
         <p><strong>Start broad, then drill down:</strong> Begin with FRED for the U.S. macro picture, then open World Bank for international comparisons.</p>
         <p><strong>Connect macro to personal finance:</strong> Mortgage and CD sections translate macro drivers into real‑world rates you can act on.</p>
+        <p><strong>Zoom into housing:</strong> Use the Housing Price Index tool to analyze metro/state trends and export series for your models.</p>
         <p><strong>Export anything:</strong> Each dashboard supports downloading the data/visuals—handy for weekly updates or presentations.</p>
-        <p class="sr-only">Keywords: FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy.</p>
+        <p class="sr-only">Keywords: FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy, housing price index.</p>
       </aside>
     </section>
 
@@ -240,7 +259,7 @@
     </footer>
 
     <noscript>
-      <p>This site uses JavaScript to render interactive dashboards (FRED, World Bank, mortgage and CD pages). If JavaScript is disabled, please enable it for the best experience.</p>
+      <p>This site uses JavaScript to render interactive dashboards (FRED, World Bank, Mortgage, CD, and Housing pages). If JavaScript is disabled, please enable it for the best experience.</p>
     </noscript>
   </div>
 
@@ -250,15 +269,15 @@
       var el = document.getElementById('bg');
       if (window.matchMedia && window.matchMedia('(max-width: 540px)').matches) {
         // skip loading to improve mobile performance
-        el.parentNode && el.parentNode.removeChild(el);
+        el && el.parentNode && el.parentNode.removeChild(el);
         return;
       }
       var imgs = [];
       for (var i = 1; i <= 13; i++) imgs.push('image/index/flower/F' + ('00'+i).slice(-3) + '.jpeg');
       for (var j = 1; j <= 8; j++) imgs.push('image/index/flower/J' + ('00'+j).slice(-3) + '.jpg');
-      var eng = ['image/index/engineering/image (1).png','image/index/engineering/image (2).png','image/index/engineering/image (3).png','image/index/engineering/image (4).png'];
+      var eng = ['image/index/engineering/image (1).png','image (2).png','image (3).png','image (4).png'].map(function(n){return 'image/index/engineering/'+n;});
       imgs = imgs.concat(eng);
-      el.src = imgs[Math.floor(Math.random()*imgs.length)];
+      if(el){ el.src = imgs[Math.floor(Math.random()*imgs.length)]; }
     })();
   </script>
 </body>
