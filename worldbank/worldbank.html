@@ -873,22 +873,16 @@
 </style>
 
 
-<style id="wb-mobile-year-table">
-@media (max-width: 640px){
-  .modal-data-container{max-height:35vh;overflow:auto;margin-top:6px;border-top:1px solid #eee;padding-top:6px;}
-  .wb-year-table{width:100%;border-collapse:collapse;font-size:12px;}
-  .wb-year-table th,.wb-year-table td{padding:4px 6px;border-bottom:1px solid #f0f0f0;text-align:right;white-space:nowrap;}
-  .wb-year-table th:first-child,.wb-year-table td:first-child{text-align:left;}
-}
-</style>
-
-
 <style id="wb-year-table-desktop">
-/* Desktop/default styles for the year/value table under the chart */
 .modal-data-container{max-height:40vh;overflow:auto;margin-top:8px;border-top:1px solid #eee;padding-top:8px;}
 .wb-year-table{width:100%;border-collapse:collapse;font-size:13px;}
 .wb-year-table th,.wb-year-table td{padding:6px 8px;border-bottom:1px solid #f0f0f0;text-align:right;white-space:nowrap;}
 .wb-year-table th:first-child,.wb-year-table td:first-child{text-align:left;}
+@media (max-width:640px){
+  .modal-data-container{max-height:35vh;}
+  .wb-year-table{font-size:12px;}
+  .wb-year-table th,.wb-year-table td{padding:4px 6px;}
+}
 </style>
 
 </head>
@@ -4029,575 +4023,66 @@
 
 
 
-<script>
-// WB Loader (CN/IN/BR/RU included)
-(() => {
-  const OECD = ["AU","AT","BE","CA","CL","CO","CR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IL","IT","JP","KR","LV","LT","LU","MX","NL","NZ","NO","PL","PT","SK","SI","ES","SE","CH","TR","GB","US"];
-  const EXTRA = ["CN","IN","BR","RU"]; // include China, India, Brazil, Russia
-  const POOL  = [...OECD, ...EXTRA];
-
-  const BLUE = "#1f77b4";
-  const GREY = "rgba(150,150,150,0.6)";
-
-  const WBSTATE = {
-    ready: false,
-    byKey: new Map(),       // `${indicator}|${country}` -> [{year, value}]
-    units: new Map(),       // indicator -> unit
-    countriesByIndicator: new Map(), // indicator -> Set(country)
-    chartRef: null
-  };
-
-  function abbreviateUSD(x) {
-    if (x == null || !isFinite(x)) return "N/A";
-    const ax = Math.abs(x);
-    const sign = x < 0 ? "-" : "";
-    if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(2)} Trillion`;
-    if (ax >= 1e9)  return `${sign}${(ax/1e9 ).toFixed(2)} Billion`;
-    if (ax >= 1e6)  return `${sign}${(ax/1e6 ).toFixed(2)} Million`;
-    return sign + Number(ax).toLocaleString(undefined, { maximumFractionDigits: 0 });
-  }
-  function fmtValue(v, unit) {
-    if (v === null || v === undefined) return "N/A";
-    const U = (unit||"").toLowerCase();
-    if (U.includes("us$"))   return abbreviateUSD(v);
-    if (U.includes("%"))     return Number(v).toFixed(1) + "%";
-    if (U.includes("years")) return Number(v).toFixed(1);
-    if (U.includes("people"))return Number(v).toLocaleString();
-    return String(v);
-  }
-
-  async function loadWBWorkbook() {
-    const res = await fetch("./worldbank.xlsx", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load data file.");
-    const ab = await res.arrayBuffer();
-    const wb = XLSX.read(ab, { type: "array" });
-    const sheet = wb.Sheets["data"] || wb.Sheets[wb.SheetNames[0]];
-    if (!sheet) throw new Error("No 'data' sheet.");
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
-    for (const r of rows) {
-      const indicator = String(r.indicator || "").trim();
-      const country = String(r.country || "").trim();
-      const year = Number(r.year);
-      const value = (r.value === "" || r.value === null) ? null : Number(r.value);
-      const unit = r.unit == null ? "" : String(r.unit);
-
-      if (!indicator || !country || !Number.isFinite(year)) continue;
-      const key = `${indicator}|${country}`;
-      if (!WBSTATE.byKey.has(key)) WBSTATE.byKey.set(key, []);
-      WBSTATE.byKey.get(key).push({ year, value });
-
-      if (unit && !WBSTATE.units.has(indicator)) WBSTATE.units.set(indicator, unit);
-      if (!WBSTATE.countriesByIndicator.has(indicator)) WBSTATE.countriesByIndicator.set(indicator, new Set());
-      WBSTATE.countriesByIndicator.get(indicator).add(country);
-    }
-    for (const arr of WBSTATE.byKey.values()) arr.sort((a,b)=>a.year-b.year);
-    WBSTATE.ready = true;
-  }
-  function getSeries(country, indicator) {
-    const arr = WBSTATE.byKey.get(`${indicator}|${country}`) || [];
-    const unit = WBSTATE.units.get(indicator) || "";
-    return { unit, points: arr };
-  }
-  function getLatest(country, indicator) {
-    const { unit, points } = getSeries(country, indicator);
-    let last = null; for (const p of points) if (p.value != null) last = p;
-    return { year: last?.year ?? null, value: last?.value ?? null, unit };
-  }
-
-  function fillTiles() {
-    const allEls = Array.from(document.querySelectorAll("[id^='wb-']"));
-    const ids = Array.from(new Set(allEls.map(el => el.id)))
-      .filter(id => !id.endsWith("-date") && !id.endsWith("-cache"));
-    for (const id of ids) {
-      const rest = id.slice(3);
-      const dash = rest.indexOf("-"); if (dash < 0) continue;
-      const country = rest.slice(0, dash);
-      const indicator = rest.slice(dash + 1);
-      const valEl = document.getElementById(id);
-      const dateEl = document.getElementById(`${id}-date`);
-      const cacheEl = document.getElementById(`${id}-cache`);
-      const latest = getLatest(country, indicator);
-      if (valEl) valEl.textContent = fmtValue(latest.value, latest.unit);
-      if (dateEl) dateEl.textContent = latest.year ?? "-";
-      if (cacheEl) { cacheEl.classList.remove("cache-loading"); cacheEl.classList.add("cache-fresh"); cacheEl.textContent = "Fresh"; }
-    }
-  }
-
-  function colorWheel(n) {
-    const out = [];
-    for (let i=0;i<n;i++) {
-      const h = Math.round((360 * i) / n);
-      out.push(`hsl(${h},70%,50%)`);
-    }
-    return out;
-  }
-  function datasetsForPOOL(indicator, highlightCountry, coloredAll=false) {
-    const avail = WBSTATE.countriesByIndicator.get(indicator) || new Set();
-    const poolAvail = POOL.filter(c => avail.has(c)); // ONLY OECD + EXTRA
-    const labelSet = new Set();
-    for (const c of poolAvail) for (const p of getSeries(c, indicator).points) labelSet.add(p.year);
-    const labels = Array.from(labelSet).sort((a,b)=>a-b);
-    const unit = WBSTATE.units.get(indicator) || "";
-
-    const colors = coloredAll ? colorWheel(poolAvail.length) : null;
-    const datasets = poolAvail.map((c, idx) => {
-      const byY = new Map(getSeries(c, indicator).points.map(p=>[p.year, p.value]));
-      const data = labels.map(y => byY.get(y) ?? null);
-      const isHL = (c === highlightCountry);
-      const borderColor = coloredAll ? colors[idx] : (isHL ? BLUE : GREY);
-      const backgroundColor = coloredAll ? `hsla(${Math.round((360*idx)/poolAvail.length)},70%,50%,0.15)` : (isHL ? "rgba(31,119,180,0.15)" : "rgba(150,150,150,0.15)");
-      return {
-        label: c,
-        data,
-        borderColor,
-        backgroundColor,
-        borderWidth: isHL ? 3 : (coloredAll ? 2 : 1),
-        pointRadius: isHL ? 2 : 0,
-        pointHitRadius: 4,
-        fill: false,
-        spanGaps: true
-      };
-    });
-    // Push highlight to front/top
-    if (highlightCountry) {
-      const idx = datasets.findIndex(d => d.label === highlightCountry);
-      if (idx >= 0) datasets.push(...datasets.splice(idx,1));
-    }
-    return { labels, datasets, unit };
-  }
-
-  
-function ensureModal() {
-  let modal = document.getElementById("wb-modal");
-  if (!modal) {
-    modal = document.createElement("div");
-    modal.id = "wb-modal";
-    modal.className = "modal";
-    modal.innerHTML = `
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="wb-modal-title" class="modal-title">Details</h3>
-          <button id="wb-modal-close" class="close-btn">&times;</button>
-        </div>
-        <div class="modal-chart-container">
-          <canvas id="wb-modal-canvas"></canvas>
-        </div>
-        <div class="modal-data-container">
-          <div id="wb-modal-table"></div>
-        </div>
-      </div>`;
-    document.body.appendChild(modal);
-    document.getElementById("wb-modal-close").addEventListener("click", ()=> modal.style.display="none");
-    modal.addEventListener("click", (e)=>{ if(e.target===modal) modal.style.display="none"; });
-  } else {
-    // If modal exists, ensure the table container exists
-    if (!document.getElementById("wb-modal-table")) {
-      const wrap = modal.querySelector(".modal-content");
-      const dataDiv = document.createElement("div");
-      dataDiv.className = "modal-data-container";
-      dataDiv.innerHTML = `<div id="wb-modal-table"></div>`;
-      wrap.appendChild(dataDiv);
-    }
-  }
-  return modal;
-}
-);
-    }
-    return modal;
-  }
-  function destroyChart() { if (WBSTATE.chartRef) { WBSTATE.chartRef.destroy(); WBSTATE.chartRef = null; } }
-
-  // Individual country: others grey, tooltip values only for selected country, no legend labels
-  
 
 
-window.showWBDetails = function(country, indicator, titleText) {
-  if (!WBSTATE.ready) return;
-  const modal = ensureModal();
-  const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
-  destroyChart();
-
-  const { labels, datasets, unit } = datasetsForPOOL(indicator, country, false);
-  document.getElementById("wb-modal-title").textContent = `${titleText}`;
-
-  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
-
-  const shortAxisLabel = (val, unitStr) => {
-    if (val == null || !isFinite(val)) return "";
-    const u = (unitStr||"").toLowerCase();
-    const ax = Math.abs(val);
-    const sign = val < 0 ? "-" : "";
-    if (u.includes("us$") || u.includes("people")) {
-      if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(1)}T`;
-      if (ax >= 1e9 ) return `${sign}${(ax/1e9 ).toFixed(1)}B`;
-      if (ax >= 1e6 ) return `${sign}${(ax/1e6 ).toFixed(1)}M`;
-      if (ax >= 1e3 ) return `${sign}${(ax/1e3 ).toFixed(0)}K`;
-      return sign + Math.round(ax).toString();
-    }
-    if (u.includes("%"))     return `${Number(val).toFixed(0)}%`;
-    if (u.includes("years")) return `${Number(val).toFixed(0)}`;
-    return `${Number(val).toLocaleString()}`;
-  };
-
-  WBSTATE.chartRef = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: 'nearest',
-          intersect: false,
-          filter: (ctx) => ctx.dataset.label === country,
-          callbacks: {
-            label: (ctx) => {
-              const v = ctx.parsed.y;
-              return v == null ? "" : `${fmtValue(v, unit)}`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: "Year" } },
-        y: {
-          title: { display: !isMobile, text: unit || "" },
-          ticks: {
-            callback: (v) => shortAxisLabel(v, unit),
-            maxTicksLimit: isMobile ? 4 : 6,
-            autoSkip: true,
-            padding: isMobile ? 2 : 4
-          },
-          grid: { drawBorder: false }
-        }
-      },
-      elements: { point: { radius: 2, hitRadius: 6 } },
-      layout: { padding: { left: isMobile ? 4 : 12, right: 6, top: 4, bottom: 6 } }
-    }
-  });
-  modal.style.display = "block";
-
-  // ---- Build year/value table for all devices ----
-  const tableHost = document.getElementById("wb-modal-table");
-  if (tableHost) {
-    const series = getSeries(country, indicator);
-    const rows = (series.points || []).map(p => `<tr><td>${p.year}</td><td style="text-align:right">${fmtValue(p.value, series.unit)}</td></tr>`).join("");
-    tableHost.innerHTML = `<table class="wb-year-table"><thead><tr><th>Year</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }
-};
-
-
-  WBSTATE.chartRef = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: 'nearest',
-          intersect: false,
-          filter: (ctx) => ctx.dataset.label === country,
-          callbacks: {
-            label: (ctx) => {
-              const v = ctx.parsed.y;
-              return v == null ? "" : `${fmtValue(v, unit)}`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: "Year" } },
-        y: {
-          title: { display: !isMobile, text: unit || "" },
-          ticks: {
-            callback: (v) => shortAxisLabel(v, unit),
-            maxTicksLimit: isMobile ? 4 : 6,
-            autoSkip: true,
-            padding: isMobile ? 2 : 4
-          },
-          grid: { drawBorder: false }
-        }
-      },
-      elements: { point: { radius: 2, hitRadius: 6 } },
-      layout: { padding: { left: isMobile ? 4 : 12, right: 6, top: 4, bottom: 6 } }
-    }
-  });
-  modal.style.display = "block";
-
-  // ---- Build mobile year/value table ----
-  const tableHost = document.getElementById("wb-modal-table");
-  if (tableHost) {
-    if (isMobile) {
-      const series = getSeries(country, indicator);
-      const rows = (series.points || []).map(p => `<tr><td>${p.year}</td><td style="text-align:right">${fmtValue(p.value, series.unit)}</td></tr>`).join("");
-      tableHost.innerHTML = `<table class="wb-year-table"><thead><tr><th>Year</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`;
-    } else {
-      tableHost.innerHTML = "";
-    }
-  }
-};
-
-
-  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
-
-  WBSTATE.chartRef = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
-      plugins: {
-        legend: { display: false }, // hide country names
-        tooltip: {
-          mode: 'nearest',
-          intersect: false,
-          filter: (ctx) => ctx.dataset.label === country, // only target country shows numbers
-          callbacks: {
-            label: (ctx) => {
-              const v = ctx.parsed.y;
-              return v == null ? "" : `${fmtValue(v, unit)}`; // keep full value in tooltip
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: "Year" } },
-        y: {
-          title: { display: !isMobile, text: unit || "" },
-          ticks: {
-            callback: (v) => shortAxisLabel(v, unit),
-            maxTicksLimit: isMobile ? 4 : 6,
-            autoSkip: true,
-            padding: isMobile ? 2 : 4
-          },
-          grid: {
-            drawBorder: false
-          }
-        }
-      },
-      elements: {
-        point: { radius: 2, hitRadius: 6 }
-      },
-      layout: {
-        padding: { left: isMobile ? 4 : 12, right: 6, top: 4, bottom: 6 }
-      }
-    }
-  });
-  modal.style.display = "block";
-};
-
-
-  // View All Countries: every line colored for POOL (OECD + EXTRA)
-  
-
-
-window.showAllCountriesChart = function(indicator, titleText) {
-  if (!WBSTATE.ready) return;
-  const modal = ensureModal();
-  const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
-  destroyChart();
-
-  const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
-  document.getElementById("wb-modal-title").textContent = `All Countries - ${titleText}`;
-
-  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
-
-  const shortAxisLabel = (val, unitStr) => {
-    if (val == null || !isFinite(val)) return "";
-    const u = (unitStr||"").toLowerCase();
-    const ax = Math.abs(val);
-    const sign = val < 0 ? "-" : "";
-    if (u.includes("us$") || u.includes("people")) {
-      if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(1)}T`;
-      if (ax >= 1e9 ) return `${sign}${(ax/1e9 ).toFixed(1)}B`;
-      if (ax >= 1e6 ) return `${sign}${(ax/1e6 ).toFixed(1)}M`;
-      if (ax >= 1e3 ) return `${sign}${(ax/1e3 ).toFixed(0)}K`;
-      return sign + Math.round(ax).toString();
-    }
-    if (u.includes("%"))     return `${Number(val).toFixed(0)}%`;
-    if (u.includes("years")) return `${Number(val).toFixed(0)}`;
-    return `${Number(val).toLocaleString()}`;
-  };
-
-  WBSTATE.chartRef = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: "nearest",
-          intersect: false,
-          callbacks: {
-            title: (items) => items && items.length ? items[0].label : "",
-            label: (ctx) => {
-              const v = ctx.parsed.y;
-              const name = ctx.dataset.label || "";
-              return v == null ? "" : `${name}: ${fmtValue(v, unit)}`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: "Year" } },
-        y: {
-          title: { display: !isMobile, text: unit || "" },
-          ticks: {
-            callback: (v) => shortAxisLabel(v, unit),
-            maxTicksLimit: isMobile ? 4 : 6,
-            autoSkip: true,
-            padding: isMobile ? 2 : 4
-          },
-          grid: { drawBorder: false }
-        }
-      },
-      elements: { point: { radius: 1.8, hitRadius: 6 } },
-      layout: { padding: { left: isMobile ? 4 : 12, right: 4, top: 4, bottom: 6 } }
-    }
-  });
-  modal.style.display = "block";
-
-  // Clear mobile table for 'View All'
-  const tableHost = document.getElementById("wb-modal-table");
-  if (tableHost) tableHost.innerHTML = "";
-};
-
-
-  const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
-
-  WBSTATE.chartRef = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: "nearest",
-          intersect: false,
-          callbacks: {
-            title: (items) => items && items.length ? items[0].label : "",
-            label: (ctx) => {
-              const v = ctx.parsed.y;
-              const name = ctx.dataset.label || "";
-              return v == null ? "" : `${name}: ${fmtValue(v, unit)}`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: "Year" } },
-        y: {
-          title: { display: !isMobile, text: unit || "" },
-          ticks: {
-            callback: (v) => shortAxisLabel(v, unit),
-            maxTicksLimit: isMobile ? 4 : 6,
-            autoSkip: true,
-            padding: isMobile ? 2 : 4
-          },
-          grid: { drawBorder: false }
-        }
-      },
-      elements: { point: { radius: 1.8, hitRadius: 6 } }
-    }
-  });
-  modal.style.display = "block";
-};
-
-
-
-  window.addEventListener("DOMContentLoaded", async () => {
-    const ct = document.getElementById("currentTime");
-    if (ct) ct.textContent = new Date().toLocaleString();
-    try {
-      await loadWBWorkbook();
-      fillTiles();
-    } catch (err) {
-      console.error(err);
-      document.querySelectorAll(".cache-status").forEach(el => {
-        el.classList.remove("cache-loading"); el.classList.add("cache-fresh"); el.textContent = "Ready";
-      });
-    }
-  });
-})();
-</script>
 
 
 
 <script id="wb-collapse-script-v2">
-(function(){
+(()=>{
   function setupCountryToggles(){
-    var groups = document.querySelectorAll('.wb-indicator-group');
-    groups.forEach(function(group){
-      var list = group.querySelector('.wb-indicators');
-      if(!list) return;
-
-      // Hide list initially
+    const groups = document.querySelectorAll('.wb-indicator-group');
+    groups.forEach(group => {
+      const list = group.querySelector('.wb-indicators');
+      if (!list) return;
+      // Hide countries initially
       list.classList.add('wb-hidden');
-
       // Find header and View All button
-      var h3 = group.querySelector('h3');
-      if(!h3) return;
-      var viewAll = h3.querySelector('.view-all-btn');
-
-      // Hide "View All" initially (shown only when countries are expanded)
-      if(viewAll){ viewAll.classList.add('wb-hidden'); }
-
+      const h3 = group.querySelector('h3');
+      if (!h3) return;
+      const viewAll = h3.querySelector('.view-all-btn');
+      if (viewAll) viewAll.classList.add('wb-hidden'); // hide until expanded
       // Avoid duplicates
-      if(h3.querySelector('button[data-role="toggle-countries"]')) return;
-
-      // Insert a toolbar container (keeps buttons aligned)
-      var bar = h3.querySelector('.wb-group-toolbar');
-      if(!bar){
+      if (h3.querySelector('button[data-role="toggle-countries"]')) return;
+      // Toolbar container inline with title
+      let bar = h3.querySelector('.wb-group-toolbar');
+      if (!bar){
         bar = document.createElement('span');
         bar.className = 'wb-group-toolbar';
         h3.appendChild(bar);
       }
-
       // Toggle button
-      var btn = document.createElement('button');
+      const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'wb-toggle-btn';
-      btn.setAttribute('data-role','toggle-countries');
+      btn.dataset.role = 'toggle-countries';
       btn.setAttribute('aria-expanded','false');
       btn.textContent = 'Show Countries';
-
-      btn.addEventListener('click', function(){
-        var hidden = list.classList.contains('wb-hidden');
-        if(hidden){
+      btn.addEventListener('click', () => {
+        const hidden = list.classList.contains('wb-hidden');
+        if (hidden){
           list.classList.remove('wb-hidden');
-          if(viewAll) viewAll.classList.remove('wb-hidden');
+          if (viewAll) viewAll.classList.remove('wb-hidden');
           btn.textContent = 'Hide Countries';
           btn.setAttribute('aria-expanded','true');
         } else {
           list.classList.add('wb-hidden');
-          if(viewAll) viewAll.classList.add('wb-hidden');
+          if (viewAll) viewAll.classList.add('wb-hidden');
           btn.textContent = 'Show Countries';
           btn.setAttribute('aria-expanded','false');
         }
       });
-
-      // Place buttons: Toggle first, then View All (if exists)
-      bar.appendChild(btn);
-      if(viewAll){ bar.appendChild(viewAll); }
+      bar.prepend(btn); // toggle first, then existing View All
     });
   }
-
-  if(document.readyState === 'loading'){
+  if (document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', setupCountryToggles);
   } else {
     setupCountryToggles();
   }
 })();
 </script>
+
 
 
 
@@ -4627,8 +4112,8 @@ window.showAllCountriesChart = function(indicator, titleText) {
 
 
 <script id="wb-mobile-stickify">
-(function(){
-  function applyStickify(){
+(()=>{
+  function stick(){
     if (!(window.matchMedia && window.matchMedia("(max-width: 640px)").matches)) return;
     document.body.classList.add("wb-mobile-fullwidth");
     const sel = ".container,.container-fluid,.content,.page,.wrapper,.layout,.section,.main,.inner,.grid";
@@ -4641,9 +4126,307 @@ window.showAllCountriesChart = function(indicator, titleText) {
       if (!el.style.paddingRight) el.style.paddingRight = "8px";
     });
   }
-  window.addEventListener("DOMContentLoaded", applyStickify);
-  window.addEventListener("load", applyStickify);
-  window.addEventListener("resize", applyStickify);
+  window.addEventListener("DOMContentLoaded", stick);
+  window.addEventListener("load", stick);
+  window.addEventListener("resize", stick);
+})();
+</script>
+
+
+<script>
+// WB Loader (Excel in same folder) — OECD + CN/IN/BR/RU; compact axes; tables for individual
+(() => {
+  const OECD = ["AU","AT","BE","CA","CL","CO","CR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IL","IT","JP","KR","LV","LT","LU","MX","NL","NZ","NO","PL","PT","SK","SI","ES","SE","CH","TR","GB","US"];
+  const EXTRA = ["CN","IN","BR","RU"];
+  const POOL  = [...OECD, ...EXTRA];
+  const BLUE = "#1f77b4";
+  const GREY = "rgba(150,150,150,0.6)";
+
+  const WBSTATE = {
+    ready:false,
+    byKey:new Map(),
+    units:new Map(),
+    countriesByIndicator:new Map(),
+    chartRef:null
+  };
+
+  function abbreviateUSD(x){
+    if (x == null || !isFinite(x)) return "N/A";
+    const ax = Math.abs(x), sign = x<0?"-":"";
+    if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(2)} Trillion`;
+    if (ax >= 1e9 ) return `${sign}${(ax/1e9 ).toFixed(2)} Billion`;
+    if (ax >= 1e6 ) return `${sign}${(ax/1e6 ).toFixed(2)} Million`;
+    return sign + Number(ax).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+  function fmtValue(v, unit){
+    if (v == null) return "N/A";
+    const U = (unit||"").toLowerCase();
+    if (U.includes("us$"))   return abbreviateUSD(v);
+    if (U.includes("%"))     return Number(v).toFixed(1) + "%";
+    if (U.includes("years")) return Number(v).toFixed(1);
+    if (U.includes("people"))return Number(v).toLocaleString();
+    return String(v);
+  }
+
+  async function loadWBWorkbook(){
+    const res = await fetch("./worldbank.xlsx", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load data file");
+    const ab = await res.arrayBuffer();
+    const wb = XLSX.read(ab, { type: "array" });
+    const sheet = wb.Sheets["data"] || wb.Sheets[wb.SheetNames[0]];
+    if (!sheet) throw new Error("No data sheet");
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
+    for (const r of rows){
+      const indicator = String(r.indicator || "").trim();
+      const country = String(r.country || "").trim();
+      const year = Number(r.year);
+      const value = (r.value === "" || r.value === null) ? null : Number(r.value);
+      const unit = r.unit == null ? "" : String(r.unit);
+      if (!indicator || !country || !Number.isFinite(year)) continue;
+      const key = `${indicator}|${country}`;
+      if (!WBSTATE.byKey.has(key)) WBSTATE.byKey.set(key, []);
+      WBSTATE.byKey.get(key).push({ year, value });
+      if (unit && !WBSTATE.units.has(indicator)) WBSTATE.units.set(indicator, unit);
+      if (!WBSTATE.countriesByIndicator.has(indicator)) WBSTATE.countriesByIndicator.set(indicator, new Set());
+      WBSTATE.countriesByIndicator.get(indicator).add(country);
+    }
+    for (const arr of WBSTATE.byKey.values()) arr.sort((a,b)=>a.year-b.year);
+    WBSTATE.ready = true;
+  }
+
+  function getSeries(country, indicator){
+    const arr = WBSTATE.byKey.get(`${indicator}|${country}`) || [];
+    const unit = WBSTATE.units.get(indicator) || "";
+    return { unit, points: arr };
+  }
+  function getLatest(country, indicator){
+    const { unit, points } = getSeries(country, indicator);
+    let last = null; for (const p of points) if (p.value != null) last = p;
+    return { year: last?.year ?? "-", value: last?.value ?? null, unit };
+  }
+
+  function fillTiles(){
+    const cards = Array.from(document.querySelectorAll(".wb-indicator"));
+    for (const card of cards){
+      const valEl = card.querySelector(".indicator-value[id^='wb-']");
+      if (!valEl || !valEl.id.startsWith("wb-")) continue;
+      const rest = valEl.id.slice(3);
+      const dash = rest.indexOf("-"); if (dash < 0) continue;
+      const country = rest.slice(0, dash);
+      const indicator = rest.slice(dash + 1);
+
+      const latest = getLatest(country, indicator);
+      valEl.textContent = fmtValue(latest.value, latest.unit);
+      valEl.classList.remove("loading");
+
+      const dateById = document.getElementById(valEl.id + "-date");
+      const dateEl = dateById || card.querySelector(".indicator-date");
+      if (dateEl) dateEl.textContent = latest.year;
+
+      const cacheById = document.getElementById(valEl.id + "-cache");
+      const cacheEl = cacheById || card.querySelector(".cache-status");
+      if (cacheEl){
+        cacheEl.classList.remove("cache-loading");
+        cacheEl.classList.add("cache-fresh");
+        cacheEl.textContent = "Fresh";
+      }
+    }
+  }
+
+  function colorWheel(n){
+    const out=[];
+    for(let i=0;i<n;i++){ const h=Math.round((360*i)/n); out.push(`hsl(${h},70%,50%)`); }
+    return out;
+  }
+  function datasetsForPOOL(indicator, highlightCountry, coloredAll=false){
+    const avail = WBSTATE.countriesByIndicator.get(indicator) || new Set();
+    const poolAvail = [...new Set([...POOL].filter(c => avail.has(c)))];
+    const labelSet = new Set();
+    for (const c of poolAvail) for (const p of getSeries(c, indicator).points) labelSet.add(p.year);
+    const labels = Array.from(labelSet).sort((a,b)=>a-b);
+    const unit = WBSTATE.units.get(indicator) || "";
+    const colors = coloredAll ? colorWheel(poolAvail.length) : null;
+
+    const datasets = poolAvail.map((c, idx) => {
+      const byY = new Map(getSeries(c, indicator).points.map(p=>[p.year, p.value]));
+      const data = labels.map(y => byY.get(y) ?? null);
+      const isHL = (c === highlightCountry);
+      const borderColor = coloredAll ? colors[idx] : (isHL ? "#1f77b4" : "rgba(150,150,150,0.6)");
+      const backgroundColor = coloredAll ? `hsla(${Math.round((360*idx)/poolAvail.length)},70%,50%,0.15)` : (isHL ? "rgba(31,119,180,0.15)" : "rgba(150,150,150,0.15)");
+      return {
+        label: c, data, borderColor, backgroundColor,
+        borderWidth: isHL ? 3 : (coloredAll ? 2 : 1),
+        pointRadius: isHL ? 2 : 0, pointHitRadius: 6,
+        fill: false, spanGaps: true
+      };
+    });
+    if (highlightCountry){
+      const i = datasets.findIndex(d => d.label === highlightCountry);
+      if (i >= 0) datasets.push(...datasets.splice(i,1));
+    }
+    return { labels, datasets, unit };
+  }
+
+  function ensureModal(){
+    let modal = document.getElementById("wb-modal");
+    if (!modal){
+      modal = document.createElement("div");
+      modal.id = "wb-modal";
+      modal.className = "modal";
+      modal.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="wb-modal-title" class="modal-title">Details</h3>
+            <button id="wb-modal-close" class="close-btn">&times;</button>
+          </div>
+          <div class="modal-chart-container">
+            <canvas id="wb-modal-canvas"></canvas>
+          </div>
+          <div class="modal-data-container">
+            <div id="wb-modal-table"></div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      document.getElementById("wb-modal-close").addEventListener("click", ()=> modal.style.display="none");
+      modal.addEventListener("click", (e)=>{ if(e.target===modal) modal.style.display="none"; });
+    } else {
+      if (!document.getElementById("wb-modal-table")){
+        const wrap = modal.querySelector(".modal-content");
+        const dataDiv = document.createElement("div");
+        dataDiv.className = "modal-data-container";
+        dataDiv.innerHTML = `<div id="wb-modal-table"></div>`;
+        wrap.appendChild(dataDiv);
+      }
+    }
+    return modal;
+  }
+  function destroyChart(){ if (WBSTATE.chartRef){ WBSTATE.chartRef.destroy(); WBSTATE.chartRef = null; } }
+
+  function shortAxisLabel(val, unitStr){
+    if (val == null || !isFinite(val)) return "";
+    const u=(unitStr||"").toLowerCase(), ax=Math.abs(val), sign=val<0?"-":"";
+    if (u.includes("us$") || u.includes("people")){
+      if (ax >= 1e12) return `${sign}${(ax/1e12).toFixed(1)}T`;
+      if (ax >= 1e9 ) return `${sign}${(ax/1e9 ).toFixed(1)}B`;
+      if (ax >= 1e6 ) return `${sign}${(ax/1e6 ).toFixed(1)}M`;
+      if (ax >= 1e3 ) return `${sign}${(ax/1e3 ).toFixed(0)}K`;
+      return sign + Math.round(ax).toString();
+    }
+    if (u.includes("%"))     return `${Number(val).toFixed(0)}%`;
+    if (u.includes("years")) return `${Number(val).toFixed(0)}`;
+    return `${Number(val).toLocaleString()}`;
+  }
+
+  // Individual country
+  window.showWBDetails = function(country, indicator, titleText){
+    if (!WBSTATE.ready) return;
+    const modal = ensureModal();
+    const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
+    destroyChart();
+
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, country, false);
+    const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+    document.getElementById("wb-modal-title").textContent = `${titleText}`;
+
+    WBSTATE.chartRef = new Chart(ctx, {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:"nearest", intersect:false },
+        plugins:{
+          legend:{ display:false },
+          tooltip:{
+            mode:"nearest", intersect:false,
+            filter:(ctx)=> ctx.dataset.label === country,
+            callbacks:{ label:(ctx)=>{
+              const v = ctx.parsed.y;
+              return v==null ? "" : `${fmtValue(v, unit)}`;
+            }}
+          }
+        },
+        scales:{
+          x:{ title:{ display:true, text:"Year" } },
+          y:{ title:{ display:!isMobile, text: unit || "" },
+              ticks:{ callback:(v)=>shortAxisLabel(v, unit), maxTicksLimit: isMobile?4:6, autoSkip:true, padding: isMobile?2:4 },
+              grid:{ drawBorder:false } }
+        },
+        elements:{ point:{ radius:2, hitRadius:6 } },
+        layout:{ padding:{ left: isMobile?4:12, right:6, top:4, bottom:6 } }
+      }
+    });
+    modal.style.display = "block";
+
+    // Year/Value table below chart (all devices)
+    const tableHost = document.getElementById("wb-modal-table");
+    if (tableHost){
+      const series = getSeries(country, indicator);
+      const rows = (series.points || []).map(p => `<tr><td>${p.year}</td><td style="text-align:right">${fmtValue(p.value, series.unit)}</td></tr>`).join("");
+      tableHost.innerHTML = `<table class="wb-year-table"><thead><tr><th>Year</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+  };
+
+  // View All — every line colored, legend hidden, nearest tooltip
+  window.showAllCountriesChart = function(indicator, titleText){
+    if (!WBSTATE.ready) return;
+    const modal = ensureModal();
+    const ctx = document.getElementById("wb-modal-canvas").getContext("2d");
+    destroyChart();
+
+    const { labels, datasets, unit } = datasetsForPOOL(indicator, null, true);
+    const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+    document.getElementById("wb-modal-title").textContent = `All Countries - ${titleText}`;
+
+    WBSTATE.chartRef = new Chart(ctx, {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:"nearest", intersect:false },
+        plugins:{
+          legend:{ display:false },
+          tooltip:{
+            mode:"nearest", intersect:false,
+            callbacks:{
+              title:(items)=> items && items.length ? items[0].label : "",
+              label:(ctx)=>{
+                const v = ctx.parsed.y;
+                const name = ctx.dataset.label || "";
+                return v==null ? "" : `${name}: ${fmtValue(v, unit)}`;
+              }
+            }
+          }
+        },
+        scales:{
+          x:{ title:{ display:true, text:"Year" } },
+          y:{ title:{ display:!isMobile, text: unit || "" },
+              ticks:{ callback:(v)=>shortAxisLabel(v, unit), maxTicksLimit: isMobile?4:6, autoSkip:true, padding: isMobile?2:4 },
+              grid:{ drawBorder:false } }
+        },
+        elements:{ point:{ radius:1.8, hitRadius:6 } },
+        layout:{ padding:{ left: isMobile?4:12, right:4, top:4, bottom:6 } }
+      }
+    });
+    modal.style.display = "block";
+
+    // Clear table for View All
+    const tableHost = document.getElementById("wb-modal-table");
+    if (tableHost) tableHost.innerHTML = "";
+  };
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const ct = document.getElementById("currentTime");
+    if (ct) ct.textContent = new Date().toLocaleString();
+    try{
+      await loadWBWorkbook();
+      fillTiles();
+    }catch(e){
+      console.error(e);
+      document.querySelectorAll(".cache-status").forEach(el => {
+        el.classList.remove("cache-loading"); el.classList.add("cache-fresh"); el.textContent = "Ready";
+      });
+    }
+  });
 })();
 </script>
 
