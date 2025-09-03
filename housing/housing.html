@@ -191,9 +191,10 @@
 <script>
 // ====== CONFIG: Set your GitHub raw CSV URL here ======
 // Example: 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv'
-const CSV_URL = 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv';
+// const CSV_URL = 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv';
+const CSV_URL = 'https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing.csv';
 // Fallback relative path if hosting both files together:
-const CSV_FALLBACK = './housing.csv';
+const CSV_FALLBACK = 'housing/housing.csv';
 
 // ====== Globals ======
 let allSeries = [];
@@ -496,8 +497,7 @@ if(searchEl){ searchEl.addEventListener('input', refreshUniverse); }
 
 // ====== CSV Loader ======
 async function loadCsvToSeries(){
-  const base = CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL;
-  const url = base + (base.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+  const url = CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL;
   return new Promise((resolve, reject) => {
     Papa.parse(url, {
       download: true,
@@ -515,7 +515,7 @@ async function loadCsvToSeries(){
     console.error('CSV load failed:', err);
     const note = document.createElement('div');
     note.className = 'note';
-    note.textContent = 'CSV 로드 실패: 경로를 확인하세요. (현재 시도한 경로: ' + (CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL) + ')';
+    note.textContent = 'CSV load failed. Please check CSV_URL or host housing/housing.csv alongside this file.';
     document.querySelector('.hero')?.appendChild(note);
   });
 }
