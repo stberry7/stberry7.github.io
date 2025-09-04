@@ -13,9 +13,9 @@
     --muted: #9fb3d1;
     --accent: #94b9ff;
     --border: #1e2a44;
-    --header-h: 72px;           /* will be updated by JS */
-    --vhpx: 100vh;              /* fallback; JS sets to window.innerHeight px */
-    --bottom-gap: 8px;          /* small gap to avoid desktop taskbar overlap */
+    --header-h: 72px;           /* updated in JS */
+    --vhpx: 100vh;              /* updated in JS to innerHeight */
+    --bottom-gap: 8px;          /* avoid desktop taskbar overlap */
   }
   * { box-sizing: border-box; }
   html, body { height:100%; }
@@ -27,20 +27,28 @@
     overflow: hidden; /* keep page itself from scrolling */
   }
   header {
-    padding: 14px 20px calc(14px + env(safe-area-inset-top));
+    padding: 12px 16px calc(12px + env(safe-area-inset-top));
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, rgba(148,185,255,0.08), transparent);
   }
+  header .hrow { display:flex; align-items:center; justify-content:space-between; gap: 12px; }
   header h1 { margin: 0; font-size: 20px; line-height: 1.2; }
-  /* removed header <p> text per request */
+  #mobileMenuBtn {
+    display: none;
+    border: 1px solid var(--border);
+    background: #12203a;
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  #mobileMenuBtn:hover { background: #16274a; }
 
   .wrap {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 16px;
     padding: 16px;
-    /* Use innerHeight-based value first, then modern 100dvh as a safety,
-       then legacy 100vh as last fallback. Subtract header height, safe bottom inset, and tiny gap. */
     height: calc((var(--vhpx) - var(--header-h)) - env(safe-area-inset-bottom) - var(--bottom-gap));
     overflow: hidden;
   }
@@ -49,16 +57,13 @@
       height: calc(100dvh - var(--header-h) - env(safe-area-inset-bottom) - var(--bottom-gap));
     }
   }
-  @media (max-width: 1000px) {
-    .wrap { grid-template-columns: 1fr; }
-  }
 
   .panel {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 14px;
-    min-height: 0; /* allow children to shrink in CSS grid */
+    min-height: 0;
     display: flex;
     flex-direction: column;
   }
@@ -102,12 +107,49 @@
     min-height: 360px;
     overflow: hidden;
   }
+  canvas { width: 100% !important; height: 100% !important; }
+  .table-wrap { display: none !important; } /* hide numbers under chart */
+
+  /* ===== Mobile behaviors ===== */
+  @media (max-width: 1000px) {
+    .wrap { grid-template-columns: 1fr; }
+    /* Hide sidebar by default on mobile to maximize chart area */
+    .sidebar { display: none; }
+    /* Show the header toggle button on mobile */
+    #mobileMenuBtn { display: inline-flex; }
+    /* Hide large-UI buttons on mobile to save space */
+    #openFileBtn, #dlPng, #dlCsv { display: none !important; }
+  }
+  /* Sidebar becomes an overlay "drawer" when opened on mobile */
+  @media (max-width: 1000px) {
+    .sidebar.open {
+      display: grid;
+      position: fixed;
+      top: calc(var(--header-h));
+      left: 0;
+      right: 0;
+      bottom: env(safe-area-inset-bottom);
+      z-index: 30;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 14px;
+      overflow: auto;
+    }
+    #backdrop.open {
+      display: block;
+      position: fixed;
+      top: var(--header-h);
+      left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 25;
+    }
+    #backdrop { display: none; }
+  }
+
   @media (max-width: 640px) {
     header h1 { font-size: 18px; }
     .chart-card { min-height: 300px; }
   }
-  canvas { width: 100% !important; height: 100% !important; }
-  .table-wrap { display: none !important; } /* hide numbers under chart */
 </style>
 
 <!-- Chart.js + Luxon time adapter (CDN) -->
@@ -119,11 +161,17 @@
 </head>
 <body>
 <header>
-  <h1>Housing Price Index Dashboard</h1>
+  <div class="hrow">
+    <h1>Housing Price Index Dashboard</h1>
+    <button id="mobileMenuBtn" aria-label="Toggle menu">Menu</button>
+  </div>
 </header>
 
+<!-- mobile backdrop for drawer -->
+<div id="backdrop" aria-hidden="true"></div>
+
 <div class="wrap">
-  <aside class="panel sidebar">
+  <aside class="panel sidebar" aria-label="Controls sidebar">
     <h2>Controls</h2>
     <div class="controls">
       <div class="row">
@@ -205,6 +253,29 @@
   window.addEventListener("resize", setViewportVars, { passive: true });
   window.addEventListener("orientationchange", setViewportVars, { passive: true });
   document.addEventListener("DOMContentLoaded", setViewportVars);
+
+  // ---------- Mobile menu toggle ----------
+  const sidebar = document.querySelector(".sidebar");
+  const backdrop = document.getElementById("backdrop");
+  const mobileBtn = document.getElementById("mobileMenuBtn");
+  function openMenu(){
+    sidebar.classList.add("open");
+    backdrop.classList.add("open");
+    mobileBtn.setAttribute("aria-expanded", "true");
+  }
+  function closeMenu(){
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("open");
+    mobileBtn.setAttribute("aria-expanded", "false");
+  }
+  function toggleMenu(){
+    if (sidebar.classList.contains("open")) closeMenu(); else openMenu();
+  }
+  mobileBtn.addEventListener("click", toggleMenu);
+  backdrop.addEventListener("click", closeMenu);
+  window.addEventListener("resize", ()=>{
+    if (window.innerWidth > 1000) closeMenu();
+  }, { passive: true });
 
   // ---------- Config: CSV locations ----------
   const CSV_CANDIDATES = [
