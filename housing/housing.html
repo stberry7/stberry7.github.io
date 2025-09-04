@@ -154,7 +154,7 @@
   }
   @media (max-width: 640px) {
     header h1 { font-size: 18px; }
-    .chart-card { min-height: 300px; }
+    .chart-card { min-height: 340px; }
   }
 
   /* Mobile drawer for sidebar */
@@ -398,8 +398,26 @@
       borderWidth: 2,
       pointRadius: 0,
       tension: 0.18
-    }));
-  }
+    ,
+      spanGaps: true,
+      clip: 0}));
+  
+
+function globalDateRange(series, names){
+  const sel = new Set(names);
+  let min = null, max = null;
+  series.forEach(s => {
+    if(!sel.has(s.name)) return;
+    const d = s.dates || [];
+    if(!d.length) return;
+    const first = d[0];
+    const last  = d[d.length - 1];
+    if(min === null || first < min) min = first;
+    if(max === null || last  > max) max = last;
+  });
+  return { min, max };
+}
+}
 
   function renderLegend(datasets){
     const cont = $("#legend");
@@ -426,21 +444,39 @@
     });
   }
 
-  function drawChart(){
-    const ctx = $("#chart").getContext("2d");
-    const series = filteredByState(getSeriesRaw());
-    const ds = buildDatasets(series, selectedNames());
-    const cfg = {
-      type: "line",
-      data: { datasets: ds },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: { mode: "nearest", intersect: false },
-        plugins: {
-          legend: { display: false }, /* hide default legend */
-          tooltip: { callbacks: { label: (ctx)=> `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
-        },
+  
+function drawChart(){
+  const ctx = $("#chart").getContext("2d");
+  const series = filteredByState(getSeriesRaw());
+  const names = selectedNames();
+  const ds = buildDatasets(series, names);
+  const {min, max} = globalDateRange(series, names);
+  const cfg = {
+    type: "line",
+    data: { datasets: ds },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      normalized: true,
+      interaction: { mode: "nearest", intersect: false },
+      animation: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx)=> `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+      },
+      scales: {
+        x: { type: "time", time: { unit: "month" }, min: min || undefined, max: max || undefined,
+             ticks: { color: "#9fb3d1" }, grid: { color: "rgba(255,255,255,0.06)" } },
+        y: { ticks: { color: "#9fb3d1", callback: (v)=>fmt(v) }, grid: { color: "rgba(255,255,255,0.06)" } }
+      }
+    }
+  };
+  if (chart){ chart.destroy(); }
+  chart = new Chart(ctx, cfg);
+  renderLegend(ds);
+  updateTable(series);
+}
+,
         scales: {
           x: { type: "time", time: { unit: "month" }, ticks: { color: "#9fb3d1" }, grid: { color: "rgba(255,255,255,0.06)" } },
           y: { ticks: { color: "#9fb3d1", callback: (v)=>fmt(v) }, grid: { color: "rgba(255,255,255,0.06)" } }
@@ -452,15 +488,21 @@
     renderLegend(ds);
     updateTable(series);
   }
-  function updateChart(){
-    if(!chart){ drawChart(); return; }
-    const series = filteredByState(getSeriesRaw());
-    const ds = buildDatasets(series, selectedNames());
-    chart.data.datasets = ds;
-    chart.update();
-    renderLegend(ds);
-    updateTable(series);
-  }
+  
+function updateChart(){
+  if(!chart){ drawChart(); return; }
+  const series = filteredByState(getSeriesRaw());
+  const names = selectedNames();
+  const ds = buildDatasets(series, names);
+  const {min, max} = globalDateRange(series, names);
+  chart.data.datasets = ds;
+  chart.options.scales.x.min = min || undefined;
+  chart.options.scales.x.max = max || undefined;
+  chart.update();
+  renderLegend(ds);
+  updateTable(series);
+}
+
   function updateTable(series){
     const tbody = $("#latestTbl tbody");
     if(!tbody) return;
