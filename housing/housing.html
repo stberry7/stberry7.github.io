@@ -13,6 +13,9 @@
     --muted: #9fb3d1;
     --accent: #94b9ff;
     --border: #1e2a44;
+    --header-h: 72px;           /* will be updated by JS */
+    --vhpx: 100vh;              /* fallback; JS sets to window.innerHeight px */
+    --bottom-gap: 8px;          /* small gap to avoid desktop taskbar overlap */
   }
   * { box-sizing: border-box; }
   html, body { height:100%; }
@@ -21,30 +24,43 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
     background: var(--bg);
     color: var(--text);
-    overflow: hidden; /* prevent page scroll */
+    overflow: hidden; /* keep page itself from scrolling */
   }
   header {
-    padding: 16px 20px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-top));
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, rgba(148,185,255,0.08), transparent);
   }
-  header h1 { margin: 0 0 6px; font-size: 20px; line-height: 1.2; }
-  header p { margin: 0; color: var(--muted); font-size: 14px; }
+  header h1 { margin: 0; font-size: 20px; line-height: 1.2; }
+  /* removed header <p> text per request */
+
   .wrap {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 16px;
     padding: 16px;
-    height: calc(100vh - 72px);
+    /* Use innerHeight-based value first, then modern 100dvh as a safety,
+       then legacy 100vh as last fallback. Subtract header height, safe bottom inset, and tiny gap. */
+    height: calc((var(--vhpx) - var(--header-h)) - env(safe-area-inset-bottom) - var(--bottom-gap));
     overflow: hidden;
   }
-  @media (max-width: 1000px) { .wrap { grid-template-columns: 1fr; } }
+  @supports(height: 100dvh){
+    .wrap {
+      height: calc(100dvh - var(--header-h) - env(safe-area-inset-bottom) - var(--bottom-gap));
+    }
+  }
+  @media (max-width: 1000px) {
+    .wrap { grid-template-columns: 1fr; }
+  }
+
   .panel {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 14px;
-    min-height: 0;
+    min-height: 0; /* allow children to shrink in CSS grid */
+    display: flex;
+    flex-direction: column;
   }
   .panel h2 { margin: 0 0 12px; font-size: 16px; color: var(--accent); }
   .controls { display: grid; gap: 12px; }
@@ -74,8 +90,22 @@
     padding: 8px 12px; border-radius: 10px; cursor: pointer;
   }
   button:hover { background: #16274a; }
-  .sidebar { display: grid; grid-template-rows: auto auto 1fr; gap: 12px; min-height: 0; }
-  .chart-card { height: 100%; min-height: 360px; }
+  .sidebar {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 12px;
+    min-height: 0;
+  }
+  .chart-card {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 360px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    header h1 { font-size: 18px; }
+    .chart-card { min-height: 300px; }
+  }
   canvas { width: 100% !important; height: 100% !important; }
   .table-wrap { display: none !important; } /* hide numbers under chart */
 </style>
@@ -90,7 +120,6 @@
 <body>
 <header>
   <h1>Housing Price Index Dashboard</h1>
-  <p>Auto-loads <code>housing.csv</code> from the same folder (fallback: GitHub raw). Use search, state filter, and ranking; legend shows city names.</p>
 </header>
 
 <div class="wrap">
@@ -165,9 +194,19 @@
 
 <script>
 (function(){
+  // ---------- Dynamic viewport fix (desktop taskbar + mobile URL bars) ----------
+  function setViewportVars(){
+    const h = window.innerHeight || document.documentElement.clientHeight || 720;
+    document.documentElement.style.setProperty("--vhpx", h + "px");
+    const header = document.querySelector("header");
+    const hh = header ? Math.round(header.getBoundingClientRect().height) : 72;
+    document.documentElement.style.setProperty("--header-h", hh + "px");
+  }
+  window.addEventListener("resize", setViewportVars, { passive: true });
+  window.addEventListener("orientationchange", setViewportVars, { passive: true });
+  document.addEventListener("DOMContentLoaded", setViewportVars);
+
   // ---------- Config: CSV locations ----------
-  // 1) Same-folder CSV (recommended when hosting at /housing/housing.html with /housing/housing.csv)
-  // 2) Fallback to the GitHub raw URL provided by you
   const CSV_CANDIDATES = [
     new URL("./housing.csv", location.href).href,
     "https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing.csv"
@@ -216,10 +255,8 @@
   function rebuildChips(){
     const chips = $("#regionChips");
     const base = filteredBySearch(filteredByState(getSeriesRaw()));
-    // Preserve selection where possible
     const prevSel = new Set($$("#regionChips input[type='checkbox']:checked").map(el=>el.dataset.name));
     chips.innerHTML = "";
-    // Default preselect top 10 by latest value if nothing selected
     const scored = base.map(s=>({name:s.name, val:(s.values && s.values.length ? s.values[s.values.length-1] : -Infinity)}))
                       .sort((a,b)=> b.val - a.val)
                       .slice(0, Math.min(10, base.length))
@@ -304,7 +341,7 @@
 
   // ---------- Ranking ----------
   function applyRank(){
-    const base = filteredByState(filteredBySearch(getSeriesRaw())); // ranking respects filters
+    const base = filteredByState(filteredBySearch(getSeriesRaw()));
     if(!base.length) return;
     const side = ($("#rankSide")?.value || "top").toLowerCase();
     const type = ($("#rankType")?.value || "count").toLowerCase();
@@ -318,9 +355,8 @@
       latest.sort((a,b)=> b.value - a.value);
       names = (side==="top" ? latest.slice(0,N) : latest.slice(-N)).map(x=>x.name);
     } else {
-      // percentile
       const p = Math.max(1, Math.min(100, val));
-      latest.sort((a,b)=> a.value - b.value); // ascending
+      latest.sort((a,b)=> a.value - b.value);
       const idx = Math.floor((p/100) * latest.length);
       if(side === "top"){
         const start = Math.max(0, latest.length - idx);
@@ -344,7 +380,7 @@
       complete: (res) => {
         const series = buildSeriesFromCsvRows(res.data);
         window.userUploadedSeries = series;
-        initAll(); // repopulate states/chips and draw
+        initAll();
       },
       error: (err) => {
         alert("CSV load failed: " + err);
@@ -426,7 +462,7 @@
   });
   $("#search").addEventListener("input", (e)=>{
     currentSearch = e.target.value || "";
-    rebuildChips(); // regenerate chips from ACTIVE (uploaded or embedded) series + state filter + search text
+    rebuildChips();
     updateChart();
   });
 
@@ -460,7 +496,6 @@
         // try next URL
       }
     }
-    // Fallback: no CSV found → use embedded (empty by default) but still init UI
     initAll();
   }
 
@@ -483,7 +518,6 @@
     drawChart();
   }
 
-  // Start: auto load CSV then init
   autoLoadCsvAndInit();
 })();
 </script>
