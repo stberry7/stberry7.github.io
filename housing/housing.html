@@ -3,171 +3,142 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Housing Price Index Dashboard</title>
-<meta name="description" content="Single-file HPI dashboard that loads from a GitHub CSV (housing/housing.csv).">
+<title>Housing Price Index Dashboard (Single HTML) — Auto CSV</title>
+<meta name="description" content="Single-file HPI dashboard that auto-loads housing.csv from the same folder (with GitHub raw fallback), includes search, ranking, and downloads." />
 <style>
-  /* === Dark minimal theme (inspired by fed-like simplicity) === */
-  :root{
-    --bg:#0b0f16;
-    --card:#0f1622;
-    --text:#e7eef7;
-    --muted:#9fb1c7;
-    --accent:#23b1ff;    /* cyan */
-    --accent-2:#6ee7ff;  /* light cyan */
-    --border:#162337;
+  :root {
+    --bg: #0b1220;
+    --card: #121a2b;
+    --text: #e6eefc;
+    --muted: #9fb3d1;
+    --accent: #94b9ff;
+    --border: #1e2a44;
   }
-  *{box-sizing:border-box}
-  html,body{background:var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,.25)}
-  select, input[type="text"], input[type="number"]{background:#0e1727;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
-  button{border:1px solid var(--border);background:#111c2c;color:#d9e7ff;border-radius:12px;padding:10px 14px;cursor:pointer}
-  button:hover{background:#14223a}
-  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border-color:transparent;color:#00121e}
-  .table-wrap{margin-top:16px}
-  th{background:#0f1729;color:#bcd0ea}
-  .chart-card{height:72vh;min-height:460px}
-  /* Minimal baseline: chart focus; options hidden until toggled */
-  aside.panel{display:none}
-  .wrap{display:grid;grid-template-columns:1fr;padding:0 18px}
-  .table-wrap{display:none}
-  h2{display:none}
-  /* Top bar + hero */
-  .topbar{position:sticky;top:0;z-index:60;background:rgba(5,9,15,.75);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--border)}
-  .topbar .inner{max-width:1200px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
-  .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-2));box-shadow:0 0 24px rgba(35,177,255,.66)}
-  .actions{display:flex;gap:10px}
-  .hero{max-width:1200px;margin:0 auto;padding:28px 18px 6px}
-  .h1{font-size:34px;line-height:1.1;margin:0 0 8px;color:#e7eef7}
-  .hero p{color:var(--muted);margin:0 0 12px}
-  .badges{display:flex;gap:8px;flex-wrap:wrap}
-  .badge{font-size:12px;border:1px solid var(--border);background:#0f1622;border-radius:999px;padding:6px 10px;color:#cfe7ff}
-  /* Drawer for controls (right) */
-  aside.panel.controls-drawer{display:block;position:fixed;right:-400px;top:60px;bottom:18px;width:min(92vw,380px);overflow:auto;transition:right .25s ease;z-index:70}
-  body.ui-visible aside.panel.controls-drawer{right:18px}
-  .overlay{display:none}
-  body.ui-visible .overlay{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(1px);z-index:65}
-  /* Floating toggle */
-  .toggle-fab{position:fixed;right:18px;bottom:18px;z-index:80}
-  .toggle-fab button{padding:12px 16px;border-radius:999px}
-  /* Chips & controls */
-  .controls{display:grid;gap:12px}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-  @media (max-width: 600px){.row,.row-3{grid-template-columns:1fr}}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;max-height:280px;overflow:auto;padding-right:4px}
-  .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:#0f1a30;padding:6px 10px;border-radius:999px;font-size:13px;cursor:pointer}
-  .chip input{accent-color:#6ee7ff;cursor:pointer}
-  .btns{display:flex;flex-wrap:wrap;gap:8px}
-  table{width:100%;border-collapse:collapse;min-width:640px}
-  th,td{border-bottom:1px solid var(--border);padding:8px 10px;font-size:13px}
-  tfoot td{color:var(--muted)}
-  .note{color:var(--muted);font-size:12px;margin-top:8px}
-  /* Footer */
-  .footer{max-width:1200px;margin:16px auto 24px;padding:12px 18px;color:#89a6c7;font-size:12px;border-top:1px solid var(--border)}
-  @media (max-width:1000px){.h1{font-size:28px}.chart-card{height:66vh}}
+  * { box-sizing: border-box; }
+  html, body { height:100%; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden; /* prevent page scroll */
+  }
+  header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(148,185,255,0.08), transparent);
+  }
+  header h1 { margin: 0 0 6px; font-size: 20px; line-height: 1.2; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; }
+  .wrap {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+    padding: 16px;
+    height: calc(100vh - 72px);
+    overflow: hidden;
+  }
+  @media (max-width: 1000px) { .wrap { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    min-height: 0;
+  }
+  .panel h2 { margin: 0 0 12px; font-size: 16px; color: var(--accent); }
+  .controls { display: grid; gap: 12px; }
+  .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+  label { display: block; font-size: 12px; color: var(--muted); }
+  select, input[type="number"] {
+    padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border);
+    background: #0e1727; color: var(--text);
+  }
+  .search-box input {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: #0e1727; color: var(--text);
+    outline: none;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; max-height: 100%; overflow: auto; padding-right: 4px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    background: #0f1a30;
+    padding: 6px 10px; border-radius: 999px; font-size: 13px; cursor: pointer;
+    white-space: nowrap;
+  }
+  .chip input { accent-color: #6ea0ff; cursor: pointer; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  button {
+    border: 1px solid var(--border); background: #12203a; color: var(--text);
+    padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  }
+  button:hover { background: #16274a; }
+  .sidebar { display: grid; grid-template-rows: auto auto 1fr; gap: 12px; min-height: 0; }
+  .chart-card { height: 100%; min-height: 360px; }
+  canvas { width: 100% !important; height: 100% !important; }
+  .table-wrap { display: none !important; } /* hide numbers under chart */
 </style>
+
+<!-- Chart.js + Luxon time adapter (CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<!-- PapaParse for CSV parsing -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-
-<div class="overlay" onclick="hpiToggleUI()"></div>
-<aside class="panel controls-drawer" id="controlsDrawer"></aside>
-<div class="toggle-fab"><button class="btn-primary" onclick="hpiToggleUI()">Options (O)</button></div>
-
-<div class="topbar">
-  <div class="inner">
-    <div class="brand"><div class="dot"></div><span>Data360</span></div>
-    <div class="actions">
-      <button onclick="hpiToggleUI()">Options</button>
-      <a href="#" onclick="document.getElementById('downloadPng')?.click();return false;"><button>Save Chart</button></a>
-      <a href="#" onclick="document.getElementById('downloadCsv')?.click();return false;"><button>CSV</button></a>
-    </div>
-  </div>
-</div>
-<section class="hero">
-  <h1 class="h1">Housing Price Index</h1>
-  <p>Loads data directly from your GitHub CSV (<code>housing/housing.csv</code>). Toggle options with <b>O</b>, close with <b>Esc</b>.</p>
-  <div class="badges">
-    <span class="badge">State Filter</span>
-    <span class="badge">Search</span>
-    <span class="badge">Top/Bottom N</span>
-    <span class="badge">Percentiles</span>
-    <span class="badge">PNG · CSV</span>
-  </div>
-</section>
+<header>
+  <h1>Housing Price Index Dashboard</h1>
+  <p>Auto-loads <code>housing.csv</code> from the same folder (fallback: GitHub raw). Use search, state filter, and ranking; legend shows city names.</p>
+</header>
 
 <div class="wrap">
-  <aside class="panel" id="originalControls" style="display:none">
+  <aside class="panel sidebar">
     <h2>Controls</h2>
     <div class="controls">
       <div class="row">
         <div>
-          <label for="stateFilter">State</label>
-          <select id="stateFilter"></select>
+          <label for="stateSelect">State</label>
+          <select id="stateSelect"></select>
         </div>
-        <div>
-          <label for="search">Search</label>
-          <input type="text" id="search" placeholder="Type to filter by city/region..." />
-        </div>
-      </div>
-      <div class="row-3">
-        <div>
-          <label for="topN">Top N (by latest value)</label>
-          <select id="topN">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
-          <button id="applyTopN">Apply</button>
-        </div>
-        <div>
-          <label for="bottomN">Bottom N (by latest value)</label>
-          <select id="bottomN">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
-          <button id="applyBottomN">Apply</button>
-        </div>
-        <div>
-          <label for="topPct">Top Percentile</label>
-          <select id="topPct">
-            <option value="0.9">Top 10%</option>
-            <option value="0.75" selected>Top 25%</option>
-            <option value="0.5">Top 50%</option>
-          </select>
-          <button id="applyTopPct">Apply</button>
+        <div class="btns" style="align-items:end;">
+          <button id="selectAllBtn" type="button">Select All</button>
+          <button id="selectNoneBtn" type="button">Select None</button>
         </div>
       </div>
-      <div class="row-3">
+
+      <div class="search-box">
+        <label for="search">Search city/region</label>
+        <input type="text" id="search" placeholder="Type to filter chips..." />
+      </div>
+
+      <div class="row" id="rankControls">
         <div>
-          <label for="bottomPct">Bottom Percentile</label>
-          <select id="bottomPct">
-            <option value="0.1">Bottom 10%</option>
-            <option value="0.25" selected>Bottom 25%</option>
-            <option value="0.5">Bottom 50%</option>
-          </select>
-          <button id="applyBottomPct">Apply</button>
-        </div>
-        <div>
-          <label>&nbsp;</label>
+          <label for="rankSide">Ranking</label>
           <div class="btns">
-            <button id="clearAll">Clear All</button>
-            <button id="downloadPng">Save PNG</button>
-            <button id="downloadCsv">Save CSV (Selected)</button>
+            <select id="rankSide">
+              <option value="top" selected>Top</option>
+              <option value="bottom">Bottom</option>
+            </select>
+            <select id="rankType">
+              <option value="count" selected>Count</option>
+              <option value="percentile">Percentile</option>
+            </select>
+            <input id="rankValue" type="number" min="1" max="100" value="10" style="max-width:110px"/>
+            <button id="applyRank" type="button">Apply</button>
           </div>
         </div>
       </div>
-      <div class="chips" id="regionChips"></div>
-      <div class="note">Selections apply to the current state filter. Rankings use the latest available value per region.</div>
+
+      <div class="btns">
+        <button id="openFileBtn" type="button">Select CSV File</button>
+        <input type="file" id="csvFileInput" accept=".csv" style="display:none" />
+        <button id="dlPng" type="button">Download PNG</button>
+        <button id="dlCsv" type="button">Download CSV</button>
+      </div>
+
+      <div class="chips" id="regionChips" aria-label="Region list"></div>
     </div>
   </aside>
 
@@ -179,402 +150,342 @@
     <div class="table-wrap">
       <table id="latestTbl">
         <thead>
-          <tr><th>Region</th><th>Latest Date</th><th>Latest Value</th><th>Series Length</th></tr>
+          <tr><th>Region</th><th>Latest Date</th><th>Value</th><th>Series Length</th></tr>
         </thead>
         <tbody></tbody>
-        <tfoot><tr><td colspan="4">Summary for currently selected regions.</td></tr></tfoot>
       </table>
     </div>
   </main>
 </div>
 
+<!-- Optional embedded dataset. If present, put JSON like {"series":[{name,label,dates,values,state}], "defaultSelected":["..."]} -->
+<script id="data-json" type="application/json">
+{"series": [], "defaultSelected": []}
+</script>
+
 <script>
-// ====== CONFIG: Set your GitHub raw CSV URL here ======
-// Example: 'https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/housing/housing.csv'
-// // CSV_URL removed for clarity
-// // CSV_URL removed for clarity
-// CSV_URL removed for clarity
-// Fallback relative path if hosting both files together:
-// const CSV_FALLBACK = 'housing/housing.csv';
-const CSV_FALLBACK = './housing.csv';
+(function(){
+  // ---------- Config: CSV locations ----------
+  // 1) Same-folder CSV (recommended when hosting at /housing/housing.html with /housing/housing.csv)
+  // 2) Fallback to the GitHub raw URL provided by you
+  const CSV_CANDIDATES = [
+    new URL("./housing.csv", location.href).href,
+    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing.csv"
+  ];
 
-// ====== Globals ======
-let allSeries = [];
-let defaultSelected = new Set();
-let states = ['All States'];
+  // ---------- Utilities ----------
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const fmt = (n) => (n == null || isNaN(n)) ? "" : new Intl.NumberFormat("en-US",{notation:"compact",maximumFractionDigits:2}).format(n);
 
-const stateSel = (()=>document.getElementById('stateFilter'))();
-const searchEl = (()=>document.getElementById('search'))();
-const chips = (()=>document.getElementById('regionChips'))();
-const ctx = (()=>document.getElementById('chart').getContext('2d'))();
-let chart;
+  // Active data accessors
+  const embeddedPayload = (()=>{
+    try {
+      const el = document.getElementById("data-json");
+      if (!el) return { series: [], defaultSelected: [] };
+      const obj = JSON.parse(el.textContent || "{}");
+      return { series: Array.isArray(obj.series) ? obj.series : [], defaultSelected: new Set(obj.defaultSelected||[]) };
+    } catch(e){ return { series: [], defaultSelected: [] }; }
+  })();
 
-// ====== Utils ======
-const fmtNumber = (n) => {
-  if (n === null || n === undefined || isNaN(n)) return '';
-  const formatter = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 });
-  return formatter.format(n);
-};
+  window.userUploadedSeries = []; // filled after CSV parse
+  function getSeriesRaw(){
+    return (window.userUploadedSeries && window.userUploadedSeries.length) ? window.userUploadedSeries : embeddedPayload.series;
+  }
 
-function parseISOFromMDY(mdy){
-  // accept '1/31/2000', '01/31/2000'
-  const parts = mdy.split('/');
-  if(parts.length !== 3) return mdy; // fallback as-is
-  const [m,d,y] = parts.map(x=>parseInt(x,10));
-  if(!m||!d||!y) return mdy;
-  const mm = String(m).padStart(2,'0');
-  const dd = String(d).padStart(2,'0');
-  return `${y}-${mm}-${dd}`;
-}
+  // State filter + search
+  let currentSearch = "";
+  function uniqueStates(series){
+    const s = new Set();
+    series.forEach(x => { const st = (x.state || "").trim(); if(st) s.add(st); });
+    const arr = Array.from(s).sort((a,b)=>a.localeCompare(b));
+    return ["All States", ...arr];
+  }
+  function filteredByState(series){
+    const sel = $("#stateSelect");
+    const st = sel ? sel.value : "All States";
+    return series.filter(x => st === "All States" ? true : (x.state === st));
+  }
+  function filteredBySearch(series){
+    const q = currentSearch.trim().toLowerCase();
+    if (!q) return series;
+    return series.filter(s => (s.label||s.name||"").toLowerCase().includes(q));
+  }
 
-// Build series structure from CSV rows
-function buildSeriesFromCsv(rows){
-  if(!rows || !rows.length) return [];
-  const header = Object.keys(rows[0]);
-  // Identify metadata columns
-  const metaCols = ['RegionID','SizeRank','RegionName','RegionType','StateName','State','City','Metro','CountyName'];
-  const dateCols = header.filter(h => !metaCols.includes(h));
-  // Clean date headers
-  const dates = dateCols.map(parseISOFromMDY);
-
-  const out = [];
-  const statesSet = new Set();
-  rows.forEach(r => {
-    const name = r['RegionName'] || r['City'] || r['Metro'] || r['CountyName'] || r['RegionID'] || 'Region';
-    const state = r['StateName'] || r['State'] || '';
-    if(state) statesSet.add(state);
-
-    const values = dateCols.map(c => {
-      const v = r[c];
-      const num = (v === undefined || v === null || v==='') ? null : Number(String(v).replace(/[, ]/g,''));
-      return isNaN(num) ? null : num;
+  // ---------- Chips (selection list) ----------
+  function rebuildChips(){
+    const chips = $("#regionChips");
+    const base = filteredBySearch(filteredByState(getSeriesRaw()));
+    // Preserve selection where possible
+    const prevSel = new Set($$("#regionChips input[type='checkbox']:checked").map(el=>el.dataset.name));
+    chips.innerHTML = "";
+    // Default preselect top 10 by latest value if nothing selected
+    const scored = base.map(s=>({name:s.name, val:(s.values && s.values.length ? s.values[s.values.length-1] : -Infinity)}))
+                      .sort((a,b)=> b.val - a.val)
+                      .slice(0, Math.min(10, base.length))
+                      .map(x=>x.name);
+    base.forEach(s => {
+      const id = "chk_" + btoa(s.label||s.name).replace(/=/g,"");
+      const checked = prevSel.size ? prevSel.has(s.name) : (embeddedPayload.defaultSelected.size ? embeddedPayload.defaultSelected.has(s.name) : scored.includes(s.name));
+      const div = document.createElement("label");
+      div.className = "chip";
+      div.innerHTML = `<input type="checkbox" id="${id}" data-name="${s.name}" ${checked ? "checked":""} /> <span>${s.label||s.name}</span>`;
+      chips.appendChild(div);
     });
-    out.push({
-      name,
-      label: state ? `${name} (${state})` : name,
-      state: state || 'Unknown',
-      dates,
-      values
+  }
+  function selectedNames(){ return $$("#regionChips input[type='checkbox']:checked").map(el=>el.dataset.name); }
+  function setSelectionByNames(names){
+    const set = new Set(names);
+    $$("#regionChips input[type='checkbox']").forEach(el => el.checked = set.has(el.dataset.name));
+  }
+  function checkAllChips(val){ $$("#regionChips input[type='checkbox']").forEach(el => el.checked = !!val); }
+
+  // ---------- Chart ----------
+  let chart;
+  function palette(i){ const hue=(i*53)%360; return `hsl(${hue} 70% 60%)`; }
+  function buildDatasets(series, names){
+    const sel = new Set(names);
+    let idx = 0;
+    return series.filter(s => sel.has(s.name)).map(s => ({
+      label: s.label || s.name,
+      data: (s.dates||[]).map((d,i)=>({x:d,y:s.values? s.values[i] : null})),
+      borderColor: palette(idx++),
+      backgroundColor: palette(idx),
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.18
+    }));
+  }
+  function drawChart(){
+    const ctx = $("#chart").getContext("2d");
+    const series = filteredByState(getSeriesRaw());
+    const ds = buildDatasets(series, selectedNames());
+    const cfg = {
+      type: "line",
+      data: { datasets: ds },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "nearest", intersect: false },
+        plugins: {
+          legend: { position: "top", labels: { color: "#cfe0ff" } },
+          tooltip: { callbacks: { label: (ctx)=> `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+        },
+        scales: {
+          x: { type: "time", time: { unit: "month" }, ticks: { color: "#9fb3d1" }, grid: { color: "rgba(255,255,255,0.06)" } },
+          y: { ticks: { color: "#9fb3d1", callback: (v)=>fmt(v) }, grid: { color: "rgba(255,255,255,0.06)" } }
+        }
+      }
+    };
+    if (chart){ chart.destroy(); }
+    chart = new Chart(ctx, cfg);
+    updateTable(series);
+  }
+  function updateChart(){
+    if(!chart){ drawChart(); return; }
+    const series = filteredByState(getSeriesRaw());
+    chart.data.datasets = buildDatasets(series, selectedNames());
+    chart.update();
+    updateTable(series);
+  }
+  function updateTable(series){
+    const tbody = $("#latestTbl tbody");
+    if(!tbody) return;
+    tbody.innerHTML="";
+    const sel = new Set(selectedNames());
+    series.forEach(s => {
+      if(!sel.has(s.name)) return;
+      const i = (s.values||[]).length-1;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${s.label||s.name}</td><td>${(s.dates||[])[i]||""}</td><td>${fmt((s.values||[])[i])}</td><td>${(s.values||[]).length}</td>`;
+      tbody.appendChild(tr);
     });
-  });
+  }
 
-  // states list
-  states = ['All States', ...Array.from(statesSet).sort()];
-
-  // default select: top 8 by latest value
-  const scored = out.map(s => ({ s, v: s.values.slice(-1)[0] ?? -Infinity }))
-                    .sort((a,b)=> (b.v - a.v))
-                    .slice(0,8)
-                    .map(x=>x.s.name);
-  defaultSelected = new Set(scored);
-  return out;
-}
-
-// ====== UI builders ======
-function populateStates(){
-  stateSel.innerHTML = '';
-  states.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s;
-    opt.textContent = s;
-    stateSel.appendChild(opt);
-  });
-  stateSel.value = states[0];
-}
-
-function filteredUniverse(){
-  const st = stateSel.value;
-  const term = (searchEl.value || '').trim().toLowerCase();
-  return allSeries.filter(s => {
-    const matchState = (st === 'All States') ? true : (s.state === st);
-    const label = (s.label || s.name || '').toLowerCase();
-    const matchTerm = term ? label.includes(term) : true;
-    return matchState && matchTerm;
-  });
-}
-
-function latestValue(s){
-  const idx = s.values.length - 1;
-  return idx >= 0 ? s.values[idx] : null;
-}
-
-function renderChips(){
-  const universe = filteredUniverse();
-  chips.innerHTML = '';
-  universe.forEach(s => {
-    const label = s.label || s.name;
-    const id = 'chk_' + btoa(label).replace(/=/g,'');
-    const checked = defaultSelected.has(s.name);
-    const div = document.createElement('label');
-    div.className = 'chip';
-    div.innerHTML = \`
-      <input type="checkbox" id="\${id}" data-name="\${s.name}" />
-      <span>\${label}</span>
-    \`;
-    chips.appendChild(div);
-    const chk = div.querySelector('input');
-    chk.checked = checked;
-  });
-}
-
-function getSelectedNames(){
-  return Array.from(chips.querySelectorAll('input[type="checkbox"]:checked')).map(el => el.dataset.name);
-}
-function setSelectedByNames(names){
-  const setNames = new Set(names);
-  Array.from(chips.querySelectorAll('input[type="checkbox"]')).forEach(el => {
-    el.checked = setNames.has(el.dataset.name);
-  });
-}
-
-function palette(idx){ const hue = (idx * 53) % 360; return 'hsl(' + hue + ' 70% 60%)'; }
-
-function buildDatasets(selection){
-  const selectedNames = new Set(selection);
-  const datasets = [];
-  let idx = 0;
-  allSeries.forEach(s => {
-    if (!selectedNames.has(s.name)) return;
-    const points = s.dates.map((d, i) => ({ x: d, y: s.values[i] }));
-    datasets.push({
-      label: s.label || s.name, data: points,
-      borderColor: palette(idx), backgroundColor: palette(idx),
-      borderWidth: 2, pointRadius: 0, tension: 0.18,
-    });
-    idx++;
-  });
-  return datasets;
-}
-
-function updateTable(selected){
-  const tbody = document.querySelector('#latestTbl tbody');
-  if(!tbody) return;
-  tbody.innerHTML = '';
-  const names = new Set(selected);
-  allSeries.forEach(s => {
-    if (!names.has(s.name)) return;
-    const lastIdx = s.values.length - 1;
-    const tr = document.createElement('tr');
-    tr.innerHTML = \`
-      <td>\${s.label || s.name}</td>
-      <td>\${s.dates[lastIdx]}</td>
-      <td>\${fmtNumber(s.values[lastIdx])}</td>
-      <td>\${s.values.length}</td>
-    \`;
-    tbody.appendChild(tr);
-  });
-}
-
-function drawChart(){
-  const selected = getSelectedNames();
-  const ds = buildDatasets(selected);
-  const cfg = {
-    type: 'line',
-    data: { datasets: ds },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'nearest', intersect: false },
-      plugins: {
-        legend: { position: 'top', labels: { color: '#cfe0ff' } },
-        tooltip: { callbacks: { label: (ctx) => \`\${ctx.dataset.label}: \${fmtNumber(ctx.parsed.y)}\` } }
-      },
-      scales: {
-        x: { type: 'time', time: { unit: 'month' }, ticks: { color: '#9fb3d1' }, grid: { color: 'rgba(255,255,255,0.06)' } },
-        y: { ticks: { color: '#9fb3d1', callback: (v) => fmtNumber(v) }, grid: { color: 'rgba(255,255,255,0.06)' } }
+  // ---------- Ranking ----------
+  function applyRank(){
+    const base = filteredByState(filteredBySearch(getSeriesRaw())); // ranking respects filters
+    if(!base.length) return;
+    const side = ($("#rankSide")?.value || "top").toLowerCase();
+    const type = ($("#rankType")?.value || "count").toLowerCase();
+    const val  = parseFloat($("#rankValue")?.value || "10");
+    const latest = base.map(s=>({name:s.name, value: (s.values && s.values.length ? s.values[s.values.length-1] : null)}))
+                       .filter(x=>typeof x.value === "number" && !isNaN(x.value));
+    if(!latest.length) return;
+    let names=[];
+    if(type === "count"){
+      const N = Math.max(1, Math.min(latest.length, Math.round(val)));
+      latest.sort((a,b)=> b.value - a.value);
+      names = (side==="top" ? latest.slice(0,N) : latest.slice(-N)).map(x=>x.name);
+    } else {
+      // percentile
+      const p = Math.max(1, Math.min(100, val));
+      latest.sort((a,b)=> a.value - b.value); // ascending
+      const idx = Math.floor((p/100) * latest.length);
+      if(side === "top"){
+        const start = Math.max(0, latest.length - idx);
+        names = latest.slice(start).map(x=>x.name);
+      } else {
+        names = latest.slice(0, idx).map(x=>x.name);
       }
     }
-  };
-  if(chart) chart.destroy();
-  chart = new Chart(ctx, cfg);
-  updateTable(selected);
-}
-
-// Ranking selectors
-function applyTopN(n){
-  const universe = filteredUniverse();
-  const sorted = universe.map(s => ({ name: s.name, val: latestValue(s) ?? -Infinity }))
-    .sort((a,b) => (b.val - a.val)).slice(0, n).map(x => x.name);
-  setSelectedByNames(sorted); drawChart();
-}
-function applyBottomN(n){
-  const universe = filteredUniverse();
-  const sorted = universe.map(s => ({ name: s.name, val: latestValue(s) ?? Infinity }))
-    .sort((a,b) => (a.val - b.val)).slice(0, n).map(x => x.name);
-  setSelectedByNames(sorted); drawChart();
-}
-function applyTopPct(p){
-  const universe = filteredUniverse();
-  const arr = universe.map(s => latestValue(s)).filter(v => typeof v === 'number' && !isNaN(v));
-  if(arr.length === 0) return;
-  const sorted = [...arr].sort((a,b) => a-b);
-  const idx = Math.floor(p * sorted.length);
-  const threshold = sorted[idx];
-  const names = universe.filter(s => latestValue(s) >= threshold).map(s => s.name);
-  setSelectedByNames(names); drawChart();
-}
-function applyBottomPct(p){
-  const universe = filteredUniverse();
-  const arr = universe.map(s => latestValue(s)).filter(v => typeof v === 'number' && !isNaN(v));
-  if(arr.length === 0) return;
-  const sorted = [...arr].sort((a,b) => a-b);
-  const idx = Math.floor(p * sorted.length);
-  const threshold = sorted[idx];
-  const names = universe.filter(s => latestValue(s) <= threshold).map(s => s.name);
-  setSelectedByNames(names); drawChart();
-}
-
-// Events
-document.addEventListener('click', (e)=>{
-  if(e.target.id==='applyTopN'){ applyTopN(parseInt(document.getElementById('topN').value,10)); }
-  if(e.target.id==='applyBottomN'){ applyBottomN(parseInt(document.getElementById('bottomN').value,10)); }
-  if(e.target.id==='applyTopPct'){ applyTopPct(parseFloat(document.getElementById('topPct').value)); }
-  if(e.target.id==='applyBottomPct'){ applyBottomPct(parseFloat(document.getElementById('bottomPct').value)); }
-  if(e.target.id==='clearAll'){
-    Array.from(chips.querySelectorAll('input[type="checkbox"]')).forEach(el => el.checked = false);
-    drawChart();
+    setSelectionByNames(names);
+    updateChart();
   }
-  if(e.target.id==='downloadPng'){
-    const link = document.createElement('a');
-    link.download = 'housing_index_chart.png';
-    link.href = document.getElementById('chart').toDataURL('image/png', 1.0);
+
+  // ---------- CSV Upload (manual override) ----------
+  $("#openFileBtn").addEventListener("click", ()=> $("#csvFileInput").click());
+  $("#csvFileInput").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (res) => {
+        const series = buildSeriesFromCsvRows(res.data);
+        window.userUploadedSeries = series;
+        initAll(); // repopulate states/chips and draw
+      },
+      error: (err) => {
+        alert("CSV load failed: " + err);
+      }
+    });
+  });
+  function buildSeriesFromCsvRows(rows){
+    if(!rows || !rows.length) return [];
+    const header = Object.keys(rows[0]);
+    const metaCols = ["RegionID","SizeRank","RegionName","RegionType","StateName","State","City","Metro","CountyName"];
+    const dateCols = header.filter(h => !metaCols.includes(h));
+    function parseMdyToISO(s){const a=(s||"").split("/").map(x=>parseInt(x,10));if(a.length!==3||!a[0]||!a[1]||!a[2]) return s;return `${a[2]}-${String(a[0]).padStart(2,'0')}-${String(a[1]).padStart(2,'0')}`;}
+    const dates = dateCols.map(parseMdyToISO);
+    const out = [];
+    rows.forEach(r => {
+      const name = r["RegionName"] || r["City"] || r["Metro"] || r["CountyName"] || r["RegionID"] || "Region";
+      const state = r["StateName"] || r["State"] || "";
+      const values = dateCols.map(c => {
+        const v = r[c];
+        const num = (v === undefined || v === null || v==="") ? null : Number(String(v).replace(/[, ]/g,""));
+        return isNaN(num) ? null : num;
+      });
+      out.push({ name, label: state ? (name + " (" + state + ")") : name, state: state || "Unknown", dates, values });
+    });
+    return out;
+  }
+
+  // ---------- Downloads ----------
+  $("#dlPng").addEventListener("click", ()=>{
+    if(!chart) return;
+    const link = document.createElement("a");
+    link.download = "housing_index_chart.png";
+    link.href = $("#chart").toDataURL("image/png", 1.0);
     link.click();
-  }
-  if(e.target.id==='downloadCsv'){
-    const selected = new Set(getSelectedNames());
-    const chosen = allSeries.filter(s => selected.has(s.name));
-    let allDates = new Set();
-    chosen.forEach(s => s.dates.forEach(d => allDates.add(d)));
-    allDates = Array.from(allDates).sort();
-    const header = ['Date', ...chosen.map(s => (s.label || s.name))];
-    const lines = [header.join(',')];
+  });
+  $("#dlCsv").addEventListener("click", ()=>{
+    const series = filteredByState(getSeriesRaw());
+    const sel = new Set(selectedNames());
+    const chosen = series.filter(s => sel.has(s.name));
+    if(!chosen.length) return;
+    const allDates = Array.from(new Set(chosen.flatMap(s => s.dates || []))).sort();
+    const header = ["Date", ...chosen.map(s => (s.label || s.name))];
+    const lines = [header.join(",")];
     allDates.forEach(d => {
       const row = [d];
       chosen.forEach(s => {
-        const idx = s.dates.indexOf(d);
-        row.push(idx >= 0 ? s.values[idx] : '');
+        const idx = (s.dates||[]).indexOf(d);
+        row.push(idx >= 0 ? (s.values||[])[idx] ?? "" : "");
       });
-      lines.push(row.join(','));
+      lines.push(row.join(","));
     });
-    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'housing_index_selected.csv';
-    a.click();
+    const a = document.createElement("a"); a.href = url; a.download = "housing_index_selected.csv"; a.click();
     URL.revokeObjectURL(url);
-  }
-});
-
-function refreshUniverse(){
-  const prevSel = new Set(getSelectedNames());
-  renderChips();
-  Array.from(chips.querySelectorAll('input[type="checkbox"]')).forEach(el => {
-    if (prevSel.has(el.dataset.name)) el.checked = true;
   });
-  drawChart();
-}
 
-if(stateSel){ stateSel.addEventListener('change', refreshUniverse); }
-if(searchEl){ searchEl.addEventListener('input', refreshUniverse); }
+  // ---------- Events ----------
+  document.addEventListener("change", (e)=>{
+    if (e.target && e.target.id === "stateSelect"){
+      rebuildChips();
+      updateChart();
+    }
+    if (e.target && e.target.id === "rankType"){
+      const rv = $("#rankValue");
+      if(rv){
+        if(e.target.value === "count"){ rv.min=1; rv.max=1000; rv.value = Math.min(10, Math.max(1, parseInt(rv.value||"10",10))); }
+        else { rv.min=1; rv.max=100; rv.value = Math.min(25, Math.max(1, parseInt(rv.value||"25",10))); }
+      }
+    }
+  });
+  document.addEventListener("click", (e)=>{
+    if (e.target && e.target.id === "selectAllBtn"){ checkAllChips(true); updateChart(); }
+    if (e.target && e.target.id === "selectNoneBtn"){ checkAllChips(false); updateChart(); }
+    if (e.target && e.target.id === "applyRank"){ applyRank(); }
+  });
+  $("#regionChips").addEventListener("change", (e)=>{
+    if (e.target && e.target.matches("input[type='checkbox']")) updateChart();
+  });
+  $("#search").addEventListener("input", (e)=>{
+    currentSearch = e.target.value || "";
+    rebuildChips(); // regenerate chips from ACTIVE (uploaded or embedded) series + state filter + search text
+    updateChart();
+  });
 
-// ====== Toggle & Drawer mounting ======
-(function(){
-  const LS_KEY='hpi_ui_visible';
-  function setVisible(v){
-    if(v){ document.body.classList.add('ui-visible'); localStorage.setItem(LS_KEY,'1'); }
-    else { document.body.classList.remove('ui-visible'); localStorage.setItem(LS_KEY,'0'); }
-  }
-  function toggle(){ setVisible(!document.body.classList.contains('ui-visible')); }
-  window.hpiToggleUI = toggle;
-  if(localStorage.getItem(LS_KEY)==='1'){ setVisible(true); }
-
-  window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='o') toggle(); if(e.key==='Escape') setVisible(false); });
-
-  // Move controls into drawer
-  const origAside = document.getElementById('originalControls');
-  const drawer = document.getElementById('controlsDrawer');
-  if(origAside && drawer){ drawer.innerHTML = origAside.innerHTML; }
-})();
-
-// ====== CSV Loader ======
-async function loadCsvToSeries(){
-  // const url = CSV_URL.includes('USERNAME/REPO/BRANCH') ? CSV_FALLBACK : CSV_URL;
-  const url = CSV_FALLBACK + '?ts=' + Date.now(); // cache-busting
-  return new Promise((resolve, reject) => {
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: (res) => resolve(res.data),
-      error: (err) => reject(err)
+  // ---------- Auto-load CSV on startup ----------
+  function parseCsvFromUrl(url){
+    return new Promise((resolve, reject)=>{
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: (res)=>{
+          if(res && res.data && res.data.length){
+            resolve(res.data);
+          } else {
+            reject(new Error("Empty or invalid CSV at " + url));
+          }
+        },
+        error: (err)=> reject(err || new Error("Failed to load CSV " + url))
+      });
     });
-  }).then(rows => {
-    allSeries = buildSeriesFromCsv(rows);
+  }
+
+  async function autoLoadCsvAndInit(){
+    for (const url of CSV_CANDIDATES){
+      try {
+        const rows = await parseCsvFromUrl(url);
+        window.userUploadedSeries = buildSeriesFromCsvRows(rows);
+        initAll();
+        return;
+      } catch(e){
+        // try next URL
+      }
+    }
+    // Fallback: no CSV found → use embedded (empty by default) but still init UI
+    initAll();
+  }
+
+  // ---------- Init ----------
+  function populateStates(){
+    const sel = $("#stateSelect");
+    const series = getSeriesRaw();
+    const list = uniqueStates(series);
+    sel.innerHTML = "";
+    list.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s; opt.textContent = s;
+      sel.appendChild(opt);
+    });
+    sel.value = "All States";
+  }
+  function initAll(){
     populateStates();
-    renderChips();
+    rebuildChips();
     drawChart();
-  }).catch(err => {
-    console.error('CSV load failed:', err);
-    const note = document.createElement('div');
-    note.className = 'note';
-    note.textContent = 'CSV load failed. Please check CSV_URL or host housing/housing.csv alongside this file.';
-    document.querySelector('.hero')?.appendChild(note);
-  });
-}
+  }
 
-// Build series helper (mirrors function above but accessible here)
-function buildSeriesFromCsv(rows){
-  if(!rows || !rows.length) return [];
-  const header = Object.keys(rows[0]);
-  const metaCols = ['RegionID','SizeRank','RegionName','RegionType','StateName','State','City','Metro','CountyName'];
-  const dateCols = header.filter(h => !metaCols.includes(h));
-  const dates = dateCols.map(parseISOFromMDY);
-
-  const out = [];
-  const statesSet = new Set();
-  rows.forEach(r => {
-    const name = r['RegionName'] || r['City'] || r['Metro'] || r['CountyName'] || r['RegionID'] || 'Region';
-    const state = r['StateName'] || r['State'] || '';
-    if(state) statesSet.add(state);
-
-    const values = dateCols.map(c => {
-      const v = r[c];
-      const num = (v === undefined || v === null || v==='') ? null : Number(String(v).replace(/[, ]/g,''));
-      return isNaN(num) ? null : num;
-    });
-    out.push({
-      name,
-      label: state ? \`\${name} (\${state})\` : name,
-      state: state || 'Unknown',
-      dates,
-      values
-    });
-  });
-
-  states = ['All States', ...Array.from(statesSet).sort()];
-  const scored = out.map(s => ({ s, v: s.values.slice(-1)[0] ?? -Infinity }))
-                    .sort((a,b)=> (b.v - a.v))
-                    .slice(0,8)
-                    .map(x=>x.s.name);
-  defaultSelected = new Set(scored);
-  return out;
-}
-
-function parseISOFromMDY(mdy){
-  const parts = mdy.split('/');
-  if(parts.length !== 3) return mdy;
-  const [m,d,y] = parts.map(x=>parseInt(x,10));
-  if(!m||!d||!y) return mdy;
-  const mm = String(m).padStart(2,'0');
-  const dd = String(d).padStart(2,'0');
-  return \`\${y}-\${mm}-\${dd}\`;
-}
-
-// ====== Start ======
-loadCsvToSeries();
+  // Start: auto load CSV then init
+  autoLoadCsvAndInit();
+})();
 </script>
-
-<div class="footer">© 2025 Data360 · Single‑file HPI dashboard</div>
 </body>
 </html>
