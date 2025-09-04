@@ -123,6 +123,7 @@
     scrollbar-color: #3a4b74 transparent;
     flex-wrap: wrap;
   }
+  .legend-wrap.hidden { display: none !important; }
   .legend-item {
     display: inline-flex;
     align-items: center;
@@ -403,6 +404,13 @@
   function renderLegend(datasets){
     const cont = $("#legend");
     if(!cont) return;
+    // Hide legend if more than 10 lines are selected
+    if (datasets.length > 10) {
+      cont.classList.add("hidden");
+      cont.innerHTML = "";
+      return;
+    }
+    cont.classList.remove("hidden");
     cont.innerHTML = "";
     datasets.forEach(ds => {
       const item = document.createElement("span");
