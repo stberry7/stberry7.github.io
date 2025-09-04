@@ -13,9 +13,9 @@
     --muted: #9fb3d1;
     --accent: #94b9ff;
     --border: #1e2a44;
-    --header-h: 72px;
-    --vhpx: 100vh;
-    --bottom-gap: 8px;
+    --header-h: 72px;           /* updated in JS */
+    --vhpx: 100vh;              /* updated in JS to innerHeight */
+    --bottom-gap: 8px;          /* avoid desktop taskbar overlap */
   }
   * { box-sizing: border-box; }
   html, body { height:100%; }
@@ -24,7 +24,7 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
     background: var(--bg);
     color: var(--text);
-    overflow: hidden;
+    overflow: hidden; /* keep page itself from scrolling */
   }
   header {
     padding: 12px 16px calc(12px + env(safe-area-inset-top));
@@ -110,54 +110,17 @@
   canvas { width: 100% !important; height: 100% !important; }
   .table-wrap { display: none !important; } /* hide numbers under chart */
 
-  /* ===== Custom HTML Legend (responsive chips) ===== */
-  .legend-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #3a4b74 transparent;
-    flex-wrap: wrap;
-  }
-  .legend-wrap.hidden { display: none !important; }
-  .legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    border: 1px solid var(--border);
-    background: #0f1a30;
-    border-radius: 999px;
-    font-size: 12px;
-    line-height: 1;
-    white-space: nowrap;
-  }
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.6);
-    flex: 0 0 auto;
-  }
-
   /* ===== Mobile behaviors ===== */
   @media (max-width: 1000px) {
     .wrap { grid-template-columns: 1fr; }
+    /* Hide sidebar by default on mobile to maximize chart area */
     .sidebar { display: none; }
+    /* Show the header toggle button on mobile */
     #mobileMenuBtn { display: inline-flex; }
+    /* Hide large-UI buttons on mobile to save space */
     #openFileBtn, #dlPng, #dlCsv { display: none !important; }
-    .legend-wrap { flex-wrap: nowrap; } /* horizontal chip scroll on mobile */
   }
-  @media (max-width: 640px) {
-    header h1 { font-size: 18px; }
-    .chart-card { min-height: 300px; }
-  }
-
-  /* Mobile drawer for sidebar */
+  /* Sidebar becomes an overlay "drawer" when opened on mobile */
   @media (max-width: 1000px) {
     .sidebar.open {
       display: grid;
@@ -181,6 +144,11 @@
       z-index: 25;
     }
     #backdrop { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 18px; }
+    .chart-card { min-height: 300px; }
   }
 </style>
 
@@ -253,10 +221,6 @@
 
   <main class="panel">
     <h2>Time Series</h2>
-
-    <!-- Custom legend chips (replaces default legend) -->
-    <div id="legend" class="legend-wrap" aria-label="Series legend"></div>
-
     <div class="chart-card">
       <canvas id="chart"></canvas>
     </div>
@@ -278,7 +242,7 @@
 
 <script>
 (function(){
-  // ---------- Dynamic viewport fix ----------
+  // ---------- Dynamic viewport fix (desktop taskbar + mobile URL bars) ----------
   function setViewportVars(){
     const h = window.innerHeight || document.documentElement.clientHeight || 720;
     document.documentElement.style.setProperty("--vhpx", h + "px");
@@ -394,38 +358,12 @@
       label: s.label || s.name,
       data: (s.dates||[]).map((d,i)=>({x:d,y:s.values? s.values[i] : null})),
       borderColor: palette(idx++),
-      backgroundColor: "transparent",
+      backgroundColor: palette(idx),
       borderWidth: 2,
       pointRadius: 0,
       tension: 0.18
     }));
   }
-
-  function renderLegend(datasets){
-    const cont = $("#legend");
-    if(!cont) return;
-    // Hide legend if more than 10 lines are selected
-    if (datasets.length > 10) {
-      cont.classList.add("hidden");
-      cont.innerHTML = "";
-      return;
-    }
-    cont.classList.remove("hidden");
-    cont.innerHTML = "";
-    datasets.forEach(ds => {
-      const item = document.createElement("span");
-      item.className = "legend-item";
-      const dot = document.createElement("span");
-      dot.className = "legend-dot";
-      dot.style.background = ds.borderColor || "#94b9ff";
-      const txt = document.createElement("span");
-      txt.textContent = ds.label || "";
-      item.appendChild(dot);
-      item.appendChild(txt);
-      cont.appendChild(item);
-    });
-  }
-
   function drawChart(){
     const ctx = $("#chart").getContext("2d");
     const series = filteredByState(getSeriesRaw());
@@ -438,7 +376,7 @@
         maintainAspectRatio: false,
         interaction: { mode: "nearest", intersect: false },
         plugins: {
-          legend: { display: false }, /* hide default legend */
+          legend: { position: "top", labels: { color: "#cfe0ff" } },
           tooltip: { callbacks: { label: (ctx)=> `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
         },
         scales: {
@@ -449,16 +387,13 @@
     };
     if (chart){ chart.destroy(); }
     chart = new Chart(ctx, cfg);
-    renderLegend(ds);
     updateTable(series);
   }
   function updateChart(){
     if(!chart){ drawChart(); return; }
     const series = filteredByState(getSeriesRaw());
-    const ds = buildDatasets(series, selectedNames());
-    chart.data.datasets = ds;
+    chart.data.datasets = buildDatasets(series, selectedNames());
     chart.update();
-    renderLegend(ds);
     updateTable(series);
   }
   function updateTable(series){
