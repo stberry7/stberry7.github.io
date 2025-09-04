@@ -442,7 +442,7 @@
   // ====== Settings ======
   // true : count every refresh as a view
   // false: "unique per browser & period" (Total once ever, Day/Week/Month once per period)
-  const FORCE_VIEW_MODE = false;
+  const FORCE_VIEW_MODE = true;
 
   // Namespace per site (use host, replace dots)
   const NAMESPACE = (location.hostname || 'localhost').replace(/\./g,'-');
@@ -596,6 +596,62 @@
   check();
 
   // If IO is used, scroll fallback will still keep it consistent.
+})();
+</script>
+
+<!-- Visitor counter is in FORCE VIEW MODE and has offline fallback. -->
+<script id="visitor-counter-local-only">
+(function(){
+  // Pure-local incrementer to guarantee visible changes on each refresh.
+  // Runs after remote/fallback logic and overwrites the displayed numbers.
+  try{
+    const host = (location.hostname || 'localhost').replace(/\./g,'-');
+    const PREFIX = `localOnly:${host}:`;
+
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth()+1).padStart(2,'0');
+    const d = String(now.getDate()).padStart(2,'0');
+    const YMD = `${y}-${m}-${d}`;
+    const YM  = `${y}-${m}`;
+    function getISOWeek(date){
+      const tmp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = tmp.getUTCDay() || 7;
+      tmp.setUTCDate(tmp.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(),0,1));
+      const weekNo = Math.ceil((((tmp - yearStart)/86400000) + 1) / 7);
+      return { year: tmp.getUTCFullYear(), week: String(weekNo).padStart(2,'0') };
+    }
+    const YW = `W${getISOWeek(now).week}-${getISOWeek(now).year}`;
+
+    const K_TOTAL = `site:total`;
+    const K_DAY   = `site:day:${YMD}`;
+    const K_WEEK  = `site:week:${YW}`;
+    const K_MONTH = `site:month:${YM}`;
+
+    function bump(key){
+      const k = PREFIX + key;
+      const cur = parseInt(localStorage.getItem(k) || '0', 10) + 1;
+      localStorage.setItem(k, String(cur));
+      return cur;
+    }
+    function read(key){
+      return parseInt(localStorage.getItem(PREFIX + key) || '0', 10);
+    }
+    // Increment all four scopes on every refresh (local test mode)
+    bump(K_TOTAL); bump(K_DAY); bump(K_WEEK); bump(K_MONTH);
+
+    // Write to DOM (overwrite previous values)
+    const fmt = n => (typeof n === 'number' ? n.toLocaleString() : String(n));
+    const el = id => document.getElementById(id);
+    if (el('vis-total')) el('vis-total').textContent = fmt(read(K_TOTAL));
+    if (el('vis-today')) el('vis-today').textContent = fmt(read(K_DAY));
+    if (el('vis-week'))  el('vis-week').textContent  = fmt(read(K_WEEK));
+    if (el('vis-month')) el('vis-month').textContent = fmt(read(K_MONTH));
+
+    // Mark: local-test mode active (for debugging)
+    console.log('[VisitorCounter][LocalTest] values updated (per-refresh).');
+  }catch(e){ /* ignore */ }
 })();
 </script>
 </body>
