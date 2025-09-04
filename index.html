@@ -147,8 +147,163 @@
     /* Accessibility helpers (for screen readers and crawlable content) */
     .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
   </style>
+<style>
+/* === Visitor counter bar (Total/Today/Week/Month) === */
+.counter-bar{
+  display:grid; grid-template-columns: repeat(12,1fr);
+  gap: clamp(12px, 2vw, 18px); align-items:stretch;
+  background: var(--panel, #0f172a);
+  border-radius: var(--radius, 14px);
+  box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,.25));
+  border: var(--border, 1px solid rgba(255,255,255,.08));
+  padding: clamp(14px, 2.2vw, 20px); margin: 8px 0 20px;
+}
+.counter-bar .metric{
+  grid-column: span 3; display:flex; flex-direction:column;
+  background: var(--card, #ffffff);
+  color: var(--text, #0b1220);
+  border: var(--border, 1px solid rgba(0,0,0,.08));
+  border-radius: 12px;
+  padding: 12px 14px; min-height: 72px; justify-content:center;
+}
+.counter-bar .label{ color: var(--muted, #6b7280); font-size:.95rem; margin-bottom:4px; }
+.counter-bar .value{ font-weight:700; font-size:1.25rem; line-height:1; }
+@media (max-width: 980px){ .counter-bar .metric{ grid-column: span 6; } }
+@media (max-width: 540px){ .counter-bar .metric{ grid-column: span 12; } }
+</style>
+<style>
+/* === Compact bottom visitor counter overrides === */
+@media screen {
+  .counter-bar{
+    position: fixed; bottom: 12px; right: 12px; z-index: 99999;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(15,23,42,.75); /* slate-900 w/ opacity */
+    color: #e6eefc;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 9999px;
+    padding: 6px 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-size: 12px;
+  }
+  .counter-bar .metric{
+    display: inline-flex; align-items: baseline; gap: 4px;
+    background: transparent; border: 0; padding: 0; min-height: 0;
+    color: inherit;
+  }
+  .counter-bar .label{ font-size: 12px; opacity: .8; margin: 0; }
+  .counter-bar .value{ font-size: 12px; font-weight: 700; line-height: 1; }
+  /* thin separators between items */
+  .counter-bar .metric + .metric{ padding-left: 10px; border-left: 1px solid rgba(255,255,255,.18); }
+  @media (max-width: 420px){
+    .counter-bar{ font-size: 11px; gap: 8px; padding: 6px 8px; bottom: 10px; right: 10px; }
+    .counter-bar .label, .counter-bar .value{ font-size: 11px; }
+  }
+}
+@media print { .counter-bar{ display: none !important; } }
+</style>
+<style>
+/* === Tiny bottom-center visitor counter (shows near footer only) === */
+.counter-bar{
+  position: fixed; z-index: 99999;
+  left: 50%; right: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(17, 24, 39, .72); /* slate-900ish */
+  color: #e6eefc;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 9999px;
+  padding: 4px 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 10px;  /* tiny */
+  line-height: 1.1;
+  opacity: 0;                /* hidden by default */
+  pointer-events: none;      /* non-interactive */
+  transition: opacity .25s ease, transform .25s ease;
+}
+.counter-bar .metric{
+  display: inline-flex; align-items: baseline; gap: 3px;
+  background: transparent; border: 0; padding: 0; min-height: 0;
+  color: inherit;
+}
+.counter-bar .label{ font-size: 10px; opacity: .75; margin: 0; }
+.counter-bar .value{ font-size: 10px; font-weight: 700; line-height: 1; }
+.counter-bar .metric + .metric{ padding-left: 8px; border-left: 1px solid rgba(255,255,255,.18); }
+.counter-bar.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.counter-bar.hidden{
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px) scale(.96);
+}
+@media (max-width: 420px){
+  .counter-bar{ font-size: 9px; padding: 4px 7px; gap: 5px; bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); }
+  .counter-bar .label, .counter-bar .value{ font-size: 9px; }
+}
+@media print { .counter-bar{ display: none !important; } }
+</style>
+<style>
+/* === Tiny footer counter v2: smaller + topmost === */
+.counter-bar{
+  z-index: 2147483000 !important;
+  padding: 3px 6px !important;
+  font-size: 9px !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px) !important;
+  gap: 5px !important;
+}
+.counter-bar .label, .counter-bar .value{ font-size: 9px !important; }
+.counter-bar .metric + .metric{ padding-left: 6px !important; }
+@media (max-width: 420px){
+  .counter-bar{ font-size: 8.5px !important; padding: 3px 6px !important; }
+  .counter-bar .label, .counter-bar .value{ font-size: 8.5px !important; }
+}
+</style>
+<style>
+/* === White background + black text theme for tiny footer counter === */
+.counter-bar{
+  background: #ffffff !important;
+  color: #111827 !important; /* near-black */
+  border: 1px solid #e5e7eb !important; /* light gray border */
+  box-shadow: 0 8px 24px rgba(0,0,0,.12) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.counter-bar .label{ color: #374151 !important; } /* gray-700 */
+.counter-bar .value{ color: #111827 !important; }
+.counter-bar .metric + .metric{ border-left: 1px solid #d1d5db !important; } /* gray-300 */
+@media (max-width: 420px){
+  .counter-bar{ background: #ffffff !important; color: #111827 !important; }
+}
+@media print { .counter-bar{ display: none !important; } }
+</style>
 </head>
 <body>
+<!-- Site Visitors (Total / Today / This Week / This Month) -->
+<section class="counter-bar" id="site-metrics" aria-label="Site visitor counters">
+  <div class="metric">
+    <span class="label">Total</span>
+    <span class="value" id="vis-total">—</span>
+  </div>
+  <div class="metric">
+    <span class="label">Today</span>
+    <span class="value" id="vis-today">—</span>
+  </div>
+  <div class="metric">
+    <span class="label">This Week</span>
+    <span class="value" id="vis-week">—</span>
+  </div>
+  <div class="metric">
+    <span class="label">This Month</span>
+    <span class="value" id="vis-month">—</span>
+  </div>
+</section>
+
   <img id="bg" alt="Decorative gradient background" src="" />
   <div id="scrim" aria-hidden="true"></div>
 
@@ -241,7 +396,7 @@
         <div class="cta">
           <!-- <a class="btn" href="housing/housing.html" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a> -->
           <!-- <a class="btn" href="/housing/" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a> -->
-          <a class="btn" href="housing/housing.html" aria-label="Open Housing Price Index Dashboard"> Open Housing Dashboard</a>
+          <a class="btn" href="housing.html" aria-label="Open Housing Price Index Dashboard"> Open Housing Dashboard</a>
         </div>
       </article>
 
@@ -257,7 +412,7 @@
     </section>
 
     <footer class="site">
-      <span>Copyright © 2023–2025</span>
+      <span><span id="copyright-sentinel">Copyright © 2023–2025</span></span>
     </footer>
 
     <noscript>
@@ -282,5 +437,166 @@
       if(el){ el.src = imgs[Math.floor(Math.random()*imgs.length)]; }
     })();
   </script>
+<script>
+(function(){
+  // ====== Settings ======
+  // true : count every refresh as a view
+  // false: "unique per browser & period" (Total once ever, Day/Week/Month once per period)
+  const FORCE_VIEW_MODE = false;
+
+  // Namespace per site (use host, replace dots)
+  const NAMESPACE = (location.hostname || 'localhost').replace(/\./g,'-');
+
+  // ====== Date helpers ======
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  const YMD = `${y}-${m}-${d}`;
+  const YM  = `${y}-${m}`;
+  function getISOWeek(date){
+    const tmp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = tmp.getUTCDay() || 7; // 1..7 Mon..Sun
+    tmp.setUTCDate(tmp.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(),0,1));
+    const weekNo = Math.ceil((((tmp - yearStart)/86400000) + 1) / 7);
+    return { year: tmp.getUTCFullYear(), week: String(weekNo).padStart(2,'0') };
+  }
+  const wk = getISOWeek(now);
+  const YW = `${wk.year}-W${wk.week}`;
+
+  // ====== Keys ======
+  const K_TOTAL = `site:total`;
+  const K_DAY   = `site:day:${YMD}`;
+  const K_WEEK  = `site:week:${YW}`;
+  const K_MONTH = `site:month:${YM}`;
+
+  // ====== CountAPI helpers ======
+  const base = 'https://api.countapi.xyz';
+  const hit = key => fetch(`${base}/hit/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(key)}`).then(r=>r.json());
+  const get = key => fetch(`${base}/get/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(key)}`).then(r=>r.json());
+
+  async function safeGet(key){
+    try{
+      const res = await get(key);
+      return (res && typeof res.value === 'number') ? res.value : 0;
+    }catch(e){ return 0; }
+  }
+
+  // LocalStorage markers for "unique per period"
+  function markKey(scope, token){
+    try{ localStorage.setItem(`viscount:${scope}`, token); }catch(e){}
+  }
+  function isMarked(scope, token){
+    try{ return localStorage.getItem(`viscount:${scope}`) === token; }catch(e){ return false; }
+  }
+
+  async function maybeHit(scope, key, token){
+    if (FORCE_VIEW_MODE || !isMarked(scope, token)){
+      try{ await hit(key); }catch(e){}
+      if (!FORCE_VIEW_MODE) markKey(scope, token);
+    }
+  }
+
+  (async function run(){
+    await Promise.all([
+      maybeHit('total', K_TOTAL, '1'),
+      maybeHit('day',   K_DAY,   YMD),
+      maybeHit('week',  K_WEEK,  YW),
+      maybeHit('month', K_MONTH, YM),
+    ]);
+
+    const [vTotal, vDay, vWeek, vMonth] = await Promise.all([
+      safeGet(K_TOTAL), safeGet(K_DAY), safeGet(K_WEEK), safeGet(K_MONTH)
+    ]);
+
+    const el = id => document.getElementById(id);
+    const fmt = n => (typeof n === 'number' ? n.toLocaleString() : String(n));
+
+    if (el('vis-total')) el('vis-total').textContent = fmt(vTotal);
+    if (el('vis-today')) el('vis-today').textContent = fmt(vDay);
+    if (el('vis-week'))  el('vis-week').textContent  = fmt(vWeek);
+    if (el('vis-month')) el('vis-month').textContent = fmt(vMonth);
+  })();
+})();
+</script>
+<script>
+(function(){
+  const bar = document.querySelector('.counter-bar');
+  if(!bar) return;
+  // start hidden
+  bar.classList.add('hidden');
+
+  let sentinel = document.getElementById('copyright-sentinel');
+  if(!sentinel){
+    // As a secondary fallback, try to find a footer element.
+    sentinel = document.querySelector('footer') || document.body;
+  }
+
+  try{
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          bar.classList.add('show'); bar.classList.remove('hidden');
+        }else{
+          bar.classList.remove('show'); bar.classList.add('hidden');
+        }
+      });
+    }, { root: null, threshold: 0, rootMargin: '0px 0px -20% 0px' });
+    obs.observe(sentinel);
+  }catch(e){
+    // If IntersectionObserver is not available, just show it near the bottom after slight delay.
+    setTimeout(()=>{ bar.classList.add('show'); bar.classList.remove('hidden'); }, 1200);
+  }
+})();
+</script>
+<script id="visitor-counter-visibility-controller-v2">
+(function(){
+  const bar = document.querySelector('.counter-bar');
+  if(!bar) return;
+  bar.classList.add('hidden');
+
+  const show = ()=>{ bar.classList.add('show'); bar.classList.remove('hidden'); };
+  const hide = ()=>{ bar.classList.remove('show'); bar.classList.add('hidden'); };
+
+  // Try IntersectionObserver on copyright sentinel or footer
+  let ioUsed = false;
+  let sentinel = document.getElementById('copyright-sentinel') || document.querySelector('footer');
+  try{
+    if (sentinel && 'IntersectionObserver' in window){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ e.isIntersecting ? show() : hide(); });
+      }, { root: null, threshold: 0 });
+      obs.observe(sentinel);
+      ioUsed = true;
+    }
+  }catch(e){ /* ignore */ }
+
+  // Scroll fallback: show when near bottom (>=92% scrolled)
+  function nearBottom(){
+    const doc = document.documentElement || document.body;
+    const total = Math.max(doc.scrollHeight, window.innerHeight);
+    const progress = (window.scrollY + window.innerHeight) / total;
+    return progress >= 0.92;
+  }
+  function check(){ nearBottom() ? show() : hide(); }
+
+  function throttle(fn, delay){
+    let t = 0, pend = false;
+    return function(){
+      const now = Date.now();
+      if(now - t > delay){ t = now; fn(); }
+      else if(!pend){ pend = true; setTimeout(()=>{ pend = false; t = Date.now(); fn(); }, delay); }
+    };
+  }
+
+  window.addEventListener('scroll', throttle(check, 120), { passive: true });
+  window.addEventListener('resize', throttle(check, 120));
+  // Run once on load
+  check();
+
+  // If IO is used, scroll fallback will still keep it consistent.
+})();
+</script>
 </body>
 </html>
