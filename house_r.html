@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Excel Timeseries Viewer — Robust (Long/Wide)</title>
+<meta name="description" content="Loads an external Excel file (no data embedded) and visualizes time series by region. Supports Redfin-style long format and Zillow-style wide format. Exports PNG/CSV/XLSX." />
+<style>
+  :root {
+    --bg: #0b1220;
+    --card: #121a2b;
+    --text: #e6eefc;
+    --muted: #9fb3d1;
+    --accent: #94b9ff;
+    --border: #1e2a44;
+    --header-h: 72px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  header { padding: 12px 16px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(148,185,255,0.08), transparent); }
+  header .hrow { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  header h1 { margin: 0; font-size: 18px; }
+  .wrap { display:grid; grid-template-columns: 340px 1fr; gap: 16px; padding: 16px; height: calc(100dvh - var(--header-h)); }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; min-height: 0; display:flex; flex-direction:column; }
+  .panel h2 { margin: 0 0 10px; font-size: 15px; color: var(--accent); }
+  .controls { display: grid; gap: 10px; }
+  .row { display:flex; gap:10px; align-items:end; flex-wrap: wrap; }
+  label { display:block; font-size: 12px; color: var(--muted); margin-bottom:4px; }
+  select, input[type="number"], input[type="text"] {
+    padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); background: #0e1727; color: var(--text);
+  }
+  input[type="checkbox"] { transform: translateY(1px); }
+  .btns { display:flex; flex-wrap:wrap; gap:8px; }
+  button { border:1px solid var(--border); background:#12203a; color:var(--text); padding:8px 12px; border-radius:10px; cursor:pointer; }
+  button:hover { background:#16274a; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; overflow: auto; padding-right: 4px; }
+  .chip { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); background:#0f1a30; padding:6px 10px; border-radius:999px; font-size:13px; white-space:nowrap; }
+  .chip input { accent-color:#6ea0ff; }
+  .chart-card { position:relative; min-height: 360px; flex:1 1 auto; overflow:hidden; }
+  canvas { width:100% !important; height:100% !important; }
+  .legend-wrap { display:flex; align-items:center; gap:8px; padding:0 0 8px; flex-wrap:wrap; }
+  .legend-item { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--border); background:#0f1a30; border-radius:999px; font-size:12px; white-space:nowrap; }
+  .legend-dot { width:10px; height:10px; border-radius:50%; border:2px solid rgba(255,255,255,0.6); }
+  .status { font-size:12px; color: var(--muted); }
+  .error { color: #ffb7b7; }
+  @media (max-width: 1000px){
+    .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style id="patch-state-multi-css">
+/* Patch: multi-select State box + left panel scroll */
+aside.panel { overflow: auto; }
+.state-block input{ width:100%; padding:6px; }
+</style>
+
+
+<style id="mobile-focus-css">
+/* Mobile chart focus + menu-only modes */
+body.focus-chart header,
+body.focus-chart aside.panel { display: none !important; }
+body.focus-chart .wrap { grid-template-columns: 1fr; gap: 0; padding: 0; height: 100dvh; }
+body.focus-chart main.panel { border: none; border-radius: 0; padding: 0; }
+
+/* Before Apply on mobile: show ONLY menu (hide chart area) */
+body.mobile-menu-only main.panel { display: none !important; }
+body.mobile-menu-only header, 
+body.mobile-menu-only aside.panel { display: block !important; }
+
+/* Floating 'Controls' button appears only in focus mode */
+#btnShowControls.floating {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background:#12203a;
+  color: var(--text);
+  z-index: 9999;
+  display: none;
+}
+body.focus-chart #btnShowControls.floating { display: inline-flex; }
+
+@media (max-width: 1000px) {
+  .chart-card { min-height: 65dvh; }
+}
+</style>
+
+
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>Excel Timeseries Viewer</h1>
+    <div class="status" id="status">Waiting for Excel…</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="panel">
+    <h2>Controls</h2>
+    <div class="controls">
+      <div class="row">
+        <div>
+          <label for="stateSelect">State</label>
+          <div class="state-block"><label for="stateSearch">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:180px;overflow:auto;"></select></div>
+        </div>
+        <div>
+          <label for="metricSelect">Metric</label>
+          <select id="metricSelect"></select>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <label style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="onlySA" /> SA only
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label for="search">Search city/region</label>
+        <input id="search" type="text" placeholder="Type to filter regions…" />
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="rankSide">Ranking</label>
+          <div class="btns">
+            <select id="rankSide"><option value="top" selected>Top</option><option value="bottom">Bottom</option></select>
+            <select id="rankType"><option value="count" selected>Count</option><option value="percentile">Percentile</option></select>
+            <input id="rankValue" type="number" min="1" max="100" value="10" style="max-width:100px"/>
+            <button id="applyRank" type="button">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button id="btnOpen">Select Excel File</button>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" />
+        <button id="dlPNG">Download PNG</button>
+        <button id="dlCSV">Download CSV</button>
+        <button id="dlXLSX">Download XLSX</button>
+      </div>
+
+      <div class="chips" id="chips"></div>
+      <div class="status" id="parseSummary"></div>
+    </div>
+  </aside>
+
+  <main class="panel">
+    <h2>Chart</h2>
+    <div class="legend-wrap" id="legend"></div>
+    <div class="chart-card"><canvas id="chart"></canvas></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const $ = (s, r=document)=>r.querySelector(s);
+  const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+  const fmt = (n)=>(n==null||isNaN(n))?"":new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(n);
+  const statusEl = $("#status");
+  const parseEl = $("#parseSummary");
+
+  // Excel candidates (same folder)
+  const EXCEL_CANDIDATES = [
+    new URL("./house_r.xlsx", location.href).href,
+    new URL("./data.xlsx", location.href).href,
+    new URL("./6c31ca85-70e8-4f7b-a826-b01ca33f5fbd.xlsx", location.href).href,
+    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/main/housing/house_r.xlsx"
+  ];
+
+  let seriesAll = []; // [{name,label,state,dates[],values[]}]
+  let numericColumns = []; // only for long-format selector
+  let selectedMetric = null;
+  let isSAOnly = false;
+
+  function setStatus(msg, isError=false){
+    statusEl.textContent = msg;
+    statusEl.classList.toggle("error", !!isError);
+  }
+  function setParseSummary(msg){
+    parseEl.textContent = msg || "";
+  }
+
+  // Utilities
+  function parseExcelDateNumber(n){
+    // Excel epoch: 1899-12-30
+    try {
+      const epoch = Date.UTC(1899, 11, 30);
+      const ms = epoch + Math.round(Number(n) * 86400000);
+      const d = new Date(ms);
+      return d.toISOString().slice(0,10);
+    } catch(e){ return null; }
+  }
+  function parseDateLike(s){
+    if (s == null) return null;
+    if (typeof s === "number" && isFinite(s)) return parseExcelDateNumber(s);
+    const str = String(s).trim();
+    if (!str) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;        // ISO
+    if (/^\d{4}-\d{2}$/.test(str))   return str + "-01";     // YYYY-MM → first day
+    if (/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(str)){
+      const [y,m,d] = str.split("/").map(x=>parseInt(x,10));
+      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    }
+    if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)){
+      const [m,d,y] = str.split("/").map(x=>parseInt(x,10));
+      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    }
+    if (/^\d{1,2}\/\d{4}$/.test(str)){ // M/YYYY → first day
+      const [m,y] = str.split("/").map(x=>parseInt(x,10));
+      return `${y}-${String(m).padStart(2,'0')}-01`;
+    }
+    if (/^[A-Za-z]{3,9}\s+\d{4}$/.test(str)){ // "Jan 2020"
+      const dt = new Date(str + " 01");
+      if(!isNaN(dt.valueOf())) return dt.toISOString().slice(0,10);
+    }
+    if (/^\d{6}$/.test(str)){ // YYYYMM
+      const y = str.slice(0,4), m = str.slice(4);
+      return `${y}-${m}-01`;
+    }
+    return str;
+  }
+
+  function detectLongFormatHeaders(header){
+    const h = new Set(header.map(x=>String(x||"").trim().toUpperCase()));
+    // Redfin-like
+    if (h.has("PERIOD_BEGIN") || h.has("PERIOD_END")) return true;
+    if (h.has("DATE")) return true;
+    if (h.has("YEAR") && h.has("MONTH")) return true;
+    return false;
+  }
+
+  function extractNumericColumns(rows, header, metaColsUpper){
+    const upper = header.map(h=>String(h||"").trim().toUpperCase());
+    const numericSet = new Set();
+    const N = Math.min(rows.length, 1000);
+    for (let c=0; c<header.length; c++){
+      const colU = upper[c];
+      if (metaColsUpper.has(colU)) continue;
+      let seenNumeric = 0, seenAny = 0;
+      for (let r=0; r<N; r++){
+        const v = rows[r][header[c]];
+        if (v === null || v === undefined || v === "") continue;
+        seenAny++;
+        const num = Number(String(v).replace(/[, ]/g,""));
+        if (!Number.isNaN(num)) seenNumeric++;
+      }
+      if (seenAny > 0 && seenNumeric / seenAny > 0.6){ // mostly numeric
+        numericSet.add(header[c]);
+      }
+    }
+    return Array.from(numericSet);
+  }
+
+  function buildSeriesFromWorkbook(wb){
+    const sheetName = wb.SheetNames[0];
+    const ws = wb.Sheets[sheetName];
+    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
+    if (!aoa || !aoa.length){ throw new Error("Empty sheet"); }
+    // Find header row: choose the row with maximum number of non-empty cells
+    let hdrIdx = 0, maxFilled = 0;
+    for (let i=0; i<Math.min(10, aoa.length); i++){
+      const filled = aoa[i].filter(x=>x!==null && x!=="").length;
+      if (filled > maxFilled){ maxFilled = filled; hdrIdx = i; }
+    }
+    const header = aoa[hdrIdx].map(h => String(h||"").trim());
+    const rows = aoa.slice(hdrIdx+1).map(r => {
+      const obj = {};
+      header.forEach((h, i) => { obj[h] = r[i]; });
+      return obj;
+    });
+
+    // Decide long vs wide
+    const isLong = detectLongFormatHeaders(header);
+    if (isLong) return buildFromLong(rows, header);
+    return buildFromWide(rows, header);
+  }
+
+  function buildFromLong(rows, header){
+    // Meta columns and likely date columns
+    const upper = new Set(header.map(h=>String(h||"").trim().toUpperCase()));
+    const dateCol = upper.has("PERIOD_BEGIN") ? header[header.map(h=>h.toUpperCase()).indexOf("PERIOD_BEGIN")]
+                  : upper.has("DATE") ? header[header.map(h=>h.toUpperCase()).indexOf("DATE")]
+                  : null;
+    const yearCol = upper.has("YEAR") ? header[header.map(h=>h.toUpperCase()).indexOf("YEAR")] : null;
+    const monthCol = upper.has("MONTH") ? header[header.map(h=>h.toUpperCase()).indexOf("MONTH")] : null;
+
+    const cityCol  = ["CITY","REGION","REGION_NAME","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+    const stateCol = ["STATE","STATE_NAME","STATE_CODE"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+    const saCol    = header.find(h=>h.toUpperCase()==="IS_SEASONALLY_ADJUSTED");
+
+    const metaUpper = new Set(["PERIOD_BEGIN","PERIOD_END","DATE","YEAR","MONTH","REGION_TYPE","REGION_TYPE_ID","TABLE_ID","IS_SEASONALLY_ADJUSTED","REGION","CITY","STATE","STATE_CODE","STATE_NAME","PROPERTY_TYPE","PROPERTY_TYPE_ID","GEO_NAME","GEO_TYPE","GEO_CODE"]);
+    numericColumns = extractNumericColumns(rows, header, metaUpper);
+
+    // Default metric preference
+    const preference = ["MEDIAN_SALE_PRICE","MEDIAN_LIST_PRICE","INVENTORY","NEW_LISTINGS","PENDING_SALES","MEDIAN_DOM","AVG_SALE_TO_LIST","PRICE_DROPS"];
+    selectedMetric = preference.find(p => header.some(h=>h.toUpperCase()===p)) || numericColumns[0];
+    populateMetricSelect();
+
+    const wantSA = isSAOnly;
+    const groups = new Map(); // key -> {name,label,state,dates,values}
+    let usedRows = 0;
+
+    for (const r of rows){
+      if (saCol && wantSA){
+        const v = r[saCol];
+        if (!(v===1 || v==="1" || String(v).toLowerCase()==="true")) continue;
+      }
+      let date;
+      if (dateCol){
+        date = parseDateLike(r[dateCol]);
+      } else if (yearCol && monthCol){
+        const y = r[yearCol], m = r[monthCol];
+        if (y!=null && m!=null) date = `${String(y).padStart(4,"0")}-${String(m).padStart(2,"0")}-01`;
+      }
+      if (!date) continue;
+
+      const valRaw = r[selectedMetric];
+      const num = (valRaw==null || valRaw==="") ? null : Number(String(valRaw).replace(/[, ]/g,""));
+      if (num==null || Number.isNaN(num)) continue;
+
+      const name = r[cityCol] ?? r[stateCol] ?? "Region";
+      const state = r[stateCol] ?? "";
+      const label = state ? `${name} (${state})` : String(name);
+      const key = label;
+
+      if (!groups.has(key)){
+        groups.set(key, { name: String(name), label, state: String(state||"Unknown"), dates: [], values: [] });
+      }
+      const g = groups.get(key);
+      g.dates.push(date);
+      g.values.push(num);
+      usedRows++;
+    }
+
+    // Sort each group by date
+    const out = [];
+    groups.forEach(g => {
+      const zip = g.dates.map((d,i)=>({d, v:g.values[i]})).sort((a,b)=>String(a.d).localeCompare(String(b.d)));
+      g.dates = zip.map(z=>z.d); g.values = zip.map(z=>z.v);
+      out.push(g);
+    });
+
+    setParseSummary(`Detected long format. Metric: ${selectedMetric}. Regions: ${out.length}. Rows used: ${usedRows}.`);
+    return out;
+  }
+
+  function buildFromWide(rows, header){
+    // Assume many date columns across; find meta columns, rest are dates
+    const metaCols = ["REGIONID","SIZERANK","REGIONNAME","REGIONTYPE","STATENAME","STATE","CITY","METRO","COUNTYNAME","GEO_NAME","GEO_TYPE","GEO_CODE"];
+    const upper = header.map(h=>String(h||"").trim().toUpperCase());
+    const dateCols = header.filter((h,i)=>!metaCols.includes(upper[i]));
+    const dates = dateCols.map(parseDateLike);
+
+    const nameCol = ["REGIONNAME","CITY","REGION","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+    const stateCol = ["STATENAME","STATE","STATE_CODE","STATE_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+
+    const out = [];
+    let used = 0;
+    for (const r of rows){
+      const name = r[nameCol] ?? "Region";
+      const st = r[stateCol] ?? "";
+      const values = dateCols.map(c => {
+        const v = r[c];
+        if (v==null || v==="") return null;
+        const num = Number(String(v).replace(/[, ]/g,""));
+        return Number.isNaN(num) ? null : num;
+      });
+      out.push({ name: String(name), label: st ? `${name} (${st})` : String(name), state: String(st||"Unknown"), dates, values });
+      used++;
+    }
+    setParseSummary(`Detected wide format. Regions: ${out.length}. Dates: ${dates.length}.`);
+    return out;
+  }
+
+  function populateMetricSelect(){
+    const sel = $("#metricSelect");
+    sel.innerHTML = "";
+    if (!numericColumns || !numericColumns.length){
+      const opt = document.createElement("option");
+      opt.value = ""; opt.textContent = "(no numeric columns found)";
+      sel.appendChild(opt);
+      sel.disabled = true;
+      return;
+    }
+    numericColumns.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c; opt.textContent = c;
+      sel.appendChild(opt);
+    });
+    sel.value = selectedMetric || numericColumns[0];
+    sel.disabled = false;
+  }
+
+  function uniqueStates(series){
+    const s = new Set(series.map(x=>x.state).filter(Boolean));
+    return ["All States", ...Array.from(s).sort((a,b)=>a.localeCompare(b))];
+  }
+
+  function rebuildStateSelect(){
+    const sel = $("#stateSelect");
+    sel.innerHTML = "";
+    uniqueStates(seriesAll).forEach(st => {
+      const opt = document.createElement("option");
+      opt.value = st; opt.textContent = st;
+      sel.appendChild(opt);
+    });
+    sel.value = "All States";
+  }
+
+  
+  function getSelectedStates(){
+    const sel = $("#stateSelect");
+    if(!sel) return [];
+    // collect all selected (ignore hidden so filtered-out items don't sneak in)
+    const vals = Array.from(sel.options).filter(o => o.selected && !o.hidden).map(o => o.value);
+    return vals;
+  }
+
+  function filteredSeries(){
+    const states = getSelectedStates();
+    const q = ($("#search").value || "").toLowerCase().trim();
+    // If nothing selected OR "All States" included, don't filter by state
+    const noStateFilter = (states.length === 0) || states.includes("All States");
+    return seriesAll
+      .filter(s => noStateFilter || states.includes(s.state))
+      .filter(s => !q || (s.label||s.name).toLowerCase().includes(q));
+  }
+
+
+  function rebuildChips(){
+    const chips = $("#chips");
+    const base = filteredSeries();
+    chips.innerHTML = "";
+    const defaultNames = (function(){
+      const scored = base.map(s=>({name:s.name, val:(s.values?.length? s.values[s.values.length-1] : -Infinity)})).sort((a,b)=>b.val-a.val);
+      return scored.slice(0, Math.min(10, scored.length)).map(x=>x.name);
+    })();
+    base.forEach(s => {
+      const id = "chk_" + btoa(s.label).replace(/=/g,"");
+      const div = document.createElement("label");
+      div.className = "chip";
+      div.innerHTML = `<input type="checkbox" id="${id}" data-name="${s.name}" ${defaultNames.includes(s.name)?"checked":""} /> <span>${s.label}</span>`;
+      chips.appendChild(div);
+    });
+  }
+  function selectedNames(){ return $$("#chips input[type='checkbox']:checked").map(el=>el.dataset.name); }
+  function setSelectionByNames(names){
+    const set = new Set(names);
+    $$("#chips input[type='checkbox']").forEach(el => el.checked = set.has(el.dataset.name));
+  }
+
+  let chart;
+  function palette(i){ const hue=(i*53)%360; return `hsl(${hue} 70% 60%)`; }
+  function buildDatasets(series, names){
+    const sel = new Set(names); let idx=0;
+    return series.filter(s=>sel.has(s.name)).map(s=>({
+      label: s.label,
+      data: (s.dates||[]).map((d,i)=>({x:d,y:(s.values||[])[i]})),
+      borderColor: palette(idx++),
+      backgroundColor: "transparent",
+      borderWidth: 2, pointRadius: 0, tension: 0.18
+    }));
+  }
+  function drawChart(){
+    const ctx = $("#chart").getContext("2d");
+    const base = filteredSeries();
+    const ds = buildDatasets(base, selectedNames());
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: "line",
+      data: { datasets: ds },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:"nearest", intersect:false },
+        plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(c)=> `${c.dataset.label}: ${fmt(c.parsed.y)}` }}},
+        scales:{ x:{ type:"time", time:{ unit:"month" }, grid:{ color:"rgba(255,255,255,0.06)" }, ticks:{ color:"#9fb3d1" } },
+                y:{ grid:{ color:"rgba(255,255,255,0.06)" }, ticks:{ color:"#9fb3d1", callback:(v)=>fmt(v)} } }
+      }
+    });
+    renderLegend(ds);
+  }
+  function updateChart(){
+    const base = filteredSeries();
+    const ds = buildDatasets(base, selectedNames());
+    chart.data.datasets = ds;
+    chart.update();
+    renderLegend(ds);
+  }
+  function renderLegend(datasets){
+    const cont = $("#legend");
+    cont.innerHTML = "";
+    if (datasets.length > 12){ return; }
+    datasets.forEach(ds => {
+      const span = document.createElement("span");
+      span.className = "legend-item";
+      const dot = document.createElement("span"); dot.className = "legend-dot"; dot.style.background = ds.borderColor;
+      const label = document.createElement("span"); label.textContent = ds.label;
+      span.appendChild(dot); span.appendChild(label);
+      cont.appendChild(span);
+    });
+  }
+
+  // Ranking
+  function applyRank(){
+    const base = filteredSeries();
+    if (!base.length) return;
+    const side = $("#rankSide").value;
+    const type = $("#rankType").value;
+    const val  = parseFloat($("#rankValue").value||"10");
+    const latest = base.map(s=>({name:s.name, value:(s.values?.length? s.values[s.values.length-1] : null)})).filter(x=>typeof x.value==="number");
+    if (!latest.length) return;
+    let names=[];
+    if (type==="count"){
+      const N = Math.max(1, Math.min(latest.length, Math.round(val)));
+      latest.sort((a,b)=>b.value-a.value);
+      names = (side==="top" ? latest.slice(0,N) : latest.slice(-N)).map(x=>x.name);
+    } else {
+      const p = Math.max(1, Math.min(100, val));
+      latest.sort((a,b)=>a.value-b.value);
+      const idx = Math.floor((p/100)*latest.length);
+      names = (side==="top" ? latest.slice(latest.length-idx) : latest.slice(0, idx)).map(x=>x.name);
+    }
+    setSelectionByNames(names);
+    updateChart();
+  }
+
+  // Downloads
+  $("#dlPNG").addEventListener("click", ()=>{
+    if (!chart) return;
+    const a = document.createElement("a");
+    a.download = "timeseries.png";
+    a.href = $("#chart").toDataURL("image/png", 1.0);
+    a.click();
+  });
+  $("#dlCSV").addEventListener("click", ()=>{
+    const base = filteredSeries(); const sel=new Set(selectedNames()); const chosen=base.filter(s=>sel.has(s.name));
+    if (!chosen.length) return;
+    const allDates = Array.from(new Set(chosen.flatMap(s=>s.dates||[]))).sort();
+    const header = ["Date", ...chosen.map(s=>s.label)];
+    const lines = [header.join(",")];
+    allDates.forEach(d => {
+      const row = [d];
+      chosen.forEach(s=>{
+        const idx = (s.dates||[]).indexOf(d);
+        row.push(idx>=0 ? (s.values||[])[idx] ?? "" : "");
+      });
+      lines.push(row.join(","));
+    });
+    const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download="timeseries_selected.csv"; a.click();
+    URL.revokeObjectURL(url);
+  });
+  $("#dlXLSX").addEventListener("click", ()=>{
+    const base = filteredSeries(); const sel=new Set(selectedNames()); const chosen=base.filter(s=>sel.has(s.name));
+    if (!chosen.length) return;
+    const allDates = Array.from(new Set(chosen.flatMap(s=>s.dates||[]))).sort();
+    const header = ["Date", ...chosen.map(s=>s.label)];
+    const aoa = [header];
+    allDates.forEach(d => {
+      const row=[d];
+      chosen.forEach(s=>{
+        const idx=(s.dates||[]).indexOf(d);
+        row.push(idx>=0 ? (s.values||[])[idx] ?? "" : "");
+      });
+      aoa.push(row);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Selected");
+    XLSX.writeFile(wb, "timeseries_selected.xlsx");
+  });
+
+  // Events
+  $("#stateSelect").addEventListener("change", ()=>{
+    rebuildChips();
+    // Auto-select ALL regions that match the current state filter so the chart
+    // reflects every selected state immediately.
+    try { setSelectionByNames(filteredSeries().map(s => s.name)); } catch(e){}
+    updateChart();
+  });
+  $("#metricSelect").addEventListener("change", (e)=>{
+    selectedMetric = e.target.value;
+    // rebuild from last workbook if long-format required; for simplicity, we request re-open or re-parse.
+    // We keep a cached 'rowsLong' for speed:
+    if (window._cachedLong){
+      seriesAll = window._cachedLongBuilder(window._cachedLong.rows, window._cachedLong.header);
+      rebuildStateSelect(); rebuildChips(); drawChart();
+    } else {
+      // No cache, just update chart (wide format ignores metric)
+      updateChart();
+    }
+  });
+  $("#onlySA").addEventListener("change", (e)=>{
+    isSAOnly = e.target.checked;
+    if (window._cachedLong){
+      seriesAll = window._cachedLongBuilder(window._cachedLong.rows, window._cachedLong.header);
+      rebuildStateSelect(); rebuildChips(); drawChart();
+    }
+  });
+  $("#search").addEventListener("input", ()=>{ rebuildChips(); updateChart(); });
+  $("#applyRank").addEventListener("click", applyRank);
+
+  $("#btnOpen").addEventListener("click", ()=>$("#fileInput").click());
+  $("#fileInput").addEventListener("change", (ev)=>{
+    const f = ev.target.files[0]; if (!f) return;
+    readWorkbookFromFile(f);
+  });
+
+  // Loading from URL (HTTP only)
+  async function tryAutoLoad(){
+    for (const url of EXCEL_CANDIDATES){
+      try {
+        setStatus("Loading " + url + " …");
+        const ab = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
+        const wb = XLSX.read(ab, { type:"array" });
+        await useWorkbook(wb);
+        setStatus("Loaded: " + url);
+        return;
+      } catch(e){
+        // try next
+      }
+    }
+    setStatus("No Excel found. Use “Select Excel File”."); 
+  }
+
+  function readWorkbookFromFile(file){
+    setStatus("Reading " + file.name + " …");
+    const reader = new FileReader();
+    reader.onload = async (e)=>{
+      try {
+        const wb = XLSX.read(new Uint8Array(e.target.result), { type:"array" });
+        await useWorkbook(wb);
+        setStatus("Loaded: " + file.name);
+      } catch(err){
+        setStatus("Failed: " + err.message, true);
+      }
+    };
+    reader.onerror = ()=> setStatus("File read error", true);
+    reader.readAsArrayBuffer(file);
+  }
+
+  async function useWorkbook(wb){
+    // parse once to detect long/wide and cache pieces needed to recompute with a different metric/SA filter
+    const sheetName = wb.SheetNames[0];
+    const ws = wb.Sheets[sheetName];
+    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
+    if (!aoa || !aoa.length) throw new Error("Empty sheet");
+    let hdrIdx=0, maxFilled=0;
+    for (let i=0; i<Math.min(10, aoa.length); i++){
+      const filled = aoa[i].filter(x=>x!==null && x!=="").length;
+      if (filled > maxFilled){ maxFilled = filled; hdrIdx = i; }
+    }
+    const header = aoa[hdrIdx].map(h => String(h||"").trim());
+    const rows = aoa.slice(hdrIdx+1).map(r => {
+      const obj = {}; header.forEach((h,i)=>{ obj[h]=r[i]; }); return obj;
+    });
+
+    const isLong = (function(){
+      const h = new Set(header.map(x=>String(x||"").trim().toUpperCase()));
+      return h.has("PERIOD_BEGIN") || h.has("DATE") || (h.has("YEAR") && h.has("MONTH"));
+    })();
+
+    if (isLong){
+      // Prepare a builder function that depends on selectedMetric and isSAOnly
+      window._cachedLong = { rows, header };
+      window._cachedLongBuilder = (rows, header)=>{
+        // temporary builder using current settings
+        const dummyWb = {SheetNames:[0], Sheets:{} }; // dummy not used
+        // Use a tiny wrapper around inner function to reuse code:
+        return (function(rows, header){
+          const metaUpper = new Set(["PERIOD_BEGIN","PERIOD_END","DATE","YEAR","MONTH","REGION_TYPE","REGION_TYPE_ID","TABLE_ID","IS_SEASONALLY_ADJUSTED","REGION","CITY","STATE","STATE_CODE","STATE_NAME","PROPERTY_TYPE","PROPERTY_TYPE_ID","GEO_NAME","GEO_TYPE","GEO_CODE"]);
+          numericColumns = extractNumericColumns(rows, header, metaUpper);
+          if (!selectedMetric){
+            const pref = ["MEDIAN_SALE_PRICE","MEDIAN_LIST_PRICE","INVENTORY","NEW_LISTINGS","PENDING_SALES","MEDIAN_DOM","AVG_SALE_TO_LIST","PRICE_DROPS"];
+            selectedMetric = pref.find(p => header.some(h=>h.toUpperCase()===p)) || numericColumns[0];
+          }
+          populateMetricSelect();
+
+          const upper = new Set(header.map(h=>String(h||"").trim().toUpperCase()));
+          const dateCol = upper.has("PERIOD_BEGIN") ? header[header.map(h=>h.toUpperCase()).indexOf("PERIOD_BEGIN")]
+                        : upper.has("DATE") ? header[header.map(h=>h.toUpperCase()).indexOf("DATE")]
+                        : null;
+          const yearCol = upper.has("YEAR") ? header[header.map(h=>h.toUpperCase()).indexOf("YEAR")] : null;
+          const monthCol = upper.has("MONTH") ? header[header.map(h=>h.toUpperCase()).indexOf("MONTH")] : null;
+
+          const cityCol  = ["CITY","REGION","REGION_NAME","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+          const stateCol = ["STATE","STATE_NAME","STATE_CODE"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+          const saCol    = header.find(h=>h.toUpperCase()==="IS_SEASONALLY_ADJUSTED");
+
+          const wantSA = isSAOnly;
+          const groups = new Map(); let usedRows = 0;
+          for (const r of rows){
+            if (saCol && wantSA){
+              const v = r[saCol];
+              if (!(v===1 || v==="1" || String(v).toLowerCase()==="true")) continue;
+            }
+            let date;
+            if (dateCol) date = parseDateLike(r[dateCol]);
+            else if (yearCol && monthCol){
+              const y=r[yearCol], m=r[monthCol];
+              if (y!=null && m!=null) date = `${String(y).padStart(4,"0")}-${String(m).padStart(2,"0")}-01`;
+            }
+            if (!date) continue;
+
+            const raw = r[selectedMetric];
+            const num = (raw==null||raw==="") ? null : Number(String(raw).replace(/[, ]/g,""));
+            if (num==null || Number.isNaN(num)) continue;
+
+            const name = r[cityCol] ?? r[stateCol] ?? "Region";
+            const state = r[stateCol] ?? "";
+            const label = state ? `${name} (${state})` : String(name);
+            const key = label;
+            if (!groups.has(key)){
+              groups.set(key, { name:String(name), label, state:String(state||"Unknown"), dates:[], values:[] });
+            }
+            const g = groups.get(key);
+            g.dates.push(date); g.values.push(num); usedRows++;
+          }
+          const out=[];
+          groups.forEach(g=>{
+            const zip=g.dates.map((d,i)=>({d,v:g.values[i]})).sort((a,b)=>String(a.d).localeCompare(String(b.d)));
+            g.dates=zip.map(z=>z.d); g.values=zip.map(z=>z.v); out.push(g);
+          });
+          setParseSummary(`Long format. Metric: ${selectedMetric}. Regions: ${out.length}. Rows used: ${usedRows}.`);
+          return out;
+        })(rows, header);
+      };
+      seriesAll = window._cachedLongBuilder(rows, header);
+    } else {
+      window._cachedLong = null;
+      window._cachedLongBuilder = null;
+      // Wide format parsing (metric not used)
+      seriesAll = (function(rows, header){
+        const metaCols = ["REGIONID","SIZERANK","REGIONNAME","REGIONTYPE","STATENAME","STATE","CITY","METRO","COUNTYNAME","GEO_NAME","GEO_TYPE","GEO_CODE"];
+        const upper = header.map(h=>String(h||"").trim().toUpperCase());
+        const dateCols = header.filter((h,i)=>!metaCols.includes(upper[i]));
+        const dates = dateCols.map(parseDateLike);
+        const nameCol = ["REGIONNAME","CITY","REGION","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+        const stateCol = ["STATENAME","STATE","STATE_CODE","STATE_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+        const out=[];
+        for (const r of rows){
+          const name = r[nameCol] ?? "Region";
+          const st = r[stateCol] ?? "";
+          const values = dateCols.map(c => {
+            const v = r[c]; if (v==null || v==="") return null;
+            const num = Number(String(v).replace(/[, ]/g,""));
+            return Number.isNaN(num) ? null : num;
+          });
+          out.push({ name:String(name), label: st?`${name} (${st})`:String(name), state:String(st||"Unknown"), dates, values });
+        }
+        setParseSummary(`Wide format. Regions: ${out.length}. Dates: ${dates.length}.`);
+        return out;
+      })(rows, header);
+    }
+
+    rebuildStateSelect();
+    rebuildChips();
+    drawChart();
+  }
+
+  tryAutoLoad();
+
+  // Initialize defaults
+  $("#stateSelect").innerHTML = "<option>All States</option>";
+  $("#metricSelect").innerHTML = "<option>(waiting)</option>";
+})();
+</script>
+
+<script id="patch-state-multi-js">
+document.addEventListener("DOMContentLoaded", function(){
+  var sel = document.getElementById("stateSelect");
+  var search = document.getElementById("stateSearch");
+  var btnAll = document.getElementById("btnStateAll");
+  var btnNone = document.getElementById("btnStateNone");
+  if(!sel) return;
+
+  function triggerChange(){
+    try{
+      var ev = new Event("change", {bubbles:true});
+      sel.dispatchEvent(ev);
+    }catch(e){}
+  }
+
+  if (btnAll){
+    btnAll.addEventListener("click", function(){
+      for (var i=0;i<sel.options.length;i++){ 
+        if (!sel.options[i].hidden) sel.options[i].selected = true;
+      }
+      triggerChange();
+    });
+  }
+
+  if (btnNone){
+    btnNone.addEventListener("click", function(){
+      for (var i=0;i<sel.options.length;i++){ sel.options[i].selected = false; }
+      triggerChange();
+      try {
+        var chips = document.getElementById("chips");
+        if (chips) chips.querySelectorAll("input[type=checkbox]").forEach(function(el){ el.checked = false;});
+      } catch(e){}
+    });
+  }
+
+  if (search){
+    search.addEventListener("input", function(){
+      var q = (search.value || "").toLowerCase();
+      for (var i=0;i<sel.options.length;i++){
+        var opt = sel.options[i];
+        var t = (opt.textContent || opt.label || "").toLowerCase();
+        // Use hidden attribute to filter the list while keeping selections
+        var match = !q || t.indexOf(q) !== -1;
+        opt.hidden = !match;
+      }
+    });
+  }
+});
+</script>
+
+
+<script id="mobile-focus-js">
+(function(){
+  const mqMobile = window.matchMedia('(max-width: 1000px)');
+  function enterFocus(){
+    document.body.classList.remove('mobile-menu-only');
+    document.body.classList.add('focus-chart');
+  }
+  function showMenuOnly(){
+    document.body.classList.remove('focus-chart');
+    document.body.classList.add('mobile-menu-only');
+  }
+
+  // Add floating Controls button (appears only in focus mode)
+  const btn = document.createElement('button');
+  btn.id = 'btnShowControls';
+  btn.className = 'floating';
+  btn.type = 'button';
+  btn.textContent = 'Controls';
+  btn.title = 'Show controls';
+  document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(btn); });
+  btn.addEventListener('click', showMenuOnly);
+
+  // On load: if mobile, start in "menu-only" mode
+  document.addEventListener('DOMContentLoaded', function(){
+    if (mqMobile.matches) showMenuOnly();
+    const applyBtn = document.getElementById('applyRank');
+    if (applyBtn){
+      applyBtn.addEventListener('click', function(){
+        if (mqMobile.matches){
+          // After Apply, go to chart-only focus
+          setTimeout(enterFocus, 0);
+        }
+      });
+    }
+  });
+
+  // --- Default to Michigan-only on first parse (desktop & mobile) ---
+  let ranDefault = false;
+  function defaultToMichiganOne(){
+    if (ranDefault) return;
+    ranDefault = true;
+    try{
+      const sel = document.getElementById('stateSelect');
+      if (!sel) return;
+      const opts = Array.from(sel.options);
+      // Prefer exact 'MI' or any option containing 'Michigan'
+      let miOpt = opts.find(o => o.value === 'MI' || /^Michigan$/i.test(o.value)) || opts.find(o => /Michigan/i.test(o.value));
+      // Clear previous selections
+      opts.forEach(o => { o.selected = false; });
+      if (miOpt){ miOpt.selected = true; }
+      // Rebuild chips for filtered list (avoid triggering the state change handler to prevent auto-select-all)
+      if (typeof rebuildChips === 'function') rebuildChips();
+
+      // Choose exactly one Michigan series if present; otherwise the first filtered series
+      const base = (typeof filteredSeries === 'function') ? filteredSeries() : [];
+      let target = base.find(s => /^Michigan(\s\((MI|Michigan)\))?$/i.test(s.label))
+               || base.find(s => /Michigan/i.test(s.label))
+               || base[0] || (Array.isArray(window.seriesAll) ? window.seriesAll[0] : null);
+      if (target && typeof setSelectionByNames === 'function') {
+        setSelectionByNames([target.name]);
+      }
+      if (typeof updateChart === 'function') updateChart();
+    }catch(e){ /* no-op */ }
+  }
+
+  // Observe parse summary text; once it updates (after workbook load), run default
+  document.addEventListener('DOMContentLoaded', function(){
+    const parseEl = document.getElementById('parseSummary');
+    if (!parseEl) return;
+    const obs = new MutationObserver(function(){
+      const t = (parseEl.textContent || '').toLowerCase();
+      if (t.includes('format') || t.includes('regions:')) {
+        defaultToMichiganOne();
+        obs.disconnect();
+      }
+    });
+    obs.observe(parseEl, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>
+
+
+</body>
+</html>
