@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Excel Timeseries Viewer — Robust (Long/Wide)</title>
-<meta name="description" content="Loads an external Excel file (no data embedded) and visualizes time series by region. Supports Redfin-style long format and Zillow-style wide format. Exports PNG/CSV/XLSX." />
+<title>House Information in USA — Interactive State Time Series (Michigan first)</title>
+<meta name="description" content="Interactive U.S. house information viewer. Load Excel (Zillow/Redfin style) or use the built‑in fallback to instantly view Michigan first. Export PNG/CSV/XLSX." />
 <style>
   :root {
     --bg: #0b1220;
@@ -99,23 +99,92 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
 </style>
 
 
+
+<meta name="robots" content="index, follow" />
+<meta property="og:title" content="House Information in USA" />
+<meta property="og:description" content="Fast, mobile‑friendly viewer of U.S. housing time series. Michigan shown first while external Excel loads." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "House Information in USA",
+  "operatingSystem": "All",
+  "applicationCategory": "BusinessApplication",
+  "description": "Interactive viewer for U.S. housing time series with Michigan-first fallback data and Excel import.",
+  "about": ["housing prices", "time series", "Zillow", "Redfin", "Michigan", "USA"],
+  "url": ""
+}
+</script>
+
+<style id="user-mobile-visibility">
+/* Make Apply big, especially on mobile */
+#btnApply.primary { font-size: 16px; padding: 14px 18px; border: 1px solid var(--border); background:#1a2f57; }
+#btnApply.primary:hover { background:#1e396a; }
+
+@media (max-width: 1000px) {
+  /* Bigger Apply for mobile and full width */
+  #btnApply.primary { font-size: 20px; padding: 18px 22px; width: 100%; }
+
+  /* Hide "SA only" block (it's the 3rd child div in the first row) */
+  .controls .row > div:nth-child(3) { display: none !important; }
+
+  /* Hide state search input under the state selector */
+  #stateSearch { display: none !important; }
+
+  /* Hide the "State" top label to reduce clutter on mobile */
+  label[for="stateSelect"] { display: none !important; }
+
+  /* Hide open/download buttons on mobile */
+  #btnOpen, #dlPNG, #dlCSV, #dlXLSX { display: none !important; }
+}
+/* Remove ranking UI everywhere */
+#rankBlock, label[for="rankSide"], #rankSide, #rankType, #rankValue, #applyRank { display: none !important; }
+
+/* Make the Apply button stand out next to other buttons */
+.btns #btnApply { order: -1; }
+</style>
+
+
+<style id="desktop-stack-order">
+@media (min-width: 1001px) {
+  /* Single-column vertical stack for the compound row */
+  .controls .row { 
+    display: grid !important; 
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+    gap: 10px !important;
+  }
+  /* Full-width Apply on desktop */
+  #btnApply { width: 100% !important; }
+  /* State list height */
+  #stateSelect { height: 320px !important; min-height: 320px !important; }
+  /* Ensure buttons wrap naturally into multiple lines */
+  .btns { display:flex !important; flex-wrap:wrap !important; gap:8px !important; }
+  .btns > * { flex: 0 1 auto; }
+}
+</style>
+
 </head>
+
 <body>
 <header>
   <div class="hrow">
-    <h1>Excel Timeseries Viewer</h1>
+    <h1>House Information in USA</h1>
     <div class="status" id="status">Waiting for Excel…</div>
   </div>
 </header>
 
 <div class="wrap">
   <aside class="panel">
-    <h2>Controls</h2>
+    <h2>Menu</h2>
     <div class="controls">
+      <div class="row"><button id="btnApply" class="primary" type="button">Apply</button></div>
       <div class="row">
         <div>
           <label for="stateSelect">State</label>
-          <div class="state-block"><label for="stateSearch">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:180px;overflow:auto;"></select></div>
+          <div class="state-block"><label for="stateSearch" style="display:none">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:320px;overflow:auto;"></select></div>
         </div>
         <div>
           <label for="metricSelect">Metric</label>
@@ -130,20 +199,11 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
       </div>
 
       <div>
-        <label for="search">Search city/region</label>
-        <input id="search" type="text" placeholder="Type to filter regions…" />
+        <label for="search">Search state</label>
+        <input id="search" type="text" placeholder="Type to filter states…" />
       </div>
 
-      <div class="row">
-        <div>
-          <label for="rankSide">Ranking</label>
-          <div class="btns">
-            <select id="rankSide"><option value="top" selected>Top</option><option value="bottom">Bottom</option></select>
-            <select id="rankType"><option value="count" selected>Count</option><option value="percentile">Percentile</option></select>
-            <input id="rankValue" type="number" min="1" max="100" value="10" style="max-width:100px"/>
-            <button id="applyRank" type="button">Apply</button>
-          </div>
-        </div>
+      <div id="rankBlock" style="display:none"></div>
       </div>
 
       <div class="btns">
@@ -186,6 +246,48 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
   let numericColumns = []; // only for long-format selector
   let selectedMetric = null;
   let isSAOnly = false;
+
+
+  // --- Fallback Michigan-first data so users see something instantly ---
+  function buildFallbackSeries(){
+    // last 24 months of simple synthetic data (month-start dates)
+    const months = [];
+    const values = [];
+    const today = new Date();
+    let y = today.getUTCFullYear();
+    let m = today.getUTCMonth(); // 0..11
+    for (let i=23;i>=0;i--){
+      const dt = new Date(Date.UTC(y, m - i, 1));
+      const yyyy = dt.getUTCFullYear();
+      const mm = String(dt.getUTCMonth()+1).padStart(2,'0');
+      months.push(`${yyyy}-${mm}-01`);
+      // synthetic gentle trend; purely placeholder until Excel loads
+      values.push(100000 + (23 - i) * 2500);
+    }
+    return [{
+      name: "Michigan",
+      label: "Michigan (MI)",
+      state: "MI",
+      dates: months,
+      values: values
+    }];
+  }
+
+  // Preload with fallback and render immediately (Michigan only)
+  try {
+    seriesAll = buildFallbackSeries();
+    rebuildStateSelect();
+    // Select MI
+    const sel = document.getElementById('stateSelect');
+    if (sel){
+      Array.from(sel.options).forEach(o => { o.selected = (o.value === 'MI' or o.value === 'Michigan' or /Michigan/i.test(o.value)); });
+    }
+    rebuildChips();
+    // Ensure only Michigan is checked
+    if (typeof setSelectionByNames === 'function') setSelectionByNames(["Michigan"]);
+    if (typeof drawChart === 'function') drawChart();
+  } catch(e) {}
+
 
   function setStatus(msg, isError=false){
     statusEl.textContent = msg;
@@ -859,12 +961,18 @@ document.addEventListener("DOMContentLoaded", function(){
   document.addEventListener('DOMContentLoaded', function(){
     if (mqMobile.matches) showMenuOnly();
     const applyBtn = document.getElementById('applyRank');
+    const applyBtn2 = document.getElementById('btnApply');
     if (applyBtn){
       applyBtn.addEventListener('click', function(){
         if (mqMobile.matches){
           // After Apply, go to chart-only focus
           setTimeout(enterFocus, 0);
         }
+      });
+    }
+    if (applyBtn2){
+      applyBtn2.addEventListener('click', function(){
+        if (mqMobile.matches){ setTimeout(enterFocus, 0); }
       });
     }
   });
