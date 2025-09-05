@@ -65,6 +65,33 @@ aside.panel { overflow: auto; }
 .state-block input{ width:100%; padding:6px; }
 </style>
 
+
+<style id="mobile-focus-css">
+/* Mobile chart focus mode */
+body.focus-chart header,
+body.focus-chart aside.panel { display: none !important; }
+body.focus-chart .wrap { grid-template-columns: 1fr; gap: 0; padding: 0; height: 100dvh; }
+body.focus-chart main.panel { border: none; border-radius: 0; padding: 0; }
+body.focus-chart .legend-wrap { padding: 8px 12px; }
+#btnShowControls.floating {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background:#12203a;
+  color: var(--text);
+  z-index: 9999;
+  display: none;
+}
+body.focus-chart #btnShowControls.floating { display: inline-flex; }
+
+@media (max-width: 1000px) {
+  .chart-card { min-height: 65dvh; }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -796,6 +823,85 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   }
 });
+</script>
+
+
+<script id="mobile-focus-js">
+(function(){
+  const mqMobile = window.matchMedia('(max-width: 1000px)');
+  function focusChartIfMobile(){
+    if (mqMobile.matches) {
+      document.body.classList.add('focus-chart');
+    }
+  }
+  function exitFocus(){
+    document.body.classList.remove('focus-chart');
+  }
+
+  // Add floating Controls button (appears only in focus mode)
+  const btn = document.createElement('button');
+  btn.id = 'btnShowControls';
+  btn.className = 'floating';
+  btn.type = 'button';
+  btn.textContent = 'Controls';
+  btn.title = 'Show controls';
+  document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(btn); });
+  btn.addEventListener('click', exitFocus);
+
+  // When Apply (ranking) is pressed, enter focus mode on mobile
+  document.addEventListener('DOMContentLoaded', function(){
+    const applyBtn = document.getElementById('applyRank');
+    if (applyBtn){
+      applyBtn.addEventListener('click', function(){
+        // wait one tick so ranking selection is applied first
+        setTimeout(focusChartIfMobile, 0);
+      });
+    }
+  });
+
+  // --- Default to Michigan-only on first parse (desktop & mobile) ---
+  let ranDefault = false;
+  function defaultToMichiganOne(){
+    if (ranDefault) return;
+    ranDefault = true;
+    try{
+      const sel = document.getElementById('stateSelect');
+      if (!sel) return;
+      const opts = Array.from(sel.options);
+      // Prefer exact 'MI' or any option containing 'Michigan'
+      let miOpt = opts.find(o => o.value === 'MI' || /^Michigan$/i.test(o.value)) || opts.find(o => /Michigan/i.test(o.value));
+      // Clear previous selections
+      opts.forEach(o => { o.selected = false; });
+      if (miOpt){ miOpt.selected = true; }
+      // Rebuild chips for filtered list (avoid triggering the state change handler to prevent auto-select-all)
+      if (typeof rebuildChips === 'function') rebuildChips();
+
+      // Choose exactly one Michigan series if present; otherwise the first filtered series
+      const base = (typeof filteredSeries === 'function') ? filteredSeries() : [];
+      let target = base.find(s => /^Michigan(\s\((MI|Michigan)\))?$/i.test(s.label))
+               || base.find(s => /Michigan/i.test(s.label))
+               || base[0] || (Array.isArray(window.seriesAll) ? window.seriesAll[0] : null);
+      if (target && typeof setSelectionByNames === 'function') {
+        setSelectionByNames([target.name]);
+      }
+      if (typeof updateChart === 'function') updateChart();
+    }catch(e){ /* no-op */ }
+  }
+
+  // Observe parse summary text; once it updates (after workbook load), run default
+  document.addEventListener('DOMContentLoaded', function(){
+    const parseEl = document.getElementById('parseSummary');
+    if (!parseEl) return;
+    const obs = new MutationObserver(function(){
+      const t = (parseEl.textContent || '').toLowerCase();
+      if (t.includes('format') || t.includes('regions:')) {
+        defaultToMichiganOne();
+        obs.disconnect();
+      }
+    });
+    obs.observe(parseEl, { childList: true, subtree: true, characterData: true });
+  });
+})();
 </script>
 
 </body>
