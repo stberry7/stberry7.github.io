@@ -243,7 +243,7 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
 
   // Excel candidates (same folder)
   const CSV_CANDIDATES = [
-    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing_r.csv"
+    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/main/housing/housing_r.csv"
   ];
 
 const EXCEL_CANDIDATES = [
@@ -303,6 +303,8 @@ const EXCEL_CANDIDATES = [
   function setStatus(msg, isError=false){
     statusEl.textContent = msg;
     statusEl.classList.toggle("error", !!isError);
+    // Mirror to parse summary area so users see it even if top-right status is hidden
+    if (parseEl) { parseEl.textContent = msg; parseEl.classList.toggle("error", !!isError); }
   }
   function setParseSummary(msg){
     parseEl.textContent = msg || "";
@@ -737,17 +739,20 @@ const EXCEL_CANDIDATES = [
 
   // Loading from URL (HTTP only)
   
+
 async function tryAutoLoad(){
   // Try CSV candidates first
   for (const url of CSV_CANDIDATES){
     try {
       setStatus("Loading " + url + " …");
-      const text = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); });
-      const wb = XLSX.read(text, { type:"string" }); // xlsx lib can parse CSV strings
+      const text = await fetch(url, { cache: "no-store" })
+        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); });
+      const wb = XLSX.read(text, { type:"string", raw:true }); // parse CSV
       await useWorkbook(wb);
-      setStatus("Loaded: " + url);
+      setStatus("Loaded: " + url); setParseSummary("Loaded data from: " + url);
       return;
     } catch(e){
+      setStatus("Failed CSV: " + url + " (" + (e && e.message || e) + ")", true);
       // try next CSV
     }
   }
@@ -755,17 +760,20 @@ async function tryAutoLoad(){
   for (const url of EXCEL_CANDIDATES){
     try {
       setStatus("Loading " + url + " …");
-      const ab = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
+      const ab = await fetch(url, { cache: "no-store" })
+        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
       const wb = XLSX.read(ab, { type:"array" });
       await useWorkbook(wb);
       setStatus("Loaded: " + url);
       return;
     } catch(e){
+      setStatus("Failed Excel: " + url + " (" + (e && e.message || e) + ")", true);
       // try next Excel
     }
   }
   setStatus("No data found. Use “Select Excel File”.", true);
 }
+
 )();
 </script>
 
