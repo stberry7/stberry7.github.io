@@ -179,7 +179,7 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
 <header>
   <div class="hrow">
     <h1>House Information in USA</h1>
-    <div class="status" id="status">Waiting for Excel…</div>
+    <div class="status" id="status">Waiting for Data…</div>
   </div>
 </header>
 
@@ -242,7 +242,11 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
   const parseEl = $("#parseSummary");
 
   // Excel candidates (same folder)
-  const EXCEL_CANDIDATES = [
+  const CSV_CANDIDATES = [
+    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/housing/housing_r.csv"
+  ];
+
+const EXCEL_CANDIDATES = [
     new URL("./house_r.xlsx", location.href).href,
     new URL("./data.xlsx", location.href).href,
     new URL("./6c31ca85-70e8-4f7b-a826-b01ca33f5fbd.xlsx", location.href).href,
@@ -732,163 +736,37 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
   });
 
   // Loading from URL (HTTP only)
-  async function tryAutoLoad(){
-    for (const url of EXCEL_CANDIDATES){
-      try {
-        setStatus("Loading " + url + " …");
-        const ab = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
-        const wb = XLSX.read(ab, { type:"array" });
-        await useWorkbook(wb);
-        setStatus("Loaded: " + url);
-        return;
-      } catch(e){
-        // try next
-      }
+  
+async function tryAutoLoad(){
+  // Try CSV candidates first
+  for (const url of CSV_CANDIDATES){
+    try {
+      setStatus("Loading " + url + " …");
+      const text = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); });
+      const wb = XLSX.read(text, { type:"string" }); // xlsx lib can parse CSV strings
+      await useWorkbook(wb);
+      setStatus("Loaded: " + url);
+      return;
+    } catch(e){
+      // try next CSV
     }
-    setStatus("No Excel found. Use “Select Excel File”."); 
   }
-
-  function readWorkbookFromFile(file){
-    setStatus("Reading " + file.name + " …");
-    const reader = new FileReader();
-    reader.onload = async (e)=>{
-      try {
-        const wb = XLSX.read(new Uint8Array(e.target.result), { type:"array" });
-        await useWorkbook(wb);
-        setStatus("Loaded: " + file.name);
-      } catch(err){
-        setStatus("Failed: " + err.message, true);
-      }
-    };
-    reader.onerror = ()=> setStatus("File read error", true);
-    reader.readAsArrayBuffer(file);
-  }
-
-  async function useWorkbook(wb){
-    // parse once to detect long/wide and cache pieces needed to recompute with a different metric/SA filter
-    const sheetName = wb.SheetNames[0];
-    const ws = wb.Sheets[sheetName];
-    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
-    if (!aoa || !aoa.length) throw new Error("Empty sheet");
-    let hdrIdx=0, maxFilled=0;
-    for (let i=0; i<Math.min(10, aoa.length); i++){
-      const filled = aoa[i].filter(x=>x!==null && x!=="").length;
-      if (filled > maxFilled){ maxFilled = filled; hdrIdx = i; }
+  // Then try Excel candidates
+  for (const url of EXCEL_CANDIDATES){
+    try {
+      setStatus("Loading " + url + " …");
+      const ab = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
+      const wb = XLSX.read(ab, { type:"array" });
+      await useWorkbook(wb);
+      setStatus("Loaded: " + url);
+      return;
+    } catch(e){
+      // try next Excel
     }
-    const header = aoa[hdrIdx].map(h => String(h||"").trim());
-    const rows = aoa.slice(hdrIdx+1).map(r => {
-      const obj = {}; header.forEach((h,i)=>{ obj[h]=r[i]; }); return obj;
-    });
-
-    const isLong = (function(){
-      const h = new Set(header.map(x=>String(x||"").trim().toUpperCase()));
-      return h.has("PERIOD_BEGIN") || h.has("DATE") || (h.has("YEAR") && h.has("MONTH"));
-    })();
-
-    if (isLong){
-      // Prepare a builder function that depends on selectedMetric and isSAOnly
-      window._cachedLong = { rows, header };
-      window._cachedLongBuilder = (rows, header)=>{
-        // temporary builder using current settings
-        const dummyWb = {SheetNames:[0], Sheets:{} }; // dummy not used
-        // Use a tiny wrapper around inner function to reuse code:
-        return (function(rows, header){
-          const metaUpper = new Set(["PERIOD_BEGIN","PERIOD_END","DATE","YEAR","MONTH","REGION_TYPE","REGION_TYPE_ID","TABLE_ID","IS_SEASONALLY_ADJUSTED","REGION","CITY","STATE","STATE_CODE","STATE_NAME","PROPERTY_TYPE","PROPERTY_TYPE_ID","GEO_NAME","GEO_TYPE","GEO_CODE"]);
-          numericColumns = extractNumericColumns(rows, header, metaUpper);
-          if (!selectedMetric){
-            const pref = ["MEDIAN_SALE_PRICE","MEDIAN_LIST_PRICE","INVENTORY","NEW_LISTINGS","PENDING_SALES","MEDIAN_DOM","AVG_SALE_TO_LIST","PRICE_DROPS"];
-            selectedMetric = pref.find(p => header.some(h=>h.toUpperCase()===p)) || numericColumns[0];
-          }
-          populateMetricSelect();
-
-          const upper = new Set(header.map(h=>String(h||"").trim().toUpperCase()));
-          const dateCol = upper.has("PERIOD_BEGIN") ? header[header.map(h=>h.toUpperCase()).indexOf("PERIOD_BEGIN")]
-                        : upper.has("DATE") ? header[header.map(h=>h.toUpperCase()).indexOf("DATE")]
-                        : null;
-          const yearCol = upper.has("YEAR") ? header[header.map(h=>h.toUpperCase()).indexOf("YEAR")] : null;
-          const monthCol = upper.has("MONTH") ? header[header.map(h=>h.toUpperCase()).indexOf("MONTH")] : null;
-
-          const cityCol  = ["CITY","REGION","REGION_NAME","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
-          const stateCol = ["STATE","STATE_NAME","STATE_CODE"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
-          const saCol    = header.find(h=>h.toUpperCase()==="IS_SEASONALLY_ADJUSTED");
-
-          const wantSA = isSAOnly;
-          const groups = new Map(); let usedRows = 0;
-          for (const r of rows){
-            if (saCol && wantSA){
-              const v = r[saCol];
-              if (!(v===1 || v==="1" || String(v).toLowerCase()==="true")) continue;
-            }
-            let date;
-            if (dateCol) date = parseDateLike(r[dateCol]);
-            else if (yearCol && monthCol){
-              const y=r[yearCol], m=r[monthCol];
-              if (y!=null && m!=null) date = `${String(y).padStart(4,"0")}-${String(m).padStart(2,"0")}-01`;
-            }
-            if (!date) continue;
-
-            const raw = r[selectedMetric];
-            const num = (raw==null||raw==="") ? null : Number(String(raw).replace(/[, ]/g,""));
-            if (num==null || Number.isNaN(num)) continue;
-
-            const name = r[cityCol] ?? r[stateCol] ?? "Region";
-            const state = r[stateCol] ?? "";
-            const label = state ? `${name} (${state})` : String(name);
-            const key = label;
-            if (!groups.has(key)){
-              groups.set(key, { name:String(name), label, state:String(state||"Unknown"), dates:[], values:[] });
-            }
-            const g = groups.get(key);
-            g.dates.push(date); g.values.push(num); usedRows++;
-          }
-          const out=[];
-          groups.forEach(g=>{
-            const zip=g.dates.map((d,i)=>({d,v:g.values[i]})).sort((a,b)=>String(a.d).localeCompare(String(b.d)));
-            g.dates=zip.map(z=>z.d); g.values=zip.map(z=>z.v); out.push(g);
-          });
-          setParseSummary(`Long format. Metric: ${selectedMetric}. Regions: ${out.length}. Rows used: ${usedRows}.`);
-          return out;
-        })(rows, header);
-      };
-      seriesAll = window._cachedLongBuilder(rows, header);
-    } else {
-      window._cachedLong = null;
-      window._cachedLongBuilder = null;
-      // Wide format parsing (metric not used)
-      seriesAll = (function(rows, header){
-        const metaCols = ["REGIONID","SIZERANK","REGIONNAME","REGIONTYPE","STATENAME","STATE","CITY","METRO","COUNTYNAME","GEO_NAME","GEO_TYPE","GEO_CODE"];
-        const upper = header.map(h=>String(h||"").trim().toUpperCase());
-        const dateCols = header.filter((h,i)=>!metaCols.includes(upper[i]));
-        const dates = dateCols.map(parseDateLike);
-        const nameCol = ["REGIONNAME","CITY","REGION","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
-        const stateCol = ["STATENAME","STATE","STATE_CODE","STATE_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
-        const out=[];
-        for (const r of rows){
-          const name = r[nameCol] ?? "Region";
-          const st = r[stateCol] ?? "";
-          const values = dateCols.map(c => {
-            const v = r[c]; if (v==null || v==="") return null;
-            const num = Number(String(v).replace(/[, ]/g,""));
-            return Number.isNaN(num) ? null : num;
-          });
-          out.push({ name:String(name), label: st?`${name} (${st})`:String(name), state:String(st||"Unknown"), dates, values });
-        }
-        setParseSummary(`Wide format. Regions: ${out.length}. Dates: ${dates.length}.`);
-        return out;
-      })(rows, header);
-    }
-
-    rebuildStateSelect();
-    rebuildChips();
-    drawChart();
   }
-
-  tryAutoLoad();
-
-  // Initialize defaults
-  $("#stateSelect").innerHTML = "<option>All States</option>";
-  $("#metricSelect").innerHTML = "<option>(waiting)</option>";
-})();
+  setStatus("No data found. Use “Select Excel File”.", true);
+}
+)();
 </script>
 
 <script id="patch-state-multi-js">
