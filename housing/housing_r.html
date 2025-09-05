@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>House Information in USA — Interactive State Time Series (Michigan first)</title>
-<meta name="description" content="Interactive U.S. house information viewer. Load Excel (Zillow/Redfin style) or use the built‑in fallback to instantly view Michigan first. Export PNG/CSV/XLSX." />
+<title>Excel Timeseries Viewer — Robust (Long/Wide)</title>
+<meta name="description" content="Loads an external Excel file (no data embedded) and visualizes time series by region. Supports Redfin-style long format and Zillow-style wide format. Exports PNG/CSV/XLSX." />
 <style>
   :root {
     --bg: #0b1220;
@@ -53,33 +53,6 @@
   @media (max-width: 1000px){
     .wrap { grid-template-columns: 1fr; }
   }
-
-/* === Desktop single-column layout for controls === */
-.controls .row > div { flex: 1 1 100%; }  /* stack State, Metric, SA only vertically */
-#btnApply { width: 100%; }
-
-/* State list fixed height and scroll */
-.state-block select { height: 320px !important; overflow: auto; }
-
-/* Ensure buttons wrap nicely */
-.btns { display: flex; flex-wrap: wrap; gap: 8px; }
-
-@media (max-width: 1000px) {
-  /* Hide SA only text+checkbox on mobile */
-  label:has(#onlySA), #onlySA { display: none !important; }
-  /* Hide State search on mobile */
-  #search { display: none !important; }
-}
-
-
-/* Metric dropdown full-width to match sidebar */
-#metricSelect { width: 100% !important; max-width: 100%; display: block; }
-
-
-/* Make 'All' and 'None' share the full sidebar width */
-.state-chip-row { display: flex; gap: 8px; }
-.state-chip-row > button { flex: 1 1 0; }
-
 </style>
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -92,106 +65,23 @@ aside.panel { overflow: auto; }
 .state-block input{ width:100%; padding:6px; }
 </style>
 
-
-<style id="mobile-focus-css">
-/* Mobile chart focus + menu-only modes */
-body.focus-chart header,
-body.focus-chart aside.panel { display: none !important; }
-body.focus-chart .wrap { grid-template-columns: 1fr; gap: 0; padding: 0; height: 100dvh; }
-body.focus-chart main.panel { border: none; border-radius: 0; padding: 0; }
-
-/* Before Apply on mobile: show ONLY menu (hide chart area) */
-body.mobile-menu-only main.panel { display: none !important; }
-body.mobile-menu-only header, 
-body.mobile-menu-only aside.panel { display: block !important; }
-
-/* Floating 'Controls' button appears only in focus mode */
-#btnShowControls.floating {
-  position: fixed;
-  bottom: 12px;
-  right: 12px;
-  border-radius: 999px;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  background:#12203a;
-  color: var(--text);
-  z-index: 9999;
-  display: none;
-}
-body.focus-chart #btnShowControls.floating { display: inline-flex; }
-
-@media (max-width: 1000px) {
-  .chart-card { min-height: 65dvh; }
-}
-</style>
-
-
-
-<meta name="robots" content="index, follow" />
-<meta property="og:title" content="House Information in USA" />
-<meta property="og:description" content="Fast, mobile‑friendly viewer of U.S. housing time series. Michigan shown first while external Excel loads." />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "House Information in USA",
-  "operatingSystem": "All",
-  "applicationCategory": "BusinessApplication",
-  "description": "Interactive viewer for U.S. housing time series with Michigan-first fallback data and Excel import.",
-  "about": ["housing prices", "time series", "Zillow", "Redfin", "Michigan", "USA"],
-  "url": ""
-}
-</script>
-
-<style id="user-mobile-visibility">
-/* Make Apply big, especially on mobile */
-#btnApply.primary { font-size: 16px; padding: 14px 18px; border: 1px solid var(--border); background:#1a2f57; }
-#btnApply.primary:hover { background:#1e396a; }
-
-@media (max-width: 1000px) {
-  /* Bigger Apply for mobile and full width */
-  #btnApply.primary { font-size: 20px; padding: 18px 22px; width: 100%; }
-
-  /* Hide "SA only" block (it's the 3rd child div in the first row) */
-  .controls .row > div:nth-child(3) { display: none !important; }
-
-  /* Hide state search input under the state selector */
-  #stateSearch { display: none !important; }
-
-  /* Hide the "State" top label to reduce clutter on mobile */
-  label[for="stateSelect"] { display: none !important; }
-
-  /* Hide open/download buttons on mobile */
-  #btnOpen, #dlPNG, #dlCSV, #dlXLSX { display: none !important; }
-}
-/* Remove ranking UI everywhere */
-#rankBlock, label[for="rankSide"], #rankSide, #rankType, #rankValue, #applyRank { display: none !important; }
-
-/* Make the Apply button stand out next to other buttons */
-.btns #btnApply { order: -1; }
-</style>
-
 </head>
-
 <body>
 <header>
   <div class="hrow">
-    <h1>House Information in USA</h1>
-    <div class="status" id="status">Waiting for Data…</div>
+    <h1>Excel Timeseries Viewer</h1>
+    <div class="status" id="status">Waiting for Excel…</div>
   </div>
 </header>
 
 <div class="wrap">
   <aside class="panel">
-    <h2>Menu</h2>
+    <h2>Controls</h2>
     <div class="controls">
-      <div class="row"><button id="btnApply" class="primary" type="button">Apply</button></div>
       <div class="row">
         <div>
           <label for="stateSelect">State</label>
-          <div class="state-block"><label for="stateSearch" style="display:none">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:180px;overflow:auto;"></select></div>
+          <div class="state-block"><label for="stateSearch">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:180px;overflow:auto;"></select></div>
         </div>
         <div>
           <label for="metricSelect">Metric</label>
@@ -206,11 +96,20 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
       </div>
 
       <div>
-        <label for="search">Search state</label>
-        <input id="search" type="text" placeholder="Type to filter states…" />
+        <label for="search">Search city/region</label>
+        <input id="search" type="text" placeholder="Type to filter regions…" />
       </div>
 
-      <div id="rankBlock" style="display:none"></div>
+      <div class="row">
+        <div>
+          <label for="rankSide">Ranking</label>
+          <div class="btns">
+            <select id="rankSide"><option value="top" selected>Top</option><option value="bottom">Bottom</option></select>
+            <select id="rankType"><option value="count" selected>Count</option><option value="percentile">Percentile</option></select>
+            <input id="rankValue" type="number" min="1" max="100" value="10" style="max-width:100px"/>
+            <button id="applyRank" type="button">Apply</button>
+          </div>
+        </div>
       </div>
 
       <div class="btns">
@@ -242,11 +141,7 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
   const parseEl = $("#parseSummary");
 
   // Excel candidates (same folder)
-  const CSV_CANDIDATES = [
-    "https://raw.githubusercontent.com/stberry7/stberry7.github.io/main/housing/housing_r.csv"
-  ];
-
-const EXCEL_CANDIDATES = [
+  const EXCEL_CANDIDATES = [
     new URL("./house_r.xlsx", location.href).href,
     new URL("./data.xlsx", location.href).href,
     new URL("./6c31ca85-70e8-4f7b-a826-b01ca33f5fbd.xlsx", location.href).href,
@@ -258,53 +153,9 @@ const EXCEL_CANDIDATES = [
   let selectedMetric = null;
   let isSAOnly = false;
 
-
-  // --- Fallback Michigan-first data so users see something instantly ---
-  function buildFallbackSeries(){
-    // last 24 months of simple synthetic data (month-start dates)
-    const months = [];
-    const values = [];
-    const today = new Date();
-    let y = today.getUTCFullYear();
-    let m = today.getUTCMonth(); // 0..11
-    for (let i=23;i>=0;i--){
-      const dt = new Date(Date.UTC(y, m - i, 1));
-      const yyyy = dt.getUTCFullYear();
-      const mm = String(dt.getUTCMonth()+1).padStart(2,'0');
-      months.push(`${yyyy}-${mm}-01`);
-      // synthetic gentle trend; purely placeholder until Excel loads
-      values.push(100000 + (23 - i) * 2500);
-    }
-    return [{
-      name: "Michigan",
-      label: "Michigan (MI)",
-      state: "MI",
-      dates: months,
-      values: values
-    }];
-  }
-
-  // Preload with fallback and render immediately (Michigan only)
-  try {
-    seriesAll = buildFallbackSeries();
-    rebuildStateSelect();
-    // Select MI
-    const sel = document.getElementById('stateSelect');
-    if (sel){
-      Array.from(sel.options).forEach(o => { o.selected = (o.value === 'MI' or o.value === 'Michigan' or /Michigan/i.test(o.value)); });
-    }
-    rebuildChips();
-    // Ensure only Michigan is checked
-    if (typeof setSelectionByNames === 'function') setSelectionByNames(["Michigan"]);
-    if (typeof drawChart === 'function') drawChart();
-  } catch(e) {}
-
-
   function setStatus(msg, isError=false){
     statusEl.textContent = msg;
     statusEl.classList.toggle("error", !!isError);
-    // Mirror to parse summary area so users see it even if top-right status is hidden
-    if (parseEl) { parseEl.textContent = msg; parseEl.classList.toggle("error", !!isError); }
   }
   function setParseSummary(msg){
     parseEl.textContent = msg || "";
@@ -738,43 +589,163 @@ const EXCEL_CANDIDATES = [
   });
 
   // Loading from URL (HTTP only)
-  
-
-async function tryAutoLoad(){
-  // Try CSV candidates first
-  for (const url of CSV_CANDIDATES){
-    try {
-      setStatus("Loading " + url + " …");
-      const text = await fetch(url, { cache: "no-store" })
-        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); });
-      const wb = XLSX.read(text, { type:"string", raw:true }); // parse CSV
-      await useWorkbook(wb);
-      setStatus("Loaded: " + url); setParseSummary("Loaded data from: " + url);
-      return;
-    } catch(e){
-      setStatus("Failed CSV: " + url + " (" + (e && e.message || e) + ")", true);
-      // try next CSV
+  async function tryAutoLoad(){
+    for (const url of EXCEL_CANDIDATES){
+      try {
+        setStatus("Loading " + url + " …");
+        const ab = await fetch(url).then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
+        const wb = XLSX.read(ab, { type:"array" });
+        await useWorkbook(wb);
+        setStatus("Loaded: " + url);
+        return;
+      } catch(e){
+        // try next
+      }
     }
+    setStatus("No Excel found. Use “Select Excel File”."); 
   }
-  // Then try Excel candidates
-  for (const url of EXCEL_CANDIDATES){
-    try {
-      setStatus("Loading " + url + " …");
-      const ab = await fetch(url, { cache: "no-store" })
-        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); });
-      const wb = XLSX.read(ab, { type:"array" });
-      await useWorkbook(wb);
-      setStatus("Loaded: " + url);
-      return;
-    } catch(e){
-      setStatus("Failed Excel: " + url + " (" + (e && e.message || e) + ")", true);
-      // try next Excel
-    }
-  }
-  setStatus("No data found. Use “Select Excel File”.", true);
-}
 
-)();
+  function readWorkbookFromFile(file){
+    setStatus("Reading " + file.name + " …");
+    const reader = new FileReader();
+    reader.onload = async (e)=>{
+      try {
+        const wb = XLSX.read(new Uint8Array(e.target.result), { type:"array" });
+        await useWorkbook(wb);
+        setStatus("Loaded: " + file.name);
+      } catch(err){
+        setStatus("Failed: " + err.message, true);
+      }
+    };
+    reader.onerror = ()=> setStatus("File read error", true);
+    reader.readAsArrayBuffer(file);
+  }
+
+  async function useWorkbook(wb){
+    // parse once to detect long/wide and cache pieces needed to recompute with a different metric/SA filter
+    const sheetName = wb.SheetNames[0];
+    const ws = wb.Sheets[sheetName];
+    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
+    if (!aoa || !aoa.length) throw new Error("Empty sheet");
+    let hdrIdx=0, maxFilled=0;
+    for (let i=0; i<Math.min(10, aoa.length); i++){
+      const filled = aoa[i].filter(x=>x!==null && x!=="").length;
+      if (filled > maxFilled){ maxFilled = filled; hdrIdx = i; }
+    }
+    const header = aoa[hdrIdx].map(h => String(h||"").trim());
+    const rows = aoa.slice(hdrIdx+1).map(r => {
+      const obj = {}; header.forEach((h,i)=>{ obj[h]=r[i]; }); return obj;
+    });
+
+    const isLong = (function(){
+      const h = new Set(header.map(x=>String(x||"").trim().toUpperCase()));
+      return h.has("PERIOD_BEGIN") || h.has("DATE") || (h.has("YEAR") && h.has("MONTH"));
+    })();
+
+    if (isLong){
+      // Prepare a builder function that depends on selectedMetric and isSAOnly
+      window._cachedLong = { rows, header };
+      window._cachedLongBuilder = (rows, header)=>{
+        // temporary builder using current settings
+        const dummyWb = {SheetNames:[0], Sheets:{} }; // dummy not used
+        // Use a tiny wrapper around inner function to reuse code:
+        return (function(rows, header){
+          const metaUpper = new Set(["PERIOD_BEGIN","PERIOD_END","DATE","YEAR","MONTH","REGION_TYPE","REGION_TYPE_ID","TABLE_ID","IS_SEASONALLY_ADJUSTED","REGION","CITY","STATE","STATE_CODE","STATE_NAME","PROPERTY_TYPE","PROPERTY_TYPE_ID","GEO_NAME","GEO_TYPE","GEO_CODE"]);
+          numericColumns = extractNumericColumns(rows, header, metaUpper);
+          if (!selectedMetric){
+            const pref = ["MEDIAN_SALE_PRICE","MEDIAN_LIST_PRICE","INVENTORY","NEW_LISTINGS","PENDING_SALES","MEDIAN_DOM","AVG_SALE_TO_LIST","PRICE_DROPS"];
+            selectedMetric = pref.find(p => header.some(h=>h.toUpperCase()===p)) || numericColumns[0];
+          }
+          populateMetricSelect();
+
+          const upper = new Set(header.map(h=>String(h||"").trim().toUpperCase()));
+          const dateCol = upper.has("PERIOD_BEGIN") ? header[header.map(h=>h.toUpperCase()).indexOf("PERIOD_BEGIN")]
+                        : upper.has("DATE") ? header[header.map(h=>h.toUpperCase()).indexOf("DATE")]
+                        : null;
+          const yearCol = upper.has("YEAR") ? header[header.map(h=>h.toUpperCase()).indexOf("YEAR")] : null;
+          const monthCol = upper.has("MONTH") ? header[header.map(h=>h.toUpperCase()).indexOf("MONTH")] : null;
+
+          const cityCol  = ["CITY","REGION","REGION_NAME","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+          const stateCol = ["STATE","STATE_NAME","STATE_CODE"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+          const saCol    = header.find(h=>h.toUpperCase()==="IS_SEASONALLY_ADJUSTED");
+
+          const wantSA = isSAOnly;
+          const groups = new Map(); let usedRows = 0;
+          for (const r of rows){
+            if (saCol && wantSA){
+              const v = r[saCol];
+              if (!(v===1 || v==="1" || String(v).toLowerCase()==="true")) continue;
+            }
+            let date;
+            if (dateCol) date = parseDateLike(r[dateCol]);
+            else if (yearCol && monthCol){
+              const y=r[yearCol], m=r[monthCol];
+              if (y!=null && m!=null) date = `${String(y).padStart(4,"0")}-${String(m).padStart(2,"0")}-01`;
+            }
+            if (!date) continue;
+
+            const raw = r[selectedMetric];
+            const num = (raw==null||raw==="") ? null : Number(String(raw).replace(/[, ]/g,""));
+            if (num==null || Number.isNaN(num)) continue;
+
+            const name = r[cityCol] ?? r[stateCol] ?? "Region";
+            const state = r[stateCol] ?? "";
+            const label = state ? `${name} (${state})` : String(name);
+            const key = label;
+            if (!groups.has(key)){
+              groups.set(key, { name:String(name), label, state:String(state||"Unknown"), dates:[], values:[] });
+            }
+            const g = groups.get(key);
+            g.dates.push(date); g.values.push(num); usedRows++;
+          }
+          const out=[];
+          groups.forEach(g=>{
+            const zip=g.dates.map((d,i)=>({d,v:g.values[i]})).sort((a,b)=>String(a.d).localeCompare(String(b.d)));
+            g.dates=zip.map(z=>z.d); g.values=zip.map(z=>z.v); out.push(g);
+          });
+          setParseSummary(`Long format. Metric: ${selectedMetric}. Regions: ${out.length}. Rows used: ${usedRows}.`);
+          return out;
+        })(rows, header);
+      };
+      seriesAll = window._cachedLongBuilder(rows, header);
+    } else {
+      window._cachedLong = null;
+      window._cachedLongBuilder = null;
+      // Wide format parsing (metric not used)
+      seriesAll = (function(rows, header){
+        const metaCols = ["REGIONID","SIZERANK","REGIONNAME","REGIONTYPE","STATENAME","STATE","CITY","METRO","COUNTYNAME","GEO_NAME","GEO_TYPE","GEO_CODE"];
+        const upper = header.map(h=>String(h||"").trim().toUpperCase());
+        const dateCols = header.filter((h,i)=>!metaCols.includes(upper[i]));
+        const dates = dateCols.map(parseDateLike);
+        const nameCol = ["REGIONNAME","CITY","REGION","GEO_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+        const stateCol = ["STATENAME","STATE","STATE_CODE","STATE_NAME"].map(t=>header.find(h=>h.toUpperCase()===t)).find(Boolean);
+        const out=[];
+        for (const r of rows){
+          const name = r[nameCol] ?? "Region";
+          const st = r[stateCol] ?? "";
+          const values = dateCols.map(c => {
+            const v = r[c]; if (v==null || v==="") return null;
+            const num = Number(String(v).replace(/[, ]/g,""));
+            return Number.isNaN(num) ? null : num;
+          });
+          out.push({ name:String(name), label: st?`${name} (${st})`:String(name), state:String(st||"Unknown"), dates, values });
+        }
+        setParseSummary(`Wide format. Regions: ${out.length}. Dates: ${dates.length}.`);
+        return out;
+      })(rows, header);
+    }
+
+    rebuildStateSelect();
+    rebuildChips();
+    drawChart();
+  }
+
+  tryAutoLoad();
+
+  // Initialize defaults
+  $("#stateSelect").innerHTML = "<option>All States</option>";
+  $("#metricSelect").innerHTML = "<option>(waiting)</option>";
+})();
 </script>
 
 <script id="patch-state-multi-js">
@@ -827,126 +798,5 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
-
-<script id="mobile-focus-js">
-(function(){
-  const mqMobile = window.matchMedia('(max-width: 1000px)');
-  function enterFocus(){
-    document.body.classList.remove('mobile-menu-only');
-    document.body.classList.add('focus-chart');
-  }
-  function showMenuOnly(){
-    document.body.classList.remove('focus-chart');
-    document.body.classList.add('mobile-menu-only');
-  }
-
-  // Add floating Controls button (appears only in focus mode)
-  const btn = document.createElement('button');
-  btn.id = 'btnShowControls';
-  btn.className = 'floating';
-  btn.type = 'button';
-  btn.textContent = 'Controls';
-  btn.title = 'Show controls';
-  document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(btn); });
-  btn.addEventListener('click', showMenuOnly);
-
-  // On load: if mobile, start in "menu-only" mode
-  document.addEventListener('DOMContentLoaded', function(){
-    if (mqMobile.matches) showMenuOnly();
-    const applyBtn = document.getElementById('applyRank');
-    const applyBtn2 = document.getElementById('btnApply');
-    if (applyBtn){
-      applyBtn.addEventListener('click', function(){
-        if (mqMobile.matches){
-          // After Apply, go to chart-only focus
-          setTimeout(enterFocus, 0);
-        }
-      });
-    }
-    if (applyBtn2){
-      applyBtn2.addEventListener('click', function(){
-        if (mqMobile.matches){ setTimeout(enterFocus, 0); }
-      });
-    }
-  });
-
-  // --- Default to Michigan-only on first parse (desktop & mobile) ---
-  let ranDefault = false;
-  function defaultToMichiganOne(){
-    if (ranDefault) return;
-    ranDefault = true;
-    try{
-      const sel = document.getElementById('stateSelect');
-      if (!sel) return;
-      const opts = Array.from(sel.options);
-      // Prefer exact 'MI' or any option containing 'Michigan'
-      let miOpt = opts.find(o => o.value === 'MI' || /^Michigan$/i.test(o.value)) || opts.find(o => /Michigan/i.test(o.value));
-      // Clear previous selections
-      opts.forEach(o => { o.selected = false; });
-      if (miOpt){ miOpt.selected = true; }
-      // Rebuild chips for filtered list (avoid triggering the state change handler to prevent auto-select-all)
-      if (typeof rebuildChips === 'function') rebuildChips();
-
-      // Choose exactly one Michigan series if present; otherwise the first filtered series
-      const base = (typeof filteredSeries === 'function') ? filteredSeries() : [];
-      let target = base.find(s => /^Michigan(\s\((MI|Michigan)\))?$/i.test(s.label))
-               || base.find(s => /Michigan/i.test(s.label))
-               || base[0] || (Array.isArray(window.seriesAll) ? window.seriesAll[0] : null);
-      if (target && typeof setSelectionByNames === 'function') {
-        setSelectionByNames([target.name]);
-      }
-      if (typeof updateChart === 'function') updateChart();
-    }catch(e){ /* no-op */ }
-  }
-
-  // Observe parse summary text; once it updates (after workbook load), run default
-  document.addEventListener('DOMContentLoaded', function(){
-    const parseEl = document.getElementById('parseSummary');
-    if (!parseEl) return;
-    const obs = new MutationObserver(function(){
-      const t = (parseEl.textContent || '').toLowerCase();
-      if (t.includes('format') || t.includes('regions:')) {
-        defaultToMichiganOne();
-        obs.disconnect();
-      }
-    });
-    obs.observe(parseEl, { childList: true, subtree: true, characterData: true });
-  });
-})();
-</script>
-
-
-<script>
-
-// === Reposition 'Search state' input into the State block (desktop) ===
-document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const stateBlock = document.querySelector('.state-block');
-    const searchWrap = document.querySelector('#search')?.parentElement;
-    if (stateBlock && searchWrap) {
-      // Insert after the All/None chip row if present, else at the top
-      const anchor = stateBlock.querySelector('#btnStateAll')?.parentElement || stateBlock;
-      // Move the whole label+input wrapper
-      stateBlock.insertBefore(searchWrap, anchor.nextSibling);
-    }
-  } catch(e) {}
-});
-
-</script>
-<script>
-
-// Ensure 'All' and 'None' buttons fill the sidebar width by marking their parent as a flex row
-document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const allBtn = document.getElementById('btnStateAll');
-    const noneBtn = document.getElementById('btnStateNone');
-    const parent = allBtn ? allBtn.parentElement : null;
-    if (parent && noneBtn && parent.contains(noneBtn)) {
-      parent.classList.add('state-chip-row');
-    }
-  } catch (e) { /* no-op */ }
-});
-
-</script>
 </body>
 </html>
