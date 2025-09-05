@@ -53,6 +53,33 @@
   @media (max-width: 1000px){
     .wrap { grid-template-columns: 1fr; }
   }
+
+/* === Desktop single-column layout for controls === */
+.controls .row > div { flex: 1 1 100%; }  /* stack State, Metric, SA only vertically */
+#btnApply { width: 100%; }
+
+/* State list fixed height and scroll */
+.state-block select { height: 320px !important; overflow: auto; }
+
+/* Ensure buttons wrap nicely */
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 1000px) {
+  /* Hide SA only text+checkbox on mobile */
+  label:has(#onlySA), #onlySA { display: none !important; }
+  /* Hide State search on mobile */
+  #search { display: none !important; }
+}
+
+
+/* Metric dropdown full-width to match sidebar */
+#metricSelect { width: 100% !important; max-width: 100%; display: block; }
+
+
+/* Make 'All' and 'None' share the full sidebar width */
+.state-chip-row { display: flex; gap: 8px; }
+.state-chip-row > button { flex: 1 1 0; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -146,26 +173,6 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
 .btns #btnApply { order: -1; }
 </style>
 
-
-<style id="desktop-stack-order">
-@media (min-width: 1001px) {
-  /* Single-column vertical stack for the compound row */
-  .controls .row { 
-    display: grid !important; 
-    grid-template-columns: 1fr !important;
-    align-items: start !important;
-    gap: 10px !important;
-  }
-  /* Full-width Apply on desktop */
-  #btnApply { width: 100% !important; }
-  /* State list height */
-  #stateSelect { height: 320px !important; min-height: 320px !important; }
-  /* Ensure buttons wrap naturally into multiple lines */
-  .btns { display:flex !important; flex-wrap:wrap !important; gap:8px !important; }
-  .btns > * { flex: 0 1 auto; }
-}
-</style>
-
 </head>
 
 <body>
@@ -184,7 +191,7 @@ body.focus-chart #btnShowControls.floating { display: inline-flex; }
       <div class="row">
         <div>
           <label for="stateSelect">State</label>
-          <div class="state-block"><label for="stateSearch" style="display:none">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:320px;overflow:auto;"></select></div>
+          <div class="state-block"><label for="stateSearch" style="display:none">States</label><input id="stateSearch" type="text" placeholder="Filter states…"><div class="row" style="gap:6px;margin-top:6px;"><button id="btnStateAll" type="button">All</button><button id="btnStateNone" type="button">None</button></div><select id="stateSelect" multiple size="8" style="width:100%;height:180px;overflow:auto;"></select></div>
         </div>
         <div>
           <label for="metricSelect">Metric</label>
@@ -1023,5 +1030,37 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 
 
+<script>
+
+// === Reposition 'Search state' input into the State block (desktop) ===
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const stateBlock = document.querySelector('.state-block');
+    const searchWrap = document.querySelector('#search')?.parentElement;
+    if (stateBlock && searchWrap) {
+      // Insert after the All/None chip row if present, else at the top
+      const anchor = stateBlock.querySelector('#btnStateAll')?.parentElement || stateBlock;
+      // Move the whole label+input wrapper
+      stateBlock.insertBefore(searchWrap, anchor.nextSibling);
+    }
+  } catch(e) {}
+});
+
+</script>
+<script>
+
+// Ensure 'All' and 'None' buttons fill the sidebar width by marking their parent as a flex row
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const allBtn = document.getElementById('btnStateAll');
+    const noneBtn = document.getElementById('btnStateNone');
+    const parent = allBtn ? allBtn.parentElement : null;
+    if (parent && noneBtn && parent.contains(noneBtn)) {
+      parent.classList.add('state-chip-row');
+    }
+  } catch (e) { /* no-op */ }
+});
+
+</script>
 </body>
 </html>
