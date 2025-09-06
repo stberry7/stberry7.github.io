@@ -2767,8 +2767,8 @@
 <script>
         // IMF WEO Data Integration
         const WEO_INDICATORS = {
-            // 📊 GDP (Gross Domestic Product) - Complete Set
-            'NY.GDP.MKTP.CD': { name: 'GDP (Nominal, current US$)', nameEng: 'GDP (current US$)', unit: 'Current US$', category: 'GDP' },
+            // 📊 GDP (Gross Domestic Product) - WEO Indicators
+            'NGDP_R': { name: 'GDP (Constant Prices)', nameEng: 'Gross domestic product, constant prices', unit: 'National currency', category: 'GDP' },
             'NY.GDP.MKTP.CN': { name: 'GDP (Nominal, local currency)', nameEng: 'GDP (current LCU)', unit: 'Local Currency', category: 'GDP' },
             'NY.GDP.MKTP.KD': { name: 'GDP (Real, constant US$)', nameEng: 'GDP (constant 2015 US$)', unit: 'Constant 2015 US$', category: 'GDP' },
             'NY.GDP.PCAP.CD': { name: 'GDP per capita (Nominal, US$)', nameEng: 'GDP per capita (current US$)', unit: 'Current US$', category: 'GDP' },
@@ -4269,29 +4269,83 @@
   }
 
   async function loadWBWorkbook(){
-    const res = await fetch("./weo.xlsx", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load data file");
-    const ab = await res.arrayBuffer();
-    const wb = XLSX.read(ab, { type: "array" });
-    const sheet = wb.Sheets["data"] || wb.Sheets[wb.SheetNames[0]];
-    if (!sheet) throw new Error("No data sheet");
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
-    for (const r of rows){
-      const indicator = String(r.indicator || "").trim();
-      const country = String(r.country || "").trim();
-      const year = Number(r.year);
-      const value = (r.value === "" || r.value === null) ? null : Number(r.value);
-      const unit = r.unit == null ? "" : String(r.unit);
-      if (!indicator || !country || !Number.isFinite(year)) continue;
-      const key = `${indicator}|${country}`;
-      if (!WBSTATE.byKey.has(key)) WBSTATE.byKey.set(key, []);
-      WBSTATE.byKey.get(key).push({ year, value });
-      if (unit && !WBSTATE.units.has(indicator)) WBSTATE.units.set(indicator, unit);
-      if (!WBSTATE.countriesByIndicator.has(indicator)) WBSTATE.countriesByIndicator.set(indicator, new Set());
-      WBSTATE.countriesByIndicator.get(indicator).add(country);
+    const res = await fetch("./weo.csv", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load WEO CSV file");
+    const csvText = await res.text();
+    console.log("CSV loaded, parsing...");
+    
+    // Parse CSV manually to handle quotes properly
+    const lines = csvText.split('\\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g, ''));
+    console.log("Headers found:", headers.slice(0, 10));
+    
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      
+      const values = parseCSVLine(lines[i]);
+      if (values.length < 10) continue;
+      
+      const countryCode = values[1]; // ISO code
+      const country = values[3]; // Country name
+      const subjectCode = values[2]; // WEO Subject Code
+      const subjectDesc = values[4]; // Subject Descriptor
+      const units = values[6]; // Units
+      
+      if (!country || !subjectCode) continue;
+      
+      // Extract year data (columns 9 onwards are years starting from 1980)
+      for (let yearIdx = 9; yearIdx < values.length - 1; yearIdx++) {
+        const year = 1980 + (yearIdx - 9);
+        const value = values[yearIdx];
+        
+        if (value && value !== 'n/a' && value !== '' && !isNaN(parseFloat(value))) {
+          const numValue = parseFloat(value);
+          const key = \`\${subjectCode}|\${countryCode}\`;
+          
+          if (!WBSTATE.byKey.has(key)) WBSTATE.byKey.set(key, []);
+          WBSTATE.byKey.get(key).push({ year, value: numValue });
+          
+          if (units && !WBSTATE.units.has(subjectCode)) {
+            WBSTATE.units.set(subjectCode, units);
+          }
+          
+          if (!WBSTATE.countriesByIndicator.has(subjectCode)) {
+            WBSTATE.countriesByIndicator.set(subjectCode, new Set());
+          }
+          WBSTATE.countriesByIndicator.get(subjectCode).add(countryCode);
+        }
+      }
     }
-    for (const arr of WBSTATE.byKey.values()) arr.sort((a,b)=>a.year-b.year);
+    
+    // Sort all time series by year
+    for (const arr of WBSTATE.byKey.values()) {
+      arr.sort((a,b) => a.year - b.year);
+    }
+    
     WBSTATE.ready = true;
+    console.log("WEO data loaded successfully");
+    console.log("Countries by indicator:", WBSTATE.countriesByIndicator.size);
+    console.log("Time series:", WBSTATE.byKey.size);
+  }
+  
+  function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current.trim().replace(/"/g, ''));
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim().replace(/"/g, ''));
+    return result;
   }
 
   function getSeries(country, indicator){
