@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OECD House Price Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: white;
+            border-right: 1px solid #e9ecef;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: -350px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .header .subtitle {
+            display: block;
+            color: #495057;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .header .subtitle-meta {
+            display: block;
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-section h3 {
+            color: #495057;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .country-select-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .country-search {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .country-search:focus {
+            border-color: #007bff;
+        }
+
+        .country-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            border-radius: 0 0 8px 8px;
+            display: none;
+        }
+
+        .country-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f8f9fa;
+            font-size: 14px;
+        }
+
+        .country-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .country-option.selected {
+            background-color: #e7f3ff;
+            color: #0056b3;
+        }
+
+        .selected-countries {
+            margin-top: 10px;
+        }
+
+        .country-tag {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .country-tag:hover {
+            background: #0056b3;
+        }
+
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .preset-btn {
+            padding: 6px 12px;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .time-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-input {
+            flex: 0 0 60%;
+            max-width: 110px;
+            padding: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .time-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .apply-btn:hover {
+            background: #218838;
+        }
+
+        .back-to-filters-btn {
+            display: none;
+            padding: 10px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-to-filters-btn:hover {
+            background: #545b62;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chart {
+            width: 100%;
+            height: 400px;
+        }
+
+        .yoy-chart {
+            height: 300px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .yoy-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .yoy-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .file-upload {
+            margin-top: 15px;
+            padding: 15px;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .file-upload input {
+            margin-top: 10px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1001;
+                transform: translateY(-100%);
+            }
+
+            .sidebar.visible {
+                transform: translateY(0);
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .main-content.expanded {
+                margin-left: 0;
+            }
+
+            .back-to-filters-btn {
+                display: block;
+            }
+
+            .chart {
+                height: 300px;
+            }
+
+            .yoy-chart {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .country-search:focus,
+        .time-input:focus,
+        .apply-btn:focus,
+        .preset-btn:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="header">
+                <h1>OECD House Price Dashboard</h1>
+                <p>
+                    <span class="subtitle">Analytical house price indicators</span><br>
+                    <span class="subtitle-meta">(2015=100, quarterly)</span>
+                </p>
+            </div>
+
+            <div class="filter-section">
+                <h3>Countries/Regions</h3>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="selectPreset('top')">Top Economies</button>
+                    <button class="preset-btn" onclick="selectPreset('all')">Select All</button>
+                    <button class="preset-btn" onclick="selectPreset('clear')">Clear All</button>
+                </div>
+                <div class="country-select-container">
+                    <input type="text" class="country-search" id="countrySearch" placeholder="Search countries..." 
+                           aria-label="Search countries" autocomplete="off">
+                    <div class="country-dropdown" id="countryDropdown" role="listbox" aria-label="Country options"></div>
+                </div>
+                <div class="selected-countries" id="selectedCountries" aria-label="Selected countries"></div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Time Range</h3>
+                <div class="time-range">
+                    <input type="text" class="time-input" id="startQuarter" placeholder="2010-Q1" 
+                           aria-label="Start quarter">
+                    <span>to</span>
+                    <input type="text" class="time-input" id="endQuarter" placeholder="2024-Q4" 
+                           aria-label="End quarter">
+                </div>
+            </div>
+
+            <button class="apply-btn" onclick="applyFilters()" aria-label="Apply filters and show charts">
+                Apply Filters
+            </button>
+
+            <div class="file-upload" id="fileUpload" style="display: none;">
+                <p>Unable to load data from online sources. Please upload a CSV file:</p>
+                <input type="file" id="csvFile" accept=".csv" aria-label="Upload CSV file">
+            </div>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <button class="back-to-filters-btn" id="backToFilters" onclick="showFilters()" 
+                    aria-label="Back to filters">
+                ← Back to Filters
+            </button>
+
+            <div class="loading" id="loading">
+                <p>Loading OECD house price data...</p>
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+
+            <div class="chart-container" id="mainChartContainer" style="display: none;">
+                <h2 class="chart-title">House Price Index (2015=100)</h2>
+                <div class="chart" id="mainChart" role="img" aria-label="House price index chart"></div>
+            </div>
+
+            <div class="chart-container" id="yoyChartContainer" style="display: none;">
+                <div class="yoy-toggle">
+                    <input type="checkbox" id="yoyToggle" checked aria-label="Show year-over-year changes">
+                    <label for="yoyToggle">Show Year-over-Year % Change</label>
+                </div>
+                <h2 class="chart-title">Year-over-Year Change (%)</h2>
+                <div class="chart yoy-chart" id="yoyChart" role="img" aria-label="Year-over-year change chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rawData = [];
+        let countries = [];
+        let selectedCountries = new Set(['OECD', 'United States', 'Korea', 'China (People\'s Republic of)', 'India']);
+        let mainChart = null;
+        let yoyChart = null;
+        let isFiltersVisible = true;
+
+        // Color palette for chart series
+        const colors = [
+            '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+            '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+            '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5'
+        ];
+
+        // Data source URLs
+        const dataUrls = [
+            'https://raw.githubusercontent.com/stberry7/stberry7.github.io/main/oecd/house/oecd%20house.csv',
+            'https://raw.githubusercontent.com/stberry7/stberry7.github.io/refs/heads/main/oecd/house/oecd%20house.csv'
+        ];
+
+        async function loadData() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            
+            // Try primary and fallback URLs
+            for (let i = 0; i < dataUrls.length; i++) {
+                try {
+                    const url = dataUrls[i] + (i > 0 ? `?t=${Date.now()}` : '');
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const csvText = await response.text();
+                    parseCSVData(csvText);
+                    loading.style.display = 'none';
+                    initializeFilters();
+                    return;
+                } catch (err) {
+                    console.warn(`Failed to load from URL ${i + 1}:`, err);
+                    if (i === dataUrls.length - 1) {
+                        // Show file upload option
+                        loading.style.display = 'none';
+                        document.getElementById('fileUpload').style.display = 'block';
+                        setupFileUpload();
+                    }
+                }
+            }
+        }
+
+        function setupFileUpload() {
+            const fileInput = document.getElementById('csvFile');
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file && file.type === 'text/csv') {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            parseCSVData(e.target.result);
+                            document.getElementById('fileUpload').style.display = 'none';
+                            initializeFilters();
+                        } catch (err) {
+                            showError('Failed to parse uploaded CSV file: ' + err.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    showError('Please select a valid CSV file.');
+                }
+            });
+        }
+
+        function parseCSVData(csvText) {
+            try {
+                const parsed = Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    transform: (value, field) => {
+                        if (field === 'OBS_VALUE') {
+                            return parseFloat(value);
+                        }
+                        return value;
+                    }
+                });
+
+                if (parsed.errors.length > 0) {
+                    throw new Error('CSV parsing errors: ' + parsed.errors.map(e => e.message).join(', '));
+                }
+
+                // Validate required columns
+                const requiredColumns = ['Reference area', 'TIME_PERIOD', 'OBS_VALUE'];
+                const headers = parsed.meta.fields || [];
+                
+                for (const col of requiredColumns) {
+                    if (!headers.includes(col)) {
+                        throw new Error(`Missing required column: ${col}`);
+                    }
+                }
+
+                rawData = parsed.data.filter(row => 
+                    row['Reference area'] && 
+                    row['TIME_PERIOD'] && 
+                    !isNaN(row['OBS_VALUE'])
+                );
+
+                // Get unique countries
+                countries = [...new Set(rawData.map(row => row['Reference area']))].sort();
+                
+                if (countries.length === 0) {
+                    throw new Error('No valid data found in CSV');
+                }
+
+            } catch (err) {
+                showError('Data parsing failed: ' + err.message);
+                throw err;
+            }
+        }
+
+        function initializeFilters() {
+            populateCountryDropdown();
+            updateSelectedCountriesDisplay();
+            
+            // Set default time range
+            const quarters = rawData.map(row => row['TIME_PERIOD']).sort();
+            document.getElementById('startQuarter').value = quarters[0] || '';
+            document.getElementById('endQuarter').value = quarters[quarters.length - 1] || '';
+            
+            setupEventListeners();
+        }
+
+        function populateCountryDropdown() {
+            const dropdown = document.getElementById('countryDropdown');
+            dropdown.innerHTML = '';
+            
+            countries.forEach(country => {
+                const option = document.createElement('div');
+                option.className = 'country-option';
+                option.textContent = country;
+                option.setAttribute('role', 'option');
+                option.onclick = () => toggleCountrySelection(country);
+                
+                if (selectedCountries.has(country)) {
+                    option.classList.add('selected');
+                }
+                
+                dropdown.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            const searchInput = document.getElementById('countrySearch');
+            const dropdown = document.getElementById('countryDropdown');
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const options = dropdown.querySelectorAll('.country-option');
+                
+                options.forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    option.style.display = text.includes(query) ? 'block' : 'none';
+                });
+            });
+
+            searchInput.addEventListener('focus', () => {
+                dropdown.style.display = 'block';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.country-select-container')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // YoY toggle
+            document.getElementById('yoyToggle').addEventListener('change', function() {
+                const container = document.getElementById('yoyChartContainer');
+                if (this.checked) {
+                    container.style.display = 'block';
+                    if (yoyChart) {
+                        updateYoYChart();
+                    }
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleCountrySelection(country) {
+            if (selectedCountries.has(country)) {
+                selectedCountries.delete(country);
+            } else {
+                selectedCountries.add(country);
+            }
+            
+            populateCountryDropdown();
+            updateSelectedCountriesDisplay();
+        }
+
+        function updateSelectedCountriesDisplay() {
+            const container = document.getElementById('selectedCountries');
+            container.innerHTML = '';
+            
+            selectedCountries.forEach(country => {
+                const tag = document.createElement('span');
+                tag.className = 'country-tag';
+                tag.textContent = country;
+                tag.onclick = () => toggleCountrySelection(country);
+                tag.setAttribute('role', 'button');
+                tag.setAttribute('aria-label', `Remove ${country}`);
+                container.appendChild(tag);
+            });
+        }
+
+        function selectPreset(preset) {
+            switch (preset) {
+                case 'top':
+                    selectedCountries = new Set(['OECD', 'United States', 'Korea', 'China (People\'s Republic of)', 'India', 'Euro area']);
+                    break;
+                case 'all':
+                    selectedCountries = new Set(countries);
+                    break;
+                case 'clear':
+                    selectedCountries = new Set();
+                    break;
+            }
+            populateCountryDropdown();
+            updateSelectedCountriesDisplay();
+        }
+
+        function parseQuarter(quarterStr) {
+            const [year, quarter] = quarterStr.split('-Q');
+            const month = (parseInt(quarter) - 1) * 3;
+            return new Date(parseInt(year), month, 1);
+        }
+
+        function quarterToLabel(quarterStr) {
+            const [year, quarter] = quarterStr.split('-Q');
+            return `${year} Q${quarter}`;
+        }
+
+        function filterData() {
+            const startQuarter = document.getElementById('startQuarter').value;
+            const endQuarter = document.getElementById('endQuarter').value;
+            
+            return rawData.filter(row => {
+                const country = row['Reference area'];
+                const quarter = row['TIME_PERIOD'];
+                
+                if (!selectedCountries.has(country)) return false;
+                
+                if (startQuarter && quarter < startQuarter) return false;
+                if (endQuarter && quarter > endQuarter) return false;
+                
+                return true;
+            });
+        }
+
+        function applyFilters() {
+            if (selectedCountries.size === 0) {
+                showError('Please select at least one country/region.');
+                return;
+            }
+
+            // Hide filters and show charts
+            hideFilters();
+            
+            const filteredData = filterData();
+            
+            if (filteredData.length === 0) {
+                showError('No data available for the selected filters.');
+                return;
+            }
+
+            createMainChart(filteredData);
+            
+            if (document.getElementById('yoyToggle').checked) {
+                createYoYChart(filteredData);
+            }
+            
+            document.getElementById('error').style.display = 'none';
+        }
+
+        function createMainChart(data) {
+            const container = document.getElementById('mainChartContainer');
+            const chartDiv = document.getElementById('mainChart');
+            
+            if (mainChart) {
+                mainChart.dispose();
+            }
+            
+            mainChart = echarts.init(chartDiv);
+            
+            // Prepare data by country
+            const countryData = {};
+            data.forEach(row => {
+                const country = row['Reference area'];
+                const quarter = row['TIME_PERIOD'];
+                const value = row['OBS_VALUE'];
+                
+                if (!countryData[country]) {
+                    countryData[country] = [];
+                }
+                
+                countryData[country].push({
+                    quarter: quarter,
+                    date: parseQuarter(quarter),
+                    value: value,
+                    label: quarterToLabel(quarter)
+                });
+            });
+
+            // Sort data by date
+            Object.values(countryData).forEach(data => {
+                data.sort((a, b) => a.date - b.date);
+            });
+
+            // Create series
+            const series = Object.keys(countryData).map((country, index) => ({
+                name: country,
+                type: 'line',
+                data: countryData[country].map(item => [item.date, item.value, item.label]),
+                symbol: 'circle',
+                symbolSize: 4,
+                lineStyle: {
+                    width: 2,
+                    color: colors[index % colors.length]
+                },
+                itemStyle: {
+                    color: colors[index % colors.length]
+                }
+            }));
+
+            const option = {
+                title: {
+                    text: 'House Price Index (2015=100)',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18,
+                        fontWeight: 'normal'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        let tooltip = `<strong>${params[0].data[2]}</strong><br/>`;
+                        params.forEach(param => {
+                            const value = param.data[1];
+                            tooltip += `${param.seriesName}: ${value.toFixed(1)}<br/>`;
+                        });
+                        return tooltip;
+                    }
+                },
+                legend: {
+                    top: 30,
+                    type: 'scroll',
+                    selected: Object.fromEntries(
+                        Object.keys(countryData).map(country => [country, true])
+                    )
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'time',
+                    boundaryGap: false
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                series: series,
+                markLine: {
+                    data: [{
+                        yAxis: 100,
+                        lineStyle: {
+                            type: 'dashed',
+                            color: '#999'
+                        },
+                        label: {
+                            formatter: 'Baseline (100)',
+                            position: 'insideEndTop'
+                        }
+                    }]
+                }
+            };
+
+            // Add baseline as a separate series
+            series.push({
+                name: 'Baseline',
+                type: 'line',
+                data: [[new Date(2010, 0, 1), 100], [new Date(2030, 0, 1), 100]],
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#999',
+                    width: 1
+                },
+                symbol: 'none',
+                silent: true,
+                showInLegend: false
+            });
+
+            mainChart.setOption(option);
+            container.style.display = 'block';
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                if (mainChart) {
+                    mainChart.resize();
+                }
+            });
+        }
+
+        function createYoYChart(data) {
+            const container = document.getElementById('yoyChartContainer');
+            const chartDiv = document.getElementById('yoyChart');
+            
+            if (yoyChart) {
+                yoyChart.dispose();
+            }
+            
+            yoyChart = echarts.init(chartDiv);
+            
+            // Calculate YoY data
+            const countryData = {};
+            data.forEach(row => {
+                const country = row['Reference area'];
+                const quarter = row['TIME_PERIOD'];
+                const value = row['OBS_VALUE'];
+                
+                if (!countryData[country]) {
+                    countryData[country] = {};
+                }
+                
+                countryData[country][quarter] = value;
+            });
+
+            // Calculate YoY changes
+            const yoyData = {};
+            Object.keys(countryData).forEach(country => {
+                yoyData[country] = [];
+                const quarters = Object.keys(countryData[country]).sort();
+                
+                quarters.forEach(quarter => {
+                    const [year, q] = quarter.split('-Q');
+                    const prevYear = (parseInt(year) - 1) + '-Q' + q;
+                    
+                    if (countryData[country][prevYear]) {
+                        const currentValue = countryData[country][quarter];
+                        const prevValue = countryData[country][prevYear];
+                        const yoyChange = ((currentValue - prevValue) / prevValue) * 100;
+                        
+                        yoyData[country].push({
+                            quarter: quarter,
+                            date: parseQuarter(quarter),
+                            value: yoyChange,
+                            label: quarterToLabel(quarter)
+                        });
+                    }
+                });
+                
+                // Sort by date
+                yoyData[country].sort((a, b) => a.date - b.date);
+            });
+
+            // Create series
+            const series = Object.keys(yoyData).map((country, index) => ({
+                name: country,
+                type: 'line',
+                data: yoyData[country].map(item => [item.date, item.value, item.label]),
+                symbol: 'circle',
+                symbolSize: 4,
+                lineStyle: {
+                    width: 2,
+                    color: colors[index % colors.length]
+                },
+                itemStyle: {
+                    color: colors[index % colors.length]
+                }
+            }));
+
+            const option = {
+                title: {
+                    text: 'Year-over-Year Change (%)',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 16,
+                        fontWeight: 'normal'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        let tooltip = `<strong>${params[0].data[2]}</strong><br/>`;
+                        params.forEach(param => {
+                            const value = param.data[1];
+                            tooltip += `${param.seriesName}: ${value.toFixed(1)}%<br/>`;
+                        });
+                        return tooltip;
+                    }
+                },
+                legend: {
+                    top: 30,
+                    type: 'scroll'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'time',
+                    boundaryGap: false
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                series: series
+            };
+
+            // Add zero line
+            series.push({
+                name: 'Zero Line',
+                type: 'line',
+                data: [[new Date(2010, 0, 1), 0], [new Date(2030, 0, 1), 0]],
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#999',
+                    width: 1
+                },
+                symbol: 'none',
+                silent: true,
+                showInLegend: false
+            });
+
+            yoyChart.setOption(option);
+            container.style.display = 'block';
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                if (yoyChart) {
+                    yoyChart.resize();
+                }
+            });
+        }
+
+        function updateYoYChart() {
+            if (yoyChart) {
+                const filteredData = filterData();
+                createYoYChart(filteredData);
+            }
+        }
+
+        function hideFilters() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const backBtn = document.getElementById('backToFilters');
+            
+            if (window.innerWidth <= 768) {
+                // Mobile: hide sidebar completely
+                sidebar.classList.remove('visible');
+                backBtn.style.display = 'block';
+            } else {
+                // Desktop: slide sidebar out
+                sidebar.classList.add('hidden');
+                mainContent.classList.add('expanded');
+                backBtn.style.display = 'block';
+            }
+            
+            isFiltersVisible = false;
+        }
+
+        function showFilters() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const backBtn = document.getElementById('backToFilters');
+            
+            if (window.innerWidth <= 768) {
+                // Mobile: show sidebar as overlay
+                sidebar.classList.add('visible');
+            } else {
+                // Desktop: slide sidebar back in
+                sidebar.classList.remove('hidden');
+                mainContent.classList.remove('expanded');
+            }
+            
+            backBtn.style.display = 'none';
+            isFiltersVisible = true;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Hide after 10 seconds
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 10000);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (mainChart) mainChart.resize();
+            if (yoyChart) yoyChart.resize();
+            
+            // Adjust mobile/desktop behavior
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768 && !isFiltersVisible) {
+                sidebar.classList.remove('visible');
+                sidebar.classList.add('hidden');
+            } else if (window.innerWidth <= 768 && !isFiltersVisible) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.remove('visible');
+            }
+        });
+
+        // Initialize the application
+        window.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+    </script>
+</body>
+</html>
