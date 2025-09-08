@@ -1,6 +1,0 @@
-query,country,iso3,tag,series_id,title,frequency,units
-Working-Age Population (15-64 Years) United States,United States,USA,demo,LFWA64TTUSM647S,Infra-Annual Labor Statistics: Working-Age Population Total: From 15 to 64 Years for United States,M,Persons
-Working-Age Population (15-64 Years) Korea,Korea,KOR,demo,LFWA64TTKRM647N,Infra-Annual Labor Statistics: Working-Age Population Total: From 15 to 64 Years for Korea,M,Persons
-Working-Age Population (15-64 Years) China,China,CHN,demo,SPPOPDPNDOLCHN,Age Dependency Ratio: Older Dependents to Working-Age Population for China,A,% of Working-Age Population
-Working-Age Population (15-64 Years) India,India,IND,demo,SPPOPDPNDOLIND,Age Dependency Ratio: Older Dependents to Working-Age Population for India,A,% of Working-Age Population
-Working-Age Population (15-64 Years) OECD,OECD,OEC,demo,LFWA64TTUSM647S,Infra-Annual Labor Statistics: Working-Age Population Total: From 15 to 64 Years for United States,M,Persons
