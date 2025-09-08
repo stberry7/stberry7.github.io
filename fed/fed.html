@@ -826,26 +826,6 @@
                     </div>
                     <div class="indicator-value loading" id="DFII10">Loading...</div>
                 </div>
-                <div class="indicator" onclick="showDetails('TB3MS', '3-Month Treasury Bill Rate')">
-                    <div class="cache-status cache-loading" id="TB3MS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">3-Month Treasury Bill Rate
-                            <div class="indicator-name-eng">Short-term risk-free rate</div>
-                        </div>
-                        <div class="indicator-date" id="TB3MS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="TB3MS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS1', '1-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS1-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">1-Year Treasury Yield
-                            <div class="indicator-name-eng">Short-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS1-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS1">Loading...</div>
-                </div>
                 <div class="indicator" onclick="showDetails('DGS5', '5-Year Treasury Yield')">
                     <div class="cache-status cache-loading" id="DGS5-cache">Loading</div>
                     <div>
@@ -875,26 +855,6 @@
                         <div class="indicator-date" id="BAA10Y-date">-</div>
                     </div>
                     <div class="indicator-value loading" id="BAA10Y">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS20', '20-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS20-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">20-Year Treasury Yield
-                            <div class="indicator-name-eng">Long-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS20-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS20">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS3MO', '3-Month Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS3MO-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">3-Month Treasury Yield
-                            <div class="indicator-name-eng">Very short-term yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS3MO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS3MO">Loading...</div>
                 </div>
                 <div class="indicator" onclick="showDetails('DFII5', '5-Year TIPS Yield')">
                     <div class="cache-status cache-loading" id="DFII5-cache">Loading</div>
@@ -1219,16 +1179,6 @@
             <!-- Housing & Real Estate -->
             <div class="category">
                 <h2>🏠 Housing & Real Estate <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('HOUST', 'Housing Starts')">
-                    <div class="cache-status cache-loading" id="HOUST-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Housing Starts
-                            <div class="indicator-name-eng">New home construction begins</div>
-                        </div>
-                        <div class="indicator-date" id="HOUST-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="HOUST">Loading...</div>
-                </div>
                 
                 <div class="indicator" onclick="showDetails('MORTGAGE30US', '30-Year Fixed Rate Mortgage')">
                     <div class="cache-status cache-loading" id="MORTGAGE30US-cache">Loading</div>
@@ -1265,16 +1215,6 @@
                 
                 
                 
-                <div class="indicator" onclick="showDetails('DTWEXEMEGS', 'Emerging Markets Dollar Index')">
-                    <div class="cache-status cache-loading" id="DTWEXEMEGS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Emerging Markets Dollar Index
-                            <div class="indicator-name-eng">USD vs emerging markets</div>
-                        </div>
-                        <div class="indicator-date" id="DTWEXEMEGS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DTWEXEMEGS">Loading...</div>
-                </div>
             </div>
 
             <!-- Commodities -->
@@ -1669,13 +1609,9 @@
             'T10Y2Y': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'T10Y3M': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DFII10': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'TB3MS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'DGS1': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DGS5': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DGS30': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'BAA10Y': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'DGS20': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
-            'DGS3MO': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'RRPONTSYAWARD': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DBAA': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'SOFR': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Fed operational data', delay: 'Same day' },
@@ -1685,16 +1621,11 @@
             'T10YIE': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Treasury market data', delay: 'Same day' },
             'DTWEXBGS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
             'DTWEXAFEGS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
-            'DTWEXEMEGS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
-            'DEXJPUS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
-            'DEXKOUS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
             'SP500': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily market close', delay: 'Same day' },
             'DJIA': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily market close', delay: 'Same day' },
             'NASDAQCOM': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily market close', delay: 'Same day' },
             'DFII5': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Treasury market data', delay: 'Same day' },
             'DFII30': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Treasury market data', delay: 'Same day' },
-            'DEXCHUS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
-            'DEXUSUK': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
             'MOVE': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily market close', delay: 'Same day' },
             'MORTGAGE15US': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Thursday, FHLMC)', delay: 'About 1 week delay' },
             'MORTGAGE5US': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Thursday, FHLMC)', delay: 'About 1 week delay' },
@@ -1727,8 +1658,6 @@
             'UNRATE': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
             'PAYEMS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
             'CIVPART': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (first Friday, BLS)', delay: 'About 7 days delay' },
-            'HOUST': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+17 days, Census)', delay: 'About 17 days delay' },
-            'CSUSHPISA': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+60 days, S&P)', delay: 'About 60 days delay' },
             'MORTGAGE30US': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Thursday, FHLMC)', delay: 'About 1 week delay' },
             'M2SL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+10 days, FED)', delay: 'About 10 days delay' },
             'TOTALSA': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (+5 days, FED)', delay: 'About 5 days delay' },
@@ -1744,7 +1673,6 @@
             'LFWA64TTUSM647S': { cacheDays: 180, description: '6 months', realFreq: '6 monthly (Census)', delay: 'About 60 days delay' },
             
             // Education & Tax indicators (quarterly/annual)
-            'CUSR0000SEEB': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
             'SLOAS': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Fed)', delay: 'About 30 days delay' },
             'W006RC1A027NBEA': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (BEA)', delay: 'About 45 days delay' },
             'A014RC1A027NBEA': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (BEA)', delay: 'About 45 days delay' },
@@ -1760,9 +1688,6 @@
             'PRFCON': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 60 days delay' },
             'CAPUTL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Fed)', delay: 'About 15 days delay' },
             'RSAFS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 14 days delay' },
-            'MRTSSM722': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 14 days delay' },
-            'CUSR0000SEFV': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
-            'CES7072200008': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 7 days delay' },
             
             // Quarterly Credit & Investment Indicators
             'DRCCLACBS': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Fed)', delay: 'About 75 days delay' },
@@ -1826,13 +1751,9 @@
             'RRPONTSYAWARD': { name: 'Overnight Reverse Repo Agreements', nameEng: 'Overnight Reverse Repurchase Agreements: Treasury Securities Sold by the Federal Reserve', unit: 'Billions of Dollars' },
             'T10Y3M': { name: '10-Year Treasury Minus 3-Month Treasury', nameEng: '10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity', unit: '%' },
             'DFII10': { name: '10-Year Treasury Inflation-Indexed', nameEng: 'Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Inflation‑Indexed', unit: '%' },
-            'TB3MS': { name: '3-Month Treasury Bill Rate', nameEng: '3‑Month Treasury Bill Secondary Market Rate, Discount Basis', unit: '%' },
-            'DGS1': { name: '1-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 1‑Year Constant Maturity', unit: '%' },
             'DGS5': { name: '5-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 5‑Year Constant Maturity', unit: '%' },
             'DGS30': { name: '30-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 30‑Year Constant Maturity', unit: '%' },
             'BAA10Y': { name: 'Moody\'s Baa Corporate Bond Spread', nameEng: 'Moody\'s Seasoned Baa Corporate Bond Yield Relative to Yield on 10‑Year Treasury Constant Maturity', unit: '%' },
-            'DGS20': { name: '20-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 20‑Year Constant Maturity', unit: '%' },
-            'DGS3MO': { name: '3-Month Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 3‑Month Constant Maturity', unit: '%' },
             'DFII5': { name: '5-Year TIPS Yield', nameEng: '5-Year Treasury Inflation-Protected Securities Yield', unit: '%' },
             'DFII30': { name: '30-Year TIPS Yield', nameEng: '30-Year Treasury Inflation-Protected Securities Yield', unit: '%' },
             
@@ -1881,9 +1802,6 @@
             
             // Consumer & Restaurant Proxies
             'RSAFS': { name: 'Retail Sales', nameEng: 'Advance Retail Sales: Retail Trade', unit: 'Millions of Dollars' },
-            'MRTSSM722': { name: 'Food Services Sales', nameEng: 'Retail Sales: Food Services and Drinking Places', unit: 'Millions of Dollars' },
-            'CUSR0000SEFV': { name: 'Food Away From Home CPI', nameEng: 'Consumer Price Index for All Urban Consumers: Food Away from Home', unit: 'Index' },
-            'CES7072200008': { name: 'Leisure & Hospitality Earnings', nameEng: 'Average Hourly Earnings of All Employees, Leisure and Hospitality', unit: 'Dollars per Hour' },
             
             // Consumer Sentiment & Perceptions
             
@@ -1924,7 +1842,6 @@
             'SP500AIR': { name: 'Airlines Industry Index', nameEng: 'S&P 500 Airlines Industry Index', unit: 'Index' },
             
             // Education Costs
-            'CUSR0000SEEB': { name: 'College Tuition CPI', nameEng: 'Consumer Price Index: College Tuition and Fees', unit: 'Index' },
             'SLOAS': { name: 'Student Loans Outstanding', nameEng: 'Student Loans Owned and Securitized, Outstanding', unit: 'Billions of Dollars' },
             
             // Tax Indicators
@@ -1950,8 +1867,6 @@
             'INDPRO': { name: 'Industrial Production Index', nameEng: 'Industrial Production Index', unit: 'Index' },
             
             // Housing
-            'HOUST': { name: 'Housing Starts', nameEng: 'Housing Starts', unit: 'Thousands' },
-            'CSUSHPISA': { name: 'Case-Shiller Home Price Index', nameEng: 'Case-Shiller Home Price Index', unit: 'Index' },
             'MORTGAGE30US': { name: '30-Year Fixed Rate Mortgage', nameEng: '30-Year Fixed Rate Mortgage', unit: '%' },
             'MORTGAGE15US': { name: '15-Year Fixed Rate Mortgage', nameEng: '15-Year Fixed Rate Mortgage', unit: '%' },
             'MORTGAGE5US': { name: '5-Year ARM Rate', nameEng: '5/1-Year Adjustable Rate Mortgage', unit: '%' },
@@ -1962,11 +1877,6 @@
             'DEXUSEU': { name: 'USD/EUR Exchange Rate', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
             'DTWEXBGS': { name: 'Broad Dollar Index', nameEng: 'Trade Weighted U.S. Dollar Index: Broad, Goods and Services', unit: 'Index' },
             'DTWEXAFEGS': { name: 'Advanced Economies Dollar Index', nameEng: 'Trade Weighted U.S. Dollar Index: Advanced Foreign Economies', unit: 'Index' },
-            'DTWEXEMEGS': { name: 'Emerging Markets Dollar Index', nameEng: 'Trade Weighted U.S. Dollar Index: Emerging Market Economies', unit: 'Index' },
-            'DEXJPUS': { name: 'USD/JPY Exchange Rate', nameEng: 'U.S./Japan Foreign Exchange Rate', unit: 'Japanese Yen to One U.S. Dollar' },
-            'DEXKOUS': { name: 'USD/KRW Exchange Rate', nameEng: 'U.S./South Korea Foreign Exchange Rate', unit: 'South Korean Won to One U.S. Dollar' },
-            'DEXCHUS': { name: 'USD/CNY Exchange Rate', nameEng: 'U.S./China Foreign Exchange Rate', unit: 'Chinese Yuan to One U.S. Dollar' },
-            'DEXUSUK': { name: 'USD/GBP Exchange Rate', nameEng: 'U.S./U.K. Foreign Exchange Rate', unit: 'U.S. Dollars to One British Pound' },
             
             // Stock Market Indicators
             'SP500': { name: 'S&P 500 Index', nameEng: 'S&P 500', unit: 'Index' },
@@ -2390,7 +2300,7 @@
                     colorClass = 'positive'; // Generally positive for stock growth
                 }
                 // Special handling: All Dollar Indices
-                else if (seriesId === 'DTWEXBGS' || seriesId === 'DTWEXAFEGS' || seriesId === 'DTWEXEMEGS') {
+                else if (seriesId === 'DTWEXBGS' || seriesId === 'DTWEXAFEGS') {
                     displayValue = `${data.value.toFixed(2)}`;
                     colorClass = 'neutral';
                 }
@@ -2402,15 +2312,6 @@
                 // Special handling: Leading Economic Index
                 else if (seriesId === 'USSLIND') {
                     displayValue = `${data.value.toFixed(1)}`;
-                    colorClass = 'neutral';
-                }
-                // Special handling: Additional Exchange Rates
-                else if (seriesId === 'DEXCHUS') {
-                    displayValue = `¥${data.value.toFixed(4)}`;
-                    colorClass = 'neutral';
-                }
-                else if (seriesId === 'DEXUSUK') {
-                    displayValue = `£${data.value.toFixed(4)}`;
                     colorClass = 'neutral';
                 }
                 // Special handling: MOVE Index
@@ -2426,11 +2327,6 @@
                 // Special handling: Student Loans & Tax Data
                 else if (seriesId === 'SLOAS' || seriesId.includes('RC1A027NBEA')) {
                     displayValue = `$${(data.value / 1000).toFixed(1)}T`;
-                    colorClass = 'neutral';
-                }
-                // Special handling: Education CPI and Food CPI
-                else if (seriesId === 'CUSR0000SEEB' || seriesId === 'CUSR0000SEFV') {
-                    displayValue = `${data.value.toFixed(1)}`;
                     colorClass = 'neutral';
                 }
                 // Special handling: Delinquency Rates
@@ -2473,23 +2369,9 @@
                     colorClass = data.value > 400000 ? 'negative' : data.value > 300000 ? 'warning' : 'positive';
                 }
                 // Special handling: Retail Sales
-                else if (seriesId === 'RSAFS' || seriesId === 'MRTSSM722') {
+                else if (seriesId === 'RSAFS') {
                     displayValue = `$${(data.value / 1000).toFixed(0)}B`;
                     colorClass = 'positive';
-                }
-                // Special handling: Hourly Earnings
-                else if (seriesId === 'CES7072200008') {
-                    displayValue = `$${data.value.toFixed(2)}`;
-                    colorClass = 'positive';
-                }
-                // Special handling: Exchange Rates
-                else if (seriesId === 'DEXJPUS') {
-                    displayValue = `¥${data.value.toFixed(2)}`;
-                    colorClass = 'neutral';
-                }
-                else if (seriesId === 'DEXKOUS') {
-                    displayValue = `₩${data.value.toLocaleString()}`;
-                    colorClass = 'neutral';
                 }
                 // Special handling: Copper Price (PCOPPUSDM)
                 else if (seriesId === 'PCOPPUSDM') {
@@ -2853,8 +2735,6 @@
                 specialInfo = '<br><strong>Interpretation:</strong> Stock indices reflect market sentiment and economic expectations. Rising markets often signal economic optimism.';
             } else if (seriesId === 'DTWEXAFEGS') {
                 specialInfo = '<br><strong>Interpretation:</strong> Advanced Economies Dollar Index measures USD strength vs developed nations. Higher values indicate stronger dollar against major currencies.';
-            } else if (seriesId === 'DTWEXEMEGS') {
-                specialInfo = '<br><strong>Interpretation:</strong> Emerging Markets Dollar Index tracks USD vs developing nations. Rising values can indicate capital flight from emerging markets.';
             } else if (seriesId === 'STLFSI4') {
                 specialInfo = '<br><strong>Interpretation:</strong> St. Louis Fed Financial Stress Index. Positive values indicate above-average financial market stress.';
             } else if (seriesId === 'USSLIND') {
@@ -2869,7 +2749,7 @@
                 specialInfo = '<br><strong>Interpretation:</strong> Jet fuel prices directly impact airline operating costs and travel industry profitability.';
             } else if (seriesId === 'SP500AIR') {
                 specialInfo = '<br><strong>Interpretation:</strong> Airlines index reflects travel demand, fuel costs, and economic health. Sensitive to oil prices and consumer spending.';
-            } else if (seriesId === 'CUSR0000SEEB' || seriesId === 'SLOAS') {
+            } else if (seriesId === 'SLOAS') {
                 specialInfo = '<br><strong>Interpretation:</strong> Education costs and student debt burden affect consumer spending power and economic mobility.';
             } else if (seriesId.includes('RC1A027NBEA')) {
                 specialInfo = '<br><strong>Interpretation:</strong> Tax indicators reflect government fiscal health and household disposable income levels.';
@@ -2889,12 +2769,8 @@
                 specialInfo = '<br><strong>Interpretation:</strong> Capacity utilization measures how much of industrial capacity is being used. High levels can signal inflationary pressure.';
             } else if (seriesId === 'SP400MID' || seriesId === 'SP600SM' || seriesId === 'RUT') {
                 specialInfo = '<br><strong>Interpretation:</strong> Mid-cap and small-cap indices often outperform in economic expansions and underperform in contractions.';
-            } else if (seriesId === 'RSAFS' || seriesId === 'MRTSSM722') {
-                specialInfo = '<br><strong>Interpretation:</strong> Retail and food service sales indicate consumer spending strength and economic momentum.';
-            } else if (seriesId === 'CUSR0000SEFV') {
-                specialInfo = '<br><strong>Interpretation:</strong> Food away from home prices reflect both food commodity costs and labor costs in the service sector.';
-            } else if (seriesId === 'CES7072200008') {
-                specialInfo = '<br><strong>Interpretation:</strong> Leisure and hospitality earnings indicate wage pressures in a labor-intensive, consumer-facing sector.';
+            } else if (seriesId === 'RSAFS') {
+                specialInfo = '<br><strong>Interpretation:</strong> Retail sales indicate consumer spending strength and economic momentum.';
             }
 
             // Cache information
