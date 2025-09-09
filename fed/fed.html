@@ -1,115 +1,53 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time US Economic Indicators Dashboard 2025 | Live FRED Data | GDP, CPI, Interest Rates, Treasury Bonds | Free Economic Charts</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="FREE Real-Time US Economic Dashboard 2025 | Monitor 38+ live economic indicators from Federal Reserve (FRED) | Track GDP, inflation, unemployment, Treasury yields, mortgage rates, and housing data with interactive charts | Updated daily">
-    <meta name="keywords" content="US economic indicators 2025, FRED data dashboard, real-time economic data, GDP tracker, CPI inflation rate, unemployment rate today, Treasury bond yields, federal funds rate, mortgage rates, housing market data, economic charts free, federal reserve dashboard, live economic indicators, Treasury yield curve, economic analysis tools, recession indicators, inflation tracker, job market data, real estate market trends, economic forecasting">
-    <meta name="author" content="Economic Dashboard">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="en">
-    
-    <!-- Open Graph Meta Tags (for social media sharing) -->
-    <meta property="og:title" content="FREE Real-Time US Economic Dashboard 2025 | 38+ Live FRED Indicators">
-    <meta property="og:description" content="Track 38+ live US economic indicators FREE! Real-time FRED data including GDP, inflation, Treasury yields, unemployment, housing market. Updated daily with interactive charts.">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:site_name" content="US Economic Indicators Dashboard">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="FREE Real-Time Economic Dashboard | 38+ Live US Indicators">
-    <meta name="twitter:description" content="Track 38+ live US economic indicators FREE! GDP, inflation, Treasury yields, unemployment data updated daily from Federal Reserve.">
-    
-    <!-- Search Engine Optimization -->
-    <meta name="theme-color" content="#2c3e50">
-    <link rel="canonical" href="https://yourdomain.com/economy">
-    
-    <!-- Additional SEO Meta Tags -->
-    <meta name="geo.region" content="US">
-    <meta name="geo.placename" content="United States">
-    <meta name="ICBM" content="39.8283, -98.5795">
-    <meta name="distribution" content="global">
-    <meta name="rating" content="general">
-    <meta name="revisit-after" content="1 day">
-    <meta name="expires" content="never">
-    <meta http-equiv="content-language" content="en-us">
-    
-    <!-- Favicon and Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
-    <link rel="dns-prefetch" href="//api.stlouisfed.org">
-    <link rel="dns-prefetch" href="//api.allorigins.win">
-    <link rel="dns-prefetch" href="//cors.sh">
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Real-Time US Economic Indicators Dashboard 2025",
-        "description": "FREE comprehensive economic dashboard monitoring 130+ real-time US economic indicators from Federal Reserve (FRED). Track GDP, CPI inflation, Treasury yields, Fed operational rates (SOFR, OBFR, EFFR), commercial paper rates, TIPS yields, breakeven inflation rates, comprehensive market segments (large-cap S&P 500, mid-cap S&P 400, small-cap S&P 600, Russell 2000), volatility indices (VIX, Gold VIX, Oil VIX, NASDAQ VIX, MOVE Index), credit stress indicators (delinquency rates for credit cards, mortgages, auto loans), business dynamics (formations, applications, jobless claims), construction & investment spending, consumer spending & restaurant proxies, leading economic indicators (WEI, CFNAI), financial stress indices, advanced dollar indices, major exchange rates (EUR, JPY, CNY, GBP, KRW), mortgage rates (30Y, 15Y, 5Y ARM), travel & aviation indicators (jet fuel, airlines), education costs, tax indicators, oil prices, gold prices, unemployment rates, housing market data, and more with interactive charts updated daily.",
-        "url": "",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "Economic Dashboard"
-        },
-        "keywords": [
-            "US economic indicators",
-            "FRED",
-            "GDP",
-            "CPI",
-            "federal funds rate",
-            "unemployment rate today",
-            "inflation rate 2025",
-            "economic data dashboard",
-            "real-time economic charts",
-            "federal reserve data",
-            "Treasury bond yields",
-            "yield curve analysis",
-            "recession indicators",
-            "mortgage rates tracker",
-            "housing market trends",
-            "economic forecasting tools",
-            "free economic dashboard",
-            "live economic data",
-            "economic analysis"
-        ],
-        "inLanguage": "en",
-        "isAccessibleForFree": true,
-        "featureList": [
-            "Real-time economic indicators monitoring",
-            "130+ key economic indicators including Treasury bonds, Fed operational data, commodities, comprehensive market segments (large/mid/small-cap), volatility measures, credit stress indicators, business dynamics, construction & investment, consumer spending proxies, travel & aviation, education costs, and tax indicators",
-            "Official Federal Reserve (FRED) data integration",
-            "Interactive historical charts with multiple time periods",
-            "Mobile responsive design with touch optimization",
-            "Smart caching for fast loading",
-            "Daily automatic data updates",
-            "Yield curve analysis tools",
-            "Recession and inflation indicators",
-            "Free access with no registration required"
-        ],
-    }
-    </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>US Economic Indicators Dashboard • FRED-based Live Monitor</title>
+<!-- SEO Meta Tags -->
+<meta content="Interactive dashboard of US economic indicators (CPI, PCE, Treasury yields, labor market, housing, money, credit, stress, volatility, GDP). Powered by FRED series IDs for reproducible analysis." name="description"/>
+<meta content="US economic indicators 2025, FRED data dashboard, real-time economic data, GDP tracker, CPI inflation rate, unemployment rate today, Treasury bond yields, federal funds rate, mortgage rates, housing market data, economic charts free, federal reserve dashboard, live economic indicators, Treasury yield curve, economic analysis tools, recession indicators, inflation tracker, job market data, real estate market trends, economic forecasting" name="keywords"/>
+<meta content="Economic Dashboard" name="author"/>
+<meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
+<meta content="en" name="language"/>
+<!-- Open Graph Meta Tags (for social media sharing) -->
+<meta content="US Economic Indicators Dashboard • FRED-based Live Monitor" property="og:title"/>
+<meta content="Interactive dashboard of US economic indicators (CPI, PCE, Treasury yields, labor market, housing, money, credit, stress, volatility, GDP). Powered by FRED series IDs for reproducible analysis." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="US Economic Indicators Dashboard" property="og:site_name"/>
+<!-- Twitter Card Meta Tags -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="US Economic Indicators Dashboard • FRED-based Live Monitor" name="twitter:title"/>
+<meta content="Interactive dashboard of US economic indicators (CPI, PCE, Treasury yields, labor market, housing, money, credit, stress, volatility, GDP). Powered by FRED series IDs for reproducible analysis." name="twitter:description"/>
+<!-- Search Engine Optimization -->
+<meta content="#2c3e50" name="theme-color"/>
+<link href="https://yourdomain.com/economy" rel="canonical"/>
+<!-- Additional SEO Meta Tags -->
+<meta content="US" name="geo.region"/>
+<meta content="United States" name="geo.placename"/>
+<meta content="39.8283, -98.5795" name="ICBM"/>
+<meta content="global" name="distribution"/>
+<meta content="general" name="rating"/>
+<meta content="1 day" name="revisit-after"/>
+<meta content="never" name="expires"/>
+<meta content="en-us" http-equiv="content-language"/>
+<!-- Favicon and Icons -->
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<!-- Preload critical resources -->
+<link as="script" href="https://cdn.jsdelivr.net/npm/chart.js" rel="preload"/>
+<link href="//api.stlouisfed.org" rel="dns-prefetch"/>
+<link href="//api.allorigins.win" rel="dns-prefetch"/>
+<link href="//cors.sh" rel="dns-prefetch"/>
+<!-- Structured Data (JSON-LD) -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Arial', sans-serif; 
@@ -631,918 +569,1551 @@
             }
         }
     </style>
-</head>
+<meta content="https://yourdomain.example/economic-indicators-dashboard" property="og:url"/><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "US Economic Indicators Dashboard • FRED-based Live Monitor",
+  "inLanguage": "en",
+  "description": "Interactive dashboard of US economic indicators (CPI, PCE, Treasury yields, labor market, housing, money, credit, stress, volatility, GDP). Powered by FRED series IDs for reproducible analysis.",
+  "url": "https://yourdomain.example/economic-indicators-dashboard"
+}</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "US Economic Indicators (FRED Series)",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Thing",
+        "name": "Consumer Price Index (CPI)",
+        "identifier": "CPIAUCSL",
+        "url": "https://fred.stlouisfed.org/series/CPIAUCSL"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Thing",
+        "name": "Core CPI (Less Food & Energy)",
+        "identifier": "CPILFESL",
+        "url": "https://fred.stlouisfed.org/series/CPILFESL"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Thing",
+        "name": "PCE Price Index",
+        "identifier": "PCEPI",
+        "url": "https://fred.stlouisfed.org/series/PCEPI"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Thing",
+        "name": "Unemployment Rate",
+        "identifier": "UNRATE",
+        "url": "https://fred.stlouisfed.org/series/UNRATE"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Thing",
+        "name": "Nonfarm Payrolls",
+        "identifier": "PAYEMS",
+        "url": "https://fred.stlouisfed.org/series/PAYEMS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "Thing",
+        "name": "Labor Force Participation Rate",
+        "identifier": "CIVPART",
+        "url": "https://fred.stlouisfed.org/series/CIVPART"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "Thing",
+        "name": "Initial Claims",
+        "identifier": "ICSA",
+        "url": "https://fred.stlouisfed.org/series/ICSA"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "Thing",
+        "name": "Federal Funds Rate",
+        "identifier": "FEDFUNDS",
+        "url": "https://fred.stlouisfed.org/series/FEDFUNDS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@type": "Thing",
+        "name": "10-Year Treasury Yield",
+        "identifier": "DGS10",
+        "url": "https://fred.stlouisfed.org/series/DGS10"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@type": "Thing",
+        "name": "2-Year Treasury Yield",
+        "identifier": "DGS2",
+        "url": "https://fred.stlouisfed.org/series/DGS2"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+        "@type": "Thing",
+        "name": "10-Year Treasury Minus 2-Year Treasury",
+        "identifier": "T10Y2Y",
+        "url": "https://fred.stlouisfed.org/series/T10Y2Y"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "item": {
+        "@type": "Thing",
+        "name": "Overnight Reverse Repo Agreements",
+        "identifier": "RRPONTSYAWARD",
+        "url": "https://fred.stlouisfed.org/series/RRPONTSYAWARD"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "item": {
+        "@type": "Thing",
+        "name": "10-Year Treasury Minus 3-Month Treasury",
+        "identifier": "T10Y3M",
+        "url": "https://fred.stlouisfed.org/series/T10Y3M"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "item": {
+        "@type": "Thing",
+        "name": "10-Year Treasury Inflation-Indexed",
+        "identifier": "DFII10",
+        "url": "https://fred.stlouisfed.org/series/DFII10"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "item": {
+        "@type": "Thing",
+        "name": "5-Year Treasury Yield",
+        "identifier": "DGS5",
+        "url": "https://fred.stlouisfed.org/series/DGS5"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "item": {
+        "@type": "Thing",
+        "name": "30-Year Treasury Yield",
+        "identifier": "DGS30",
+        "url": "https://fred.stlouisfed.org/series/DGS30"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "item": {
+        "@type": "Thing",
+        "name": "1-Year Treasury Yield",
+        "identifier": "DGS1",
+        "url": "https://fred.stlouisfed.org/series/DGS1"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "item": {
+        "@type": "Thing",
+        "name": "3-Year Treasury Yield",
+        "identifier": "DGS3",
+        "url": "https://fred.stlouisfed.org/series/DGS3"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "item": {
+        "@type": "Thing",
+        "name": "5-Year Breakeven Inflation Rate",
+        "identifier": "T5YIE",
+        "url": "https://fred.stlouisfed.org/series/T5YIE"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "item": {
+        "@type": "Thing",
+        "name": "Moody\\",
+        "identifier": "BAA10Y",
+        "url": "https://fred.stlouisfed.org/series/BAA10Y"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "item": {
+        "@type": "Thing",
+        "name": "Chicago Fed Financial Conditions Index",
+        "identifier": "NFCI",
+        "url": "https://fred.stlouisfed.org/series/NFCI"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 22,
+      "item": {
+        "@type": "Thing",
+        "name": "St. Louis Fed Financial Stress Index",
+        "identifier": "STLFSI4",
+        "url": "https://fred.stlouisfed.org/series/STLFSI4"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 23,
+      "item": {
+        "@type": "Thing",
+        "name": "High Yield Corporate Bond Yield",
+        "identifier": "BAMLH0A0HYM2EY",
+        "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2EY"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 24,
+      "item": {
+        "@type": "Thing",
+        "name": "Moody\\",
+        "identifier": "DBAA",
+        "url": "https://fred.stlouisfed.org/series/DBAA"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 25,
+      "item": {
+        "@type": "Thing",
+        "name": "Secured Overnight Financing Rate",
+        "identifier": "SOFR",
+        "url": "https://fred.stlouisfed.org/series/SOFR"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
+      "item": {
+        "@type": "Thing",
+        "name": "Overnight Bank Funding Rate",
+        "identifier": "OBFR",
+        "url": "https://fred.stlouisfed.org/series/OBFR"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 27,
+      "item": {
+        "@type": "Thing",
+        "name": "Effective Federal Funds Rate",
+        "identifier": "EFFR",
+        "url": "https://fred.stlouisfed.org/series/EFFR"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 28,
+      "item": {
+        "@type": "Thing",
+        "name": "Bank Lending Standards (Large & Mid Firms)",
+        "identifier": "DRTSCILM",
+        "url": "https://fred.stlouisfed.org/series/DRTSCILM"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 29,
+      "item": {
+        "@type": "Thing",
+        "name": "University of Michigan Consumer Sentiment",
+        "identifier": "UMCSENT",
+        "url": "https://fred.stlouisfed.org/series/UMCSENT"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 30,
+      "item": {
+        "@type": "Thing",
+        "name": "Personal Consumption Expenditures",
+        "identifier": "PCE",
+        "url": "https://fred.stlouisfed.org/series/PCE"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 31,
+      "item": {
+        "@type": "Thing",
+        "name": "Real Disposable Personal Income",
+        "identifier": "DSPIC96",
+        "url": "https://fred.stlouisfed.org/series/DSPIC96"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 32,
+      "item": {
+        "@type": "Thing",
+        "name": "PCE: Durable Goods",
+        "identifier": "PCEDG",
+        "url": "https://fred.stlouisfed.org/series/PCEDG"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 33,
+      "item": {
+        "@type": "Thing",
+        "name": "PCE: Nondurable Goods",
+        "identifier": "PCEND",
+        "url": "https://fred.stlouisfed.org/series/PCEND"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
+      "item": {
+        "@type": "Thing",
+        "name": "Consumption-to-Income Ratio",
+        "identifier": "CONSUMPTION_INCOME_RATIO",
+        "url": "https://fred.stlouisfed.org/series/CONSUMPTION_INCOME_RATIO"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 35,
+      "item": {
+        "@type": "Thing",
+        "name": "Credit Card Delinquency Rate",
+        "identifier": "DRCCLACBS",
+        "url": "https://fred.stlouisfed.org/series/DRCCLACBS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 36,
+      "item": {
+        "@type": "Thing",
+        "name": "Mortgage Delinquency Rate",
+        "identifier": "DRSFRMACBS",
+        "url": "https://fred.stlouisfed.org/series/DRSFRMACBS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 37,
+      "item": {
+        "@type": "Thing",
+        "name": "Weekly Economic Index",
+        "identifier": "WEI",
+        "url": "https://fred.stlouisfed.org/series/WEI"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 38,
+      "item": {
+        "@type": "Thing",
+        "name": "Private Nonresidential Fixed Investment",
+        "identifier": "PNFI",
+        "url": "https://fred.stlouisfed.org/series/PNFI"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 39,
+      "item": {
+        "@type": "Thing",
+        "name": "Business Applications",
+        "identifier": "BUSAPPWNSAUS",
+        "url": "https://fred.stlouisfed.org/series/BUSAPPWNSAUS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 40,
+      "item": {
+        "@type": "Thing",
+        "name": "Initial Jobless Claims",
+        "identifier": "ICSA",
+        "url": "https://fred.stlouisfed.org/series/ICSA"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 41,
+      "item": {
+        "@type": "Thing",
+        "name": "Retail Sales",
+        "identifier": "RSAFS",
+        "url": "https://fred.stlouisfed.org/series/RSAFS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 42,
+      "item": {
+        "@type": "Thing",
+        "name": "Real GDP",
+        "identifier": "GDP",
+        "url": "https://fred.stlouisfed.org/series/GDP"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 43,
+      "item": {
+        "@type": "Thing",
+        "name": "Potential GDP (Current Estimate)",
+        "identifier": "GDPPOT",
+        "url": "https://fred.stlouisfed.org/series/GDPPOT"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 44,
+      "item": {
+        "@type": "Thing",
+        "name": "Industrial Production Index",
+        "identifier": "INDPRO",
+        "url": "https://fred.stlouisfed.org/series/INDPRO"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 45,
+      "item": {
+        "@type": "Thing",
+        "name": "30-Year Fixed Rate Mortgage",
+        "identifier": "MORTGAGE30US",
+        "url": "https://fred.stlouisfed.org/series/MORTGAGE30US"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 46,
+      "item": {
+        "@type": "Thing",
+        "name": "Housing Starts",
+        "identifier": "HOUST",
+        "url": "https://fred.stlouisfed.org/series/HOUST"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 47,
+      "item": {
+        "@type": "Thing",
+        "name": "Building Permits",
+        "identifier": "PERMIT",
+        "url": "https://fred.stlouisfed.org/series/PERMIT"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 48,
+      "item": {
+        "@type": "Thing",
+        "name": "New Home Sales",
+        "identifier": "DHHNGSP",
+        "url": "https://fred.stlouisfed.org/series/DHHNGSP"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 49,
+      "item": {
+        "@type": "Thing",
+        "name": "15-Year Fixed Mortgage",
+        "identifier": "MORTGAGE15US",
+        "url": "https://fred.stlouisfed.org/series/MORTGAGE15US"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 50,
+      "item": {
+        "@type": "Thing",
+        "name": "M2 Money Stock",
+        "identifier": "M2SL",
+        "url": "https://fred.stlouisfed.org/series/M2SL"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 51,
+      "item": {
+        "@type": "Thing",
+        "name": "WTI Crude Oil Price",
+        "identifier": "DCOILWTICO",
+        "url": "https://fred.stlouisfed.org/series/DCOILWTICO"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 52,
+      "item": {
+        "@type": "Thing",
+        "name": "Brent Crude Oil Price",
+        "identifier": "DCOILBRENTEU",
+        "url": "https://fred.stlouisfed.org/series/DCOILBRENTEU"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 53,
+      "item": {
+        "@type": "Thing",
+        "name": "VIX Volatility Index",
+        "identifier": "VIXCLS",
+        "url": "https://fred.stlouisfed.org/series/VIXCLS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 54,
+      "item": {
+        "@type": "Thing",
+        "name": "S&P 500 Index",
+        "identifier": "SP500",
+        "url": "https://fred.stlouisfed.org/series/SP500"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 55,
+      "item": {
+        "@type": "Thing",
+        "name": "NASDAQ Composite",
+        "identifier": "NASDAQCOM",
+        "url": "https://fred.stlouisfed.org/series/NASDAQCOM"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 56,
+      "item": {
+        "@type": "Thing",
+        "name": "VIX Volatility Index",
+        "identifier": "VIXCLS",
+        "url": "https://fred.stlouisfed.org/series/VIXCLS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 57,
+      "item": {
+        "@type": "Thing",
+        "name": "Dow Jones Industrial Average",
+        "identifier": "DJIA",
+        "url": "https://fred.stlouisfed.org/series/DJIA"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 58,
+      "item": {
+        "@type": "Thing",
+        "name": "NASDAQ Composite",
+        "identifier": "NASDAQCOM",
+        "url": "https://fred.stlouisfed.org/series/NASDAQCOM"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 59,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Medical Care Services",
+        "identifier": "CPIMEDSL",
+        "url": "https://fred.stlouisfed.org/series/CPIMEDSL"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 60,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Professional Services",
+        "identifier": "CUSR0000SEMC",
+        "url": "https://fred.stlouisfed.org/series/CUSR0000SEMC"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 61,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Medical Care Commodities",
+        "identifier": "CPIMEDNS",
+        "url": "https://fred.stlouisfed.org/series/CPIMEDNS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 62,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Prescription Drugs",
+        "identifier": "CPIUFDNS",
+        "url": "https://fred.stlouisfed.org/series/CPIUFDNS"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 63,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Hospital Services",
+        "identifier": "CUUR0000SEMC",
+        "url": "https://fred.stlouisfed.org/series/CUUR0000SEMC"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 64,
+      "item": {
+        "@type": "Thing",
+        "name": "CPI: Physicians\\",
+        "identifier": "CUSR0000SEMD",
+        "url": "https://fred.stlouisfed.org/series/CUSR0000SEMD"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 65,
+      "item": {
+        "@type": "Thing",
+        "name": "Working-Age Population (15-64 Years)",
+        "identifier": "LFWA64TTUSM647S",
+        "url": "https://fred.stlouisfed.org/series/LFWA64TTUSM647S"
+      }
+    }
+  ]
+}</script></head>
 <body>
-
-    <div class="container">
-        <header>
-            <h1>📊 Real-Time US Economic Indicators Dashboard 2025</h1>
-        </header>
-        <div class="subtitle">
-            <strong>FREE</strong> Federal Reserve (FRED) Official Economic Data | Real-time monitoring of 38+ indicators including GDP, CPI, Treasury Yields, Interest Rates & Employment | Updated Daily
+<div class="container">
+<header>
+<h1>📊 Real-Time US Economic Indicators Dashboard 2025</h1>
+</header>
+<div class="subtitle">
+<strong>FREE</strong> Federal Reserve (FRED) Official Economic Data | Real-time monitoring of 38+ indicators including GDP, CPI, Treasury Yields, Interest Rates &amp; Employment | Updated Daily
         </div>
-        
-        <!-- SEO Content Section -->
-        <section class="seo-content" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
-            <h2 style="color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">🎯 Why Use Our Economic Dashboard?</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
-                <div>
-                    <h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">✅ Complete Economic Coverage</h3>
-                    <p>Monitor all essential US economic indicators in one place: GDP growth, inflation rates (CPI, PCE), unemployment data, Treasury bond yields, mortgage rates, and housing market trends.</p>
-                </div>
-                <div>
-                    <h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">⚡ Real-Time FRED Data</h3>
-                    <p>Direct integration with Federal Reserve Economic Data (FRED) ensures you get official, up-to-date economic statistics as soon as they're released.</p>
-                </div>
-                <div>
-                    <h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">📈 Interactive Charts & Analysis</h3>
-                    <p>Visualize economic trends with interactive charts supporting multiple timeframes (1M to 10Y+). Perfect for economic research, investment analysis, and market forecasting.</p>
-                </div>
-                <div>
-                    <h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">🆓 100% Free Access</h3>
-                    <p>No registration, no fees, no limits. Access professional-grade economic data and analysis tools completely free. Ideal for students, researchers, investors, and analysts.</p>
-                </div>
-            </div>
-        </section>
-        <div class="last-updated" id="lastUpdated">
-            <span id="currentTime"></span>
-        </div>
-
-        <div class="status-info" id="statusInfo">
+<!-- SEO Content Section -->
+<section class="seo-content" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
+<h2 style="color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">🎯 Why Use Our Economic Dashboard?</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+<div>
+<h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">✅ Complete Economic Coverage</h3>
+<p>Monitor all essential US economic indicators in one place: GDP growth, inflation rates (CPI, PCE), unemployment data, Treasury bond yields, mortgage rates, and housing market trends.</p>
+</div>
+<div>
+<h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">⚡ Real-Time FRED Data</h3>
+<p>Direct integration with Federal Reserve Economic Data (FRED) ensures you get official, up-to-date economic statistics as soon as they're released.</p>
+</div>
+<div>
+<h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">📈 Interactive Charts &amp; Analysis</h3>
+<p>Visualize economic trends with interactive charts supporting multiple timeframes (1M to 10Y+). Perfect for economic research, investment analysis, and market forecasting.</p>
+</div>
+<div>
+<h3 style="color: #3498db; font-size: 1.1rem; margin-bottom: 10px;">🆓 100% Free Access</h3>
+<p>No registration, no fees, no limits. Access professional-grade economic data and analysis tools completely free. Ideal for students, researchers, investors, and analysts.</p>
+</div>
+</div>
+</section>
+<div class="last-updated" id="lastUpdated">
+<span id="currentTime"></span>
+</div>
+<div class="status-info" id="statusInfo">
             📊 <span class="loading">Loading...</span>
-        </div>
-
-        <div class="indicators-grid">
-            <!-- Inflation & Price Indicators -->
-            <div class="category">
-                <h2>📈 Inflation & Price Indicators <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('CPIAUCSL', 'Consumer Price Index (CPI)')">
-                    <div class="cache-status cache-loading" id="CPIAUCSL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Consumer Price Index (CPI)
+</div>
+<div class="indicators-grid"><nav aria-label="Category index" id="category-index"><h1>US Economic Indicators Dashboard</h1><p>Browse indicators by category. Use the toolbar to sort, collapse, and rebalance columns.</p><ul><li><a href="#cat-inflation-price-indicatorslive">📈 Inflation &amp; Price IndicatorsLIVE (3)</a></li><li><a href="#cat-employment-labor-marketlive">💼 Employment &amp; Labor MarketLIVE (4)</a></li><li><a href="#cat-treasury-bonds-interest-rateslive">💰 Treasury Bonds &amp; Interest RatesLIVE (13)</a></li><li><a href="#cat-financial-conditionslive">🏦 Financial ConditionsLIVE (7)</a></li><li><a href="#cat-credit-lendinglive">🏛️ Credit &amp; LendingLIVE (1)</a></li><li><a href="#cat-consumer-sentiment-perceptionslive">🧠 Consumer Sentiment &amp; PerceptionsLIVE (1)</a></li><li><a href="#cat-household-consumption-incomelive">🏠 Household Consumption &amp; IncomeLIVE (4)</a></li><li><a href="#cat-food-engel-s-law-proxieslive">🍎 Food &amp; Engel's Law ProxiesLIVE (1)</a></li><li><a href="#cat-credit-stress-household-debtlive">🚨 Credit Stress &amp; Household DebtLIVE (2)</a></li><li><a href="#cat-leading-economic-indicatorslive">📈 Leading Economic IndicatorsLIVE (1)</a></li><li><a href="#cat-construction-investmentlive">🏧 Construction &amp; InvestmentLIVE (1)</a></li><li><a href="#cat-business-dynamicslive">🏢 Business DynamicsLIVE (2)</a></li><li><a href="#cat-consumer-restaurant-proxieslive">🍔 Consumer &amp; Restaurant ProxiesLIVE (1)</a></li><li><a href="#cat-gdp-growthlive">📊 GDP &amp; GrowthLIVE (3)</a></li><li><a href="#cat-housing-real-estatelive">🏠 Housing &amp; Real EstateLIVE (5)</a></li><li><a href="#cat-money-creditlive">💳 Money &amp; CreditLIVE (1)</a></li><li><a href="#cat-commoditieslive">🥇 CommoditiesLIVE (2)</a></li><li><a href="#cat-market-volatility-risklive">⚡ Market Volatility &amp; RiskLIVE (1)</a></li><li><a href="#cat-firm-size-market-segmentslive">🏢 Firm Size &amp; Market SegmentsLIVE (5)</a></li><li><a href="#cat-healthcare-costs-medical-cpilive">🏥 Healthcare Costs &amp; Medical CPILIVE (6)</a></li><li><a href="#cat-demographicslive">👥 DemographicsLIVE (1)</a></li></ul></nav>
+<!-- Inflation & Price Indicators -->
+<div class="category" id="cat-inflation-price-indicatorslive">
+<h2>📈 Inflation &amp; Price Indicators <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('CPIAUCSL', 'Consumer Price Index (CPI)')">
+<div class="cache-status cache-loading" id="CPIAUCSL-cache">Loading</div>
+<div>
+<div class="indicator-name">Consumer Price Index (CPI)
                             <div class="indicator-name-eng">Monthly inflation measure</div>
-                        </div>
-                        <div class="indicator-date" id="CPIAUCSL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPIAUCSL">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CPILFESL', 'Core CPI (Less Food & Energy)')">
-                    <div class="cache-status cache-loading" id="CPILFESL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Core CPI (Less Food & Energy)
+</div>
+<div class="indicator-date" id="CPIAUCSL-date">-</div>
+</div>
+<div class="indicator-value loading" id="CPIAUCSL">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CPILFESL', 'Core CPI (Less Food &amp; Energy)')">
+<div class="cache-status cache-loading" id="CPILFESL-cache">Loading</div>
+<div>
+<div class="indicator-name">Core CPI (Less Food &amp; Energy)
                             <div class="indicator-name-eng">Underlying inflation trend</div>
-                        </div>
-                        <div class="indicator-date" id="CPILFESL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPILFESL">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PCEPI', 'PCE Price Index')">
-                    <div class="cache-status cache-loading" id="PCEPI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">PCE Price Index
+</div>
+<div class="indicator-date" id="CPILFESL-date">-</div>
+</div>
+<div class="indicator-value loading" id="CPILFESL">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('PCEPI', 'PCE Price Index')">
+<div class="cache-status cache-loading" id="PCEPI-cache">Loading</div>
+<div>
+<div class="indicator-name">PCE Price Index
                             <div class="indicator-name-eng">Fed's preferred inflation gauge</div>
-                        </div>
-                        <div class="indicator-date" id="PCEPI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCEPI">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('T10YIE', '10-Year Breakeven Inflation Rate')">
-                    <div class="cache-status cache-loading" id="T10YIE-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Breakeven Inflation Rate
-                            <div class="indicator-name-eng">Long-term inflation expectations</div>
-                        </div>
-                        <div class="indicator-date" id="T10YIE-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="T10YIE">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Employment & Labor Market -->
-            <div class="category">
-                <h2>💼 Employment & Labor Market <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('UNRATE', 'Unemployment Rate')">
-                    <div class="cache-status cache-loading" id="UNRATE-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Unemployment Rate
+</div>
+<div class="indicator-date" id="PCEPI-date">-</div>
+</div>
+<div class="indicator-value loading" id="PCEPI">Loading...</div>
+</div>
+</div>
+<!-- Employment & Labor Market -->
+<div class="category" id="cat-employment-labor-marketlive">
+<h2>💼 Employment &amp; Labor Market <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('UNRATE', 'Unemployment Rate')">
+<div class="cache-status cache-loading" id="UNRATE-cache">Loading</div>
+<div>
+<div class="indicator-name">Unemployment Rate
                             <div class="indicator-name-eng">Percent of labor force unemployed</div>
-                        </div>
-                        <div class="indicator-date" id="UNRATE-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="UNRATE">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PAYEMS', 'Nonfarm Payrolls')">
-                    <div class="cache-status cache-loading" id="PAYEMS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Nonfarm Payrolls
+</div>
+<div class="indicator-date" id="UNRATE-date">-</div>
+</div>
+<div class="indicator-value loading" id="UNRATE">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('PAYEMS', 'Nonfarm Payrolls')">
+<div class="cache-status cache-loading" id="PAYEMS-cache">Loading</div>
+<div>
+<div class="indicator-name">Nonfarm Payrolls
                             <div class="indicator-name-eng">Monthly job creation measure</div>
-                        </div>
-                        <div class="indicator-date" id="PAYEMS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PAYEMS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CIVPART', 'Labor Force Participation Rate')">
-                    <div class="cache-status cache-loading" id="CIVPART-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Labor Force Participation Rate
+</div>
+<div class="indicator-date" id="PAYEMS-date">-</div>
+</div>
+<div class="indicator-value loading" id="PAYEMS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CIVPART', 'Labor Force Participation Rate')">
+<div class="cache-status cache-loading" id="CIVPART-cache">Loading</div>
+<div>
+<div class="indicator-name">Labor Force Participation Rate
                             <div class="indicator-name-eng">Percent of population in labor force</div>
-                        </div>
-                        <div class="indicator-date" id="CIVPART-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CIVPART">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Treasury Bonds & Interest Rates -->
-            <div class="category">
-                <h2>💰 Treasury Bonds & Interest Rates <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('FEDFUNDS', 'Federal Funds Rate')">
-                    <div class="cache-status cache-loading" id="FEDFUNDS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Federal Funds Rate
+</div>
+<div class="indicator-date" id="CIVPART-date">-</div>
+</div>
+<div class="indicator-value loading" id="CIVPART">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('ICSA', 'Initial Claims')">
+<div class="cache-status cache-loading" id="ICSA-cache">Loading</div>
+<div>
+<div class="indicator-name">Initial Claims
+                            <div class="indicator-name-eng">Weekly jobless claims</div>
+</div>
+<div class="indicator-date" id="ICSA-date">-</div>
+</div>
+<div class="indicator-value loading" id="ICSA">Loading...</div>
+</div>
+</div>
+<!-- Treasury Bonds & Interest Rates -->
+<div class="category" id="cat-treasury-bonds-interest-rateslive">
+<h2>💰 Treasury Bonds &amp; Interest Rates <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('FEDFUNDS', 'Federal Funds Rate')">
+<div class="cache-status cache-loading" id="FEDFUNDS-cache">Loading</div>
+<div>
+<div class="indicator-name">Federal Funds Rate
                             <div class="indicator-name-eng">Fed's benchmark interest rate</div>
-                        </div>
-                        <div class="indicator-date" id="FEDFUNDS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="FEDFUNDS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS10', '10-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS10-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Treasury Yield
+</div>
+<div class="indicator-date" id="FEDFUNDS-date">-</div>
+</div>
+<div class="indicator-value loading" id="FEDFUNDS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS10', '10-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS10-cache">Loading</div>
+<div>
+<div class="indicator-name">10-Year Treasury Yield
                             <div class="indicator-name-eng">Long-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS10-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS10">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS2', '2-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS2-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">2-Year Treasury Yield
+</div>
+<div class="indicator-date" id="DGS10-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS10">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS2', '2-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS2-cache">Loading</div>
+<div>
+<div class="indicator-name">2-Year Treasury Yield
                             <div class="indicator-name-eng">Short-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS2-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS2">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('T10Y2Y', '10-Year Treasury Minus 2-Year Treasury')">
-                    <div class="cache-status cache-loading" id="T10Y2Y-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Treasury Minus 2-Year Treasury
+</div>
+<div class="indicator-date" id="DGS2-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS2">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('T10Y2Y', '10-Year Treasury Minus 2-Year Treasury')">
+<div class="cache-status cache-loading" id="T10Y2Y-cache">Loading</div>
+<div>
+<div class="indicator-name">10-Year Treasury Minus 2-Year Treasury
                             <div class="indicator-name-eng">Yield curve spread</div>
-                        </div>
-                        <div class="indicator-date" id="T10Y2Y-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="T10Y2Y">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('RRPONTSYAWARD', 'Overnight Reverse Repo Agreements')">
-                    <div class="cache-status cache-loading" id="RRPONTSYAWARD-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Overnight Reverse Repo Agreements
+</div>
+<div class="indicator-date" id="T10Y2Y-date">-</div>
+</div>
+<div class="indicator-value loading" id="T10Y2Y">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('RRPONTSYAWARD', 'Overnight Reverse Repo Agreements')">
+<div class="cache-status cache-loading" id="RRPONTSYAWARD-cache">Loading</div>
+<div>
+<div class="indicator-name">Overnight Reverse Repo Agreements
                             <div class="indicator-name-eng">Fed reverse repo rate</div>
-                        </div>
-                        <div class="indicator-date" id="RRPONTSYAWARD-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="RRPONTSYAWARD">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('T10Y3M', '10-Year Treasury Minus 3-Month Treasury')">
-                    <div class="cache-status cache-loading" id="T10Y3M-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Treasury Minus 3-Month Treasury
+</div>
+<div class="indicator-date" id="RRPONTSYAWARD-date">-</div>
+</div>
+<div class="indicator-value loading" id="RRPONTSYAWARD">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('T10Y3M', '10-Year Treasury Minus 3-Month Treasury')">
+<div class="cache-status cache-loading" id="T10Y3M-cache">Loading</div>
+<div>
+<div class="indicator-name">10-Year Treasury Minus 3-Month Treasury
                             <div class="indicator-name-eng">Long-term yield spread</div>
-                        </div>
-                        <div class="indicator-date" id="T10Y3M-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="T10Y3M">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DFII10', '10-Year Treasury Inflation-Indexed')">
-                    <div class="cache-status cache-loading" id="DFII10-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">10-Year Treasury Inflation-Indexed
+</div>
+<div class="indicator-date" id="T10Y3M-date">-</div>
+</div>
+<div class="indicator-value loading" id="T10Y3M">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DFII10', '10-Year Treasury Inflation-Indexed')">
+<div class="cache-status cache-loading" id="DFII10-cache">Loading</div>
+<div>
+<div class="indicator-name">10-Year Treasury Inflation-Indexed
                             <div class="indicator-name-eng">TIPS yield</div>
-                        </div>
-                        <div class="indicator-date" id="DFII10-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DFII10">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS5', '5-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS5-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">5-Year Treasury Yield
+</div>
+<div class="indicator-date" id="DFII10-date">-</div>
+</div>
+<div class="indicator-value loading" id="DFII10">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS5', '5-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS5-cache">Loading</div>
+<div>
+<div class="indicator-name">5-Year Treasury Yield
                             <div class="indicator-name-eng">Medium-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS5-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS5">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DGS30', '30-Year Treasury Yield')">
-                    <div class="cache-status cache-loading" id="DGS30-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">30-Year Treasury Yield
+</div>
+<div class="indicator-date" id="DGS5-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS5">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS30', '30-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS30-cache">Loading</div>
+<div>
+<div class="indicator-name">30-Year Treasury Yield
                             <div class="indicator-name-eng">Long-term bond yield</div>
-                        </div>
-                        <div class="indicator-date" id="DGS30-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DGS30">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('BAA10Y', 'Moody\'s Baa Corporate Bond Spread')">
-                    <div class="cache-status cache-loading" id="BAA10Y-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Moody's Baa Corporate Bond Spread
+</div>
+<div class="indicator-date" id="DGS30-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS30">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS1', '1-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS1-cache">Loading</div>
+<div>
+<div class="indicator-name">1-Year Treasury Yield
+                            <div class="indicator-name-eng">Short-term bond yield</div>
+</div>
+<div class="indicator-date" id="DGS1-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS1">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DGS3', '3-Year Treasury Yield')">
+<div class="cache-status cache-loading" id="DGS3-cache">Loading</div>
+<div>
+<div class="indicator-name">3-Year Treasury Yield
+                            <div class="indicator-name-eng">Medium-term bond yield</div>
+</div>
+<div class="indicator-date" id="DGS3-date">-</div>
+</div>
+<div class="indicator-value loading" id="DGS3">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('T5YIE', '5-Year Breakeven Inflation Rate')">
+<div class="cache-status cache-loading" id="T5YIE-cache">Loading</div>
+<div>
+<div class="indicator-name">5-Year Breakeven Inflation Rate
+                            <div class="indicator-name-eng">5-year inflation expectations</div>
+</div>
+<div class="indicator-date" id="T5YIE-date">-</div>
+</div>
+<div class="indicator-value loading" id="T5YIE">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('BAA10Y', 'Moody\'s Baa Corporate Bond Spread')">
+<div class="cache-status cache-loading" id="BAA10Y-cache">Loading</div>
+<div>
+<div class="indicator-name">Moody's Baa Corporate Bond Spread
                             <div class="indicator-name-eng">Corporate-Treasury spread</div>
-                        </div>
-                        <div class="indicator-date" id="BAA10Y-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="BAA10Y">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DFII5', '5-Year TIPS Yield')">
-                    <div class="cache-status cache-loading" id="DFII5-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">5-Year TIPS Yield
-                            <div class="indicator-name-eng">5-Year inflation-protected securities</div>
-                        </div>
-                        <div class="indicator-date" id="DFII5-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DFII5">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DFII30', '30-Year TIPS Yield')">
-                    <div class="cache-status cache-loading" id="DFII30-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">30-Year TIPS Yield
-                            <div class="indicator-name-eng">30-Year inflation-protected securities</div>
-                        </div>
-                        <div class="indicator-date" id="DFII30-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DFII30">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Financial Conditions -->
-            <div class="category financial-conditions">
-                <h2>🏦 Financial Conditions <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('NFCI', 'Chicago Fed Financial Conditions Index')">
-                    <div class="cache-status cache-loading" id="NFCI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Chicago Fed Financial Conditions Index
+</div>
+<div class="indicator-date" id="BAA10Y-date">-</div>
+</div>
+<div class="indicator-value loading" id="BAA10Y">Loading...</div>
+</div>
+</div>
+<!-- Financial Conditions -->
+<div class="category financial-conditions" id="cat-financial-conditionslive">
+<h2>🏦 Financial Conditions <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('NFCI', 'Chicago Fed Financial Conditions Index')">
+<div class="cache-status cache-loading" id="NFCI-cache">Loading</div>
+<div>
+<div class="indicator-name">Chicago Fed Financial Conditions Index
                             <div class="indicator-name-eng">Overall financial stress measure</div>
-                        </div>
-                        <div class="indicator-date" id="NFCI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="NFCI">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('STLFSI4', 'St. Louis Fed Financial Stress Index')">
-                    <div class="cache-status cache-loading" id="STLFSI4-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">St. Louis Fed Financial Stress Index
+</div>
+<div class="indicator-date" id="NFCI-date">-</div>
+</div>
+<div class="indicator-value loading" id="NFCI">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('STLFSI4', 'St. Louis Fed Financial Stress Index')">
+<div class="cache-status cache-loading" id="STLFSI4-cache">Loading</div>
+<div>
+<div class="indicator-name">St. Louis Fed Financial Stress Index
                             <div class="indicator-name-eng">Alternative financial stress gauge</div>
-                        </div>
-                        <div class="indicator-date" id="STLFSI4-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="STLFSI4">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('BAMLH0A0HYM2EY', 'High Yield Corporate Bond Yield')">
-                    <div class="cache-status cache-loading" id="BAMLH0A0HYM2EY-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">High Yield Corporate Bond Yield
+</div>
+<div class="indicator-date" id="STLFSI4-date">-</div>
+</div>
+<div class="indicator-value loading" id="STLFSI4">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('BAMLH0A0HYM2EY', 'High Yield Corporate Bond Yield')">
+<div class="cache-status cache-loading" id="BAMLH0A0HYM2EY-cache">Loading</div>
+<div>
+<div class="indicator-name">High Yield Corporate Bond Yield
                             <div class="indicator-name-eng">Junk bond risk premium</div>
-                        </div>
-                        <div class="indicator-date" id="BAMLH0A0HYM2EY-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="BAMLH0A0HYM2EY">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DBAA', 'Moody\'s Baa Corporate Bond Yield')">
-                    <div class="cache-status cache-loading" id="DBAA-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Moody's Baa Corporate Bond Yield
+</div>
+<div class="indicator-date" id="BAMLH0A0HYM2EY-date">-</div>
+</div>
+<div class="indicator-value loading" id="BAMLH0A0HYM2EY">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DBAA', 'Moody\'s Baa Corporate Bond Yield')">
+<div class="cache-status cache-loading" id="DBAA-cache">Loading</div>
+<div>
+<div class="indicator-name">Moody's Baa Corporate Bond Yield
                             <div class="indicator-name-eng">Investment grade corporate bonds</div>
-                        </div>
-                        <div class="indicator-date" id="DBAA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DBAA">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('SOFR', 'Secured Overnight Financing Rate')">
-                    <div class="cache-status cache-loading" id="SOFR-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Secured Overnight Financing Rate (SOFR)
+</div>
+<div class="indicator-date" id="DBAA-date">-</div>
+</div>
+<div class="indicator-value loading" id="DBAA">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('SOFR', 'Secured Overnight Financing Rate')">
+<div class="cache-status cache-loading" id="SOFR-cache">Loading</div>
+<div>
+<div class="indicator-name">Secured Overnight Financing Rate (SOFR)
                             <div class="indicator-name-eng">Fed operational funding rate</div>
-                        </div>
-                        <div class="indicator-date" id="SOFR-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="SOFR">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('OBFR', 'Overnight Bank Funding Rate')">
-                    <div class="cache-status cache-loading" id="OBFR-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Overnight Bank Funding Rate (OBFR)
+</div>
+<div class="indicator-date" id="SOFR-date">-</div>
+</div>
+<div class="indicator-value loading" id="SOFR">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('OBFR', 'Overnight Bank Funding Rate')">
+<div class="cache-status cache-loading" id="OBFR-cache">Loading</div>
+<div>
+<div class="indicator-name">Overnight Bank Funding Rate (OBFR)
                             <div class="indicator-name-eng">Bank funding liquidity measure</div>
-                        </div>
-                        <div class="indicator-date" id="OBFR-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="OBFR">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('EFFR', 'Effective Federal Funds Rate')">
-                    <div class="cache-status cache-loading" id="EFFR-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Effective Federal Funds Rate (EFFR)
+</div>
+<div class="indicator-date" id="OBFR-date">-</div>
+</div>
+<div class="indicator-value loading" id="OBFR">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('EFFR', 'Effective Federal Funds Rate')">
+<div class="cache-status cache-loading" id="EFFR-cache">Loading</div>
+<div>
+<div class="indicator-name">Effective Federal Funds Rate (EFFR)
                             <div class="indicator-name-eng">Actual fed funds trading rate</div>
-                        </div>
-                        <div class="indicator-date" id="EFFR-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="EFFR">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Credit & Lending -->
-            <div class="category lending">
-                <h2>🏛️ Credit & Lending <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('DRTSCILM', 'Bank Lending Standards (Large & Mid Firms)')">
-                    <div class="cache-status cache-loading" id="DRTSCILM-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Bank Lending Standards (Large & Mid Firms)
+</div>
+<div class="indicator-date" id="EFFR-date">-</div>
+</div>
+<div class="indicator-value loading" id="EFFR">Loading...</div>
+</div>
+</div>
+<!-- Credit & Lending -->
+<div class="category lending" id="cat-credit-lendinglive">
+<h2>🏛️ Credit &amp; Lending <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('DRTSCILM', 'Bank Lending Standards (Large &amp; Mid Firms)')">
+<div class="cache-status cache-loading" id="DRTSCILM-cache">Loading</div>
+<div>
+<div class="indicator-name">Bank Lending Standards (Large &amp; Mid Firms)
                             <div class="indicator-name-eng">Net % of banks tightening standards</div>
-                        </div>
-                        <div class="indicator-date" id="DRTSCILM-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DRTSCILM">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Consumer Sentiment & Perceptions -->
-            <div class="category sentiment">
-                <h2>🧠 Consumer Sentiment & Perceptions <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('UMCSENT', 'University of Michigan Consumer Sentiment')">
-                    <div class="cache-status cache-loading" id="UMCSENT-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">University of Michigan Consumer Sentiment
+</div>
+<div class="indicator-date" id="DRTSCILM-date">-</div>
+</div>
+<div class="indicator-value loading" id="DRTSCILM">Loading...</div>
+</div>
+</div>
+<!-- Consumer Sentiment & Perceptions -->
+<div class="category sentiment" id="cat-consumer-sentiment-perceptionslive">
+<h2>🧠 Consumer Sentiment &amp; Perceptions <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('UMCSENT', 'University of Michigan Consumer Sentiment')">
+<div class="cache-status cache-loading" id="UMCSENT-cache">Loading</div>
+<div>
+<div class="indicator-name">University of Michigan Consumer Sentiment
                             <div class="indicator-name-eng">Consumer confidence measure</div>
-                        </div>
-                        <div class="indicator-date" id="UMCSENT-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="UMCSENT">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Household Consumption & Income -->
-            <div class="category household-consumption">
-                <h2>🏠 Household Consumption & Income <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('PCE', 'Personal Consumption Expenditures')">
-                    <div class="cache-status cache-loading" id="PCE-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Personal Consumption Expenditures
+</div>
+<div class="indicator-date" id="UMCSENT-date">-</div>
+</div>
+<div class="indicator-value loading" id="UMCSENT">Loading...</div>
+</div>
+</div>
+<!-- Household Consumption & Income -->
+<div class="category household-consumption" id="cat-household-consumption-incomelive">
+<h2>🏠 Household Consumption &amp; Income <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('PCE', 'Personal Consumption Expenditures')">
+<div class="cache-status cache-loading" id="PCE-cache">Loading</div>
+<div>
+<div class="indicator-name">Personal Consumption Expenditures
                             <div class="indicator-name-eng">Total consumer spending</div>
-                        </div>
-                        <div class="indicator-date" id="PCE-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCE">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DSPIC96', 'Real Disposable Personal Income')">
-                    <div class="cache-status cache-loading" id="DSPIC96-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Real Disposable Personal Income
+</div>
+<div class="indicator-date" id="PCE-date">-</div>
+</div>
+<div class="indicator-value loading" id="PCE">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DSPIC96', 'Real Disposable Personal Income')">
+<div class="cache-status cache-loading" id="DSPIC96-cache">Loading</div>
+<div>
+<div class="indicator-name">Real Disposable Personal Income
                             <div class="indicator-name-eng">After-tax income adjusted for inflation</div>
-                        </div>
-                        <div class="indicator-date" id="DSPIC96-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DSPIC96">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PCEDG', 'PCE: Durable Goods')">
-                    <div class="cache-status cache-loading" id="PCEDG-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">PCE: Durable Goods
+</div>
+<div class="indicator-date" id="DSPIC96-date">-</div>
+</div>
+<div class="indicator-value loading" id="DSPIC96">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('PCEDG', 'PCE: Durable Goods')">
+<div class="cache-status cache-loading" id="PCEDG-cache">Loading</div>
+<div>
+<div class="indicator-name">PCE: Durable Goods
                             <div class="indicator-name-eng">Long-lasting consumer goods</div>
-                        </div>
-                        <div class="indicator-date" id="PCEDG-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCEDG">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('PCEND', 'PCE: Nondurable Goods')">
-                    <div class="cache-status cache-loading" id="PCEND-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">PCE: Nondurable Goods
+</div>
+<div class="indicator-date" id="PCEDG-date">-</div>
+</div>
+<div class="indicator-value loading" id="PCEDG">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('PCEND', 'PCE: Nondurable Goods')">
+<div class="cache-status cache-loading" id="PCEND-cache">Loading</div>
+<div>
+<div class="indicator-name">PCE: Nondurable Goods
                             <div class="indicator-name-eng">Short-term consumer goods</div>
-                        </div>
-                        <div class="indicator-date" id="PCEND-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PCEND">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Food & Engel's Law Proxies -->
-            <div class="category food-engels">
-                <h2>🍎 Food & Engel's Law Proxies <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('CONSUMPTION_INCOME_RATIO', 'Consumption-to-Income Ratio')">
-                    <div class="cache-status cache-loading" id="CONSUMPTION_INCOME_RATIO-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Consumption-to-Income Ratio
+</div>
+<div class="indicator-date" id="PCEND-date">-</div>
+</div>
+<div class="indicator-value loading" id="PCEND">Loading...</div>
+</div>
+</div>
+<!-- Food & Engel's Law Proxies -->
+<div class="category food-engels" id="cat-food-engel-s-law-proxieslive">
+<h2>🍎 Food &amp; Engel's Law Proxies <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('CONSUMPTION_INCOME_RATIO', 'Consumption-to-Income Ratio')">
+<div class="cache-status cache-loading" id="CONSUMPTION_INCOME_RATIO-cache">Loading</div>
+<div>
+<div class="indicator-name">Consumption-to-Income Ratio
                             <div class="indicator-name-eng">PCE / Disposable Income</div>
-                        </div>
-                        <div class="indicator-date" id="CONSUMPTION_INCOME_RATIO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CONSUMPTION_INCOME_RATIO">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Credit Stress & Household Debt -->
-            <div class="category credit-stress">
-                <h2>🚨 Credit Stress & Household Debt <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('DRCCLACBS', 'Credit Card Delinquency Rate')">
-                    <div class="cache-status cache-loading" id="DRCCLACBS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Credit Card Delinquency Rate
+</div>
+<div class="indicator-date" id="CONSUMPTION_INCOME_RATIO-date">-</div>
+</div>
+<div class="indicator-value loading" id="CONSUMPTION_INCOME_RATIO">Loading...</div>
+</div>
+</div>
+<!-- Credit Stress & Household Debt -->
+<div class="category credit-stress" id="cat-credit-stress-household-debtlive">
+<h2>🚨 Credit Stress &amp; Household Debt <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('DRCCLACBS', 'Credit Card Delinquency Rate')">
+<div class="cache-status cache-loading" id="DRCCLACBS-cache">Loading</div>
+<div>
+<div class="indicator-name">Credit Card Delinquency Rate
                             <div class="indicator-name-eng">Credit card loan delinquency</div>
-                        </div>
-                        <div class="indicator-date" id="DRCCLACBS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DRCCLACBS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DRSFRMACBS', 'Mortgage Delinquency Rate')">
-                    <div class="cache-status cache-loading" id="DRSFRMACBS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Mortgage Delinquency Rate
+</div>
+<div class="indicator-date" id="DRCCLACBS-date">-</div>
+</div>
+<div class="indicator-value loading" id="DRCCLACBS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DRSFRMACBS', 'Mortgage Delinquency Rate')">
+<div class="cache-status cache-loading" id="DRSFRMACBS-cache">Loading</div>
+<div>
+<div class="indicator-name">Mortgage Delinquency Rate
                             <div class="indicator-name-eng">Single-family mortgage delinquency</div>
-                        </div>
-                        <div class="indicator-date" id="DRSFRMACBS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DRSFRMACBS">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Leading Economic Indicators -->
-            <div class="category leading-indicators">
-                <h2>📈 Leading Economic Indicators <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('WEI', 'Weekly Economic Index')">
-                    <div class="cache-status cache-loading" id="WEI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Weekly Economic Index (WEI)
+</div>
+<div class="indicator-date" id="DRSFRMACBS-date">-</div>
+</div>
+<div class="indicator-value loading" id="DRSFRMACBS">Loading...</div>
+</div>
+</div>
+<!-- Leading Economic Indicators -->
+<div class="category leading-indicators" id="cat-leading-economic-indicatorslive">
+<h2>📈 Leading Economic Indicators <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('WEI', 'Weekly Economic Index')">
+<div class="cache-status cache-loading" id="WEI-cache">Loading</div>
+<div>
+<div class="indicator-name">Weekly Economic Index (WEI)
                             <div class="indicator-name-eng">High-frequency economic activity</div>
-                        </div>
-                        <div class="indicator-date" id="WEI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="WEI">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Construction & Investment -->
-            <div class="category construction-investment">
-                <h2>🏧 Construction & Investment <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('PNFI', 'Private Nonresidential Fixed Investment')">
-                    <div class="cache-status cache-loading" id="PNFI-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Private Nonresidential Fixed Investment
+</div>
+<div class="indicator-date" id="WEI-date">-</div>
+</div>
+<div class="indicator-value loading" id="WEI">Loading...</div>
+</div>
+</div>
+<!-- Construction & Investment -->
+<div class="category construction-investment" id="cat-construction-investmentlive">
+<h2>🏧 Construction &amp; Investment <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('PNFI', 'Private Nonresidential Fixed Investment')">
+<div class="cache-status cache-loading" id="PNFI-cache">Loading</div>
+<div>
+<div class="indicator-name">Private Nonresidential Fixed Investment
                             <div class="indicator-name-eng">Business fixed investment</div>
-                        </div>
-                        <div class="indicator-date" id="PNFI-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="PNFI">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Business Dynamics -->
-            <div class="category business-dynamics">
-                <h2>🏢 Business Dynamics <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('BUSAPPWNSAUS', 'Business Applications')">
-                    <div class="cache-status cache-loading" id="BUSAPPWNSAUS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Business Applications (Weekly)
+</div>
+<div class="indicator-date" id="PNFI-date">-</div>
+</div>
+<div class="indicator-value loading" id="PNFI">Loading...</div>
+</div>
+</div>
+<!-- Business Dynamics -->
+<div class="category business-dynamics" id="cat-business-dynamicslive">
+<h2>🏢 Business Dynamics <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('BUSAPPWNSAUS', 'Business Applications')">
+<div class="cache-status cache-loading" id="BUSAPPWNSAUS-cache">Loading</div>
+<div>
+<div class="indicator-name">Business Applications (Weekly)
                             <div class="indicator-name-eng">New business formation proxy</div>
-                        </div>
-                        <div class="indicator-date" id="BUSAPPWNSAUS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="BUSAPPWNSAUS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('ICSA', 'Initial Jobless Claims')">
-                    <div class="cache-status cache-loading" id="ICSA-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Initial Jobless Claims
+</div>
+<div class="indicator-date" id="BUSAPPWNSAUS-date">-</div>
+</div>
+<div class="indicator-value loading" id="BUSAPPWNSAUS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('ICSA', 'Initial Jobless Claims')">
+<div class="cache-status cache-loading" id="ICSA-cache">Loading</div>
+<div>
+<div class="indicator-name">Initial Jobless Claims
                             <div class="indicator-name-eng">Weekly unemployment claims</div>
-                        </div>
-                        <div class="indicator-date" id="ICSA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="ICSA">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Consumer & Restaurant Proxies -->
-            <div class="category consumer-restaurant">
-                <h2>🍔 Consumer & Restaurant Proxies <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('RSAFS', 'Retail Sales')">
-                    <div class="cache-status cache-loading" id="RSAFS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Retail Sales
+</div>
+<div class="indicator-date" id="ICSA-date">-</div>
+</div>
+<div class="indicator-value loading" id="ICSA">Loading...</div>
+</div>
+</div>
+<!-- Consumer & Restaurant Proxies -->
+<div class="category consumer-restaurant" id="cat-consumer-restaurant-proxieslive">
+<h2>🍔 Consumer &amp; Restaurant Proxies <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('RSAFS', 'Retail Sales')">
+<div class="cache-status cache-loading" id="RSAFS-cache">Loading</div>
+<div>
+<div class="indicator-name">Retail Sales
                             <div class="indicator-name-eng">Total retail trade sales</div>
-                        </div>
-                        <div class="indicator-date" id="RSAFS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="RSAFS">Loading...</div>
-                </div>
-                
-                
-                
-            </div>
-
-            <!-- GDP & Growth -->
-            <div class="category gdp-growth">
-                <h2>📊 GDP & Growth <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('GDP', 'Real GDP')">
-                    <div class="cache-status cache-loading" id="GDP-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Real GDP
+</div>
+<div class="indicator-date" id="RSAFS-date">-</div>
+</div>
+<div class="indicator-value loading" id="RSAFS">Loading...</div>
+</div>
+</div>
+<!-- GDP & Growth -->
+<div class="category gdp-growth" id="cat-gdp-growthlive">
+<h2>📊 GDP &amp; Growth <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('GDP', 'Real GDP')">
+<div class="cache-status cache-loading" id="GDP-cache">Loading</div>
+<div>
+<div class="indicator-name">Real GDP
                             <div class="indicator-name-eng">Inflation-adjusted economic output</div>
-                        </div>
-                        <div class="indicator-date" id="GDP-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="GDP">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('GDPPOT', 'Potential GDP (Current Estimate)')">
-                    <div class="cache-status cache-loading" id="GDPPOT-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Potential GDP (Current Estimate)
+</div>
+<div class="indicator-date" id="GDP-date">-</div>
+</div>
+<div class="indicator-value loading" id="GDP">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('GDPPOT', 'Potential GDP (Current Estimate)')">
+<div class="cache-status cache-loading" id="GDPPOT-cache">Loading</div>
+<div>
+<div class="indicator-name">Potential GDP (Current Estimate)
                             <div class="indicator-name-eng">Maximum sustainable output level</div>
-                        </div>
-                        <div class="indicator-date" id="GDPPOT-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="GDPPOT">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('INDPRO', 'Industrial Production Index')">
-                    <div class="cache-status cache-loading" id="INDPRO-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Industrial Production Index
+</div>
+<div class="indicator-date" id="GDPPOT-date">-</div>
+</div>
+<div class="indicator-value loading" id="GDPPOT">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('INDPRO', 'Industrial Production Index')">
+<div class="cache-status cache-loading" id="INDPRO-cache">Loading</div>
+<div>
+<div class="indicator-name">Industrial Production Index
                             <div class="indicator-name-eng">Manufacturing output measure</div>
-                        </div>
-                        <div class="indicator-date" id="INDPRO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="INDPRO">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Housing & Real Estate -->
-            <div class="category">
-                <h2>🏠 Housing & Real Estate <span class="fred-logo">LIVE</span></h2>
-                
-                <div class="indicator" onclick="showDetails('MORTGAGE30US', '30-Year Fixed Rate Mortgage')">
-                    <div class="cache-status cache-loading" id="MORTGAGE30US-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">30-Year Fixed Rate Mortgage
+</div>
+<div class="indicator-date" id="INDPRO-date">-</div>
+</div>
+<div class="indicator-value loading" id="INDPRO">Loading...</div>
+</div>
+</div>
+<!-- Housing & Real Estate -->
+<div class="category" id="cat-housing-real-estatelive">
+<h2>🏠 Housing &amp; Real Estate <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('MORTGAGE30US', '30-Year Fixed Rate Mortgage')">
+<div class="cache-status cache-loading" id="MORTGAGE30US-cache">Loading</div>
+<div>
+<div class="indicator-name">30-Year Fixed Rate Mortgage
                             <div class="indicator-name-eng">Average mortgage rate</div>
-                        </div>
-                        <div class="indicator-date" id="MORTGAGE30US-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="MORTGAGE30US">Loading...</div>
-                </div>
-                
-                
-            </div>
-
-            <!-- Money & Credit -->
-            <div class="category">
-                <h2>💳 Money & Credit <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('M2SL', 'M2 Money Stock')">
-                    <div class="cache-status cache-loading" id="M2SL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">M2 Money Stock
+</div>
+<div class="indicator-date" id="MORTGAGE30US-date">-</div>
+</div>
+<div class="indicator-value loading" id="MORTGAGE30US">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('HOUST', 'Housing Starts')">
+<div class="cache-status cache-loading" id="HOUST-cache">Loading</div>
+<div>
+<div class="indicator-name">Housing Starts
+                            <div class="indicator-name-eng">New home construction begins</div>
+</div>
+<div class="indicator-date" id="HOUST-date">-</div>
+</div>
+<div class="indicator-value loading" id="HOUST">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('PERMIT', 'Building Permits')">
+<div class="cache-status cache-loading" id="PERMIT-cache">Loading</div>
+<div>
+<div class="indicator-name">Building Permits
+                            <div class="indicator-name-eng">New construction authorized</div>
+</div>
+<div class="indicator-date" id="PERMIT-date">-</div>
+</div>
+<div class="indicator-value loading" id="PERMIT">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DHHNGSP', 'New Home Sales')">
+<div class="cache-status cache-loading" id="DHHNGSP-cache">Loading</div>
+<div>
+<div class="indicator-name">New Home Sales
+                            <div class="indicator-name-eng">New houses sold monthly</div>
+</div>
+<div class="indicator-date" id="DHHNGSP-date">-</div>
+</div>
+<div class="indicator-value loading" id="DHHNGSP">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('MORTGAGE15US', '15-Year Fixed Mortgage')">
+<div class="cache-status cache-loading" id="MORTGAGE15US-cache">Loading</div>
+<div>
+<div class="indicator-name">15-Year Fixed Mortgage
+                            <div class="indicator-name-eng">Short-term mortgage rate</div>
+</div>
+<div class="indicator-date" id="MORTGAGE15US-date">-</div>
+</div>
+<div class="indicator-value loading" id="MORTGAGE15US">Loading...</div>
+</div>
+</div>
+<!-- Money & Credit -->
+<div class="category" id="cat-money-creditlive">
+<h2>💳 Money &amp; Credit <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('M2SL', 'M2 Money Stock')">
+<div class="cache-status cache-loading" id="M2SL-cache">Loading</div>
+<div>
+<div class="indicator-name">M2 Money Stock
                             <div class="indicator-name-eng">Broad money supply measure</div>
-                        </div>
-                        <div class="indicator-date" id="M2SL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="M2SL">Loading...</div>
-                </div>
-                
-                
-                
-                
-                
-                
-                
-                
-            </div>
-
-            <!-- Commodities -->
-            <div class="category commodities">
-                <h2>🥇 Commodities <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('DCOILWTICO', 'WTI Crude Oil Price')">
-                    <div class="cache-status cache-loading" id="DCOILWTICO-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">WTI Crude Oil Price
+</div>
+<div class="indicator-date" id="M2SL-date">-</div>
+</div>
+<div class="indicator-value loading" id="M2SL">Loading...</div>
+</div>
+</div>
+<!-- Commodities -->
+<div class="category commodities" id="cat-commoditieslive">
+<h2>🥇 Commodities <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('DCOILWTICO', 'WTI Crude Oil Price')">
+<div class="cache-status cache-loading" id="DCOILWTICO-cache">Loading</div>
+<div>
+<div class="indicator-name">WTI Crude Oil Price
                             <div class="indicator-name-eng">US benchmark oil price</div>
-                        </div>
-                        <div class="indicator-date" id="DCOILWTICO-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DCOILWTICO">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('DCOILBRENTEU', 'Brent Crude Oil Price')">
-                    <div class="cache-status cache-loading" id="DCOILBRENTEU-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Brent Crude Oil Price
+</div>
+<div class="indicator-date" id="DCOILWTICO-date">-</div>
+</div>
+<div class="indicator-value loading" id="DCOILWTICO">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DCOILBRENTEU', 'Brent Crude Oil Price')">
+<div class="cache-status cache-loading" id="DCOILBRENTEU-cache">Loading</div>
+<div>
+<div class="indicator-name">Brent Crude Oil Price
                             <div class="indicator-name-eng">Global benchmark oil price</div>
-                        </div>
-                        <div class="indicator-date" id="DCOILBRENTEU-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DCOILBRENTEU">Loading...</div>
-                </div>
-                
-                
-                
-            </div>
-
-            <!-- Market Volatility & Risk -->
-            <div class="category volatility">
-                <h2>⚡ Market Volatility & Risk <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('VIXCLS', 'VIX Volatility Index')">
-                    <div class="cache-status cache-loading" id="VIXCLS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">VIX Volatility Index
-                            <div class="indicator-name-eng">S&P 500 fear gauge</div>
-                        </div>
-                        <div class="indicator-date" id="VIXCLS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="VIXCLS">Loading...</div>
-                </div>
-                
-                
-                
-                
-                <div class="indicator" onclick="showDetails('RVXCLS', 'Russell 2000 Volatility')">
-                    <div class="cache-status cache-loading" id="RVXCLS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Russell 2000 Volatility (RVX)
-                            <div class="indicator-name-eng">Small-cap volatility</div>
-                        </div>
-                        <div class="indicator-date" id="RVXCLS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="RVXCLS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('VXDCLS', 'DJIA Volatility Index')">
-                    <div class="cache-status cache-loading" id="VXDCLS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">DJIA Volatility Index (VXD)
-                            <div class="indicator-name-eng">Dow Jones volatility</div>
-                        </div>
-                        <div class="indicator-date" id="VXDCLS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="VXDCLS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('VXEEMCLS', 'Emerging Markets Volatility')">
-                    <div class="cache-status cache-loading" id="VXEEMCLS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Emerging Markets Volatility (VXEEM)
-                            <div class="indicator-name-eng">EM ETF volatility</div>
-                        </div>
-                        <div class="indicator-date" id="VXEEMCLS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="VXEEMCLS">Loading...</div>
-                </div>
-                
-            </div>
-
-            <!-- Firm Size & Market Segments -->
-            <div class="category firm-size">
-                <h2>🏢 Firm Size & Market Segments <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('SP500', 'S&P 500 Index')">
-                    <div class="cache-status cache-loading" id="SP500-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">S&P 500 Index (Large Cap)
+</div>
+<div class="indicator-date" id="DCOILBRENTEU-date">-</div>
+</div>
+<div class="indicator-value loading" id="DCOILBRENTEU">Loading...</div>
+</div>
+</div>
+<!-- Market Volatility & Risk -->
+<div class="category volatility" id="cat-market-volatility-risklive">
+<h2>⚡ Market Volatility &amp; Risk <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('VIXCLS', 'VIX Volatility Index')">
+<div class="cache-status cache-loading" id="VIXCLS-cache">Loading</div>
+<div>
+<div class="indicator-name">VIX Volatility Index
+                            <div class="indicator-name-eng">S&amp;P 500 fear gauge</div>
+</div>
+<div class="indicator-date" id="VIXCLS-date">-</div>
+</div>
+<div class="indicator-value loading" id="VIXCLS">Loading...</div>
+</div>
+</div>
+<!-- Firm Size & Market Segments -->
+<div class="category firm-size" id="cat-firm-size-market-segmentslive">
+<h2>🏢 Firm Size &amp; Market Segments <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('SP500', 'S&amp;P 500 Index')">
+<div class="cache-status cache-loading" id="SP500-cache">Loading</div>
+<div>
+<div class="indicator-name">S&amp;P 500 Index (Large Cap)
                             <div class="indicator-name-eng">Large-cap US stock benchmark</div>
-                        </div>
-                        <div class="indicator-date" id="SP500-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="SP500">Loading...</div>
-                </div>
-                
-                
-                
-                <div class="indicator" onclick="showDetails('DJIA', 'Dow Jones Industrial Average')">
-                    <div class="cache-status cache-loading" id="DJIA-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Dow Jones Industrial Average
-                            <div class="indicator-name-eng">Blue-chip stock index</div>
-                        </div>
-                        <div class="indicator-date" id="DJIA-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="DJIA">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('NASDAQCOM', 'NASDAQ Composite')">
-                    <div class="cache-status cache-loading" id="NASDAQCOM-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">NASDAQ Composite
+</div>
+<div class="indicator-date" id="SP500-date">-</div>
+</div>
+<div class="indicator-value loading" id="SP500">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('NASDAQCOM', 'NASDAQ Composite')">
+<div class="cache-status cache-loading" id="NASDAQCOM-cache">Loading</div>
+<div>
+<div class="indicator-name">NASDAQ Composite
                             <div class="indicator-name-eng">Tech-heavy stock index</div>
-                        </div>
-                        <div class="indicator-date" id="NASDAQCOM-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="NASDAQCOM">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Travel & Aviation -->
-            
-
-            <!-- Education Costs -->
-            
-
-            <!-- Healthcare Costs & Medical CPI -->
-            <div class="category healthcare-costs">
-                <h2>🏥 Healthcare Costs & Medical CPI <span class="fred-logo">LIVE</span></h2>
-                
-                <div class="indicator" onclick="showDetails('CPIMEDSL', 'CPI: Medical Care Services')">
-                    <div class="cache-status cache-loading" id="CPIMEDSL-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Medical Care Services
+</div>
+<div class="indicator-date" id="NASDAQCOM-date">-</div>
+</div>
+<div class="indicator-value loading" id="NASDAQCOM">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('VIXCLS', 'VIX Volatility Index')">
+<div class="cache-status cache-loading" id="VIXCLS-cache">Loading</div>
+<div>
+<div class="indicator-name">VIX Volatility Index
+                            <div class="indicator-name-eng">Market fear gauge</div>
+</div>
+<div class="indicator-date" id="VIXCLS-date">-</div>
+</div>
+<div class="indicator-value loading" id="VIXCLS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('DJIA', 'Dow Jones Industrial Average')">
+<div class="cache-status cache-loading" id="DJIA-cache">Loading</div>
+<div>
+<div class="indicator-name">Dow Jones Industrial Average
+                            <div class="indicator-name-eng">Blue-chip stock index</div>
+</div>
+<div class="indicator-date" id="DJIA-date">-</div>
+</div>
+<div class="indicator-value loading" id="DJIA">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('NASDAQCOM', 'NASDAQ Composite')">
+<div class="cache-status cache-loading" id="NASDAQCOM-cache">Loading</div>
+<div>
+<div class="indicator-name">NASDAQ Composite
+                            <div class="indicator-name-eng">Tech-heavy stock index</div>
+</div>
+<div class="indicator-date" id="NASDAQCOM-date">-</div>
+</div>
+<div class="indicator-value loading" id="NASDAQCOM">Loading...</div>
+</div>
+</div>
+<!-- Travel & Aviation -->
+<!-- Education Costs -->
+<!-- Healthcare Costs & Medical CPI -->
+<div class="category healthcare-costs" id="cat-healthcare-costs-medical-cpilive">
+<h2>🏥 Healthcare Costs &amp; Medical CPI <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('CPIMEDSL', 'CPI: Medical Care Services')">
+<div class="cache-status cache-loading" id="CPIMEDSL-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Medical Care Services
                             <div class="indicator-name-eng">Medical services price inflation</div>
-                        </div>
-                        <div class="indicator-date" id="CPIMEDSL-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPIMEDSL">Loading...</div>
-                </div>
-                
-                
-                <div class="indicator" onclick="showDetails('CUSR0000SEMC', 'CPI: Professional Services')">
-                    <div class="cache-status cache-loading" id="CUSR0000SEMC-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Professional Services
+</div>
+<div class="indicator-date" id="CPIMEDSL-date">-</div>
+</div>
+<div class="indicator-value loading" id="CPIMEDSL">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CUSR0000SEMC', 'CPI: Professional Services')">
+<div class="cache-status cache-loading" id="CUSR0000SEMC-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Professional Services
                             <div class="indicator-name-eng">Medical professional services CPI</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEMC-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEMC">Loading...</div>
-                </div>
-                
-                <div class="indicator" onclick="showDetails('CPIMEDNS', 'CPI: Medical Care Commodities')">
-                    <div class="cache-status cache-loading" id="CPIMEDNS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Medical Care Commodities
+</div>
+<div class="indicator-date" id="CUSR0000SEMC-date">-</div>
+</div>
+<div class="indicator-value loading" id="CUSR0000SEMC">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CPIMEDNS', 'CPI: Medical Care Commodities')">
+<div class="cache-status cache-loading" id="CPIMEDNS-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Medical Care Commodities
                             <div class="indicator-name-eng">Medical goods price inflation</div>
-                        </div>
-                        <div class="indicator-date" id="CPIMEDNS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPIMEDNS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CPIUFDNS', 'CPI: Prescription Drugs')">
-                    <div class="cache-status cache-loading" id="CPIUFDNS-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Prescription Drugs
+</div>
+<div class="indicator-date" id="CPIMEDNS-date">-</div>
+</div>
+<div class="indicator-value loading" id="CPIMEDNS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CPIUFDNS', 'CPI: Prescription Drugs')">
+<div class="cache-status cache-loading" id="CPIUFDNS-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Prescription Drugs
                             <div class="indicator-name-eng">Prescription drug price inflation</div>
-                        </div>
-                        <div class="indicator-date" id="CPIUFDNS-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CPIUFDNS">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUUR0000SEMC', 'CPI: Hospital Services')">
-                    <div class="cache-status cache-loading" id="CUUR0000SEMC-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Hospital Services
+</div>
+<div class="indicator-date" id="CPIUFDNS-date">-</div>
+</div>
+<div class="indicator-value loading" id="CPIUFDNS">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CUUR0000SEMC', 'CPI: Hospital Services')">
+<div class="cache-status cache-loading" id="CUUR0000SEMC-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Hospital Services
                             <div class="indicator-name-eng">Hospital cost inflation</div>
-                        </div>
-                        <div class="indicator-date" id="CUUR0000SEMC-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUUR0000SEMC">Loading...</div>
-                </div>
-                <div class="indicator" onclick="showDetails('CUSR0000SEMD', 'CPI: Physicians\' Services')">
-                    <div class="cache-status cache-loading" id="CUSR0000SEMD-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">CPI: Physicians' Services
+</div>
+<div class="indicator-date" id="CUUR0000SEMC-date">-</div>
+</div>
+<div class="indicator-value loading" id="CUUR0000SEMC">Loading...</div>
+</div>
+<div class="indicator" onclick="showDetails('CUSR0000SEMD', 'CPI: Physicians\' Services')">
+<div class="cache-status cache-loading" id="CUSR0000SEMD-cache">Loading</div>
+<div>
+<div class="indicator-name">CPI: Physicians' Services
                             <div class="indicator-name-eng">Doctor visit cost inflation</div>
-                        </div>
-                        <div class="indicator-date" id="CUSR0000SEMD-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="CUSR0000SEMD">Loading...</div>
-                </div>
-                
-            </div>
-
-            <!-- Healthcare Expenditures & Medical Engel's -->
-            
-
-            <!-- Tax Indicators -->
-            
-
-            <!-- Demographics -->
-            <div class="category demographics">
-                <h2>👥 Demographics <span class="fred-logo">LIVE</span></h2>
-                <div class="indicator" onclick="showDetails('LFWA64TTUSM647S', 'Working-Age Population (15-64 Years)')">
-                    <div class="cache-status cache-loading" id="LFWA64TTUSM647S-cache">Loading</div>
-                    <div>
-                        <div class="indicator-name">Working-Age Population (15-64 Years)
+</div>
+<div class="indicator-date" id="CUSR0000SEMD-date">-</div>
+</div>
+<div class="indicator-value loading" id="CUSR0000SEMD">Loading...</div>
+</div>
+</div>
+<!-- Healthcare Expenditures & Medical Engel's -->
+<!-- Tax Indicators -->
+<!-- Demographics -->
+<div class="category demographics" id="cat-demographicslive">
+<h2>👥 Demographics <span class="fred-logo">LIVE</span></h2>
+<div class="indicator" onclick="showDetails('LFWA64TTUSM647S', 'Working-Age Population (15-64 Years)')">
+<div class="cache-status cache-loading" id="LFWA64TTUSM647S-cache">Loading</div>
+<div>
+<div class="indicator-name">Working-Age Population (15-64 Years)
                             <div class="indicator-name-eng">Labor force eligible population</div>
-                        </div>
-                        <div class="indicator-date" id="LFWA64TTUSM647S-date">-</div>
-                    </div>
-                    <div class="indicator-value loading" id="LFWA64TTUSM647S">Loading...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Additional SEO Content -->
-        <section style="background: #ecf0f1; padding: 20px; border-radius: 10px; margin: 30px 0; font-size: 0.9rem;">
-            <h2 style="color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">📊 Economic Indicators Explained</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
-                <div>
-                    <h3 style="color: #e74c3c; font-size: 1rem; margin-bottom: 8px;">💹 Key Inflation Indicators</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li><strong>CPI (Consumer Price Index):</strong> Primary inflation measure</li>
-                        <li><strong>Core CPI:</strong> Inflation excluding food & energy</li>
-                        <li><strong>PCE Price Index:</strong> Fed's preferred inflation gauge</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: #3498db; font-size: 1rem; margin-bottom: 8px;">💰 Interest Rates & Fed Policy</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li><strong>2Y-10Y Spread:</strong> Key recession indicator</li>
-                        <li><strong>Fed Rates (Target vs Effective):</strong> Policy transmission</li>
-                        <li><strong>Breakeven Inflation:</strong> Market expectations</li>
-                        <li><strong>SOFR:</strong> Operational rate framework</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: #27ae60; font-size: 1rem; margin-bottom: 8px;">👥 Employment Data</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li><strong>Unemployment Rate:</strong> Job market health indicator</li>
-                        <li><strong>Nonfarm Payrolls:</strong> Monthly job creation</li>
-                        <li><strong>Labor Force Participation:</strong> Workforce engagement</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: #f39c12; font-size: 1rem; margin-bottom: 8px;">⚡ Advanced Market Risk Analysis</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li><strong>Volatility Suite:</strong> 8 specialized volatility indices covering all major asset classes</li>
-                        <li><strong>Financial Stress Monitoring:</strong> Multiple Fed-developed stress indicators</li>
-                        <li><strong>Leading Economic Indicators:</strong> Forward-looking recession prediction tools</li>
-                        <li><strong>Currency Analysis:</strong> Advanced dollar indices for developed and emerging markets</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: #d35400; font-size: 1rem; margin-bottom: 8px;">🥇 Commodities & Credit Risk</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li><strong>Credit Stress Monitoring:</strong> Credit card, mortgage, auto loan delinquency rates with daily proxy indicators</li>
-                        <li><strong>Business Dynamics Complete:</strong> Business formations, applications, jobless claims, construction spending</li>
-                        <li><strong>Market Segments Full Coverage:</strong> Large-cap (S&P 500), Mid-cap (S&P 400), Small-cap (S&P 600, Russell 2000)</li>
-                        <li><strong>High-Frequency Activity:</strong> Weekly Economic Index (WEI), Chicago Fed Activity Index (CFNAI)</li>
-                        <li><strong>Consumer & Restaurant Proxies:</strong> Retail sales, food services, restaurant price inflation, hospitality wages</li>
-                        <li><strong>Construction & Investment:</strong> Total/private construction, fixed investment, capacity utilization</li>
-                        <li><strong>Complete Volatility Framework:</strong> VIX, Gold VIX, Oil VIX, NASDAQ VIX, Russell VIX, Dow VIX, EM VIX, MOVE Bond Index</li>
-                        <li><strong>Corporate Funding & Fed Policy:</strong> Commercial Paper, Prime Rate, SOFR/OBFR/EFFR, TIPS, Breakeven rates</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart(true)">
+</div>
+<div class="indicator-date" id="LFWA64TTUSM647S-date">-</div>
+</div>
+<div class="indicator-value loading" id="LFWA64TTUSM647S">Loading...</div>
+</div>
+</div>
+</div>
+<!-- Additional SEO Content -->
+<section style="background: #ecf0f1; padding: 20px; border-radius: 10px; margin: 30px 0; font-size: 0.9rem;">
+<h2 style="color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">📊 Economic Indicators Explained</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+<div>
+<h3 style="color: #e74c3c; font-size: 1rem; margin-bottom: 8px;">💹 Key Inflation Indicators</h3>
+<ul style="margin: 0; padding-left: 20px;">
+<li><strong>CPI (Consumer Price Index):</strong> Primary inflation measure</li>
+<li><strong>Core CPI:</strong> Inflation excluding food &amp; energy</li>
+<li><strong>PCE Price Index:</strong> Fed's preferred inflation gauge</li>
+</ul>
+</div>
+<div>
+<h3 style="color: #3498db; font-size: 1rem; margin-bottom: 8px;">💰 Interest Rates &amp; Fed Policy</h3>
+<ul style="margin: 0; padding-left: 20px;">
+<li><strong>2Y-10Y Spread:</strong> Key recession indicator</li>
+<li><strong>Fed Rates (Target vs Effective):</strong> Policy transmission</li>
+<li><strong>Breakeven Inflation:</strong> Market expectations</li>
+<li><strong>SOFR:</strong> Operational rate framework</li>
+</ul>
+</div>
+<div>
+<h3 style="color: #27ae60; font-size: 1rem; margin-bottom: 8px;">👥 Employment Data</h3>
+<ul style="margin: 0; padding-left: 20px;">
+<li><strong>Unemployment Rate:</strong> Job market health indicator</li>
+<li><strong>Nonfarm Payrolls:</strong> Monthly job creation</li>
+<li><strong>Labor Force Participation:</strong> Workforce engagement</li>
+</ul>
+</div>
+<div>
+<h3 style="color: #f39c12; font-size: 1rem; margin-bottom: 8px;">⚡ Advanced Market Risk Analysis</h3>
+<ul style="margin: 0; padding-left: 20px;">
+<li><strong>Volatility Suite:</strong> 8 specialized volatility indices covering all major asset classes</li>
+<li><strong>Financial Stress Monitoring:</strong> Multiple Fed-developed stress indicators</li>
+<li><strong>Leading Economic Indicators:</strong> Forward-looking recession prediction tools</li>
+<li><strong>Currency Analysis:</strong> Advanced dollar indices for developed and emerging markets</li>
+</ul>
+</div>
+<div>
+<h3 style="color: #d35400; font-size: 1rem; margin-bottom: 8px;">🥇 Commodities &amp; Credit Risk</h3>
+<ul style="margin: 0; padding-left: 20px;">
+<li><strong>Credit Stress Monitoring:</strong> Credit card, mortgage, auto loan delinquency rates with daily proxy indicators</li>
+<li><strong>Business Dynamics Complete:</strong> Business formations, applications, jobless claims, construction spending</li>
+<li><strong>Market Segments Full Coverage:</strong> Large-cap (S&amp;P 500), Mid-cap (S&amp;P 400), Small-cap (S&amp;P 600, Russell 2000)</li>
+<li><strong>High-Frequency Activity:</strong> Weekly Economic Index (WEI), Chicago Fed Activity Index (CFNAI)</li>
+<li><strong>Consumer &amp; Restaurant Proxies:</strong> Retail sales, food services, restaurant price inflation, hospitality wages</li>
+<li><strong>Construction &amp; Investment:</strong> Total/private construction, fixed investment, capacity utilization</li>
+<li><strong>Complete Volatility Framework:</strong> VIX, Gold VIX, Oil VIX, NASDAQ VIX, Russell VIX, Dow VIX, EM VIX, MOVE Bond Index</li>
+<li><strong>Corporate Funding &amp; Fed Policy:</strong> Commercial Paper, Prime Rate, SOFR/OBFR/EFFR, TIPS, Breakeven rates</li>
+</ul>
+</div>
+</div>
+</section>
+<button class="refresh-btn" id="refreshBtn" onclick="loadAllFredDataSmart(true)">
             🔄 Refresh All Economic Data
         </button>
-    </div>
-    
-    <!-- Footer with additional SEO content -->
-    <footer style="background: #2c3e50; color: white; padding: 30px; margin-top: 40px; border-radius: 15px;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="color: #3498db; margin-bottom: 20px; text-align: center;">📈 About This Economic Dashboard</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                <div>
-                    <h3 style="color: #e74c3c; font-size: 1.1rem; margin-bottom: 10px;">🎯 Data Sources</h3>
-                    <p style="font-size: 0.9rem; line-height: 1.5;">All economic data sourced directly from the Federal Reserve Bank of St. Louis (FRED), Bureau of Labor Statistics (BLS), Bureau of Economic Analysis (BEA), and other official US government agencies.</p>
-                </div>
-                <div>
-                    <h3 style="color: #27ae60; font-size: 1.1rem; margin-bottom: 10px;">⏰ Update Frequency</h3>
-                    <p style="font-size: 0.9rem; line-height: 1.5;">Data is updated automatically based on official release schedules: daily for Treasury yields, weekly for financial conditions, monthly for employment and inflation data.</p>
-                </div>
-                <div>
-                    <h3 style="color: #f39c12; font-size: 1.1rem; margin-bottom: 10px;">💡 Usage Tips</h3>
-                    <p style="font-size: 0.9rem; line-height: 1.5;">Click any indicator for detailed charts. Use different time periods to analyze trends. Great for economic research, investment analysis, and understanding market conditions.</p>
-                </div>
-            </div>
-            <div style="text-align: center; border-top: 1px solid #34495e; padding-top: 20px; font-size: 0.8rem; color: #bdc3c7;">
-                <p>© 2025 Real-Time US Economic Dashboard | Free Economic Data from Federal Reserve (FRED) | Educational and Research Use</p>
-                <p>Keywords: economic indicators, FRED data, GDP tracker, inflation rate, unemployment rate, Treasury yields, economic dashboard, free economic data</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Detail Modal -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">FRED Indicator Details</h2>
-            
-            <div class="series-info" id="seriesInfo"></div>
-            <div class="series-info-mobile" id="seriesInfoMobile"></div>
-            
-            <div class="time-selector" id="timeSelector">
-                <button class="time-btn active" onclick="updateChart('1M')">1M</button>
-                <button class="time-btn" onclick="updateChart('3M')">3M</button>
-                <button class="time-btn" onclick="updateChart('6M')">6M</button>
-                <button class="time-btn" onclick="updateChart('1Y')">1Y</button>
-                <button class="time-btn" onclick="updateChart('3Y')">3Y</button>
-                <button class="time-btn" onclick="updateChart('5Y')">5Y</button>
-                <button class="time-btn" onclick="updateChart('10Y')">10Y</button>
-                <button class="time-btn" onclick="updateChart('MAX')">All</button>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="trendChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Additional Schema Markup -->
-    <script type="application/ld+json">
+</div>
+<!-- Footer with additional SEO content -->
+<footer style="background: #2c3e50; color: white; padding: 30px; margin-top: 40px; border-radius: 15px;">
+<div style="max-width: 1200px; margin: 0 auto;">
+<h2 style="color: #3498db; margin-bottom: 20px; text-align: center;">📈 About This Economic Dashboard</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+<div>
+<h3 style="color: #e74c3c; font-size: 1.1rem; margin-bottom: 10px;">🎯 Data Sources</h3>
+<p style="font-size: 0.9rem; line-height: 1.5;">All economic data sourced directly from the Federal Reserve Bank of St. Louis (FRED), Bureau of Labor Statistics (BLS), Bureau of Economic Analysis (BEA), and other official US government agencies.</p>
+</div>
+<div>
+<h3 style="color: #27ae60; font-size: 1.1rem; margin-bottom: 10px;">⏰ Update Frequency</h3>
+<p style="font-size: 0.9rem; line-height: 1.5;">Data is updated automatically based on official release schedules: daily for Treasury yields, weekly for financial conditions, monthly for employment and inflation data.</p>
+</div>
+<div>
+<h3 style="color: #f39c12; font-size: 1.1rem; margin-bottom: 10px;">💡 Usage Tips</h3>
+<p style="font-size: 0.9rem; line-height: 1.5;">Click any indicator for detailed charts. Use different time periods to analyze trends. Great for economic research, investment analysis, and understanding market conditions.</p>
+</div>
+</div>
+<div style="text-align: center; border-top: 1px solid #34495e; padding-top: 20px; font-size: 0.8rem; color: #bdc3c7;">
+<p>© 2025 Real-Time US Economic Dashboard | Free Economic Data from Federal Reserve (FRED) | Educational and Research Use</p>
+<p>Keywords: economic indicators, FRED data, GDP tracker, inflation rate, unemployment rate, Treasury yields, economic dashboard, free economic data</p>
+</div>
+</div>
+</footer>
+<!-- Detail Modal -->
+<div class="modal" id="detailModal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">×</span>
+<h2 id="modalTitle">FRED Indicator Details</h2>
+<div class="series-info" id="seriesInfo"></div>
+<div class="series-info-mobile" id="seriesInfoMobile"></div>
+<div class="time-selector" id="timeSelector">
+<button class="time-btn active" onclick="updateChart('1M')">1M</button>
+<button class="time-btn" onclick="updateChart('3M')">3M</button>
+<button class="time-btn" onclick="updateChart('6M')">6M</button>
+<button class="time-btn" onclick="updateChart('1Y')">1Y</button>
+<button class="time-btn" onclick="updateChart('3Y')">3Y</button>
+<button class="time-btn" onclick="updateChart('5Y')">5Y</button>
+<button class="time-btn" onclick="updateChart('10Y')">10Y</button>
+<button class="time-btn" onclick="updateChart('MAX')">All</button>
+</div>
+<div class="chart-container">
+<canvas id="trendChart"></canvas>
+</div>
+</div>
+</div>
+<!-- Additional Schema Markup -->
+<script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Dataset",
@@ -1566,8 +2137,7 @@
         }
     }
     </script>
-    
-    <script type="application/ld+json">
+<script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -1595,8 +2165,7 @@
         }]
     }
     </script>
-    
-    <script>
+<script>
         // FRED API configuration
         const getApiKey = () => atob('MzlkYWU3MjY3YmM4NGNhNWQyYzIyZmM0MzQxNzI5MzM=');
         
@@ -1612,6 +2181,22 @@
             'DGS5': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DGS30': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'BAA10Y': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            
+            // Additional Treasury & Interest Rate Series
+            'DTB4WK': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS3MO': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS6MO': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'TB3MS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS1': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS3': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS7': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'GS10': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'DGS20': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'T5YIE': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Treasury market data', delay: 'Same day' },
+            'DAAA': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'AAA': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'BAMLC0A0CM': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
+            'BAMLC0A4CBBB': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'RRPONTSYAWARD': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'DBAA': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily after market close', delay: 'Same day' },
             'SOFR': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily Fed operational data', delay: 'Same day' },
@@ -1689,6 +2274,37 @@
             'CAPUTL': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Fed)', delay: 'About 15 days delay' },
             'RSAFS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 14 days delay' },
             
+            // Additional Monthly Indicators from CSV
+            'HOUST': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 17 days delay' },
+            'HOUSTNSA': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 17 days delay' },
+            'PERMIT': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 17 days delay' },
+            'BUSINV': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 45 days delay' },
+            'ISRATIO': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 45 days delay' },
+            'PCEC': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BEA)', delay: 'About 30 days delay' },
+            'PCECC96': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BEA)', delay: 'About 30 days delay' },
+            'PCES': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BEA)', delay: 'About 30 days delay' },
+            'DPI': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BEA)', delay: 'About 30 days delay' },
+            'PCEPILFE': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BEA)', delay: 'About 30 days delay' },
+            'PPIACO': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
+            'CUSR0000SAD': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
+            'CUSR0000SAS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
+            'APU0000708111': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (BLS)', delay: 'About 14 days delay' },
+            
+            // Additional Series from CSV
+            'DHHNGSP': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Census)', delay: 'About 30 days delay' },
+            'ANFCI': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Chicago Fed)', delay: 'About 1 week delay' },
+            'CCSA': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (DOL)', delay: 'Same week' },
+            'MORTGAGE15US': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (FHLMC)', delay: 'About 1 week delay' },
+            'GFDEBTN': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Treasury)', delay: 'About 3 days delay' },
+            'GFDEGDQ188S': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Treasury)', delay: 'About 45 days delay' },
+            'M1SL': { cacheDays: 7, description: 'Weekly', realFreq: 'Weekly (Fed)', delay: 'About 1 week delay' },
+            'M2V': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Fed)', delay: 'About 90 days delay' },
+            'FPCPITOTLZGUSA': { cacheDays: 365, description: 'Annual', realFreq: 'Annual (World Bank)', delay: 'About 180 days delay' },
+            'MEHOINUSA672N': { cacheDays: 365, description: 'Annual', realFreq: 'Annual (Census)', delay: 'About 365 days delay' },
+            'WTREGEN': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (BEA)', delay: 'About 45 days delay' },
+            'ACTLISCOUUS': { cacheDays: 30, description: 'Monthly', realFreq: 'Monthly (Realtor.com)', delay: 'About 30 days delay' },
+            'DTWEXBGS': { cacheDays: 1, description: 'Daily (weekends excluded)', realFreq: 'Daily foreign exchange data', delay: 'Same day' },
+            
             // Quarterly Credit & Investment Indicators
             'DRCCLACBS': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Fed)', delay: 'About 75 days delay' },
             'DRSFRMACBS': { cacheDays: 90, description: 'Quarterly', realFreq: 'Quarterly (Fed)', delay: 'About 75 days delay' },
@@ -1735,6 +2351,12 @@
             // Inflation & Prices
             'CPIAUCSL': { name: 'Consumer Price Index (CPI)', nameEng: 'Consumer Price Index', unit: 'Index' },
             'CPILFESL': { name: 'Core CPI', nameEng: 'Core CPI (Less Food & Energy)', unit: 'Index' },
+            'PCEPILFE': { name: 'Core PCE Price Index', nameEng: 'Personal Consumption Expenditures Excluding Food and Energy', unit: 'Index' },
+            'PPIACO': { name: 'Producer Price Index', nameEng: 'Producer Price Index: All Commodities', unit: 'Index' },
+            'CUSR0000SAD': { name: 'CPI: Durables', nameEng: 'Consumer Price Index for All Urban Consumers: Durables', unit: 'Index' },
+            'CUSR0000SAS': { name: 'CPI: Services', nameEng: 'Consumer Price Index for All Urban Consumers: Services', unit: 'Index' },
+            'APU0000708111': { name: 'Electricity Price', nameEng: 'Average Price: Electricity per Kilowatthour', unit: 'Cents per Kilowatthour' },
+            'FPCPITOTLZGUSA': { name: 'Inflation Rate (Annual)', nameEng: 'Inflation, Consumer Prices for the United States', unit: '%' },
             'PCEPI': { name: 'PCE Price Index', nameEng: 'PCE Price Index', unit: 'Index' },
             'T10YIE': { name: '10-Year Breakeven Inflation Rate', nameEng: '10-Year Breakeven Inflation Rate', unit: '%' },
             
@@ -1747,6 +2369,22 @@
             'FEDFUNDS': { name: 'Federal Funds Rate', nameEng: 'Federal Funds Rate', unit: '%' },
             'DGS10': { name: '10-Year Treasury Yield', nameEng: '10-Year Treasury Yield', unit: '%' },
             'DGS2': { name: '2-Year Treasury Yield', nameEng: '2-Year Treasury Yield', unit: '%' },
+            
+            // Additional Treasury Securities from CSV
+            'DTB4WK': { name: '4-Week Treasury Bill', nameEng: '4-Week Treasury Bill: Secondary Market Rate', unit: '%' },
+            'DGS3MO': { name: '3-Month Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 3‑Month Constant Maturity', unit: '%' },
+            'DGS6MO': { name: '6-Month Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 6‑Month Constant Maturity', unit: '%' },
+            'TB3MS': { name: '3-Month Treasury Bill Rate', nameEng: '3‑Month Treasury Bill Secondary Market Rate, Discount Basis', unit: '%' },
+            'DGS1': { name: '1-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 1‑Year Constant Maturity', unit: '%' },
+            'DGS3': { name: '3-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 3‑Year Constant Maturity', unit: '%' },
+            'DGS7': { name: '7-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 7‑Year Constant Maturity', unit: '%' },
+            'GS10': { name: '10-Year Treasury Rate', nameEng: '10-Year Treasury Constant Maturity Rate', unit: '%' },
+            'DGS20': { name: '20-Year Treasury Yield', nameEng: 'Market Yield on U.S. Treasury Securities at 20‑Year Constant Maturity', unit: '%' },
+            'T5YIE': { name: '5-Year Breakeven Inflation Rate', nameEng: '5-Year Breakeven Inflation Rate', unit: '%' },
+            'DAAA': { name: 'Moody\'s Aaa Corporate Bond Yield', nameEng: 'Moody\'s Seasoned Aaa Corporate Bond Yield', unit: '%' },
+            'AAA': { name: 'Aaa Corporate Bond Yield', nameEng: 'Moody\'s Seasoned Aaa Corporate Bond Yield', unit: '%' },
+            'BAMLC0A0CM': { name: 'US Corporate Bond Spread', nameEng: 'ICE BofA US Corporate Index Option-Adjusted Spread', unit: '%' },
+            'BAMLC0A4CBBB': { name: 'BBB Corporate Bond Spread', nameEng: 'ICE BofA BBB US Corporate Index Option-Adjusted Spread', unit: '%' },
             'T10Y2Y': { name: '10-Year Treasury Minus 2-Year Treasury', nameEng: '10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity', unit: '%' },
             'RRPONTSYAWARD': { name: 'Overnight Reverse Repo Agreements', nameEng: 'Overnight Reverse Repurchase Agreements: Treasury Securities Sold by the Federal Reserve', unit: 'Billions of Dollars' },
             'T10Y3M': { name: '10-Year Treasury Minus 3-Month Treasury', nameEng: '10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity', unit: '%' },
@@ -1867,16 +2505,37 @@
             'INDPRO': { name: 'Industrial Production Index', nameEng: 'Industrial Production Index', unit: 'Index' },
             
             // Housing
-            'MORTGAGE30US': { name: '30-Year Fixed Rate Mortgage', nameEng: '30-Year Fixed Rate Mortgage', unit: '%' },
-            'MORTGAGE15US': { name: '15-Year Fixed Rate Mortgage', nameEng: '15-Year Fixed Rate Mortgage', unit: '%' },
+            'MORTGAGE30US': { name: '30-Year Fixed Rate Mortgage', nameEng: '30-Year Fixed Rate Mortgage Average in the United States', unit: '%' },
+            'MORTGAGE15US': { name: '15-Year Fixed Rate Mortgage', nameEng: '15-Year Fixed Rate Mortgage Average in the United States', unit: '%' },
             'MORTGAGE5US': { name: '5-Year ARM Rate', nameEng: '5/1-Year Adjustable Rate Mortgage', unit: '%' },
+            'HOUST': { name: 'Housing Starts', nameEng: 'Housing Starts: Total: New Privately Owned Housing Units Started', unit: 'Thousands' },
+            'HOUSTNSA': { name: 'Housing Starts (NSA)', nameEng: 'Housing Starts, Total: New Privately Owned Housing Units Started (Not Seasonally Adjusted)', unit: 'Thousands' },
+            'PERMIT': { name: 'Building Permits', nameEng: 'New Privately-Owned Housing Units Authorized in Permit-Issuing Places', unit: 'Thousands' },
+            'DHHNGSP': { name: 'New Home Sales', nameEng: 'New One Family Houses Sold: United States', unit: 'Thousands' },
+            'ACTLISCOUUS': { name: 'Active Listings Count', nameEng: 'Active Listings Count: United States', unit: 'Count' },
             
             // Money & Credit
             'M2SL': { name: 'M2 Money Stock', nameEng: 'M2 Money Stock', unit: 'Billions of Dollars' },
+            'M1SL': { name: 'M1 Money Stock', nameEng: 'M1 Money Stock', unit: 'Billions of Dollars' },
+            'M2V': { name: 'Velocity of M2 Money Stock', nameEng: 'Velocity of M2 Money Stock', unit: 'Ratio' },
             'TOTALSA': { name: 'Consumer Credit Outstanding', nameEng: 'Consumer Credit Outstanding', unit: 'Billions of Dollars' },
             'DEXUSEU': { name: 'USD/EUR Exchange Rate', nameEng: 'U.S./Euro Foreign Exchange Rate', unit: 'U.S. Dollars to One Euro' },
             'DTWEXBGS': { name: 'Broad Dollar Index', nameEng: 'Trade Weighted U.S. Dollar Index: Broad, Goods and Services', unit: 'Index' },
             'DTWEXAFEGS': { name: 'Advanced Economies Dollar Index', nameEng: 'Trade Weighted U.S. Dollar Index: Advanced Foreign Economies', unit: 'Index' },
+            
+            // Additional Economic Indicators from CSV
+            'BUSINV': { name: 'Total Business Inventories', nameEng: 'Total Business Inventories', unit: 'Millions of Dollars' },
+            'ISRATIO': { name: 'Inventories to Sales Ratio', nameEng: 'Total Business: Inventories to Sales Ratio', unit: 'Ratio' },
+            'PCEC': { name: 'Personal Consumption Expenditures', nameEng: 'Personal Consumption Expenditures', unit: 'Billions of Dollars' },
+            'PCECC96': { name: 'Real Personal Consumption Expenditures', nameEng: 'Real Personal Consumption Expenditures', unit: 'Billions of Chained 2012 Dollars' },
+            'PCES': { name: 'PCE: Services', nameEng: 'Personal Consumption Expenditures: Services', unit: 'Billions of Dollars' },
+            'DPI': { name: 'Disposable Personal Income', nameEng: 'Disposable Personal Income', unit: 'Billions of Dollars' },
+            'ANFCI': { name: 'Adjusted National Financial Conditions Index', nameEng: 'Adjusted National Financial Conditions Index', unit: 'Index' },
+            'CCSA': { name: 'Continued Claims', nameEng: 'Continued Claims (Insured Unemployment)', unit: 'Number' },
+            'GFDEBTN': { name: 'Federal Debt: Total Public Debt', nameEng: 'Federal Debt: Total Public Debt', unit: 'Millions of Dollars' },
+            'GFDEGDQ188S': { name: 'Federal Debt as % of GDP', nameEng: 'Federal Debt: Total Public Debt as Percent of Gross Domestic Product', unit: '%' },
+            'MEHOINUSA672N': { name: 'Real Median Household Income', nameEng: 'Real Median Household Income in the United States', unit: 'Chained 2017 Dollars' },
+            'WTREGEN': { name: 'Real GDP: Wholesale Trade', nameEng: 'Real Gross Domestic Product: Wholesale Trade', unit: 'Billions of Chained 2012 Dollars' },
             
             // Stock Market Indicators
             'SP500': { name: 'S&P 500 Index', nameEng: 'S&P 500', unit: 'Index' },
@@ -2913,6 +3572,359 @@
             setInterval(checkDailyUpdate, 3600000); // 1 hour = 3600000ms
         });
     </script>
+<script>
+(() => {
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const txt = (el) => (el && el.textContent || "").trim();
 
+  const categories = $$('.category');
+  if (!categories.length) {
+    console.warn('[category_sorter] No .category elements found.');
+    return;
+  }
+  const parent = categories[0].parentElement;
+
+  // ---- Styles ----
+  const style = document.createElement('style');
+  style.textContent = `
+    #cat-sort-toolbar {
+      position: sticky; top: 0; background: #fff; z-index: 999;
+      padding: 8px 12px; border-bottom: 1px solid #ececec;
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      font: 13px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    #cat-sort-toolbar select, #cat-sort-toolbar input[type="number"], #cat-sort-toolbar button {
+      padding: 6px 10px; border: 1px solid #cfcfcf; border-radius: 8px; background:#fff;
+    }
+    #cat-sort-toolbar button { cursor: pointer; }
+    .category.collapsed-by-size .indicator { display: none; }
+    .category.collapsed-by-size h2::after, .category.collapsed-by-size .category-title::after {
+      content: " (collapsed)"; color:#999; font-weight: normal;
+    }
+    .indicator.dup-hidden { display: none !important; }
+    .cat-badges { font: 12px/1.2 system-ui; color:#555; display:inline-flex; gap:8px; margin-left:8px; vertical-align: middle; }
+    .cat-badge { background:#f5f5f5; border:1px solid #e7e7e7; border-radius:999px; padding:2px 8px; }
+  `;
+  document.head.appendChild(style);
+
+  // ---- Toolbar ----
+  const toolbar = document.createElement('div');
+  toolbar.id = 'cat-sort-toolbar';
+  const mkLabel = (text, forId=null) => {
+    const s = document.createElement('label');
+    s.textContent = text;
+    if (forId) s.htmlFor = forId;
+    return s;
+  };
+  const sortSel = document.createElement('select'); sortSel.id = 'catSortKey';
+  sortSel.innerHTML = `
+    <option value="count">Item count (desc)</option>
+    <option value="fresh">Freshness score</option>
+    <option value="name">Name (A–Z)</option>
+  `;
+  const dirSel = document.createElement('select'); dirSel.id = 'catSortDir';
+  dirSel.innerHTML = `<option value="desc">Desc</option><option value="asc">Asc</option>`;
+  const minInput = document.createElement('input'); minInput.type = 'number'; minInput.id='minItems'; minInput.min = '0'; minInput.value = '0';
+  const dupChk = document.createElement('input'); dupChk.type = 'checkbox'; dupChk.id='hideDup'; dupChk.checked = true;
+
+  const applyBtn = document.createElement('button'); applyBtn.textContent = 'Apply Sort';
+  const resetBtn = document.createElement('button'); resetBtn.textContent = 'Reset';
+
+  toolbar.append(
+    mkLabel('Sort:'), sortSel, dirSel,
+    mkLabel('Collapse categories below:', 'minItems'), minInput,
+    ( () => { const l = mkLabel('Hide duplicates', 'hideDup'); l.style.marginLeft='8px'; return l; })(),
+    dupChk,
+    applyBtn, resetBtn
+  );
+  parent.insertBefore(toolbar, categories[0]);
+
+  // ---- Metrics ----
+  function metricsForCategory(cat) {
+    const indicators = cat.querySelectorAll('.indicator');
+    const count = indicators.length;
+
+    let fresh=0, valid=0, expired=0, error=0, loading=0;
+    indicators.forEach(ind => {
+      const cs = ind.querySelector('.cache-status');
+      if (!cs) { loading++; return; }
+      if (cs.classList.contains('cache-fresh')) fresh++;
+      else if (cs.classList.contains('cache-valid')) valid++;
+      else if (cs.classList.contains('cache-expired')) expired++;
+      else if (cs.classList.contains('cache-error')) error++;
+      else if (cs.classList.contains('cache-loading')) loading++;
+      else loading++;
+    });
+
+    const score = (fresh*3 + valid*2 + loading*1 + expired*0.5 + error*0) / Math.max(1, count);
+    const freshRatio = (fresh + valid) / Math.max(1, count);
+    const name = (cat.querySelector('h2, .category-title, h3')?.textContent || '').trim();
+
+    cat.dataset.itemCount = String(count);
+    cat.dataset.freshScore = String(score.toFixed(4));
+    cat.dataset.freshRatio = String(freshRatio.toFixed(4));
+    cat.dataset.categoryName = name.toLowerCase();
+
+    return { count, score, freshRatio, name };
+  }
+
+  function renderBadges(cat) {
+    const head = cat.querySelector('h2, .category-title, h3');
+    if (!head) return;
+    let badges = head.querySelector('.cat-badges');
+    if (!badges) { badges = document.createElement('span'); badges.className='cat-badges'; head.appendChild(badges); }
+    const cnt = Number(cat.dataset.itemCount || 0);
+    const scr = Number(cat.dataset.freshScore || 0).toFixed(2);
+    const rat = Math.round(Number(cat.dataset.freshRatio || 0) * 100);
+    badges.innerHTML = `<span class="cat-badge">n=${cnt}</span><span class="cat-badge">Freshness=${scr}</span><span class="cat-badge">Recent=${rat}%</span>`;
+  }
+
+  // ---- Duplicate handling ----
+  function hideDuplicates() {
+    const seen = new Set();
+    $$('.indicator').forEach(ind => {
+      let sid = ind.querySelector('.indicator-value')?.id;
+      if (!sid) {
+        const oc = ind.getAttribute('onclick') || '';
+        const m = oc.match(/showDetails\(\s*'([A-Za-z0-9._-]+)'/);
+        if (m) sid = m[1];
+      }
+      if (sid) {
+        if (seen.has(sid)) ind.classList.add('dup-hidden');
+        else { seen.add(sid); ind.classList.remove('dup-hidden'); }
+      }
+    });
+  }
+  function showDuplicates() {
+    $$('.indicator.dup-hidden').forEach(ind => ind.classList.remove('dup-hidden'));
+  }
+
+  // ---- Sorting & collapsing ----
+  function recomputeAll() {
+    $$('.category').forEach(metricsForCategory);
+    $$('.category').forEach(renderBadges);
+  }
+  function sortCats(key, dir) {
+    recomputeAll();
+    const arr = $$('.category');
+    const cmp = (a, b) => {
+      const av = a.dataset, bv = b.dataset;
+      if (key === 'count') {
+        return Number(bv.itemCount||0) - Number(av.itemCount||0);
+      } else if (key === 'fresh') {
+        return Number(bv.freshScore||0) - Number(av.freshScore||0);
+      } else { // name
+        return (av.categoryName||'').localeCompare(bv.categoryName||'');
+      }
+    };
+    arr.sort(cmp);
+    if (dir === 'asc') arr.reverse();
+    const p = arr[0]?.parentElement || document.body;
+    arr.forEach(cat => p.appendChild(cat));
+  }
+  function collapseSmall(minN) {
+    $$('.category').forEach(cat => {
+      const n = Number(cat.dataset.itemCount||0);
+      cat.classList.toggle('collapsed-by-size', n < minN);
+    });
+  }
+
+  // ---- Wire up ----
+  const apply = () => {
+    if (document.getElementById('hideDup')?.checked) hideDuplicates(); else showDuplicates();
+    sortCats(document.getElementById('catSortKey')?.value || 'count', document.getElementById('catSortDir')?.value || 'desc');
+    collapseSmall(Number(document.getElementById('minItems')?.value || '0') || 0);
+  };
+  const toolbar = document.getElementById('cat-sort-toolbar');
+  toolbar?.querySelector('button:nth-of-type(1)')?.addEventListener('click', apply);
+  toolbar?.querySelector('button:nth-of-type(2)')?.addEventListener('click', () => {
+    document.getElementById('hideDup').checked = true;
+    document.getElementById('catSortKey').value = 'count';
+    document.getElementById('catSortDir').value = 'desc';
+    document.getElementById('minItems').value = '0';
+    apply();
+  });
+
+  // ---- Initial UI build (if toolbar not present yet) ----
+  if (!document.getElementById('cat-sort-toolbar')) {
+    const t = document.createElement('div');
+    t.id = 'cat-sort-toolbar';
+    t.innerHTML = `
+      <label>Sort:</label>
+      <select id="catSortKey">
+        <option value="count" selected>Item count (desc)</option>
+        <option value="fresh">Freshness score</option>
+        <option value="name">Name (A–Z)</option>
+      </select>
+      <select id="catSortDir">
+        <option value="desc" selected>Desc</option>
+        <option value="asc">Asc</option>
+      </select>
+      <label for="minItems">Collapse categories below:</label>
+      <input type="number" id="minItems" min="0" value="0"/>
+      <label for="hideDup" style="margin-left:8px;">Hide duplicates</label>
+      <input type="checkbox" id="hideDup" checked/>
+      <button>Apply Sort</button>
+      <button>Reset</button>
+    `;
+    parent.insertBefore(t, categories[0]);
+  }
+
+  // ---- First run ----
+  apply();
+})();
+</script>
+<!-- Category Balancer: evenly distribute categories into columns by visual height -->
+<style>
+  /* Balanced columns container */
+  .balanced-columns {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), 1fr);
+    gap: 16px;
+  }
+  .balanced-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+  /* Toolbar */
+  #balance-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 12px 0 18px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    font: 13px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  #balance-toolbar select, #balance-toolbar button {
+    padding: 6px 10px;
+    border: 1px solid #cfcfcf;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+  }
+  #balance-toolbar .hint { color:#777; font-size:12px; }
+  @media (max-width: 900px) {
+    .balanced-columns { --cols: 2; grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .balanced-columns { --cols: 1; grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+(function() {
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const byId = (id) => document.getElementById(id);
+  function makeToolbar(host) {
+    const bar = document.createElement('div');
+    bar.id = 'balance-toolbar';
+    bar.innerHTML = `
+      <strong>Layout:</strong>
+      <label for="colCount">Columns</label>
+      <select id="colCount">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+      </select>
+      <button id="rebalanceBtn">Rebalance</button>
+      <span class="hint">카테고리 길이가 달라도 각 열 높이가 비슷하도록 재배치</span>
+    `;
+    host.parentNode.insertBefore(bar, host);
+  }
+
+  function ensureBalancedContainer(host) {
+    // Create balanced wrapper and columns
+    let wrapper = document.createElement('div');
+    wrapper.className = 'balanced-columns';
+    const cols = Number(byId('colCount')?.value || 3);
+    wrapper.style.setProperty('--cols', String(cols));
+
+    const colElems = [];
+    for (let i=0; i<cols; i++) {
+      const c = document.createElement('div');
+      c.className = 'balanced-col';
+      colElems.push(c);
+      wrapper.appendChild(c);
+    }
+    // Replace host with wrapper
+    host.parentNode.insertBefore(wrapper, host);
+    host.style.display = 'none'; // keep original in DOM (for compatibility)
+    return { wrapper, colElems };
+  }
+
+  function measureHeight(el) { return el.getBoundingClientRect().height; }
+
+  function balance(host) {
+    // Gather all current .category nodes (ignore those without indicators)
+    const cats = $$('.category', host).filter(cat => cat.querySelector('.indicator'));
+    if (!cats.length) return;
+
+    const cols = Number(byId('colCount')?.value || 3);
+    // If wrapper exists already, remove and rebuild to avoid duplicates
+    const oldWrapper = document.querySelector('.balanced-columns');
+    if (oldWrapper) oldWrapper.remove();
+
+    const { wrapper, colElems } = ensureBalancedContainer(host);
+
+    // Greedy by visual height: place each category to the shortest column so far
+    // First attach temporarily to measure base height
+    document.body.appendChild(document.createElement('div')); // layout tick
+    const heights = new Array(cols).fill(0);
+
+    cats.forEach(cat => {
+      // temporarily attach to measure own height; put in first column then move
+      colElems[0].appendChild(cat);
+      const catH = measureHeight(cat);
+      // remove to re-place
+      cat.remove();
+
+      // pick column with minimum height
+      let targetIdx = 0;
+      let minH = heights[0];
+      for (let i=1; i<cols; i++) {
+        if (heights[i] < minH) { minH = heights[i]; targetIdx = i; }
+      }
+      colElems[targetIdx].appendChild(cat);
+      heights[targetIdx] += catH + 16; // include gap
+    });
+
+    return wrapper;
+  }
+
+  function autoCols() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    if (w < 600) return 1;
+    if (w < 900) return 2;
+    return 3;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const grid = document.querySelector('.indicators-grid');
+    if (!grid) return;
+    makeToolbar(grid);
+    byId('colCount').value = String(autoCols());
+    balance(grid);
+
+    byId('rebalanceBtn').addEventListener('click', () => balance(grid));
+    byId('colCount').addEventListener('change', () => balance(grid));
+    window.addEventListener('resize', () => {
+      const desired = autoCols();
+      if (byId('colCount').value !== String(desired)) {
+        byId('colCount').value = String(desired);
+        balance(grid);
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
