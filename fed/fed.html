@@ -3790,9 +3790,7 @@
   }
   /* Toolbar */
   #balance-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1001;
+    position: static;
     background: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 10px;
@@ -3836,7 +3834,6 @@
         <option value="4">4</option>
       </select>
       <button id="rebalanceBtn">Rebalance</button>
-      <span class="hint">카테고리 길이가 달라도 각 열 높이가 비슷하도록 재배치</span>
     `;
     host.parentNode.insertBefore(bar, host);
   }
