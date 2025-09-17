@@ -311,10 +311,6 @@ button.error{background:var(--error)}
           <input id="motherAge" type="number" min="30" max="120" step="1" placeholder="e.g., 62">
         </div>
       </div>
-
-      <div class="row" style="margin-top:16px; margin-bottom:16px">
-        <button id="btnCalc" style="font-size:16px; padding:14px 20px; font-weight:bold">🎯 Calculate My Global Rank</button>
-      </div>
     </div>
 
     <div class="card">
@@ -323,7 +319,7 @@ button.error{background:var(--error)}
 
       <!-- Enhanced Global Population Visualization -->
       <div id="populationViz" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">🌍 Your Position Among 8.25 Billion People</div>
+        <div class="small" style="margin-bottom:8px; font-weight:bold" id="populationVizTitle">🌍 Your Position Among 8.25 Billion People</div>
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
           <div style="flex:1; height:24px; background:#1e293b; border-radius:12px; overflow:hidden; position:relative; border:1px solid var(--border)">
             <div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
@@ -535,9 +531,42 @@ function updateWorldPopulation() {
   // Update any existing ranking if shown
   if (window.__lastResult) {
     const rank = Math.round(WORLD_TOTAL * (1 - window.__lastResult.composite_percentile));
+
+    // Update main rank display
     const rankElement = document.querySelector('.big b[style*="color:var(--accent)"]');
     if (rankElement) {
       rankElement.textContent = `#${fmtInt(rank)}`;
+    }
+
+    // Update total population in main result
+    const totalPopElement = document.querySelector('.big');
+    if (totalPopElement) {
+      totalPopElement.innerHTML = `🏆 Global Rank: <b style="color:var(--accent)">#${fmtInt(rank)}</b> out of ~${fmtInt(WORLD_TOTAL)} people`;
+    }
+
+    // Update visualization elements
+    const currentRankElement = document.getElementById('currentRank');
+    if (currentRankElement) {
+      currentRankElement.textContent = `#${fmtInt(rank)}`;
+    }
+
+    const peopleAboveElement = document.getElementById('peopleAbove');
+    if (peopleAboveElement) {
+      const peopleAbove = Math.round(WORLD_TOTAL * (1 - window.__lastResult.composite_percentile));
+      peopleAboveElement.textContent = fmtInt(peopleAbove);
+    }
+
+    const populationVizTitle = document.getElementById('populationVizTitle');
+    if (populationVizTitle) {
+      populationVizTitle.textContent = `🌍 Your Position Among ${(WORLD_TOTAL / 1000000000).toFixed(2)} Billion People`;
+    }
+
+    // Update country-specific ranking if available
+    const countryRankElement = document.getElementById('countryRank');
+    if (countryRankElement && window.__lastResult.country && ALL_COUNTRIES[window.__lastResult.country]) {
+      const countryPopulation = ALL_COUNTRIES[window.__lastResult.country].population * 1000000;
+      const countryRank = Math.round(countryPopulation * (1 - window.__lastResult.composite_percentile));
+      countryRankElement.textContent = `#${fmtInt(countryRank)}`;
     }
   }
 }
@@ -608,10 +637,65 @@ const COUNTRY_RANK_DATA = {
   "Nigeria": {rank: 60, gdp: 440.8, gdp_per_capita: 2066, population: 223.8}
 };
 
+// Additional countries with estimated data for broader coverage
+const ADDITIONAL_COUNTRIES = {
+  "Afghanistan": {rank: 195, gdp: 14.8, gdp_per_capita: 363, population: 41.1},
+  "Albania": {rank: 90, gdp: 18.3, gdp_per_capita: 6494, population: 2.8},
+  "Algeria": {rank: 65, gdp: 191.9, gdp_per_capita: 4279, population: 44.9},
+  "Angola": {rank: 85, gdp: 94.6, gdp_per_capita: 2790, population: 33.9},
+  "Armenia": {rank: 95, gdp: 13.7, gdp_per_capita: 4622, population: 3.0},
+  "Azerbaijan": {rank: 70, gdp: 54.6, gdp_per_capita: 5415, population: 10.1},
+  "Bahrain": {rank: 45, gdp: 44.4, gdp_per_capita: 28433, population: 1.7},
+  "Bangladesh": {rank: 110, gdp: 460.2, gdp_per_capita: 2688, population: 171.2},
+  "Belarus": {rank: 80, gdp: 68.2, gdp_per_capita: 7240, population: 9.4},
+  "Bolivia": {rank: 125, gdp: 40.9, gdp_per_capita: 3434, population: 11.9},
+  "Bosnia and Herzegovina": {rank: 105, gdp: 24.5, gdp_per_capita: 7481, population: 3.3},
+  "Botswana": {rank: 75, gdp: 18.3, gdp_per_capita: 7348, population: 2.4},
+  "Cambodia": {rank: 130, gdp: 27.2, gdp_per_capita: 1625, population: 16.7},
+  "Cameroon": {rank: 140, gdp: 42.1, gdp_per_capita: 1531, population: 27.5},
+  "Dominican Republic": {rank: 85, gdp: 112.0, gdp_per_capita: 10230, population: 11.0},
+  "Ecuador": {rank: 95, gdp: 115.0, gdp_per_capita: 6423, population: 17.9},
+  "Egypt": {rank: 100, gdp: 469.1, gdp_per_capita: 4295, population: 109.3},
+  "Ethiopia": {rank: 170, gdp: 111.3, gdp_per_capita: 925, population: 120.3},
+  "Georgia": {rank: 100, gdp: 18.6, gdp_per_capita: 4979, population: 3.7},
+  "Ghana": {rank: 120, gdp: 75.5, gdp_per_capita: 2328, population: 32.4},
+  "Guatemala": {rank: 110, gdp: 85.3, gdp_per_capita: 4603, population: 18.5},
+  "Iran": {rank: 115, gdp: 231.5, gdp_per_capita: 2673, population: 86.6},
+  "Iraq": {rank: 105, gdp: 234.1, gdp_per_capita: 5415, population: 43.2},
+  "Jamaica": {rank: 90, gdp: 16.5, gdp_per_capita: 5582, population: 3.0},
+  "Jordan": {rank: 95, gdp: 47.7, gdp_per_capita: 4405, population: 10.8},
+  "Kazakhstan": {rank: 60, gdp: 220.3, gdp_per_capita: 11216, population: 19.6},
+  "Kenya": {rank: 135, gdp: 113.4, gdp_per_capita: 2006, population: 56.5},
+  "Kuwait": {rank: 35, gdp: 175.4, gdp_per_capita: 40825, population: 4.3},
+  "Lebanon": {rank: 120, gdp: 20.5, gdp_per_capita: 2955, population: 6.9},
+  "Libya": {rank: 85, gdp: 45.8, gdp_per_capita: 6716, population: 6.8},
+  "Morocco": {rank: 100, gdp: 134.0, gdp_per_capita: 3497, population: 38.3},
+  "Myanmar": {rank: 140, gdp: 71.2, gdp_per_capita: 1299, population: 54.8},
+  "Nepal": {rank: 150, gdp: 40.9, gdp_per_capita: 1336, population: 30.6},
+  "North Korea": {rank: 180, gdp: 18.0, gdp_per_capita: 700, population: 25.7},
+  "Oman": {rank: 55, gdp: 76.3, gdp_per_capita: 16415, population: 4.6},
+  "Pakistan": {rank: 145, gdp: 383.0, gdp_per_capita: 1596, population: 240.5},
+  "Paraguay": {rank: 115, gdp: 40.7, gdp_per_capita: 5821, population: 7.0},
+  "Philippines": {rank: 120, gdp: 394.1, gdp_per_capita: 3499, population: 112.7},
+  "Qatar": {rank: 25, gdp: 235.8, gdp_per_capita: 83891, population: 2.8},
+  "Saudi Arabia": {rank: 50, gdp: 833.5, gdp_per_capita: 23186, population: 36.0},
+  "Sri Lanka": {rank: 125, gdp: 84.0, gdp_per_capita: 3815, population: 22.0},
+  "Tunisia": {rank: 105, gdp: 46.6, gdp_per_capita: 3807, population: 12.2},
+  "United Arab Emirates": {rank: 30, gdp: 507.2, gdp_per_capita: 51475, population: 9.9},
+  "Uzbekistan": {rank: 125, gdp: 80.2, gdp_per_capita: 2255, population: 35.6},
+  "Venezuela": {rank: 160, gdp: 482.4, gdp_per_capita: 16745, population: 28.8},
+  "Vietnam": {rank: 85, gdp: 408.8, gdp_per_capita: 4164, population: 98.2},
+  "Yemen": {rank: 185, gdp: 21.6, gdp_per_capita: 676, population: 32.0},
+  "Zimbabwe": {rank: 155, gdp: 28.4, gdp_per_capita: 1899, population: 15.0}
+};
+
+// Combine both datasets
+const ALL_COUNTRIES = {...COUNTRY_RANK_DATA, ...ADDITIONAL_COUNTRIES};
+
 // Extract country population data for compatibility
 const COUNTRY_POP = {};
-Object.keys(COUNTRY_RANK_DATA).forEach(country => {
-  COUNTRY_POP[country] = COUNTRY_RANK_DATA[country].population * 1000000; // Convert to actual population
+Object.keys(ALL_COUNTRIES).forEach(country => {
+  COUNTRY_POP[country] = ALL_COUNTRIES[country].population * 1000000; // Convert to actual population
 });
 
 // =======================
@@ -709,19 +793,15 @@ const COUNTRY_ALIASES = {
   "cyprus":"Cyprus","cypriot":"Cyprus","republic of cyprus":"Cyprus"
 };
 
-// Populate country datalist with ranked countries
+// Populate country datalist alphabetically
 (() => {
   const dl = document.getElementById('countryList');
-  // Sort countries by rank for better UX
-  const sortedCountries = Object.keys(COUNTRY_RANK_DATA)
-    .sort((a, b) => COUNTRY_RANK_DATA[a].rank - COUNTRY_RANK_DATA[b].rank);
+  // Sort countries alphabetically
+  const sortedCountries = Object.keys(ALL_COUNTRIES).sort();
 
   sortedCountries.forEach(country => {
     const option = document.createElement('option');
-    const rank = COUNTRY_RANK_DATA[country].rank;
-    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
     option.value = country;
-    option.text = `${country} (Rank #${rank}, GDP/capita: $${gdpPerCapita.toLocaleString()})`;
     dl.appendChild(option);
   });
 })();
@@ -800,8 +880,8 @@ function calculateLifeExpectancy(country, sex, income, education, health) {
   let baseLifeExpectancy = 73; // World average
 
   // Country-based life expectancy adjustments
-  if (COUNTRY_RANK_DATA[country]) {
-    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
+  if (ALL_COUNTRIES[country]) {
+    const gdpPerCapita = ALL_COUNTRIES[country].gdp_per_capita;
     if (gdpPerCapita >= 80000) baseLifeExpectancy = 83;
     else if (gdpPerCapita >= 60000) baseLifeExpectancy = 81;
     else if (gdpPerCapita >= 40000) baseLifeExpectancy = 79;
@@ -845,8 +925,8 @@ function calculateHappiness(country, income, education, health, netWorth) {
   let baseHappiness = 5.4; // World average
 
   // Country-based happiness adjustments
-  if (COUNTRY_RANK_DATA[country]) {
-    const rank = COUNTRY_RANK_DATA[country].rank;
+  if (ALL_COUNTRIES[country]) {
+    const rank = ALL_COUNTRIES[country].rank;
     if (rank <= 10) baseHappiness += 2.0;
     else if (rank <= 20) baseHappiness += 1.5;
     else if (rank <= 30) baseHappiness += 1.0;
@@ -919,15 +999,15 @@ function updateAutoCalculatedFields() {
 // Percentile Calculation Functions (Enhanced)
 // =======================
 function countryCDFPercentile(country){
-  // Use rank-based percentile from CSV data
-  if(COUNTRY_RANK_DATA[country]){
-    const rank = COUNTRY_RANK_DATA[country].rank;
-    const totalCountries = Object.keys(COUNTRY_RANK_DATA).length;
+  // Use rank-based percentile from country data
+  if(ALL_COUNTRIES[country]){
+    const rank = ALL_COUNTRIES[country].rank;
+    const totalCountries = Object.keys(ALL_COUNTRIES).length;
     // Convert rank to percentile (lower rank = higher percentile)
     const percentile = (totalCountries - rank + 1) / totalCountries;
 
     // Apply GDP per capita bonus for more accurate ranking
-    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
+    const gdpPerCapita = ALL_COUNTRIES[country].gdp_per_capita;
     let bonus = 0;
     if(gdpPerCapita >= 80000) bonus = 0.15;
     else if(gdpPerCapita >= 60000) bonus = 0.12;
@@ -938,7 +1018,7 @@ function countryCDFPercentile(country){
     return clamp(percentile + bonus, 0.2, 0.95);
   }
 
-  // Fallback for countries not in CSV data
+  // Fallback for countries not in data
   const sumKnown = Object.values(COUNTRY_POP).reduce((a,b)=>a+b,0);
   const others = Math.max(0, WORLD_TOTAL - sumKnown);
   const entries = Object.entries(COUNTRY_POP).concat([['Other', others]])
@@ -1121,8 +1201,12 @@ function updatePopulationVisualization(percentile, rank){
   const marker = document.getElementById('rankMarker');
   const position = document.getElementById('rankPosition');
   const details = document.getElementById('rankDetails');
+  const title = document.getElementById('populationVizTitle');
 
   viz.style.display = 'block';
+
+  // Update title with current population
+  title.textContent = `🌍 Your Position Among ${(WORLD_TOTAL / 1000000000).toFixed(2)} Billion People`;
 
   // FIXED: Use percentile directly for visualization (higher percentile = better position)
   bar.style.width = (percentile * 100) + '%';
@@ -1137,7 +1221,7 @@ function updatePopulationVisualization(percentile, rank){
   details.innerHTML = `
     <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; font-size:10px; text-align:center">
       <div style="padding:4px; background:#0e141b; border-radius:4px">
-        <div style="color:var(--accent); font-weight:bold">#${fmtInt(rank)}</div>
+        <div style="color:var(--accent); font-weight:bold" id="currentRank">#${fmtInt(rank)}</div>
         <div style="color:var(--muted)">Your Rank</div>
       </div>
       <div style="padding:4px; background:#0e141b; border-radius:4px">
@@ -1145,7 +1229,7 @@ function updatePopulationVisualization(percentile, rank){
         <div style="color:var(--muted)">Top Percentile</div>
       </div>
       <div style="padding:4px; background:#0e141b; border-radius:4px">
-        <div style="color:var(--warn); font-weight:bold">${fmtInt(peopleAbove)}</div>
+        <div style="color:var(--warn); font-weight:bold" id="peopleAbove">${fmtInt(peopleAbove)}</div>
         <div style="color:var(--muted)">Above You</div>
       </div>
     </div>
@@ -1436,13 +1520,19 @@ function compute(){
 
   // Get country rank and economic data if available
   let countryInfo = '';
-  if (COUNTRY_RANK_DATA[country]) {
-    const countryData = COUNTRY_RANK_DATA[country];
+  const totalCountries = Object.keys(ALL_COUNTRIES).length;
+  if (ALL_COUNTRIES[country]) {
+    const countryData = ALL_COUNTRIES[country];
+    // Calculate country-specific ranking
+    const countryPopulation = countryData.population * 1000000;
+    const countryRank = Math.round(countryPopulation * (1 - P));
+
     countryInfo = `
       <div style="margin:6px 0; padding:6px 8px; background:#0e141b; border-radius:6px; font-size:11px; border-left:3px solid var(--accent)">
-        📊 <b>${country}</b> Country Rank: <b>#${countryData.rank}/60</b> ·
+        📊 <b>${country}</b> Country Rank: <b>#${countryData.rank}/${totalCountries}</b> ·
         GDP per capita: <b>$${countryData.gdp_per_capita.toLocaleString()}</b> ·
-        Population: <b>${countryData.population}M</b>
+        Population: <b>${countryData.population}M</b> ·
+        Your rank in ${country}: <b id="countryRank">#${fmtInt(countryRank)}</b>
       </div>
     `;
   }
