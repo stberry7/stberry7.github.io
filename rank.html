@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Global Rank — Extended (Just for Fun)</title>
+<meta name="description" content="Playful global ranking with many inputs: country, gender, age, health, height, weight, race, education, university, income, wealth, real estate, stocks, children, parents.">
+<style>
+:root{
+  --bg:#0b0f14; --card:#10161d; --fg:#e6edf3; --muted:#96a1ad;
+  --border:#22303c; --accent:#60a5fa; --green:#22c55e; --warn:#f59e0b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+.wrap{max-width:1100px;margin:0 auto;padding:22px}
+h1{margin:0 0 10px 0;font-size:clamp(22px,3.4vw,30px)}
+.sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:1080px){.grid{grid-template-columns:1.15fr .85fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+.card h2{margin:0 0 12px 0;font-size:18px}
+label{display:block;margin:10px 0 6px 0;color:var(--muted);font-size:12px}
+input[type="text"],input[type="number"],select{
+  width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--border);background:#0e141b;color:var(--fg);
+}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.col{flex:1;min-width:210px}
+button{appearance:none;border:none;background:var(--accent);color:#031225;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+button.ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
+.small{font-size:12px;color:var(--muted)}
+.kbd{padding:1px 6px;border:1px solid var(--border);border-radius:6px;background:#0b1218;color:var(--muted)}
+.resultBox{border:1px dashed var(--border);border-radius:12px;padding:14px;margin-top:10px}
+.big{font-size:22px;font-weight:900}
+.progress{height:14px;background:#0b1218;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,#0ea5e9,#22c55e);width:0%}
+.flex{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th,.table td{border-bottom:1px solid var(--border);padding:8px 6px;font-size:13px}
+.badge{display:inline-block;background:#0b1218;border:1px solid var(--border);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px;margin-right:6px}
+.note{display:inline-block;margin-top:6px;padding:6px 10px;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px}
+.section{margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>My Global Rank <span style="color:var(--accent)">— Extended</span> 🎲</h1>
+    <div class="sub">We compute a toy percentile from many inputs and map it to ~8.1B people to show your <b>rank</b>. This is for fun only.</div>
+    <div><span class="badge">Single-file</span><span class="badge">Client-side only</span><span class="badge">Offline-ready</span></div>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <h2>Inputs</h2>
+      <div class="row">
+        <div class="col">
+          <label>Country</label>
+          <input id="country" list="countryList" placeholder="e.g., South Korea, United States, Japan"><datalist id="countryList"></datalist>
+        </div>
+        <div class="col">
+          <label>Gender</label>
+          <select id="sex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other / Prefer not to say</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Age</label>
+          <input id="age" type="number" min="0" max="110" step="1" value="30">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Self-reported health</label>
+          <select id="health">
+            <option value="good">Good</option>
+            <option value="excellent">Excellent</option>
+            <option value="fair">Fair</option>
+            <option value="poor">Poor</option>
+            <option value="na">Prefer not to say</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Units</label>
+          <select id="units">
+            <option value="metric" selected>Metric (cm, kg)</option>
+            <option value="imperial">Imperial (ft/in, lb)</option>
+          </select>
+        </div>
+        <div class="col metric-only">
+          <label>Height (cm)</label>
+          <input id="heightCm" type="number" min="80" max="250" step="0.1" placeholder="e.g., 175">
+        </div>
+        <div class="col metric-only">
+          <label>Weight (kg)</label>
+          <input id="weightKg" type="number" min="20" max="300" step="0.1" placeholder="e.g., 70">
+        </div>
+        <div class="col imperial-only" style="display:none">
+          <label>Height (ft + in)</label>
+          <div class="row" style="gap:6px">
+            <input id="heightFt" type="number" min="3" max="8" step="1" placeholder="ft" style="flex:1">
+            <input id="heightIn" type="number" min="0" max="11" step="1" placeholder="in" style="flex:1">
+          </div>
+        </div>
+        <div class="col imperial-only" style="display:none">
+          <label>Weight (lb)</label>
+          <input id="weightLb" type="number" min="50" max="600" step="0.1" placeholder="e.g., 154">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Cash & Savings (USD)</label>
+          <input id="cash" type="number" min="0" step="100" placeholder="e.g., 50000">
+        </div>
+        <div class="col">
+          <label>Real Estate Value (USD)</label>
+          <input id="realEstate" type="number" min="0" step="1000" placeholder="e.g., 300000">
+        </div>
+        <div class="col">
+          <label>Stock/Investment Value (USD)</label>
+          <input id="stocks" type="number" min="0" step="100" placeholder="e.g., 75000">
+        </div>
+        <div class="col">
+          <label>Total Debt (USD)</label>
+          <input id="debt" type="number" min="0" step="100" placeholder="e.g., 25000">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Annual Income (USD)</label>
+          <input id="income" type="number" min="0" step="100" placeholder="e.g., 80000">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Education</label>
+          <select id="education">
+            <option value="hs">High school or below</option>
+            <option value="somecollege">Some college</option>
+            <option value="bachelor">Bachelor’s</option>
+            <option value="master">Master’s</option>
+            <option value="doctorate">Doctorate</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>University (optional, display-only)</label>
+          <input id="university" type="text" placeholder="e.g., University of Michigan">
+        </div>
+        <div class="col">
+          <label>Race / Ethnicity (not used in score)</label>
+          <select id="race">
+            <option value="na">Prefer not to say</option>
+            <option value="asian">Asian</option>
+            <option value="black">Black</option>
+            <option value="white">White</option>
+            <option value="latino">Hispanic / Latino</option>
+            <option value="mena">Middle Eastern / North African</option>
+            <option value="indigenous">Indigenous</option>
+            <option value="pi">Pacific Islander</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Children</label>
+          <input id="children" type="number" min="0" max="12" step="1" value="0">
+        </div>
+        <div class="col">
+          <label>Parents alive</label>
+          <select id="parentsAlive">
+            <option value="2">Both</option>
+            <option value="1">One</option>
+            <option value="0">Neither</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-top:12px">
+        <button id="btnCalc">Calculate my global rank</button>
+        <button id="btnReset" class="ghost">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your Global Rank 🎯</h2>
+      <div id="result" class="resultBox">Enter inputs and click <span class="kbd">Calculate</span>.</div>
+
+      <!-- Global Population Visualization -->
+      <div id="populationViz" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px">🌍 Global Population Visual</div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
+          <div style="flex:1; height:20px; background:#1e293b; border-radius:10px; overflow:hidden; position:relative">
+            <div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:10px; width:0%; transition:width 0.8s ease"></div>
+            <div id="rankMarker" style="position:absolute; top:-2px; width:2px; height:24px; background:#fff; left:0%; transition:left 0.8s ease"></div>
+          </div>
+          <div class="small" id="rankPosition">You</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted)">
+          <span>👶 Poorest</span>
+          <span>💰 Richest</span>
+        </div>
+      </div>
+
+      <!-- Wealth Breakdown Chart -->
+      <div id="wealthChart" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px">💰 Your Wealth Breakdown</div>
+        <div id="wealthBars"></div>
+        <div class="small" style="margin-top:5px; color:var(--muted)">Net Worth: <span id="netWorthTotal">$0</span></div>
+      </div>
+
+      <!-- Comparison Charts -->
+      <div id="comparisonCharts" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px">📊 How You Compare</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
+          <div>
+            <div class="small" style="margin-bottom:5px">Age Distribution</div>
+            <div id="ageChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden"></div>
+          </div>
+          <div>
+            <div class="small" style="margin-bottom:5px">Income Distribution</div>
+            <div id="incomeChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fun Facts -->
+      <div id="funFacts" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">🎉 Fun Facts About Your Rank</div>
+        <div id="factsContent" style="font-size:12px; line-height:1.4"></div>
+      </div>
+
+      <div class="row" style="margin-top:15px">
+        <button id="btnCopy" class="ghost">Copy Result</button>
+        <button id="btnDownload" class="ghost">Download JSON</button>
+      </div>
+
+      <div class="note">⚠️ For entertainment only. Not scientific or predictive.</div>
+    </div>
+  </section>
+
+  <footer style="margin-top:14px" class="small">
+    Disclaimer: For entertainment/education only. Uses coarse assumptions and simplified distributions. Results vary by rounding and inputs.
+  </footer>
+</div>
+
+<script>
+// =======================
+// Data (rough / playful)
+// =======================
+const WORLD_TOTAL = 8_100_000_000; // ~8.1B
+const COUNTRY_POP = {
+  "India": 1429000000, "China": 1412000000, "United States": 334000000, "Indonesia": 276000000,
+  "Pakistan": 240000000, "Nigeria": 223000000, "Brazil": 203000000, "Bangladesh": 172000000,
+  "Russia": 146000000, "Mexico": 128000000, "Ethiopia": 126000000, "Japan": 123000000,
+  "Philippines": 117000000, "Egypt": 112000000, "DR Congo": 102000000, "Vietnam": 100000000,
+  "Turkey": 85000000, "Iran": 86000000, "Germany": 84000000, "Thailand": 70000000,
+  "United Kingdom": 67000000, "France": 65000000, "Tanzania": 67000000, "South Africa": 60000000,
+  "Italy": 59000000, "Kenya": 56000000, "Myanmar": 55000000, "South Korea": 52000000,
+  "Colombia": 52000000, "Spain": 48000000, "Argentina": 46000000, "Algeria": 45000000,
+  "Iraq": 45000000, "Afghanistan": 41000000, "Saudi Arabia": 36000000, "Uzbekistan": 36000000,
+  "Ukraine": 36000000, "Morocco": 37000000, "Poland": 38000000, "Canada": 40000000,
+  "Malaysia": 34000000, "Angola": 36000000, "Ghana": 33000000, "Mozambique": 33000000,
+  "Yemen": 34000000, "Nepal": 30000000, "Australia": 26000000, "North Korea": 26000000,
+  "Taiwan": 24000000, "Netherlands": 18000000, "Romania": 19000000, "Belgium": 11700000,
+  "Greece": 10400000, "Czechia": 10700000, "Portugal": 10300000, "Sweden": 10500000,
+  "Hungary": 9600000, "Austria": 9100000, "Switzerland": 8800000, "Israel": 9800000,
+  "Denmark": 5900000, "Finland": 5600000, "Norway": 5500000, "Ireland": 5100000,
+  "New Zealand": 5200000, "Singapore": 5900000, "Hong Kong": 7500000
+};
+const COUNTRY_ALIASES = {
+  "usa":"United States","us":"United States","u.s.":"United States","united states of america":"United States",
+  "uk":"United Kingdom","great britain":"United Kingdom","britain":"United Kingdom",
+  "korea":"South Korea","south korea":"South Korea","republic of korea":"South Korea",
+  "russian federation":"Russia","dr congo":"DR Congo","democratic republic of the congo":"DR Congo",
+  "czech republic":"Czechia"
+};
+
+// Populate country datalist
+(() => {
+  const dl = document.getElementById('countryList');
+  Object.keys(COUNTRY_POP).sort().forEach(c=>{
+    const o = document.createElement('option'); o.value = c; dl.appendChild(o);
+  });
+})();
+
+// =======================
+// Utils
+// =======================
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+const fmtInt = (n) => n.toLocaleString('en-US');
+const pct = (p) => Math.round(p*1000)/10; // 0..1 -> 1 decimal percent
+
+function canonicalCountry(name){
+  if(!name) return 'Other';
+  const raw = name.trim();
+  if(COUNTRY_POP[raw]) return raw;
+  const low = raw.toLowerCase();
+  if(COUNTRY_ALIASES[low]) return COUNTRY_ALIASES[low];
+  const title = raw.replace(/\b\w/g, c=>c.toUpperCase());
+  if(COUNTRY_POP[title]) return title;
+  return 'Other';
+}
+
+function countryCDFPercentile(country){
+  // 경제적 발전도를 고려한 국가별 기준값 조정
+  const countryBonus = {
+    'South Korea': 0.82, 'Japan': 0.85, 'United States': 0.88, 'Germany': 0.87,
+    'United Kingdom': 0.86, 'France': 0.84, 'Canada': 0.85, 'Australia': 0.86,
+    'Netherlands': 0.88, 'Switzerland': 0.92, 'Norway': 0.93, 'Denmark': 0.91,
+    'Sweden': 0.90, 'Finland': 0.89, 'Singapore': 0.89, 'Hong Kong': 0.87,
+    'Taiwan': 0.80, 'Israel': 0.83, 'China': 0.65, 'India': 0.45,
+    'Brazil': 0.55, 'Russia': 0.60, 'Mexico': 0.50, 'Indonesia': 0.40
+  };
+
+  if(countryBonus[country] !== undefined){
+    return countryBonus[country];
+  }
+
+  // 기존 로직으로 폴백
+  const sumKnown = Object.values(COUNTRY_POP).reduce((a,b)=>a+b,0);
+  const others = Math.max(0, WORLD_TOTAL - sumKnown);
+  const entries = Object.entries(COUNTRY_POP).concat([['Other', others]])
+    .map(([k,v])=>({k,v}))
+    .sort((a,b)=>b.v-a.v);
+  let acc = 0;
+  for(const e of entries){
+    if(e.k === country){
+      const mid = acc + e.v/2;
+      return clamp(mid / WORLD_TOTAL, 0, 1);
+    }
+    acc += e.v;
+  }
+  return 0.50;
+}
+
+function sexPercentile(sex){
+  if(sex==='male') return 0.505;
+  if(sex==='female') return 0.495;
+  return 0.500;
+}
+
+function agePercentile(age){
+  const a = clamp(+age||0, 0, 110);
+  if(a<=14) return 0.20*(a/14);
+  if(a<=24) return 0.20 + 0.15*((a-24+14)/10);
+  if(a<=34) return 0.35 + 0.15*((a-24)/10);
+  if(a<=44) return 0.50 + 0.15*((a-34)/10);
+  if(a<=54) return 0.65 + 0.15*((a-44)/10);
+  if(a<=64) return 0.80 + 0.10*((a-54)/10);
+  return 0.90 + 0.10*((a-64)/46);
+}
+
+function wealthPercentile(cash, realEstate, stocks, debt){
+  const netWorth = (+cash||0) + (+realEstate||0) + (+stocks||0) - (+debt||0);
+  let p;
+  if(netWorth < -100_000) p = 0.01;
+  else if(netWorth < -50_000) p = 0.03;
+  else if(netWorth < -10_000) p = 0.08;
+  else if(netWorth < 0) p = 0.15;
+  else if(netWorth < 1_000) p = 0.35;
+  else if(netWorth < 5_000) p = 0.50;
+  else if(netWorth < 10_000) p = 0.60;
+  else if(netWorth < 25_000) p = 0.70;
+  else if(netWorth < 50_000) p = 0.80;
+  else if(netWorth < 100_000) p = 0.87;
+  else if(netWorth < 200_000) p = 0.92;
+  else if(netWorth < 350_000) p = 0.95;
+  else if(netWorth < 500_000) p = 0.97;
+  else if(netWorth < 1_000_000) p = 0.985;
+  else if(netWorth < 5_000_000) p = 0.995;
+  else if(netWorth < 10_000_000) p = 0.998;
+  else p = 0.999;
+  return clamp(p, 0.001, 0.999);
+}
+
+function incomePercentile(inc){
+  const x = +inc;
+  if(isNaN(x)) return 0.5;
+  if(x < 1000) return 0.05;
+  if(x < 3000) return 0.15;
+  if(x < 5000) return 0.25;
+  if(x < 10000) return 0.40;
+  if(x < 15000) return 0.55;
+  if(x < 25000) return 0.68;
+  if(x < 40000) return 0.78;
+  if(x < 60000) return 0.85;
+  if(x < 80000) return 0.90;
+  if(x < 100000) return 0.93;
+  if(x < 150000) return 0.96;
+  if(x < 250000) return 0.98;
+  if(x < 500000) return 0.995;
+  return 0.999;
+}
+
+function healthPercentile(h){
+  if(h==='excellent') return 0.80;
+  if(h==='good') return 0.65;
+  if(h==='fair') return 0.45;
+  if(h==='poor') return 0.25;
+  return 0.50; // NA
+}
+
+function bmiFromInputs(){
+  const units = document.getElementById('units').value;
+  if(units==='metric'){
+    const hcm = +document.getElementById('heightCm').value;
+    const wkg = +document.getElementById('weightKg').value;
+    if(!hcm || !wkg) return null;
+    const m = hcm/100;
+    return wkg/(m*m);
+  }else{
+    const ft = +document.getElementById('heightFt').value;
+    const inch = +document.getElementById('heightIn').value;
+    const lb = +document.getElementById('weightLb').value;
+    if(!ft && !inch || !lb) return null;
+    const totalIn = (ft||0)*12 + (inch||0);
+    if(totalIn<=0) return null;
+    const m = totalIn*0.0254;
+    const kg = lb*0.45359237;
+    return kg/(m*m);
+  }
+}
+
+function bmiPercentile(bmi){
+  if(!bmi || !isFinite(bmi)) return 0.50;
+  // Map closeness to ~22 as higher percentile; clamp to [0.3, 0.8]
+  const diff = Math.abs(bmi - 22);
+  const score = Math.max(0, 1 - diff/22); // 22 away -> 0
+  const p = 0.3 + 0.5*score; // 0..1 -> 0.3..0.8
+  return clamp(p, 0.3, 0.8);
+}
+
+function educationPercentile(level){
+  switch(level){
+    case 'hs': return 0.50;
+    case 'somecollege': return 0.65;
+    case 'bachelor': return 0.85;
+    case 'master': return 0.93;
+    case 'doctorate': return 0.98;
+    default: return 0.50;
+  }
+}
+
+// Fixed weights (sum = 1.00)
+const W = {
+  wealth:0.30, income:0.15, age:0.10, health:0.08, bmi:0.05,
+  education:0.15, country:0.08, family:0.07, sex:0.02, race:0.00, university:0.00
+};
+
+function familyPercentile(children, parentsAlive, age){
+  const k = Math.max(0, Math.min(12, Math.floor(+children || 0)));
+  let childP;
+  if(k===0) childP = 0.58;
+  else if(k===1) childP = 0.66;
+  else if(k===2) childP = 0.72;
+  else if(k===3) childP = 0.62;
+  else childP = 0.50;
+  const a = clamp(+age||0,0,110);
+  let parP;
+  const pa = +parentsAlive;
+  if(pa===2) parP = 0.70 - (a>40?0.12:0) - (a>60?0.12:0);
+  else if(pa===1) parP = 0.52 - (a>70?0.05:0);
+  else parP = 0.40 + (a>60?0.10:0);
+  parP = clamp(parP, 0.25, 0.75);
+  return clamp(0.65*childP + 0.35*parP, 0.25, 0.75);
+}
+
+function updatePopulationVisualization(percentile, rank){
+  const viz = document.getElementById('populationViz');
+  const bar = document.getElementById('rankBar');
+  const marker = document.getElementById('rankMarker');
+  const position = document.getElementById('rankPosition');
+
+  viz.style.display = 'block';
+  bar.style.width = (percentile * 100) + '%';
+  marker.style.left = (percentile * 100) + '%';
+  position.textContent = `#${fmtInt(rank)}`;
+}
+
+function updateWealthChart(cash, realEstate, stocks, debt, netWorth){
+  const chart = document.getElementById('wealthChart');
+  const bars = document.getElementById('wealthBars');
+  const total = document.getElementById('netWorthTotal');
+
+  chart.style.display = 'block';
+  total.textContent = `$${fmtInt(netWorth)}`;
+
+  const assets = [
+    {name: 'Cash', value: cash, color: '#22c55e'},
+    {name: 'Real Estate', value: realEstate, color: '#3b82f6'},
+    {name: 'Stocks', value: stocks, color: '#8b5cf6'},
+    {name: 'Debt', value: -debt, color: '#ef4444'}
+  ];
+
+  const maxVal = Math.max(...assets.map(a => Math.abs(a.value)));
+  bars.innerHTML = assets.map(asset => {
+    const width = maxVal > 0 ? (Math.abs(asset.value) / maxVal * 100) : 0;
+    return `
+      <div style="display:flex; align-items:center; margin:4px 0">
+        <div style="width:80px; font-size:11px">${asset.name}</div>
+        <div style="flex:1; height:20px; background:#0b1218; border-radius:10px; overflow:hidden; margin:0 8px">
+          <div style="height:100%; background:${asset.color}; width:${width}%; border-radius:10px"></div>
+        </div>
+        <div style="width:70px; font-size:11px; text-align:right">${asset.value >= 0 ? '$' + fmtInt(asset.value) : '-$' + fmtInt(-asset.value)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateComparisonCharts(agePercentile, incomePercentile){
+  const charts = document.getElementById('comparisonCharts');
+  const ageChart = document.getElementById('ageChart');
+  const incomeChart = document.getElementById('incomeChart');
+
+  charts.style.display = 'block';
+
+  // Age distribution visualization
+  ageChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 60%, #0ea5e9 60%, #0ea5e9 100%)"></div>
+    <div style="position:absolute; bottom:0; left:${agePercentile*100}%; width:2px; height:100%; background:#22c55e"></div>
+    <div style="position:absolute; top:5px; left:5px; font-size:10px; color:#94a3b8">You: ${pct(agePercentile)}%</div>
+  `;
+
+  // Income distribution visualization
+  incomeChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 70%, #f59e0b 70%, #f59e0b 100%)"></div>
+    <div style="position:absolute; bottom:0; left:${incomePercentile*100}%; width:2px; height:100%; background:#22c55e"></div>
+    <div style="position:absolute; top:5px; left:5px; font-size:10px; color:#94a3b8">You: ${pct(incomePercentile)}%</div>
+  `;
+}
+
+function updateFunFacts(rank, percentile, country, age, netWorth){
+  const facts = document.getElementById('funFacts');
+  const content = document.getElementById('factsContent');
+
+  facts.style.display = 'block';
+
+  const peopleAbove = Math.round(WORLD_TOTAL * percentile);
+  const peopleBelow = WORLD_TOTAL - peopleAbove;
+  const topPercent = pct(percentile);
+
+  const factsList = [
+    `🎯 You rank higher than <b>${fmtInt(peopleBelow)}</b> people worldwide`,
+    `🏆 Only <b>${fmtInt(peopleAbove)}</b> people rank above you`,
+    `📊 You're in the top <b>${topPercent}%</b> globally`,
+    `🌍 Your ranking places you ahead of <b>${pct(1-percentile)}%</b> of ${country}`,
+    `💰 Your net worth of <b>$${fmtInt(netWorth)}</b> ${netWorth > 100000 ? 'puts you in a privileged position' : 'is building towards financial security'}`,
+    `🎂 At <b>${age}</b> years old, you have ${age < 30 ? 'many opportunities ahead' : age < 50 ? 'reached a productive life stage' : 'gained valuable life experience'}`
+  ];
+
+  content.innerHTML = factsList.map(fact => `• ${fact}`).join('<br>');
+}
+
+function compute(){
+  const country = canonicalCountry(document.getElementById('country').value);
+  const sex = document.getElementById('sex').value;
+  const age = +document.getElementById('age').value;
+  const health = document.getElementById('health').value;
+  const units = document.getElementById('units').value;
+  const cash = +document.getElementById('cash').value || 0;
+  const realEstate = +document.getElementById('realEstate').value || 0;
+  const stocks = +document.getElementById('stocks').value || 0;
+  const debt = +document.getElementById('debt').value || 0;
+  const income = +document.getElementById('income').value || 0;
+  const education = document.getElementById('education').value;
+  const university = document.getElementById('university').value.trim();
+  const race = document.getElementById('race').value;
+  const children = +document.getElementById('children').value;
+  const parentsAlive = +document.getElementById('parentsAlive').value;
+
+  const netWorth = cash + realEstate + stocks - debt;
+
+  const pCountry = countryCDFPercentile(country);
+  const pSex = sexPercentile(sex);
+  const pAge = agePercentile(age);
+  const pWealth = wealthPercentile(cash, realEstate, stocks, debt);
+  const pIncome = incomePercentile(income);
+  const pHealth = healthPercentile(health);
+  const bmi = bmiFromInputs();
+  const pBMI = bmiPercentile(bmi);
+  const pEdu = educationPercentile(education);
+  const pFamily = familyPercentile(children, parentsAlive, age);
+
+  const Wsum = Object.values(W).reduce((a,b)=>a+b,0);
+  const P = clamp(
+    (pWealth * W.wealth + pIncome * W.income + pAge * W.age + pHealth * W.health +
+     pBMI * W.bmi + pEdu * W.education + pCountry * W.country + pFamily * W.family + pSex * W.sex) / Wsum,
+    0.0001, 0.9999
+  );
+  const rank = Math.round(WORLD_TOTAL * P);
+  const pctText = pct(P) + '%';
+
+  // Update main result display
+  const res = document.getElementById('result');
+  const bmiTxt = (bmi && isFinite(bmi)) ? bmi.toFixed(1) : 'N/A';
+  res.innerHTML = `
+    <div class="big">🏆 Global Rank: <b>#${fmtInt(rank)}</b> out of ~${fmtInt(WORLD_TOTAL)} people</div>
+    <div style="margin:8px 0; font-size:16px">You're in the top <b style="color:var(--accent)">${pctText}</b> globally!</div>
+    <div class="small" style="margin-top:10px; line-height:1.3">
+      🌍 <b>${country}</b> · ${sex === 'male' ? '👨' : sex === 'female' ? '👩' : '🧑'} <b>${sex}</b> · 🎂 <b>${age}</b> years ·
+      💰 Net Worth: <b>$${fmtInt(netWorth)}</b> · 💵 Income: <b>$${fmtInt(income)}</b>
+    </div>
+  `;
+
+  // Show visual elements
+  updatePopulationVisualization(P, rank);
+  updateWealthChart(cash, realEstate, stocks, debt, netWorth);
+  updateComparisonCharts(pAge, pIncome);
+  updateFunFacts(rank, P, country, age, netWorth);
+
+  // Store result for export
+  window.__lastResult = {
+    country, sex, age, health, units,
+    height_cm: units==='metric' ? +document.getElementById('heightCm').value : null,
+    weight_kg: units==='metric' ? +document.getElementById('weightKg').value : null,
+    height_ft: units==='imperial' ? +document.getElementById('heightFt').value : null,
+    height_in: units==='imperial' ? +document.getElementById('heightIn').value : null,
+    weight_lb: units==='imperial' ? +document.getElementById('weightLb').value : null,
+    bmi, cash, realEstate, stocks, debt, net_worth: netWorth, income,
+    education, university, race, children, parents_alive: parentsAlive,
+    percentiles:{ country:pCountry, sex:pSex, age:pAge, wealth:pWealth, income:pIncome, health:pHealth, bmi:pBMI, education:pEdu, family:pFamily },
+    weights: W, composite_percentile: P, world_total: WORLD_TOTAL, rank
+  };
+}
+
+document.getElementById('btnCalc').addEventListener('click', compute);
+document.getElementById('btnReset').addEventListener('click', ()=>{
+  ['country','cash','realEstate','stocks','debt','income','children','university','heightCm','weightKg','heightFt','heightIn','weightLb'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('sex').value='male';
+  document.getElementById('age').value=30;
+  document.getElementById('health').value='good';
+  document.getElementById('units').value='metric';
+  document.getElementById('education').value='hs';
+  document.getElementById('race').value='na';
+  document.getElementById('parentsAlive').value='2';
+  document.querySelectorAll('.metric-only').forEach(e=>e.style.display='block');
+  document.querySelectorAll('.imperial-only').forEach(e=>e.style.display='none');
+  document.getElementById('result').innerHTML='Enter inputs and click <span class="kbd">Calculate</span>.';
+
+  // Hide visual elements
+  ['populationViz','wealthChart','comparisonCharts','funFacts'].forEach(id=>{
+    document.getElementById(id).style.display='none';
+  });
+});
+
+// Units toggle
+document.getElementById('units').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  document.querySelectorAll('.metric-only').forEach(el=>el.style.display = v==='metric' ? 'block' : 'none');
+  document.querySelectorAll('.imperial-only').forEach(el=>el.style.display = v==='imperial' ? 'block' : 'none');
+});
+
+// Copy & Download
+document.getElementById('btnCopy').addEventListener('click', ()=>{
+  const R = window.__lastResult;
+  if(!R){ alert('Please calculate first.'); return; }
+  const txt = `Global rank: #${fmtInt(R.rank)} among ~${fmtInt(R.world_total)} (top ${pct(R.composite_percentile)}%). ` +
+              `Country=${R.country}, Gender=${R.sex}, Age=${R.age}, Health=${R.health}, BMI=${R.bmi?R.bmi.toFixed(1):'N/A'}, ` +
+              `Net worth=$${fmtInt(R.net_worth||0)}, Income=$${fmtInt(R.income||0)}, ` +
+              `Education=${document.querySelector('#education option:checked').textContent}, University=${R.university||'-'}, Race=${document.querySelector('#race option:checked').textContent}, ` +
+              `Children=${R.children}, Parents alive=${R.parents_alive}.`;
+  navigator.clipboard.writeText(txt).then(()=>alert('Copied!')).catch(()=>alert('Copy failed. Check browser permissions.'));
+});
+
+document.getElementById('btnDownload').addEventListener('click', ()=>{
+  const R = window.__lastResult;
+  if(!R){ alert('Please calculate first.'); return; }
+  const blob = new Blob([JSON.stringify(R,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'my_global_rank_extended_result.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+});
+</script>
+</body>
+</html>
