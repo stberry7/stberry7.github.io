@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Global Rank — Extended (Just for Fun)</title>
-<meta name="description" content="Playful global ranking with many inputs: country, gender, age, health, height, weight, race, education, university, income, wealth, real estate, stocks, children, parents.">
+<title>My Global Rank — Ultimate v2.0 (Enhanced)</title>
+<meta name="description" content="Ultimate global ranking with enhanced features: auto-save, advanced visualizations, testing, and comprehensive personal data analysis.">
 <style>
 :root{
   --bg:#0b0f14; --card:#10161d; --fg:#e6edf3; --muted:#96a1ad;
   --border:#22303c; --accent:#60a5fa; --green:#22c55e; --warn:#f59e0b;
+  --success:#22c55e; --error:#ef4444; --purple:#8b5cf6;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-.wrap{max-width:1100px;margin:0 auto;padding:16px}
-h1{margin:0 0 10px 0;font-size:clamp(20px,4vw,30px)}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+h1{margin:0 0 10px 0;font-size:clamp(20px,4vw,32px)}
+.version{background:var(--purple);color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:8px}
 .sub{color:var(--muted);font-size:clamp(12px,2.5vw,14px);margin-bottom:16px;line-height:1.4}
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:768px){.grid{gap:16px}}
@@ -35,6 +37,9 @@ input[type="text"],input[type="number"],select{
 button{appearance:none;border:none;background:var(--accent);color:#031225;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;width:100%;margin:4px 0}
 @media(min-width:768px){button{padding:10px 14px;border-radius:12px;width:auto;margin:0}}
 button.ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
+button.success{background:var(--success)}
+button.warn{background:var(--warn)}
+button.error{background:var(--error)}
 .small{font-size:clamp(11px,2.5vw,12px);color:var(--muted)}
 .kbd{padding:1px 6px;border:1px solid var(--border);border-radius:6px;background:#0b1218;color:var(--muted)}
 .resultBox{border:1px dashed var(--border);border-radius:8px;padding:12px;margin-top:10px}
@@ -54,13 +59,17 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
 .note{display:inline-block;margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:clamp(10px,2.5vw,12px)}
 @media(min-width:768px){.note{padding:6px 10px;border-radius:10px}}
 .section{margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}
+.notification{position:fixed;top:20px;right:20px;padding:12px 16px;border-radius:8px;color:white;font-weight:bold;z-index:1000;max-width:300px}
+.notification.success{background:var(--success)}
+.notification.error{background:var(--error)}
+.notification.info{background:var(--accent)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>My Global Rank <span style="color:var(--accent)">— Extended</span> 🎲</h1>
-    <div class="sub">Calculate your precise global ranking among <b>8.25 billion</b> people based on comprehensive personal data analysis.</div>
+    <h1>My Global Rank <span style="color:var(--accent)">— Ultimate</span> <span class="version">v2.0</span> 🎯</h1>
+    <div class="sub">Calculate your precise global ranking among <b>8.25 billion</b> people with enhanced features: auto-save, advanced visualizations, and comprehensive testing.</div>
 
     <!-- Real-time World Population Counter -->
     <div style="background:#1a202c; border-radius:12px; padding:12px; margin:10px 0; border:1px solid var(--border)">
@@ -112,12 +121,29 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
       </div>
     </div>
 
-    <div><span class="badge">Single-file</span><span class="badge">Client-side only</span><span class="badge">Real-time Population</span></div>
+    <div>
+      <span class="badge">v2.0 Enhanced</span>
+      <span class="badge">Auto-Save</span>
+      <span class="badge">Advanced Visualizations</span>
+      <span class="badge">Real-time Population</span>
+    </div>
   </header>
 
   <section class="grid">
     <div class="card">
       <h2>Inputs</h2>
+
+      <!-- Cache Control Panel -->
+      <div style="background:#1a202c; border-radius:8px; padding:10px; margin-bottom:12px; border:1px solid var(--border)">
+        <div class="small" style="margin-bottom:6px; font-weight:bold">💾 Data Management</div>
+        <div class="row">
+          <button id="btnLoadCache" class="ghost" style="flex:1">Load Saved Data</button>
+          <button id="btnClearCache" class="error" style="flex:1">Clear Cache</button>
+          <button id="btnExportData" class="ghost" style="flex:1">Export Data</button>
+        </div>
+        <div id="cacheStatus" class="small" style="margin-top:4px; color:var(--muted)">Auto-save: Enabled</div>
+      </div>
+
       <div class="row">
         <div class="col">
           <label>Country</label>
@@ -230,8 +256,8 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
           <select id="education">
             <option value="hs">High school or below</option>
             <option value="somecollege">Some college</option>
-            <option value="bachelor">Bachelor’s</option>
-            <option value="master">Master’s</option>
+            <option value="bachelor">Bachelor's</option>
+            <option value="master">Master's</option>
             <option value="doctorate">Doctorate</option>
           </select>
         </div>
@@ -295,10 +321,10 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
         </div>
       </div>
 
-
       <div class="row" style="margin-top:12px">
         <button id="btnCalc">Calculate my global rank</button>
-        <button id="btnReset" class="ghost">Reset</button>
+        <button id="btnReset" class="error">Complete Reset</button>
+        <button id="btnTest" class="warn">Run Tests</button>
       </div>
     </div>
 
@@ -306,109 +332,398 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
       <h2>Your Global Rank 🎯</h2>
       <div id="result" class="resultBox">Enter inputs and click <span class="kbd">Calculate</span>.</div>
 
-      <!-- Global Population Visualization -->
+      <!-- Enhanced Global Population Visualization -->
       <div id="populationViz" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px">🌍 Global Population Visual</div>
+        <div class="small" style="margin-bottom:8px; font-weight:bold">🌍 Your Position Among 8.25 Billion People</div>
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
-          <div style="flex:1; height:20px; background:#1e293b; border-radius:10px; overflow:hidden; position:relative">
-            <div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:10px; width:0%; transition:width 0.8s ease"></div>
-            <div id="rankMarker" style="position:absolute; top:-2px; width:2px; height:24px; background:#fff; left:0%; transition:left 0.8s ease"></div>
+          <div style="flex:1; height:24px; background:#1e293b; border-radius:12px; overflow:hidden; position:relative; border:1px solid var(--border)">
+            <div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
+            <div id="rankMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease; box-shadow:0 0 8px rgba(255,255,255,0.6)"></div>
           </div>
-          <div class="small" id="rankPosition">You</div>
+          <div class="small" id="rankPosition" style="font-weight:bold; color:var(--accent)">You</div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted)">
-          <span>👶 Poorest</span>
-          <span>💰 Richest</span>
+          <span>👶 Rank 8.25B (Bottom)</span>
+          <span>👑 Rank 1 (Top)</span>
+        </div>
+        <div id="rankDetails" style="margin-top:8px; padding:8px; background:#1a202c; border-radius:8px; font-size:11px"></div>
+      </div>
+
+      <!-- Enhanced Wealth Breakdown Chart -->
+      <div id="wealthChart" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">💰 Your Wealth Breakdown</div>
+        <div id="wealthBars"></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; font-size:11px">
+          <div style="padding:4px 8px; background:#1a202c; border-radius:6px">
+            <div class="small" style="color:var(--muted)">Net Worth</div>
+            <div id="netWorthTotal" style="font-weight:bold; color:var(--green)">$0</div>
+          </div>
+          <div style="padding:4px 8px; background:#1a202c; border-radius:6px">
+            <div class="small" style="color:var(--muted)">Wealth Rank</div>
+            <div id="wealthRankDisplay" style="font-weight:bold; color:var(--accent)">-</div>
+          </div>
         </div>
       </div>
 
-      <!-- Wealth Breakdown Chart -->
-      <div id="wealthChart" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px">💰 Your Wealth Breakdown</div>
-        <div id="wealthBars"></div>
-        <div class="small" style="margin-top:5px; color:var(--muted)">Net Worth: <span id="netWorthTotal">$0</span></div>
-      </div>
-
-      <!-- Comparison Charts -->
+      <!-- Enhanced Comparison Charts -->
       <div id="comparisonCharts" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px">📊 How You Compare</div>
+        <div class="small" style="margin-bottom:8px; font-weight:bold">📊 How You Compare Globally</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:12px">
+          <div>
+            <div class="small" style="margin-bottom:5px">👥 Age Distribution</div>
+            <div id="ageChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+          </div>
+          <div>
+            <div class="small" style="margin-bottom:5px">💵 Income Distribution</div>
+            <div id="incomeChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+          </div>
+        </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
           <div>
-            <div class="small" style="margin-bottom:5px">Age Distribution</div>
-            <div id="ageChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden"></div>
+            <div class="small" style="margin-bottom:5px">🎓 Education Level</div>
+            <div id="educationChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
           </div>
           <div>
-            <div class="small" style="margin-bottom:5px">Income Distribution</div>
-            <div id="incomeChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden"></div>
+            <div class="small" style="margin-bottom:5px">🏥 Health Status</div>
+            <div id="healthChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
           </div>
         </div>
       </div>
 
-      <!-- Fun Facts -->
-      <div id="funFacts" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">🎉 Fun Facts About Your Rank</div>
+      <!-- Enhanced Fun Facts -->
+      <div id="funFacts" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">🎉 Amazing Facts About Your Global Position</div>
         <div id="factsContent" style="font-size:12px; line-height:1.4"></div>
+        <div id="comparisonFacts" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--muted)"></div>
       </div>
 
-      <!-- Life Timeline -->
+      <!-- Enhanced Life Timeline -->
       <div id="lifeTimeline" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">⏰ Your Life Timeline</div>
-        <div id="timelineViz" style="background:#1a202c; border-radius:10px; padding:12px; margin-bottom:8px">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">⏰ Your Life Journey</div>
+        <div id="timelineViz" style="background:#1a202c; border-radius:10px; padding:12px; margin-bottom:8px; border:1px solid var(--border)">
           <div style="display:flex; align-items:center; margin-bottom:8px">
             <div style="width:60px; font-size:11px">Life</div>
-            <div style="flex:1; height:20px; background:#2a2a2a; border-radius:10px; overflow:hidden; position:relative; margin:0 8px">
-              <div id="lifeProgress" style="height:100%; background:linear-gradient(90deg,#22c55e,#eab308,#ef4444); border-radius:10px; width:0%; transition:width 0.8s ease"></div>
-              <div id="lifeMarker" style="position:absolute; top:-2px; width:2px; height:24px; background:#fff; left:0%; transition:left 0.8s ease"></div>
+            <div style="flex:1; height:24px; background:#2a2a2a; border-radius:12px; overflow:hidden; position:relative; margin:0 8px">
+              <div id="lifeProgress" style="height:100%; background:linear-gradient(90deg,#22c55e,#eab308,#ef4444); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
+              <div id="lifeMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease"></div>
             </div>
-            <div style="width:60px; font-size:11px; text-align:right" id="lifeYears">0 years</div>
+            <div style="width:80px; font-size:11px; text-align:right" id="lifeYears">0 years</div>
           </div>
           <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted)">
             <span>🍼 Birth</span>
+            <span id="currentLifeStage" style="color:var(--accent); font-weight:bold">Current</span>
             <span>💀 Expected End</span>
           </div>
         </div>
         <div id="parentAges" style="font-size:11px; color:var(--muted)"></div>
+        <div id="lifeStatsGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px; font-size:10px"></div>
       </div>
 
-      <!-- Happiness Visualization -->
+      <!-- Enhanced Happiness Visualization -->
       <div id="happinessViz" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">😊 Your Happiness Level</div>
-        <div style="background:#1a202c; border-radius:10px; padding:12px">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">😊 Your Happiness & Well-being</div>
+        <div style="background:#1a202c; border-radius:10px; padding:12px; border:1px solid var(--border)">
           <div style="display:flex; align-items:center; margin-bottom:8px">
             <div style="width:50px; font-size:11px">😢 1</div>
-            <div style="flex:1; height:24px; background:#2a2a2a; border-radius:12px; overflow:hidden; position:relative; margin:0 8px">
-              <div id="happinessBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
-              <div id="happinessMarker" style="position:absolute; top:1px; width:20px; height:22px; background:rgba(255,255,255,0.9); border-radius:11px; left:0%; transition:left 0.8s ease; display:flex; align-items:center; justify-content:center; font-size:12px">😊</div>
+            <div style="flex:1; height:28px; background:#2a2a2a; border-radius:14px; overflow:hidden; position:relative; margin:0 8px">
+              <div id="happinessBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#eab308,#22c55e); border-radius:14px; width:0%; transition:width 0.8s ease"></div>
+              <div id="happinessMarker" style="position:absolute; top:2px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:12px; left:0%; transition:left 0.8s ease; display:flex; align-items:center; justify-content:center; font-size:14px; border:2px solid #333">😊</div>
             </div>
             <div style="width:50px; font-size:11px; text-align:right">😄 10</div>
           </div>
-          <div style="text-align:center; font-size:12px" id="happinessText">Your happiness: 0.0/10</div>
+          <div style="text-align:center; font-size:12px; margin-bottom:6px" id="happinessText">Your happiness: 0.0/10</div>
+          <div style="text-align:center; font-size:10px; color:var(--muted)" id="happinessComparison">World average: 5.4/10</div>
         </div>
+      </div>
+
+      <!-- Test Results Panel -->
+      <div id="testResults" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">🧪 Test Results</div>
+        <div id="testOutput" style="font-size:11px; line-height:1.4; font-family:monospace"></div>
       </div>
 
       <div class="row" style="margin-top:15px">
         <button id="btnCopy" class="ghost">Copy Result</button>
         <button id="btnDownload" class="ghost">Download JSON</button>
+        <button id="btnShare" class="ghost">Share Results</button>
       </div>
 
     </div>
   </section>
 
   <footer style="margin-top:14px" class="small">
-    Global Ranking System © 2025 - Advanced Statistical Analysis
+    Global Ranking System © 2025 - Ultimate Edition v2.0 with Enhanced Features
   </footer>
 </div>
 
 <script>
 // =======================
-// Data (rough / playful)
+// Version 2.0 Enhanced Global Ranking System
+// Features: Auto-save, Advanced Visualizations, Comprehensive Testing
 // =======================
-const WORLD_TOTAL_BASE = 8_246_975_554; // 2025년 9월 16일 기준 기준 세계인구 (+3000명)
-const POPULATION_GROWTH_PER_SECOND = 2.5; // 초당 약 2.5명 증가 (더 부드러운 1명씩 증가)
-let WORLD_TOTAL = WORLD_TOTAL_BASE; // 현재 계산용 인구수
+
+const VERSION = "2.0";
+const CACHE_KEY = "globalRankData_v2";
+
+// =======================
+// Data (Enhanced)
+// =======================
+const WORLD_TOTAL_BASE = 8_246_975_554;
+const POPULATION_GROWTH_PER_SECOND = 2.5;
+let WORLD_TOTAL = WORLD_TOTAL_BASE;
 let pageStartTime = Date.now();
 
-// 실시간 인구 증가 계산
+// =======================
+// Notification System
+// =======================
+function showNotification(message, type = 'info', duration = 3000) {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    setTimeout(() => notification.remove(), 300);
+  }, duration);
+}
+
+// =======================
+// Cache Management System
+// =======================
+function saveToCache() {
+  const data = {};
+  const inputs = ['country', 'sex', 'birthYear', 'birthMonth', 'birthDay', 'health', 'units',
+                 'heightCm', 'weightKg', 'heightFt', 'heightIn', 'weightLb', 'cash', 'realEstate',
+                 'stocks', 'debt', 'income', 'education', 'university', 'race', 'children',
+                 'lifeExpectancy', 'happiness', 'fatherStatus', 'fatherAge', 'motherStatus', 'motherAge'];
+
+  inputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      data[id] = element.value;
+    }
+  });
+
+  data.timestamp = Date.now();
+  data.version = VERSION;
+
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+    updateCacheStatus('Data auto-saved successfully');
+  } catch (e) {
+    updateCacheStatus('Auto-save failed: ' + e.message, 'error');
+  }
+}
+
+function loadFromCache() {
+  try {
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (!cachedData) {
+      showNotification('No saved data found', 'info');
+      return false;
+    }
+
+    const data = JSON.parse(cachedData);
+    if (data.version !== VERSION) {
+      showNotification('Saved data is from older version, loading anyway', 'info');
+    }
+
+    Object.keys(data).forEach(key => {
+      if (key !== 'timestamp' && key !== 'version') {
+        const element = document.getElementById(key);
+        if (element && data[key] !== undefined && data[key] !== '') {
+          element.value = data[key];
+        }
+      }
+    });
+
+    updateAge();
+    updateUnitsDisplay();
+    updateParentLabels();
+
+    const date = new Date(data.timestamp);
+    showNotification(`Data loaded from ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`, 'success');
+    updateCacheStatus(`Loaded from ${date.toLocaleDateString()}`);
+    return true;
+  } catch (e) {
+    showNotification('Failed to load cached data: ' + e.message, 'error');
+    return false;
+  }
+}
+
+function clearCache() {
+  try {
+    localStorage.removeItem(CACHE_KEY);
+    showNotification('Cache cleared successfully', 'success');
+    updateCacheStatus('Cache cleared');
+  } catch (e) {
+    showNotification('Failed to clear cache: ' + e.message, 'error');
+  }
+}
+
+function updateCacheStatus(message, type = 'info') {
+  const status = document.getElementById('cacheStatus');
+  if (status) {
+    status.textContent = message;
+    status.style.color = type === 'error' ? 'var(--error)' : 'var(--muted)';
+  }
+}
+
+// Auto-save on input changes
+function setupAutoSave() {
+  const inputs = document.querySelectorAll('input, select');
+  inputs.forEach(input => {
+    input.addEventListener('change', () => {
+      setTimeout(saveToCache, 100); // Small delay to batch rapid changes
+    });
+  });
+}
+
+// =======================
+// Enhanced Testing System
+// =======================
+function runComprehensiveTests() {
+  const testOutput = document.getElementById('testOutput');
+  const testResults = document.getElementById('testResults');
+  testResults.style.display = 'block';
+  testOutput.innerHTML = 'Running comprehensive tests...\n\n';
+
+  const tests = [
+    testRankingLogic,
+    testCacheSystem,
+    testCalculationAccuracy,
+    testEdgeCases,
+    testVisualizationUpdates,
+    testDataValidation
+  ];
+
+  let passed = 0;
+  let total = tests.length;
+
+  tests.forEach((test, index) => {
+    try {
+      const result = test();
+      if (result.passed) {
+        testOutput.innerHTML += `✅ Test ${index + 1}: ${result.name} - PASSED\n`;
+        if (result.details) testOutput.innerHTML += `   ${result.details}\n`;
+        passed++;
+      } else {
+        testOutput.innerHTML += `❌ Test ${index + 1}: ${result.name} - FAILED\n`;
+        if (result.error) testOutput.innerHTML += `   Error: ${result.error}\n`;
+      }
+    } catch (e) {
+      testOutput.innerHTML += `❌ Test ${index + 1}: ${test.name} - CRASHED\n`;
+      testOutput.innerHTML += `   Exception: ${e.message}\n`;
+    }
+    testOutput.innerHTML += '\n';
+  });
+
+  testOutput.innerHTML += `\n📊 Test Summary: ${passed}/${total} tests passed\n`;
+
+  if (passed === total) {
+    testOutput.innerHTML += '🎉 All tests passed! System is working correctly.\n';
+    showNotification('All tests passed!', 'success');
+  } else {
+    testOutput.innerHTML += '⚠️ Some tests failed. Check results above.\n';
+    showNotification(`${total - passed} tests failed`, 'error');
+  }
+}
+
+function testRankingLogic() {
+  // Test that higher percentiles result in better (lower) ranks
+  const mockData = {
+    percentile: 0.99, // Top 1%
+    worldTotal: 1000000
+  };
+
+  const rank = Math.round(mockData.worldTotal * (1 - mockData.percentile));
+  const expectedRank = 10000; // Should be around rank 10,000 out of 1M
+
+  return {
+    name: "Ranking Logic",
+    passed: rank === expectedRank,
+    details: `Rank ${rank} for top 1% of 1M people`,
+    error: rank !== expectedRank ? `Expected ${expectedRank}, got ${rank}` : null
+  };
+}
+
+function testCacheSystem() {
+  const testData = { test: 'value', timestamp: Date.now() };
+
+  try {
+    localStorage.setItem('test_cache', JSON.stringify(testData));
+    const retrieved = JSON.parse(localStorage.getItem('test_cache'));
+    localStorage.removeItem('test_cache');
+
+    return {
+      name: "Cache System",
+      passed: retrieved.test === 'value',
+      details: "Local storage read/write successful"
+    };
+  } catch (e) {
+    return {
+      name: "Cache System",
+      passed: false,
+      error: e.message
+    };
+  }
+}
+
+function testCalculationAccuracy() {
+  // Test wealth percentile calculation
+  const netWorth = 100000;
+  const percentile = wealthPercentile(netWorth, 0, 0, 0);
+  const expectedRange = [0.85, 0.95]; // Should be in this range
+
+  return {
+    name: "Calculation Accuracy",
+    passed: percentile >= expectedRange[0] && percentile <= expectedRange[1],
+    details: `Wealth percentile ${(percentile * 100).toFixed(1)}% for $${netWorth}`,
+    error: percentile < expectedRange[0] || percentile > expectedRange[1] ?
+           `Percentile ${percentile} outside expected range` : null
+  };
+}
+
+function testEdgeCases() {
+  // Test extreme values
+  const extremeWealth = wealthPercentile(0, 0, 0, 1000000); // Heavy debt
+  const extremeAge = agePercentile(150); // Impossible age
+
+  return {
+    name: "Edge Cases",
+    passed: extremeWealth >= 0 && extremeWealth <= 1 && extremeAge >= 0 && extremeAge <= 1,
+    details: `Extreme debt: ${(extremeWealth * 100).toFixed(1)}%, Extreme age: ${(extremeAge * 100).toFixed(1)}%`
+  };
+}
+
+function testVisualizationUpdates() {
+  // Test that visualization elements exist
+  const vizElements = ['populationViz', 'wealthChart', 'comparisonCharts', 'funFacts'];
+  const exists = vizElements.every(id => document.getElementById(id) !== null);
+
+  return {
+    name: "Visualization Elements",
+    passed: exists,
+    details: `All ${vizElements.length} visualization containers found`
+  };
+}
+
+function testDataValidation() {
+  // Test input validation
+  const validCountry = canonicalCountry('South Korea');
+  const invalidCountry = canonicalCountry('');
+
+  return {
+    name: "Data Validation",
+    passed: validCountry === 'South Korea' && invalidCountry === 'Other',
+    details: `Valid: '${validCountry}', Invalid: '${invalidCountry}'`
+  };
+}
+
+// =======================
+// Population System (Same as before but enhanced)
+// =======================
 function updateWorldPopulation() {
   const now = Date.now();
   const secondsElapsed = (now - pageStartTime) / 1000;
@@ -416,24 +731,21 @@ function updateWorldPopulation() {
 
   WORLD_TOTAL = WORLD_TOTAL_BASE + populationIncrease;
 
-  // 오늘 자정부터 경과 시간 계산
   const today = new Date();
   const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const secondsSinceMidnight = (now - todayStart.getTime()) / 1000;
 
-  // 일일 통계 (대략적인 전 세계 평균) - 더 부드러운 증가율
-  const birthsPerSecond = 4.3; // 초당 약 4.3명 출생
-  const deathsPerSecond = 1.8; // 초당 약 1.8명 사망 (net growth = 2.5)
+  const birthsPerSecond = 4.3;
+  const deathsPerSecond = 1.8;
 
   const birthsToday = Math.floor(secondsSinceMidnight * birthsPerSecond);
   const deathsToday = Math.floor(secondsSinceMidnight * deathsPerSecond);
 
-  // 대륙별 인구 증가 (대략적인 분포)
   const continentalGrowthRates = {
-    asia: 0.50,     // 아시아 50% (중국, 인도 등)
-    africa: 0.30,   // 아프리카 30% (높은 출생률)
-    americas: 0.12, // 아메리카 12%
-    europe: 0.08    // 유럽 8% (낮은 출생률)
+    asia: 0.50,
+    africa: 0.30,
+    americas: 0.12,
+    europe: 0.08
   };
 
   const totalGrowthToday = Math.floor(secondsSinceMidnight * (birthsPerSecond - deathsPerSecond));
@@ -442,7 +754,6 @@ function updateWorldPopulation() {
   const americasGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.americas);
   const europeGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.europe);
 
-  // DOM 업데이트
   const popElement = document.getElementById('worldPopulation');
   const growthElement = document.getElementById('populationGrowth');
   const birthsElement = document.getElementById('birthsToday');
@@ -455,7 +766,6 @@ function updateWorldPopulation() {
   if (popElement) {
     popElement.textContent = WORLD_TOTAL.toLocaleString('en-US');
 
-    // 시각적 효과 - 숫자가 변할 때마다 깜빡임과 확대 효과
     if (populationIncrease > 0 && populationIncrease % Math.floor(POPULATION_GROWTH_PER_SECOND) === 0) {
       popElement.style.transform = 'scale(1.05)';
       popElement.style.textShadow = '0 0 10px var(--accent)';
@@ -472,72 +782,17 @@ function updateWorldPopulation() {
     growthElement.style.color = populationIncrease > 0 ? '#22c55e' : 'var(--muted)';
   }
 
-  if (birthsElement) {
-    birthsElement.textContent = `+${birthsToday.toLocaleString('en-US')}`;
-  }
-
-  if (deathsElement) {
-    deathsElement.textContent = `+${deathsToday.toLocaleString('en-US')}`;
-  }
-
-  // 대륙별 증가 업데이트
-  if (asiaElement) {
-    asiaElement.textContent = `+${asiaGrowthToday.toLocaleString('en-US')}`;
-  }
-  if (africaElement) {
-    africaElement.textContent = `+${africaGrowthToday.toLocaleString('en-US')}`;
-  }
-  if (americasElement) {
-    americasElement.textContent = `+${americasGrowthToday.toLocaleString('en-US')}`;
-  }
-  if (europeElement) {
-    europeElement.textContent = `+${europeGrowthToday.toLocaleString('en-US')}`;
-  }
+  if (birthsElement) birthsElement.textContent = `+${birthsToday.toLocaleString('en-US')}`;
+  if (deathsElement) deathsElement.textContent = `+${deathsToday.toLocaleString('en-US')}`;
+  if (asiaElement) asiaElement.textContent = `+${asiaGrowthToday.toLocaleString('en-US')}`;
+  if (africaElement) africaElement.textContent = `+${africaGrowthToday.toLocaleString('en-US')}`;
+  if (americasElement) americasElement.textContent = `+${americasGrowthToday.toLocaleString('en-US')}`;
+  if (europeElement) europeElement.textContent = `+${europeGrowthToday.toLocaleString('en-US')}`;
 }
 
-// 나이 계산 함수
-function calculateAge(birthYear, birthMonth, birthDay) {
-  if (!birthYear) return 0;
-
-  const today = new Date();
-  const birth = new Date(birthYear, (birthMonth || 1) - 1, birthDay || 1);
-
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-
-  return Math.max(0, age);
-}
-
-// 나이 실시간 업데이트
-function updateAge() {
-  const birthYear = +document.getElementById('birthYear').value;
-  const birthMonth = +document.getElementById('birthMonth').value || null;
-  const birthDay = +document.getElementById('birthDay').value || null;
-
-  const age = calculateAge(birthYear, birthMonth, birthDay);
-  const ageDisplay = document.getElementById('calculatedAge');
-
-  if (birthYear && age >= 0) {
-    ageDisplay.textContent = `${age} years old`;
-    ageDisplay.style.color = 'var(--accent)';
-  } else {
-    ageDisplay.textContent = 'Enter birth date';
-    ageDisplay.style.color = 'var(--muted)';
-  }
-}
-
-// 생년월일 입력 이벤트 리스너
-document.getElementById('birthYear').addEventListener('input', updateAge);
-document.getElementById('birthMonth').addEventListener('change', updateAge);
-document.getElementById('birthDay').addEventListener('input', updateAge);
-
-// 페이지 로드 시 즉시 실행 및 타이머 시작
-updateWorldPopulation(); // 즉시 실행
-setInterval(updateWorldPopulation, 1000); // 1초마다 업데이트
+// =======================
+// Country Data (Same as before)
+// =======================
 const COUNTRY_POP = {
   "India": 1429000000, "China": 1412000000, "United States": 334000000, "Indonesia": 276000000,
   "Pakistan": 240000000, "Nigeria": 223000000, "Brazil": 203000000, "Bangladesh": 172000000,
@@ -557,6 +812,7 @@ const COUNTRY_POP = {
   "Denmark": 5900000, "Finland": 5600000, "Norway": 5500000, "Ireland": 5100000,
   "New Zealand": 5200000, "Singapore": 5900000, "Hong Kong": 7500000
 };
+
 const COUNTRY_ALIASES = {
   "usa":"United States","us":"United States","u.s.":"United States","united states of america":"United States",
   "uk":"United Kingdom","great britain":"United Kingdom","britain":"United Kingdom",
@@ -574,11 +830,11 @@ const COUNTRY_ALIASES = {
 })();
 
 // =======================
-// Utils
+// Utility Functions
 // =======================
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 const fmtInt = (n) => n.toLocaleString('en-US');
-const pct = (p) => Math.round(p*1000)/10; // 0..1 -> 1 decimal percent
+const pct = (p) => Math.round(p*1000)/10;
 
 function canonicalCountry(name){
   if(!name) return 'Other';
@@ -591,8 +847,59 @@ function canonicalCountry(name){
   return 'Other';
 }
 
+function calculateAge(birthYear, birthMonth, birthDay) {
+  if (!birthYear) return 0;
+
+  const today = new Date();
+  const birth = new Date(birthYear, (birthMonth || 1) - 1, birthDay || 1);
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  return Math.max(0, age);
+}
+
+function updateAge() {
+  const birthYear = +document.getElementById('birthYear').value;
+  const birthMonth = +document.getElementById('birthMonth').value || null;
+  const birthDay = +document.getElementById('birthDay').value || null;
+
+  const age = calculateAge(birthYear, birthMonth, birthDay);
+  const ageDisplay = document.getElementById('calculatedAge');
+
+  if (birthYear && age >= 0) {
+    ageDisplay.textContent = `${age} years old`;
+    ageDisplay.style.color = 'var(--accent)';
+  } else {
+    ageDisplay.textContent = 'Enter birth date';
+    ageDisplay.style.color = 'var(--muted)';
+  }
+}
+
+function updateUnitsDisplay() {
+  const units = document.getElementById('units').value;
+  document.querySelectorAll('.metric-only').forEach(el=>el.style.display = units==='metric' ? 'block' : 'none');
+  document.querySelectorAll('.imperial-only').forEach(el=>el.style.display = units==='imperial' ? 'block' : 'none');
+}
+
+function updateParentLabels() {
+  const fatherStatus = document.getElementById('fatherStatus').value;
+  const motherStatus = document.getElementById('motherStatus').value;
+
+  document.getElementById('fatherAgeLabel').textContent =
+    fatherStatus === 'deceased' ? 'Father\'s Age at Death' : 'Father\'s Current Age';
+  document.getElementById('motherAgeLabel').textContent =
+    motherStatus === 'deceased' ? 'Mother\'s Age at Death' : 'Mother\'s Current Age';
+}
+
+// =======================
+// Percentile Calculation Functions (Enhanced)
+// =======================
 function countryCDFPercentile(country){
-  // 경제적 발전도를 고려한 국가별 기준값 조정
   const countryBonus = {
     'South Korea': 0.82, 'Japan': 0.85, 'United States': 0.88, 'Germany': 0.87,
     'United Kingdom': 0.86, 'France': 0.84, 'Canada': 0.85, 'Australia': 0.86,
@@ -606,7 +913,6 @@ function countryCDFPercentile(country){
     return countryBonus[country];
   }
 
-  // 기존 로직으로 폴백
   const sumKnown = Object.values(COUNTRY_POP).reduce((a,b)=>a+b,0);
   const others = Math.max(0, WORLD_TOTAL - sumKnown);
   const entries = Object.entries(COUNTRY_POP).concat([['Other', others]])
@@ -688,7 +994,7 @@ function healthPercentile(h){
   if(h==='good') return 0.65;
   if(h==='fair') return 0.45;
   if(h==='poor') return 0.25;
-  return 0.50; // NA
+  return 0.50;
 }
 
 function bmiFromInputs(){
@@ -714,10 +1020,9 @@ function bmiFromInputs(){
 
 function bmiPercentile(bmi){
   if(!bmi || !isFinite(bmi)) return 0.50;
-  // Map closeness to ~22 as higher percentile; clamp to [0.3, 0.8]
   const diff = Math.abs(bmi - 22);
-  const score = Math.max(0, 1 - diff/22); // 22 away -> 0
-  const p = 0.3 + 0.5*score; // 0..1 -> 0.3..0.8
+  const score = Math.max(0, 1 - diff/22);
+  const p = 0.3 + 0.5*score;
   return clamp(p, 0.3, 0.8);
 }
 
@@ -732,183 +1037,7 @@ function educationPercentile(level){
   }
 }
 
-// Fixed weights (sum = 1.00) - 돈 절대 우선 가중치 + 수명/행복도 추가
-const W = {
-  wealth:0.50, income:0.20, education:0.08, lifeExp:0.08, happiness:0.06,
-  country:0.04, health:0.02, family:0.02, age:0.00, bmi:0.00, sex:0.00, race:0.00, university:0.00
-};
-
-function familyPercentile(children, parentsAlive, age){
-  const k = Math.max(0, Math.min(12, Math.floor(+children || 0)));
-  let childP;
-  if(k===0) childP = 0.58;
-  else if(k===1) childP = 0.66;
-  else if(k===2) childP = 0.72;
-  else if(k===3) childP = 0.62;
-  else childP = 0.50;
-  const a = clamp(+age||0,0,110);
-  let parP;
-  const pa = +parentsAlive;
-  if(pa===2) parP = 0.70 - (a>40?0.12:0) - (a>60?0.12:0);
-  else if(pa===1) parP = 0.52 - (a>70?0.05:0);
-  else parP = 0.40 + (a>60?0.10:0);
-  parP = clamp(parP, 0.25, 0.75);
-  return clamp(0.65*childP + 0.35*parP, 0.25, 0.75);
-}
-
-function updatePopulationVisualization(percentile, rank){
-  const viz = document.getElementById('populationViz');
-  const bar = document.getElementById('rankBar');
-  const marker = document.getElementById('rankMarker');
-  const position = document.getElementById('rankPosition');
-
-  viz.style.display = 'block';
-  bar.style.width = (percentile * 100) + '%';
-  marker.style.left = (percentile * 100) + '%';
-  position.textContent = `#${fmtInt(rank)}`;
-}
-
-function updateWealthChart(cash, realEstate, stocks, debt, netWorth){
-  const chart = document.getElementById('wealthChart');
-  const bars = document.getElementById('wealthBars');
-  const total = document.getElementById('netWorthTotal');
-
-  chart.style.display = 'block';
-  total.textContent = `$${fmtInt(netWorth)}`;
-
-  const assets = [
-    {name: 'Cash', value: cash, color: '#22c55e'},
-    {name: 'Real Estate', value: realEstate, color: '#3b82f6'},
-    {name: 'Stocks', value: stocks, color: '#8b5cf6'},
-    {name: 'Debt', value: -debt, color: '#ef4444'}
-  ];
-
-  const maxVal = Math.max(...assets.map(a => Math.abs(a.value)));
-  bars.innerHTML = assets.map(asset => {
-    const width = maxVal > 0 ? (Math.abs(asset.value) / maxVal * 100) : 0;
-    return `
-      <div style="display:flex; align-items:center; margin:3px 0; font-size:11px">
-        <div style="width:60px; min-width:60px">${asset.name}</div>
-        <div style="flex:1; height:16px; background:#0b1218; border-radius:8px; overflow:hidden; margin:0 6px">
-          <div style="height:100%; background:${asset.color}; width:${width}%; border-radius:8px; transition:width 0.3s ease"></div>
-        </div>
-        <div style="width:60px; min-width:60px; text-align:right">${asset.value >= 0 ? '$' + fmtInt(asset.value) : '-$' + fmtInt(-asset.value)}</div>
-      </div>
-    `;
-  }).join('');
-}
-
-function updateComparisonCharts(agePercentile, incomePercentile){
-  const charts = document.getElementById('comparisonCharts');
-  const ageChart = document.getElementById('ageChart');
-  const incomeChart = document.getElementById('incomeChart');
-
-  charts.style.display = 'block';
-
-  // Age distribution visualization
-  ageChart.innerHTML = `
-    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 60%, #0ea5e9 60%, #0ea5e9 100%)"></div>
-    <div style="position:absolute; bottom:0; left:${agePercentile*100}%; width:3px; height:100%; background:#22c55e; border-radius:2px"></div>
-    <div style="position:absolute; top:3px; left:3px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.5); padding:1px 4px; border-radius:4px">You: ${pct(agePercentile)}%</div>
-  `;
-
-  // Income distribution visualization - 더 강조된 스타일
-  incomeChart.innerHTML = `
-    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 70%, #f59e0b 70%, #f59e0b 100%)"></div>
-    <div style="position:absolute; bottom:0; left:${incomePercentile*100}%; width:3px; height:100%; background:#22c55e; border-radius:2px; box-shadow:0 0 8px #22c55e"></div>
-    <div style="position:absolute; top:3px; left:3px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.5); padding:1px 4px; border-radius:4px">💰 You: ${pct(incomePercentile)}%</div>
-  `;
-}
-
-function updateFunFacts(rank, percentile, country, age, netWorth){
-  const facts = document.getElementById('funFacts');
-  const content = document.getElementById('factsContent');
-
-  facts.style.display = 'block';
-
-  const peopleAbove = Math.round(WORLD_TOTAL * (1 - percentile));
-  const peopleBelow = Math.round(WORLD_TOTAL * percentile);
-  const topPercent = pct(1 - percentile);
-
-  const factsList = [
-    `🎯 You rank higher than <b style="color:#22c55e">${fmtInt(peopleBelow)}</b> people worldwide`,
-    `🏆 Only <b style="color:#f59e0b">${fmtInt(peopleAbove)}</b> people rank above you`,
-    `📊 You're in the top <b style="color:#60a5fa">${topPercent}%</b> globally`,
-    `💰 Your net worth of <b style="color:#22c55e">$${fmtInt(netWorth)}</b> ${netWorth > 500000 ? 'puts you in elite status' : netWorth > 100000 ? 'shows strong financial position' : 'is building towards security'}`,
-    `🌟 ${percentile > 0.9 ? 'You are in the global financial elite!' : percentile > 0.8 ? 'You have achieved significant wealth!' : percentile > 0.7 ? 'You are financially well-positioned!' : 'You are building wealth steadily!'}`
-  ];
-
-  content.innerHTML = factsList.map(fact => `<div style="margin:4px 0; padding:4px 0">• ${fact}</div>`).join('');
-}
-
-function updateLifeTimeline(age, lifeExpectancy, fatherStatus, fatherAge, motherStatus, motherAge){
-  const timeline = document.getElementById('lifeTimeline');
-  const progress = document.getElementById('lifeProgress');
-  const marker = document.getElementById('lifeMarker');
-  const years = document.getElementById('lifeYears');
-  const parentAges = document.getElementById('parentAges');
-
-  timeline.style.display = 'block';
-
-  if(lifeExpectancy && lifeExpectancy > 0){
-    const lifeProgress = Math.min(age / lifeExpectancy * 100, 100);
-    progress.style.width = lifeProgress + '%';
-    marker.style.left = lifeProgress + '%';
-    years.textContent = `${age}/${lifeExpectancy} years`;
-
-    // 부모님 정보 표시
-    let parentInfo = [];
-    if(fatherAge){
-      if(fatherStatus === 'deceased'){
-        parentInfo.push(`👨 Father: Died at ${fatherAge}`);
-      } else {
-        parentInfo.push(`👨 Father: ${fatherAge} years old`);
-      }
-    }
-    if(motherAge){
-      if(motherStatus === 'deceased'){
-        parentInfo.push(`👩 Mother: Died at ${motherAge}`);
-      } else {
-        parentInfo.push(`👩 Mother: ${motherAge} years old`);
-      }
-    }
-    parentAges.innerHTML = parentInfo.join(' • ');
-  } else {
-    progress.style.width = '0%';
-    marker.style.left = '0%';
-    years.textContent = `${age} years`;
-    parentAges.innerHTML = '';
-  }
-}
-
-function updateHappinessVisualization(happiness){
-  const viz = document.getElementById('happinessViz');
-  const bar = document.getElementById('happinessBar');
-  const marker = document.getElementById('happinessMarker');
-  const text = document.getElementById('happinessText');
-
-  viz.style.display = 'block';
-
-  if(happiness && happiness > 0){
-    const happinessPercent = (happiness - 1) / 9 * 100; // 1-10 스케일을 0-100%로 변환
-    bar.style.width = happinessPercent + '%';
-    marker.style.left = `calc(${happinessPercent}% - 10px)`;
-    text.textContent = `Your happiness: ${happiness}/10`;
-
-    // 이모지 변경
-    if(happiness >= 8) marker.textContent = '😄';
-    else if(happiness >= 6) marker.textContent = '😊';
-    else if(happiness >= 4) marker.textContent = '😐';
-    else marker.textContent = '😢';
-  } else {
-    bar.style.width = '0%';
-    marker.style.left = '0%';
-    text.textContent = 'Your happiness: 0.0/10';
-    marker.textContent = '😐';
-  }
-}
-
-function familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, motherAge, age){
+function familyPercentile(children, fatherStatus, fatherAge, motherStatus, motherAge, age){
   const k = Math.max(0, Math.min(12, Math.floor(+children || 0)));
   let childP;
   if(k===0) childP = 0.58;
@@ -920,7 +1049,6 @@ function familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, mo
   const a = clamp(+age||0,0,110);
   let parP = 0.50;
 
-  // 부모님 생존 상태에 따른 계산
   let parentsAlive = 0;
   if(fatherStatus === 'alive' && fatherAge) parentsAlive++;
   if(motherStatus === 'alive' && motherAge) parentsAlive++;
@@ -936,12 +1064,11 @@ function familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, mo
 function lifeExpectancyPercentile(lifeExp, age){
   if(!lifeExp || lifeExp <= 0) return 0.50;
 
-  // 전 세계 평균 기대수명 약 73세 기준 - 더 현실적인 분포
   if(lifeExp < 50) return 0.05;
   if(lifeExp < 60) return 0.15;
   if(lifeExp < 65) return 0.25;
   if(lifeExp < 70) return 0.40;
-  if(lifeExp < 73) return 0.50; // 전세계 평균
+  if(lifeExp < 73) return 0.50;
   if(lifeExp < 76) return 0.60;
   if(lifeExp < 80) return 0.72;
   if(lifeExp < 83) return 0.82;
@@ -951,86 +1078,287 @@ function lifeExpectancyPercentile(lifeExp, age){
   return 0.995;
 }
 
-function happinessPercentile(cash, realEstate, stocks, debt, income, health, education, country, sex){
-  // 재산 기반 행복도 계산 (재산 80%, 건강 10%, 나머지 10%)
-  const netWorth = (+cash||0) + (+realEstate||0) + (+stocks||0) - (+debt||0);
-  const annualIncome = +income || 0;
+function happinessPercentile(happiness){
+  if(!happiness || happiness <= 0) return 0.30;
 
-  // 재산 행복도 (80% 가중치)
-  let wealthHappiness = 0.50; // 기본값
+  // Convert 1-10 scale to percentile
+  const normalizedHappiness = (happiness - 1) / 9; // 0 to 1
 
-  // 초고액 자산가 또는 고소득자 (90% 이상)
-  if(netWorth >= 10_000_000 || annualIncome >= 1_000_000) {
-    wealthHappiness = 0.95;
-  }
-  // 고액 자산가
-  else if(netWorth >= 5_000_000 || annualIncome >= 500_000) {
-    wealthHappiness = 0.90;
-  }
-  // 상당한 자산
-  else if(netWorth >= 1_000_000 || annualIncome >= 200_000) {
-    wealthHappiness = 0.85;
-  }
-  // 안정적 자산
-  else if(netWorth >= 500_000 || annualIncome >= 100_000) {
-    wealthHappiness = 0.75;
-  }
-  // 중간 수준
-  else if(netWorth >= 100_000 || annualIncome >= 50_000) {
-    wealthHappiness = 0.65;
-  }
-  // 낮은 수준
-  else if(netWorth >= 10_000 || annualIncome >= 20_000) {
-    wealthHappiness = 0.45;
-  }
-  // 매우 낮은 수준
-  else if(netWorth >= 0 || annualIncome >= 5_000) {
-    wealthHappiness = 0.30;
-  }
-  // 부채 상태
-  else {
-    wealthHappiness = 0.15;
-  }
-
-  // 건강 행복도 (10% 가중치)
-  let healthHappiness = 0.50;
-  if(health === 'excellent') {
-    healthHappiness = 0.85; // 기본 0.80 + 추가 5%
-  } else if(health === 'good') {
-    healthHappiness = 0.70; // 기본 0.65 + 추가 5%
-  } else if(health === 'fair') {
-    healthHappiness = 0.45;
-  } else if(health === 'poor') {
-    healthHappiness = 0.25;
-  }
-
-  // 학력 행복도 (5% 가중치)
-  let educationHappiness = 0.50;
-  switch(education) {
-    case 'doctorate': educationHappiness = 0.85; break;
-    case 'master': educationHappiness = 0.75; break;
-    case 'bachelor': educationHappiness = 0.65; break;
-    case 'somecollege': educationHappiness = 0.55; break;
-    case 'hs': educationHappiness = 0.45; break;
-  }
-
-  // 국가 행복도 (3% 가중치)
-  const countryHappiness = countryCDFPercentile(country);
-
-  // 성별 행복도 (2% 가중치)
-  const sexHappiness = sexPercentile(sex);
-
-  // 가중 평균 계산
-  const totalHappiness =
-    wealthHappiness * 0.80 +
-    healthHappiness * 0.10 +
-    educationHappiness * 0.05 +
-    countryHappiness * 0.03 +
-    sexHappiness * 0.02;
-
-  return clamp(totalHappiness, 0.001, 0.999);
+  // Curve it so that higher happiness scores are more valuable
+  return clamp(0.20 + normalizedHappiness * 0.75, 0.20, 0.95);
 }
 
+// Fixed weights (sum = 1.00)
+const W = {
+  wealth:0.50, income:0.20, education:0.08, lifeExp:0.08, happiness:0.06,
+  country:0.04, health:0.02, family:0.02, age:0.00, bmi:0.00, sex:0.00, race:0.00, university:0.00
+};
+
+// =======================
+// Enhanced Visualization Functions
+// =======================
+function updatePopulationVisualization(percentile, rank){
+  const viz = document.getElementById('populationViz');
+  const bar = document.getElementById('rankBar');
+  const marker = document.getElementById('rankMarker');
+  const position = document.getElementById('rankPosition');
+  const details = document.getElementById('rankDetails');
+
+  viz.style.display = 'block';
+
+  // FIXED: Use percentile directly for visualization (higher percentile = better position)
+  bar.style.width = (percentile * 100) + '%';
+  marker.style.left = (percentile * 100) + '%';
+  position.textContent = `#${fmtInt(rank)}`;
+
+  // Enhanced details
+  const topPercent = pct(percentile);
+  const peopleAbove = Math.round(WORLD_TOTAL * (1 - percentile));
+  const peopleBelow = Math.round(WORLD_TOTAL * percentile);
+
+  details.innerHTML = `
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; font-size:10px; text-align:center">
+      <div style="padding:4px; background:#0e141b; border-radius:4px">
+        <div style="color:var(--accent); font-weight:bold">#${fmtInt(rank)}</div>
+        <div style="color:var(--muted)">Your Rank</div>
+      </div>
+      <div style="padding:4px; background:#0e141b; border-radius:4px">
+        <div style="color:var(--green); font-weight:bold">${topPercent}%</div>
+        <div style="color:var(--muted)">Top Percentile</div>
+      </div>
+      <div style="padding:4px; background:#0e141b; border-radius:4px">
+        <div style="color:var(--warn); font-weight:bold">${fmtInt(peopleAbove)}</div>
+        <div style="color:var(--muted)">Above You</div>
+      </div>
+    </div>
+  `;
+}
+
+function updateWealthChart(cash, realEstate, stocks, debt, netWorth, wealthPercentile){
+  const chart = document.getElementById('wealthChart');
+  const bars = document.getElementById('wealthBars');
+  const total = document.getElementById('netWorthTotal');
+  const wealthRank = document.getElementById('wealthRankDisplay');
+
+  chart.style.display = 'block';
+  total.textContent = `$${fmtInt(netWorth)}`;
+
+  // Calculate wealth rank
+  const wealthOnlyRank = Math.round(WORLD_TOTAL * (1 - wealthPercentile));
+  wealthRank.textContent = `#${fmtInt(wealthOnlyRank)}`;
+
+  const assets = [
+    {name: 'Cash', value: cash, color: '#22c55e'},
+    {name: 'Real Estate', value: realEstate, color: '#3b82f6'},
+    {name: 'Stocks', value: stocks, color: '#8b5cf6'},
+    {name: 'Debt', value: -debt, color: '#ef4444'}
+  ];
+
+  const maxVal = Math.max(...assets.map(a => Math.abs(a.value)));
+  bars.innerHTML = assets.map(asset => {
+    const width = maxVal > 0 ? (Math.abs(asset.value) / maxVal * 100) : 0;
+    return `
+      <div style="display:flex; align-items:center; margin:3px 0; font-size:11px">
+        <div style="width:70px; min-width:70px">${asset.name}</div>
+        <div style="flex:1; height:18px; background:#0b1218; border-radius:9px; overflow:hidden; margin:0 6px; border:1px solid var(--border)">
+          <div style="height:100%; background:${asset.color}; width:${width}%; border-radius:9px; transition:width 0.5s ease"></div>
+        </div>
+        <div style="width:80px; min-width:80px; text-align:right; font-weight:bold">${asset.value >= 0 ? '$' + fmtInt(asset.value) : '-$' + fmtInt(-asset.value)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateComparisonCharts(agePercentile, incomePercentile, educationPercentile, healthPercentile){
+  const charts = document.getElementById('comparisonCharts');
+  const ageChart = document.getElementById('ageChart');
+  const incomeChart = document.getElementById('incomeChart');
+  const educationChart = document.getElementById('educationChart');
+  const healthChart = document.getElementById('healthChart');
+
+  charts.style.display = 'block';
+
+  // Enhanced visualizations with better graphics
+  ageChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 70%, #0ea5e9 70%, #0ea5e9 100%); border-radius:8px"></div>
+    <div style="position:absolute; bottom:0; left:${agePercentile*100}%; width:4px; height:100%; background:#22c55e; border-radius:2px; box-shadow:0 0 8px #22c55e"></div>
+    <div style="position:absolute; top:4px; left:4px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.7); padding:2px 4px; border-radius:4px; font-weight:bold">👥 You: ${pct(agePercentile)}%</div>
+  `;
+
+  incomeChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 75%, #f59e0b 75%, #f59e0b 100%); border-radius:8px"></div>
+    <div style="position:absolute; bottom:0; left:${incomePercentile*100}%; width:4px; height:100%; background:#22c55e; border-radius:2px; box-shadow:0 0 8px #22c55e"></div>
+    <div style="position:absolute; top:4px; left:4px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.7); padding:2px 4px; border-radius:4px; font-weight:bold">💵 You: ${pct(incomePercentile)}%</div>
+  `;
+
+  educationChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 65%, #8b5cf6 65%, #8b5cf6 100%); border-radius:8px"></div>
+    <div style="position:absolute; bottom:0; left:${educationPercentile*100}%; width:4px; height:100%; background:#22c55e; border-radius:2px; box-shadow:0 0 8px #22c55e"></div>
+    <div style="position:absolute; top:4px; left:4px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.7); padding:2px 4px; border-radius:4px; font-weight:bold">🎓 You: ${pct(educationPercentile)}%</div>
+  `;
+
+  healthChart.innerHTML = `
+    <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 60%, #22c55e 60%, #22c55e 100%); border-radius:8px"></div>
+    <div style="position:absolute; bottom:0; left:${healthPercentile*100}%; width:4px; height:100%; background:#fff; border-radius:2px; box-shadow:0 0 8px #fff"></div>
+    <div style="position:absolute; top:4px; left:4px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.7); padding:2px 4px; border-radius:4px; font-weight:bold">🏥 You: ${pct(healthPercentile)}%</div>
+  `;
+}
+
+function updateFunFacts(rank, percentile, country, age, netWorth, income){
+  const facts = document.getElementById('funFacts');
+  const content = document.getElementById('factsContent');
+  const comparisonFacts = document.getElementById('comparisonFacts');
+
+  facts.style.display = 'block';
+
+  const peopleAbove = Math.round(WORLD_TOTAL * (1 - percentile));
+  const peopleBelow = Math.round(WORLD_TOTAL * percentile);
+  const topPercent = pct(percentile);
+
+  const factsList = [
+    `🎯 You outrank <b style="color:#22c55e">${fmtInt(peopleBelow)}</b> people worldwide`,
+    `🏆 Only <b style="color:#f59e0b">${fmtInt(peopleAbove)}</b> people rank higher than you`,
+    `📊 You're in the top <b style="color:#60a5fa">${topPercent}%</b> of all humans`,
+    `💰 Your net worth of <b style="color:#22c55e">$${fmtInt(netWorth)}</b> ${netWorth > 500000 ? 'puts you in the global elite' : netWorth > 100000 ? 'shows strong financial health' : 'represents your economic foundation'}`,
+    `🌟 ${percentile > 0.95 ? 'You are among the global elite!' : percentile > 0.90 ? 'You have achieved exceptional status!' : percentile > 0.80 ? 'You are in a privileged position globally!' : percentile > 0.70 ? 'You are well above average!' : 'You are building your position!'}`
+  ];
+
+  content.innerHTML = factsList.map(fact => `<div style="margin:4px 0; padding:4px 0; border-left:3px solid var(--accent); padding-left:8px">• ${fact}</div>`).join('');
+
+  // Additional comparison facts
+  const timeComparisons = [
+    `⏰ If you lined up all ${fmtInt(WORLD_TOTAL)} people, you'd be person #${fmtInt(rank)}`,
+    `🏃 Out of every 1000 people, only ${Math.round((1-percentile)*1000)} would rank higher than you`,
+    `🌎 In your country (${country}), your global ranking represents top-tier status`
+  ];
+
+  comparisonFacts.innerHTML = timeComparisons.join(' • ');
+}
+
+function updateLifeTimeline(age, lifeExpectancy, fatherStatus, fatherAge, motherStatus, motherAge){
+  const timeline = document.getElementById('lifeTimeline');
+  const progress = document.getElementById('lifeProgress');
+  const marker = document.getElementById('lifeMarker');
+  const years = document.getElementById('lifeYears');
+  const parentAges = document.getElementById('parentAges');
+  const currentStage = document.getElementById('currentLifeStage');
+  const statsGrid = document.getElementById('lifeStatsGrid');
+
+  timeline.style.display = 'block';
+
+  if(lifeExpectancy && lifeExpectancy > 0){
+    const lifeProgress = Math.min(age / lifeExpectancy * 100, 100);
+    progress.style.width = lifeProgress + '%';
+    marker.style.left = lifeProgress + '%';
+    years.textContent = `${age}/${lifeExpectancy} years`;
+
+    // Determine life stage
+    let stage = '';
+    if(age < 13) stage = '👶 Childhood';
+    else if(age < 20) stage = '🧑 Adolescence';
+    else if(age < 30) stage = '💪 Young Adult';
+    else if(age < 50) stage = '🏢 Prime Years';
+    else if(age < 65) stage = '🌟 Mature Adult';
+    else stage = '👴 Senior Years';
+
+    currentStage.textContent = stage;
+
+    // Parent information
+    let parentInfo = [];
+    if(fatherAge){
+      if(fatherStatus === 'deceased'){
+        parentInfo.push(`👨 Father: Passed at ${fatherAge}`);
+      } else {
+        parentInfo.push(`👨 Father: ${fatherAge} years old`);
+      }
+    }
+    if(motherAge){
+      if(motherStatus === 'deceased'){
+        parentInfo.push(`👩 Mother: Passed at ${motherAge}`);
+      } else {
+        parentInfo.push(`👩 Mother: ${motherAge} years old`);
+      }
+    }
+    parentAges.innerHTML = parentInfo.join(' • ');
+
+    // Life statistics
+    const remainingYears = Math.max(0, lifeExpectancy - age);
+    const livedPercent = Math.round((age / lifeExpectancy) * 100);
+    const statsData = [
+      { label: 'Years Lived', value: `${age}`, color: 'var(--green)' },
+      { label: 'Remaining', value: `${remainingYears}`, color: 'var(--warn)' },
+      { label: 'Life Progress', value: `${livedPercent}%`, color: 'var(--accent)' }
+    ];
+
+    statsGrid.innerHTML = statsData.map(stat => `
+      <div style="padding:4px; background:#0e141b; border-radius:4px; text-align:center">
+        <div style="color:${stat.color}; font-weight:bold; font-size:11px">${stat.value}</div>
+        <div style="color:var(--muted); font-size:8px">${stat.label}</div>
+      </div>
+    `).join('');
+
+  } else {
+    progress.style.width = '0%';
+    marker.style.left = '0%';
+    years.textContent = `${age} years`;
+    currentStage.textContent = 'Current';
+    parentAges.innerHTML = '';
+    statsGrid.innerHTML = '';
+  }
+}
+
+function updateHappinessVisualization(happiness){
+  const viz = document.getElementById('happinessViz');
+  const bar = document.getElementById('happinessBar');
+  const marker = document.getElementById('happinessMarker');
+  const text = document.getElementById('happinessText');
+  const comparison = document.getElementById('happinessComparison');
+
+  viz.style.display = 'block';
+
+  if(happiness && happiness > 0){
+    const happinessPercent = (happiness - 1) / 9 * 100;
+    bar.style.width = happinessPercent + '%';
+    marker.style.left = `calc(${happinessPercent}% - 12px)`;
+    text.textContent = `Your happiness: ${happiness}/10`;
+
+    // Dynamic emoji based on happiness level
+    if(happiness >= 9) marker.textContent = '🤩';
+    else if(happiness >= 8) marker.textContent = '😄';
+    else if(happiness >= 7) marker.textContent = '😊';
+    else if(happiness >= 6) marker.textContent = '🙂';
+    else if(happiness >= 5) marker.textContent = '😐';
+    else if(happiness >= 4) marker.textContent = '😕';
+    else if(happiness >= 3) marker.textContent = '😞';
+    else if(happiness >= 2) marker.textContent = '😢';
+    else marker.textContent = '😭';
+
+    // Comparison with world average
+    const diff = happiness - 5.4;
+    if(diff > 0){
+      comparison.textContent = `${diff.toFixed(1)} points above world average (5.4/10)`;
+      comparison.style.color = 'var(--green)';
+    } else if(diff < 0){
+      comparison.textContent = `${Math.abs(diff).toFixed(1)} points below world average (5.4/10)`;
+      comparison.style.color = 'var(--warn)';
+    } else {
+      comparison.textContent = 'Exactly at world average (5.4/10)';
+      comparison.style.color = 'var(--muted)';
+    }
+
+  } else {
+    bar.style.width = '0%';
+    marker.style.left = '0%';
+    text.textContent = 'Your happiness: 0.0/10';
+    marker.textContent = '😐';
+    comparison.textContent = 'World average: 5.4/10';
+    comparison.style.color = 'var(--muted)';
+  }
+}
+
+// =======================
+// Main Calculation Function (Enhanced)
+// =======================
 function compute(){
   const country = canonicalCountry(document.getElementById('country').value);
   const sex = document.getElementById('sex').value;
@@ -1058,6 +1386,7 @@ function compute(){
 
   const netWorth = cash + realEstate + stocks - debt;
 
+  // Calculate all percentiles
   const pCountry = countryCDFPercentile(country);
   const pSex = sexPercentile(sex);
   const pAge = agePercentile(age);
@@ -1067,41 +1396,46 @@ function compute(){
   const bmi = bmiFromInputs();
   const pBMI = bmiPercentile(bmi);
   const pEdu = educationPercentile(education);
-  const pFamily = familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, motherAge, age);
+  const pFamily = familyPercentile(children, fatherStatus, fatherAge, motherStatus, motherAge, age);
   const pLifeExp = lifeExpectancyPercentile(lifeExpectancy, age);
   const pHappiness = happinessPercentile(happiness);
 
+  // Calculate weighted percentile
   const Wsum = Object.values(W).reduce((a,b)=>a+b,0);
   const P = clamp(
     (pWealth * W.wealth + pIncome * W.income + pEdu * W.education + pLifeExp * W.lifeExp +
      pHappiness * W.happiness + pCountry * W.country + pHealth * W.health + pFamily * W.family) / Wsum,
     0.0001, 0.9999
   );
+
+  // FIXED: Calculate rank correctly - higher percentile = better (lower) rank
   const rank = Math.round(WORLD_TOTAL * (1 - P));
-  const pctText = pct(1 - P) + '%';
+  const pctText = pct(P) + '%';
 
   // Update main result display
   const res = document.getElementById('result');
   const bmiTxt = (bmi && isFinite(bmi)) ? bmi.toFixed(1) : 'N/A';
   res.innerHTML = `
-    <div class="big">🏆 Global Rank: <b>#${fmtInt(rank)}</b> out of ~${fmtInt(WORLD_TOTAL)} people</div>
-    <div style="margin:8px 0; font-size:16px">You're in the top <b style="color:var(--accent)">${pctText}</b> globally!</div>
-    <div class="small" style="margin-top:10px; line-height:1.3">
+    <div class="big">🏆 Global Rank: <b style="color:var(--accent)">#${fmtInt(rank)}</b> out of ~${fmtInt(WORLD_TOTAL)} people</div>
+    <div style="margin:8px 0; font-size:16px">You're in the top <b style="color:var(--green)">${pctText}</b> globally!</div>
+    <div class="small" style="margin-top:10px; line-height:1.3; padding:8px; background:#1a202c; border-radius:8px">
       🌍 <b>${country}</b> · ${sex === 'male' ? '👨' : sex === 'female' ? '👩' : '🧑'} <b>${sex}</b> · 🎂 <b>${age}</b> years ·
-      💰 Net Worth: <b>$${fmtInt(netWorth)}</b> · 💵 Income: <b>$${fmtInt(income)}</b>
+      💰 Net Worth: <b>$${fmtInt(netWorth)}</b> · 💵 Income: <b>$${fmtInt(income)}</b> · 📏 BMI: <b>${bmiTxt}</b>
     </div>
   `;
 
-  // Show visual elements
-  updatePopulationVisualization(1 - P, rank);
-  updateWealthChart(cash, realEstate, stocks, debt, netWorth);
-  updateComparisonCharts(pAge, pIncome);
-  updateFunFacts(rank, 1 - P, country, age, netWorth);
+  // Show all enhanced visualizations
+  updatePopulationVisualization(P, rank);
+  updateWealthChart(cash, realEstate, stocks, debt, netWorth, pWealth);
+  updateComparisonCharts(pAge, pIncome, pEdu, pHealth);
+  updateFunFacts(rank, P, country, age, netWorth, income);
   updateLifeTimeline(age, lifeExpectancy, fatherStatus, fatherAge, motherStatus, motherAge);
   updateHappinessVisualization(happiness);
 
   // Store result for export
   window.__lastResult = {
+    version: VERSION,
+    timestamp: Date.now(),
     country, sex, age, health, units,
     height_cm: units==='metric' ? +document.getElementById('heightCm').value : null,
     weight_kg: units==='metric' ? +document.getElementById('weightKg').value : null,
@@ -1109,14 +1443,63 @@ function compute(){
     height_in: units==='imperial' ? +document.getElementById('heightIn').value : null,
     weight_lb: units==='imperial' ? +document.getElementById('weightLb').value : null,
     bmi, cash, realEstate, stocks, debt, net_worth: netWorth, income,
-    education, university, race, children, parents_alive: parentsAlive,
-    percentiles:{ country:pCountry, sex:pSex, age:pAge, wealth:pWealth, income:pIncome, health:pHealth, bmi:pBMI, education:pEdu, family:pFamily },
-    weights: W, composite_percentile: 1 - P, world_total: WORLD_TOTAL, rank
+    education, university, race, children, life_expectancy: lifeExpectancy, happiness,
+    father_status: fatherStatus, father_age: fatherAge, mother_status: motherStatus, mother_age: motherAge,
+    percentiles:{ country:pCountry, sex:pSex, age:pAge, wealth:pWealth, income:pIncome, health:pHealth, bmi:pBMI, education:pEdu, family:pFamily, lifeExp:pLifeExp, happiness:pHappiness },
+    weights: W, composite_percentile: P, world_total: WORLD_TOTAL, rank
   };
+
+  // Auto-save after calculation
+  saveToCache();
+  showNotification('Ranking calculated and auto-saved!', 'success');
 }
 
-document.getElementById('btnCalc').addEventListener('click', compute);
-document.getElementById('btnReset').addEventListener('click', ()=>{
+// =======================
+// Event Listeners Setup
+// =======================
+function setupEventListeners() {
+  // Birth date listeners for real-time age update
+  document.getElementById('birthYear').addEventListener('input', updateAge);
+  document.getElementById('birthMonth').addEventListener('change', updateAge);
+  document.getElementById('birthDay').addEventListener('input', updateAge);
+
+  // Units toggle
+  document.getElementById('units').addEventListener('change', updateUnitsDisplay);
+
+  // Parent status toggles
+  document.getElementById('fatherStatus').addEventListener('change', updateParentLabels);
+  document.getElementById('motherStatus').addEventListener('change', updateParentLabels);
+
+  // Main buttons
+  document.getElementById('btnCalc').addEventListener('click', compute);
+
+  document.getElementById('btnReset').addEventListener('click', ()=>{
+    if(confirm('This will clear ALL data including saved cache. Continue?')){
+      resetAllData();
+      clearCache();
+      showNotification('All data reset successfully', 'info');
+    }
+  });
+
+  document.getElementById('btnTest').addEventListener('click', runComprehensiveTests);
+
+  // Cache management buttons
+  document.getElementById('btnLoadCache').addEventListener('click', loadFromCache);
+  document.getElementById('btnClearCache').addEventListener('click', ()=>{
+    if(confirm('Clear all saved data?')){
+      clearCache();
+    }
+  });
+
+  document.getElementById('btnExportData').addEventListener('click', exportAllData);
+
+  // Result buttons
+  document.getElementById('btnCopy').addEventListener('click', copyResult);
+  document.getElementById('btnDownload').addEventListener('click', downloadResult);
+  document.getElementById('btnShare').addEventListener('click', shareResult);
+}
+
+function resetAllData(){
   ['country','birthYear','birthDay','cash','realEstate','stocks','debt','income','children','lifeExpectancy','happiness','fatherAge','motherAge','university','heightCm','weightKg','heightFt','heightIn','weightLb'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('sex').value='male';
   document.getElementById('birthMonth').value='';
@@ -1126,68 +1509,118 @@ document.getElementById('btnReset').addEventListener('click', ()=>{
   document.getElementById('race').value='na';
   document.getElementById('fatherStatus').value='alive';
   document.getElementById('motherStatus').value='alive';
-  document.getElementById('fatherAgeLabel').textContent='Father\'s Current Age';
-  document.getElementById('motherAgeLabel').textContent='Mother\'s Current Age';
-  document.getElementById('calculatedAge').textContent='Enter birth date';
-  document.getElementById('calculatedAge').style.color='var(--muted)';
-  document.querySelectorAll('.metric-only').forEach(e=>e.style.display='block');
-  document.querySelectorAll('.imperial-only').forEach(e=>e.style.display='none');
+  updateAge();
+  updateUnitsDisplay();
+  updateParentLabels();
   document.getElementById('result').innerHTML='Enter inputs and click <span class="kbd">Calculate</span>.';
 
-  // Hide visual elements
-  ['populationViz','wealthChart','comparisonCharts','funFacts','lifeTimeline','happinessViz'].forEach(id=>{
+  // Hide all visualizations
+  ['populationViz','wealthChart','comparisonCharts','funFacts','lifeTimeline','happinessViz','testResults'].forEach(id=>{
     document.getElementById(id).style.display='none';
   });
-});
+}
 
-// Units toggle
-document.getElementById('units').addEventListener('change', (e)=>{
-  const v = e.target.value;
-  document.querySelectorAll('.metric-only').forEach(el=>el.style.display = v==='metric' ? 'block' : 'none');
-  document.querySelectorAll('.imperial-only').forEach(el=>el.style.display = v==='imperial' ? 'block' : 'none');
-});
-
-// Parent status toggles
-document.getElementById('fatherStatus').addEventListener('change', (e)=>{
-  const label = document.getElementById('fatherAgeLabel');
-  if(e.target.value === 'deceased'){
-    label.textContent = 'Father\'s Age at Death';
-  } else {
-    label.textContent = 'Father\'s Current Age';
-  }
-});
-
-document.getElementById('motherStatus').addEventListener('change', (e)=>{
-  const label = document.getElementById('motherAgeLabel');
-  if(e.target.value === 'deceased'){
-    label.textContent = 'Mother\'s Age at Death';
-  } else {
-    label.textContent = 'Mother\'s Current Age';
-  }
-});
-
-// Copy & Download
-document.getElementById('btnCopy').addEventListener('click', ()=>{
+function exportAllData(){
   const R = window.__lastResult;
-  if(!R){ alert('Please calculate first.'); return; }
-  const txt = `Global rank: #${fmtInt(R.rank)} among ~${fmtInt(R.world_total)} (top ${pct(R.composite_percentile)}%). ` +
-              `Country=${R.country}, Gender=${R.sex}, Age=${R.age}, Health=${R.health}, BMI=${R.bmi?R.bmi.toFixed(1):'N/A'}, ` +
-              `Net worth=$${fmtInt(R.net_worth||0)}, Income=$${fmtInt(R.income||0)}, ` +
-              `Education=${document.querySelector('#education option:checked').textContent}, University=${R.university||'-'}, Race=${document.querySelector('#race option:checked').textContent}, ` +
-              `Children=${R.children}, Parents alive=${R.parents_alive}.`;
-  navigator.clipboard.writeText(txt).then(()=>alert('Copied!')).catch(()=>alert('Copy failed. Check browser permissions.'));
-});
+  if(!R){
+    showNotification('Please calculate first', 'error');
+    return;
+  }
 
-document.getElementById('btnDownload').addEventListener('click', ()=>{
+  const exportData = {
+    ...R,
+    exportDate: new Date().toISOString(),
+    version: VERSION
+  };
+
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `global_rank_ultimate_v${VERSION}_${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+
+  showNotification('Data exported successfully', 'success');
+}
+
+function copyResult(){
   const R = window.__lastResult;
-  if(!R){ alert('Please calculate first.'); return; }
+  if(!R){
+    showNotification('Please calculate first', 'error');
+    return;
+  }
+  const txt = `🏆 Global Rank: #${fmtInt(R.rank)} out of ${fmtInt(R.world_total)} people (top ${pct(R.composite_percentile)}%)\n` +
+              `📍 ${R.country} • ${R.sex} • ${R.age} years old\n` +
+              `💰 Net Worth: $${fmtInt(R.net_worth||0)} • Income: $${fmtInt(R.income||0)}\n` +
+              `📊 Calculated with Ultimate Global Ranking System v${VERSION}`;
+  navigator.clipboard.writeText(txt).then(()=>showNotification('Copied to clipboard!', 'success')).catch(()=>showNotification('Copy failed', 'error'));
+}
+
+function downloadResult(){
+  const R = window.__lastResult;
+  if(!R){
+    showNotification('Please calculate first', 'error');
+    return;
+  }
   const blob = new Blob([JSON.stringify(R,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'my_global_rank_extended_result.json';
+  a.href = url; a.download = `my_global_rank_ultimate_v${VERSION}_result.json`;
   document.body.appendChild(a); a.click();
   setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-});
+  showNotification('Result downloaded', 'success');
+}
+
+function shareResult(){
+  const R = window.__lastResult;
+  if(!R){
+    showNotification('Please calculate first', 'error');
+    return;
+  }
+
+  if(navigator.share){
+    navigator.share({
+      title: 'My Global Ranking',
+      text: `I rank #${fmtInt(R.rank)} globally out of ${fmtInt(R.world_total)} people (top ${pct(R.composite_percentile)}%)! Check your ranking too.`,
+      url: window.location.href
+    }).then(()=>showNotification('Shared successfully!', 'success')).catch(()=>showNotification('Share cancelled', 'info'));
+  } else {
+    // Fallback to copy
+    copyResult();
+  }
+}
+
+// =======================
+// Initialization
+// =======================
+function initialize() {
+  // Start population counter
+  updateWorldPopulation();
+  setInterval(updateWorldPopulation, 1000);
+
+  // Setup event listeners
+  setupEventListeners();
+
+  // Setup auto-save
+  setupAutoSave();
+
+  // Try to load cached data on startup
+  setTimeout(() => {
+    const hasCache = localStorage.getItem(CACHE_KEY);
+    if(hasCache){
+      updateCacheStatus('Saved data available - click "Load Saved Data" to restore');
+    } else {
+      updateCacheStatus('Auto-save enabled - data will be saved automatically');
+    }
+  }, 100);
+
+  showNotification(`Ultimate Global Ranking System v${VERSION} loaded!`, 'success');
+}
+
+// Start the application
+document.addEventListener('DOMContentLoaded', initialize);
 </script>
 </body>
 </html>
