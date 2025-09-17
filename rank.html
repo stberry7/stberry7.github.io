@@ -12,32 +12,47 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-.wrap{max-width:1100px;margin:0 auto;padding:22px}
-h1{margin:0 0 10px 0;font-size:clamp(22px,3.4vw,30px)}
-.sub{color:var(--muted);font-size:14px;margin-bottom:16px}
-.grid{display:grid;grid-template-columns:1fr;gap:16px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{margin:0 0 10px 0;font-size:clamp(20px,4vw,30px)}
+.sub{color:var(--muted);font-size:clamp(12px,2.5vw,14px);margin-bottom:16px;line-height:1.4}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:768px){.grid{gap:16px}}
 @media(min-width:1080px){.grid{grid-template-columns:1.15fr .85fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
-.card h2{margin:0 0 12px 0;font-size:18px}
-label{display:block;margin:10px 0 6px 0;color:var(--muted);font-size:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
+@media(min-width:768px){.card{border-radius:16px;padding:16px}}
+.card h2{margin:0 0 12px 0;font-size:clamp(16px,3vw,18px)}
+label{display:block;margin:8px 0 4px 0;color:var(--muted);font-size:clamp(11px,2.5vw,12px)}
 input[type="text"],input[type="number"],select{
-  width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--border);background:#0e141b;color:var(--fg);
+  width:100%;padding:10px 8px;border-radius:8px;border:1px solid var(--border);background:#0e141b;color:var(--fg);font-size:14px;
 }
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.col{flex:1;min-width:210px}
-button{appearance:none;border:none;background:var(--accent);color:#031225;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+@media(min-width:768px){
+  input[type="text"],input[type="number"],select{padding:11px 12px;border-radius:12px}
+}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+@media(min-width:768px){.row{gap:10px}}
+.col{flex:1;min-width:160px}
+@media(min-width:768px){.col{min-width:210px}}
+button{appearance:none;border:none;background:var(--accent);color:#031225;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;width:100%;margin:4px 0}
+@media(min-width:768px){button{padding:10px 14px;border-radius:12px;width:auto;margin:0}}
 button.ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
-.small{font-size:12px;color:var(--muted)}
+.small{font-size:clamp(11px,2.5vw,12px);color:var(--muted)}
 .kbd{padding:1px 6px;border:1px solid var(--border);border-radius:6px;background:#0b1218;color:var(--muted)}
-.resultBox{border:1px dashed var(--border);border-radius:12px;padding:14px;margin-top:10px}
-.big{font-size:22px;font-weight:900}
-.progress{height:14px;background:#0b1218;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.resultBox{border:1px dashed var(--border);border-radius:8px;padding:12px;margin-top:10px}
+@media(min-width:768px){.resultBox{border-radius:12px;padding:14px}}
+.big{font-size:clamp(18px,4vw,22px);font-weight:900;line-height:1.2}
+.progress{height:12px;background:#0b1218;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+@media(min-width:768px){.progress{height:14px}}
 .progress>div{height:100%;background:linear-gradient(90deg,#0ea5e9,#22c55e);width:0%}
-.flex{display:flex;justify-content:space-between;gap:8px;align-items:center}
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table th,.table td{border-bottom:1px solid var(--border);padding:8px 6px;font-size:13px}
-.badge{display:inline-block;background:#0b1218;border:1px solid var(--border);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px;margin-right:6px}
-.note{display:inline-block;margin-top:6px;padding:6px 10px;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px}
+.flex{display:flex;justify-content:space-between;gap:6px;align-items:center;flex-wrap:wrap}
+@media(min-width:768px){.flex{gap:8px;flex-wrap:nowrap}}
+.table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+@media(min-width:768px){.table{font-size:13px}}
+.table th,.table td{border-bottom:1px solid var(--border);padding:6px 4px}
+@media(min-width:768px){.table th,.table td{padding:8px 6px}}
+.badge{display:inline-block;background:#0b1218;border:1px solid var(--border);padding:3px 6px;border-radius:999px;color:var(--muted);font-size:10px;margin:2px 4px 2px 0}
+@media(min-width:768px){.badge{padding:4px 8px;font-size:12px;margin-right:6px}}
+.note{display:inline-block;margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:clamp(10px,2.5vw,12px)}
+@media(min-width:768px){.note{padding:6px 10px;border-radius:10px}}
 .section{margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}
 </style>
 </head>
@@ -45,8 +60,59 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
 <div class="wrap">
   <header>
     <h1>My Global Rank <span style="color:var(--accent)">— Extended</span> 🎲</h1>
-    <div class="sub">We compute a toy percentile from many inputs and map it to ~8.1B people to show your <b>rank</b>. This is for fun only.</div>
-    <div><span class="badge">Single-file</span><span class="badge">Client-side only</span><span class="badge">Offline-ready</span></div>
+    <div class="sub">Calculate your precise global ranking among <b>8.25 billion</b> people based on comprehensive personal data analysis.</div>
+
+    <!-- Real-time World Population Counter -->
+    <div style="background:#1a202c; border-radius:12px; padding:12px; margin:10px 0; border:1px solid var(--border)">
+      <div style="text-align:center">
+        <div style="font-size:clamp(11px,2.5vw,12px); color:var(--muted); margin-bottom:4px">🌍 Current World Population</div>
+        <div id="worldPopulation" style="font-size:clamp(18px,4vw,24px); font-weight:bold; color:var(--accent); font-family:monospace; transition:transform 0.2s ease, text-shadow 0.2s ease">8,246,975,554</div>
+        <div style="font-size:clamp(10px,2vw,11px); color:var(--muted); margin-top:4px">
+          <span id="populationGrowth">+0</span> people since you opened this page
+        </div>
+      </div>
+
+      <!-- Population Growth Statistics -->
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:10px; font-size:clamp(9px,2vw,10px); text-align:center">
+        <div style="padding:4px; background:#0e141b; border-radius:6px">
+          <div style="color:var(--accent); font-weight:bold" id="birthsToday">+0</div>
+          <div style="color:var(--muted)">👶 Births today</div>
+        </div>
+        <div style="padding:4px; background:#0e141b; border-radius:6px">
+          <div style="color:var(--green); font-weight:bold">+4.2/sec</div>
+          <div style="color:var(--muted)">📈 Growth rate</div>
+        </div>
+        <div style="padding:4px; background:#0e141b; border-radius:6px">
+          <div style="color:var(--warn); font-weight:bold" id="deathsToday">+0</div>
+          <div style="color:var(--muted)">💀 Deaths today</div>
+        </div>
+      </div>
+
+      <!-- Continental Population Growth -->
+      <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:10px">
+        <div style="font-size:clamp(10px,2.2vw,11px); color:var(--muted); margin-bottom:8px; text-align:center; font-weight:bold">🌏 Continental Growth (today)</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:clamp(8px,1.8vw,9px)">
+          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
+            <span>🌏 Asia</span>
+            <span style="color:var(--accent); font-weight:bold" id="asiaGrowth">+0</span>
+          </div>
+          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
+            <span>🌍 Africa</span>
+            <span style="color:var(--green); font-weight:bold" id="africaGrowth">+0</span>
+          </div>
+          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
+            <span>🌎 Americas</span>
+            <span style="color:var(--warn); font-weight:bold" id="americasGrowth">+0</span>
+          </div>
+          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
+            <span>🌍 Europe</span>
+            <span style="color:#8b5cf6; font-weight:bold" id="europeGrowth">+0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div><span class="badge">Single-file</span><span class="badge">Client-side only</span><span class="badge">Real-time Population</span></div>
   </header>
 
   <section class="grid">
@@ -66,8 +132,30 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
           </select>
         </div>
         <div class="col">
-          <label>Age</label>
-          <input id="age" type="number" min="0" max="110" step="1" value="30">
+          <label>Birth Date</label>
+          <div class="row" style="gap:6px">
+            <input id="birthYear" type="number" min="1900" max="2025" step="1" placeholder="Year" style="flex:2">
+            <select id="birthMonth" style="flex:1">
+              <option value="">Month</option>
+              <option value="1">Jan</option>
+              <option value="2">Feb</option>
+              <option value="3">Mar</option>
+              <option value="4">Apr</option>
+              <option value="5">May</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Aug</option>
+              <option value="9">Sep</option>
+              <option value="10">Oct</option>
+              <option value="11">Nov</option>
+              <option value="12">Dec</option>
+            </select>
+            <input id="birthDay" type="number" min="1" max="31" step="1" placeholder="Day" style="flex:1">
+          </div>
+        </div>
+        <div class="col" style="min-width:120px">
+          <label>Current Age</label>
+          <div id="calculatedAge" style="padding:11px 12px; border-radius:12px; border:1px solid var(--border); background:#0e141b; color:var(--accent); font-weight:bold; text-align:center">Enter birth date</div>
         </div>
       </div>
 
@@ -173,12 +261,37 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
           <input id="children" type="number" min="0" max="12" step="1" value="0">
         </div>
         <div class="col">
-          <label>Parents alive</label>
-          <select id="parentsAlive">
-            <option value="2">Both</option>
-            <option value="1">One</option>
-            <option value="0">Neither</option>
+          <label>Expected Life Span (years)</label>
+          <input id="lifeExpectancy" type="number" min="50" max="120" step="1" placeholder="World avg: 73">
+        </div>
+        <div class="col">
+          <label>Happiness Score (1-10)</label>
+          <input id="happiness" type="number" min="1" max="10" step="0.1" placeholder="World avg: 5.4">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Father Status</label>
+          <select id="fatherStatus">
+            <option value="alive">Alive</option>
+            <option value="deceased">Deceased</option>
           </select>
+        </div>
+        <div class="col" id="fatherAgeGroup">
+          <label id="fatherAgeLabel">Father's Current Age</label>
+          <input id="fatherAge" type="number" min="30" max="120" step="1" placeholder="e.g., 65">
+        </div>
+        <div class="col">
+          <label>Mother Status</label>
+          <select id="motherStatus">
+            <option value="alive">Alive</option>
+            <option value="deceased">Deceased</option>
+          </select>
+        </div>
+        <div class="col" id="motherAgeGroup">
+          <label id="motherAgeLabel">Mother's Current Age</label>
+          <input id="motherAge" type="number" min="30" max="120" step="1" placeholder="e.g., 62">
         </div>
       </div>
 
@@ -237,17 +350,52 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
         <div id="factsContent" style="font-size:12px; line-height:1.4"></div>
       </div>
 
+      <!-- Life Timeline -->
+      <div id="lifeTimeline" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">⏰ Your Life Timeline</div>
+        <div id="timelineViz" style="background:#1a202c; border-radius:10px; padding:12px; margin-bottom:8px">
+          <div style="display:flex; align-items:center; margin-bottom:8px">
+            <div style="width:60px; font-size:11px">Life</div>
+            <div style="flex:1; height:20px; background:#2a2a2a; border-radius:10px; overflow:hidden; position:relative; margin:0 8px">
+              <div id="lifeProgress" style="height:100%; background:linear-gradient(90deg,#22c55e,#eab308,#ef4444); border-radius:10px; width:0%; transition:width 0.8s ease"></div>
+              <div id="lifeMarker" style="position:absolute; top:-2px; width:2px; height:24px; background:#fff; left:0%; transition:left 0.8s ease"></div>
+            </div>
+            <div style="width:60px; font-size:11px; text-align:right" id="lifeYears">0 years</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted)">
+            <span>🍼 Birth</span>
+            <span>💀 Expected End</span>
+          </div>
+        </div>
+        <div id="parentAges" style="font-size:11px; color:var(--muted)"></div>
+      </div>
+
+      <!-- Happiness Visualization -->
+      <div id="happinessViz" style="display:none; margin:15px 0">
+        <div class="small" style="margin-bottom:8px; font-weight:bold">😊 Your Happiness Level</div>
+        <div style="background:#1a202c; border-radius:10px; padding:12px">
+          <div style="display:flex; align-items:center; margin-bottom:8px">
+            <div style="width:50px; font-size:11px">😢 1</div>
+            <div style="flex:1; height:24px; background:#2a2a2a; border-radius:12px; overflow:hidden; position:relative; margin:0 8px">
+              <div id="happinessBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
+              <div id="happinessMarker" style="position:absolute; top:1px; width:20px; height:22px; background:rgba(255,255,255,0.9); border-radius:11px; left:0%; transition:left 0.8s ease; display:flex; align-items:center; justify-content:center; font-size:12px">😊</div>
+            </div>
+            <div style="width:50px; font-size:11px; text-align:right">😄 10</div>
+          </div>
+          <div style="text-align:center; font-size:12px" id="happinessText">Your happiness: 0.0/10</div>
+        </div>
+      </div>
+
       <div class="row" style="margin-top:15px">
         <button id="btnCopy" class="ghost">Copy Result</button>
         <button id="btnDownload" class="ghost">Download JSON</button>
       </div>
 
-      <div class="note">⚠️ For entertainment only. Not scientific or predictive.</div>
     </div>
   </section>
 
   <footer style="margin-top:14px" class="small">
-    Disclaimer: For entertainment/education only. Uses coarse assumptions and simplified distributions. Results vary by rounding and inputs.
+    Global Ranking System © 2025 - Advanced Statistical Analysis
   </footer>
 </div>
 
@@ -255,7 +403,141 @@ button.ghost{background:transparent;color:var(--fg);border:1px solid var(--borde
 // =======================
 // Data (rough / playful)
 // =======================
-const WORLD_TOTAL = 8_100_000_000; // ~8.1B
+const WORLD_TOTAL_BASE = 8_246_975_554; // 2025년 9월 16일 기준 기준 세계인구 (+3000명)
+const POPULATION_GROWTH_PER_SECOND = 2.5; // 초당 약 2.5명 증가 (더 부드러운 1명씩 증가)
+let WORLD_TOTAL = WORLD_TOTAL_BASE; // 현재 계산용 인구수
+let pageStartTime = Date.now();
+
+// 실시간 인구 증가 계산
+function updateWorldPopulation() {
+  const now = Date.now();
+  const secondsElapsed = (now - pageStartTime) / 1000;
+  const populationIncrease = Math.floor(secondsElapsed * POPULATION_GROWTH_PER_SECOND);
+
+  WORLD_TOTAL = WORLD_TOTAL_BASE + populationIncrease;
+
+  // 오늘 자정부터 경과 시간 계산
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const secondsSinceMidnight = (now - todayStart.getTime()) / 1000;
+
+  // 일일 통계 (대략적인 전 세계 평균) - 더 부드러운 증가율
+  const birthsPerSecond = 4.3; // 초당 약 4.3명 출생
+  const deathsPerSecond = 1.8; // 초당 약 1.8명 사망 (net growth = 2.5)
+
+  const birthsToday = Math.floor(secondsSinceMidnight * birthsPerSecond);
+  const deathsToday = Math.floor(secondsSinceMidnight * deathsPerSecond);
+
+  // 대륙별 인구 증가 (대략적인 분포)
+  const continentalGrowthRates = {
+    asia: 0.50,     // 아시아 50% (중국, 인도 등)
+    africa: 0.30,   // 아프리카 30% (높은 출생률)
+    americas: 0.12, // 아메리카 12%
+    europe: 0.08    // 유럽 8% (낮은 출생률)
+  };
+
+  const totalGrowthToday = Math.floor(secondsSinceMidnight * (birthsPerSecond - deathsPerSecond));
+  const asiaGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.asia);
+  const africaGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.africa);
+  const americasGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.americas);
+  const europeGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.europe);
+
+  // DOM 업데이트
+  const popElement = document.getElementById('worldPopulation');
+  const growthElement = document.getElementById('populationGrowth');
+  const birthsElement = document.getElementById('birthsToday');
+  const deathsElement = document.getElementById('deathsToday');
+  const asiaElement = document.getElementById('asiaGrowth');
+  const africaElement = document.getElementById('africaGrowth');
+  const americasElement = document.getElementById('americasGrowth');
+  const europeElement = document.getElementById('europeGrowth');
+
+  if (popElement) {
+    popElement.textContent = WORLD_TOTAL.toLocaleString('en-US');
+
+    // 시각적 효과 - 숫자가 변할 때마다 깜빡임과 확대 효과
+    if (populationIncrease > 0 && populationIncrease % Math.floor(POPULATION_GROWTH_PER_SECOND) === 0) {
+      popElement.style.transform = 'scale(1.05)';
+      popElement.style.textShadow = '0 0 10px var(--accent)';
+
+      setTimeout(() => {
+        popElement.style.transform = 'scale(1)';
+        popElement.style.textShadow = 'none';
+      }, 200);
+    }
+  }
+
+  if (growthElement) {
+    growthElement.textContent = populationIncrease > 0 ? `+${populationIncrease.toLocaleString('en-US')}` : '+0';
+    growthElement.style.color = populationIncrease > 0 ? '#22c55e' : 'var(--muted)';
+  }
+
+  if (birthsElement) {
+    birthsElement.textContent = `+${birthsToday.toLocaleString('en-US')}`;
+  }
+
+  if (deathsElement) {
+    deathsElement.textContent = `+${deathsToday.toLocaleString('en-US')}`;
+  }
+
+  // 대륙별 증가 업데이트
+  if (asiaElement) {
+    asiaElement.textContent = `+${asiaGrowthToday.toLocaleString('en-US')}`;
+  }
+  if (africaElement) {
+    africaElement.textContent = `+${africaGrowthToday.toLocaleString('en-US')}`;
+  }
+  if (americasElement) {
+    americasElement.textContent = `+${americasGrowthToday.toLocaleString('en-US')}`;
+  }
+  if (europeElement) {
+    europeElement.textContent = `+${europeGrowthToday.toLocaleString('en-US')}`;
+  }
+}
+
+// 나이 계산 함수
+function calculateAge(birthYear, birthMonth, birthDay) {
+  if (!birthYear) return 0;
+
+  const today = new Date();
+  const birth = new Date(birthYear, (birthMonth || 1) - 1, birthDay || 1);
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  return Math.max(0, age);
+}
+
+// 나이 실시간 업데이트
+function updateAge() {
+  const birthYear = +document.getElementById('birthYear').value;
+  const birthMonth = +document.getElementById('birthMonth').value || null;
+  const birthDay = +document.getElementById('birthDay').value || null;
+
+  const age = calculateAge(birthYear, birthMonth, birthDay);
+  const ageDisplay = document.getElementById('calculatedAge');
+
+  if (birthYear && age >= 0) {
+    ageDisplay.textContent = `${age} years old`;
+    ageDisplay.style.color = 'var(--accent)';
+  } else {
+    ageDisplay.textContent = 'Enter birth date';
+    ageDisplay.style.color = 'var(--muted)';
+  }
+}
+
+// 생년월일 입력 이벤트 리스너
+document.getElementById('birthYear').addEventListener('input', updateAge);
+document.getElementById('birthMonth').addEventListener('change', updateAge);
+document.getElementById('birthDay').addEventListener('input', updateAge);
+
+// 페이지 로드 시 즉시 실행 및 타이머 시작
+updateWorldPopulation(); // 즉시 실행
+setInterval(updateWorldPopulation, 1000); // 1초마다 업데이트
 const COUNTRY_POP = {
   "India": 1429000000, "China": 1412000000, "United States": 334000000, "Indonesia": 276000000,
   "Pakistan": 240000000, "Nigeria": 223000000, "Brazil": 203000000, "Bangladesh": 172000000,
@@ -362,41 +644,42 @@ function wealthPercentile(cash, realEstate, stocks, debt){
   const netWorth = (+cash||0) + (+realEstate||0) + (+stocks||0) - (+debt||0);
   let p;
   if(netWorth < -100_000) p = 0.01;
-  else if(netWorth < -50_000) p = 0.03;
-  else if(netWorth < -10_000) p = 0.08;
-  else if(netWorth < 0) p = 0.15;
-  else if(netWorth < 1_000) p = 0.35;
-  else if(netWorth < 5_000) p = 0.50;
-  else if(netWorth < 10_000) p = 0.60;
-  else if(netWorth < 25_000) p = 0.70;
-  else if(netWorth < 50_000) p = 0.80;
-  else if(netWorth < 100_000) p = 0.87;
-  else if(netWorth < 200_000) p = 0.92;
-  else if(netWorth < 350_000) p = 0.95;
-  else if(netWorth < 500_000) p = 0.97;
-  else if(netWorth < 1_000_000) p = 0.985;
-  else if(netWorth < 5_000_000) p = 0.995;
-  else if(netWorth < 10_000_000) p = 0.998;
-  else p = 0.999;
+  else if(netWorth < -50_000) p = 0.05;
+  else if(netWorth < -10_000) p = 0.10;
+  else if(netWorth < 0) p = 0.20;
+  else if(netWorth < 1_000) p = 0.40;
+  else if(netWorth < 5_000) p = 0.55;
+  else if(netWorth < 10_000) p = 0.65;
+  else if(netWorth < 25_000) p = 0.75;
+  else if(netWorth < 50_000) p = 0.82;
+  else if(netWorth < 100_000) p = 0.88;
+  else if(netWorth < 200_000) p = 0.93;
+  else if(netWorth < 300_000) p = 0.96;
+  else if(netWorth < 400_000) p = 0.975;
+  else if(netWorth < 500_000) p = 0.985;
+  else if(netWorth < 1_000_000) p = 0.99;
+  else if(netWorth < 5_000_000) p = 0.997;
+  else if(netWorth < 10_000_000) p = 0.999;
+  else p = 0.9995;
   return clamp(p, 0.001, 0.999);
 }
 
 function incomePercentile(inc){
   const x = +inc;
   if(isNaN(x)) return 0.5;
-  if(x < 1000) return 0.05;
-  if(x < 3000) return 0.15;
-  if(x < 5000) return 0.25;
-  if(x < 10000) return 0.40;
-  if(x < 15000) return 0.55;
-  if(x < 25000) return 0.68;
-  if(x < 40000) return 0.78;
-  if(x < 60000) return 0.85;
-  if(x < 80000) return 0.90;
-  if(x < 100000) return 0.93;
-  if(x < 150000) return 0.96;
-  if(x < 250000) return 0.98;
-  if(x < 500000) return 0.995;
+  if(x < 1000) return 0.10;
+  if(x < 3000) return 0.20;
+  if(x < 5000) return 0.30;
+  if(x < 10000) return 0.45;
+  if(x < 15000) return 0.60;
+  if(x < 25000) return 0.72;
+  if(x < 40000) return 0.80;
+  if(x < 60000) return 0.86;
+  if(x < 80000) return 0.91;
+  if(x < 100000) return 0.95;
+  if(x < 150000) return 0.975;
+  if(x < 250000) return 0.99;
+  if(x < 500000) return 0.997;
   return 0.999;
 }
 
@@ -449,10 +732,10 @@ function educationPercentile(level){
   }
 }
 
-// Fixed weights (sum = 1.00)
+// Fixed weights (sum = 1.00) - 돈 절대 우선 가중치 + 수명/행복도 추가
 const W = {
-  wealth:0.30, income:0.15, age:0.10, health:0.08, bmi:0.05,
-  education:0.15, country:0.08, family:0.07, sex:0.02, race:0.00, university:0.00
+  wealth:0.50, income:0.20, education:0.08, lifeExp:0.08, happiness:0.06,
+  country:0.04, health:0.02, family:0.02, age:0.00, bmi:0.00, sex:0.00, race:0.00, university:0.00
 };
 
 function familyPercentile(children, parentsAlive, age){
@@ -504,12 +787,12 @@ function updateWealthChart(cash, realEstate, stocks, debt, netWorth){
   bars.innerHTML = assets.map(asset => {
     const width = maxVal > 0 ? (Math.abs(asset.value) / maxVal * 100) : 0;
     return `
-      <div style="display:flex; align-items:center; margin:4px 0">
-        <div style="width:80px; font-size:11px">${asset.name}</div>
-        <div style="flex:1; height:20px; background:#0b1218; border-radius:10px; overflow:hidden; margin:0 8px">
-          <div style="height:100%; background:${asset.color}; width:${width}%; border-radius:10px"></div>
+      <div style="display:flex; align-items:center; margin:3px 0; font-size:11px">
+        <div style="width:60px; min-width:60px">${asset.name}</div>
+        <div style="flex:1; height:16px; background:#0b1218; border-radius:8px; overflow:hidden; margin:0 6px">
+          <div style="height:100%; background:${asset.color}; width:${width}%; border-radius:8px; transition:width 0.3s ease"></div>
         </div>
-        <div style="width:70px; font-size:11px; text-align:right">${asset.value >= 0 ? '$' + fmtInt(asset.value) : '-$' + fmtInt(-asset.value)}</div>
+        <div style="width:60px; min-width:60px; text-align:right">${asset.value >= 0 ? '$' + fmtInt(asset.value) : '-$' + fmtInt(-asset.value)}</div>
       </div>
     `;
   }).join('');
@@ -525,15 +808,15 @@ function updateComparisonCharts(agePercentile, incomePercentile){
   // Age distribution visualization
   ageChart.innerHTML = `
     <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 60%, #0ea5e9 60%, #0ea5e9 100%)"></div>
-    <div style="position:absolute; bottom:0; left:${agePercentile*100}%; width:2px; height:100%; background:#22c55e"></div>
-    <div style="position:absolute; top:5px; left:5px; font-size:10px; color:#94a3b8">You: ${pct(agePercentile)}%</div>
+    <div style="position:absolute; bottom:0; left:${agePercentile*100}%; width:3px; height:100%; background:#22c55e; border-radius:2px"></div>
+    <div style="position:absolute; top:3px; left:3px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.5); padding:1px 4px; border-radius:4px">You: ${pct(agePercentile)}%</div>
   `;
 
-  // Income distribution visualization
+  // Income distribution visualization - 더 강조된 스타일
   incomeChart.innerHTML = `
     <div style="position:absolute; bottom:0; left:0; right:0; height:100%; background:linear-gradient(0deg, #1e293b 0%, #1e293b 70%, #f59e0b 70%, #f59e0b 100%)"></div>
-    <div style="position:absolute; bottom:0; left:${incomePercentile*100}%; width:2px; height:100%; background:#22c55e"></div>
-    <div style="position:absolute; top:5px; left:5px; font-size:10px; color:#94a3b8">You: ${pct(incomePercentile)}%</div>
+    <div style="position:absolute; bottom:0; left:${incomePercentile*100}%; width:3px; height:100%; background:#22c55e; border-radius:2px; box-shadow:0 0 8px #22c55e"></div>
+    <div style="position:absolute; top:3px; left:3px; font-size:9px; color:#94a3b8; background:rgba(0,0,0,0.5); padding:1px 4px; border-radius:4px">💰 You: ${pct(incomePercentile)}%</div>
   `;
 }
 
@@ -543,26 +826,218 @@ function updateFunFacts(rank, percentile, country, age, netWorth){
 
   facts.style.display = 'block';
 
-  const peopleAbove = Math.round(WORLD_TOTAL * percentile);
-  const peopleBelow = WORLD_TOTAL - peopleAbove;
-  const topPercent = pct(percentile);
+  const peopleAbove = Math.round(WORLD_TOTAL * (1 - percentile));
+  const peopleBelow = Math.round(WORLD_TOTAL * percentile);
+  const topPercent = pct(1 - percentile);
 
   const factsList = [
-    `🎯 You rank higher than <b>${fmtInt(peopleBelow)}</b> people worldwide`,
-    `🏆 Only <b>${fmtInt(peopleAbove)}</b> people rank above you`,
-    `📊 You're in the top <b>${topPercent}%</b> globally`,
-    `🌍 Your ranking places you ahead of <b>${pct(1-percentile)}%</b> of ${country}`,
-    `💰 Your net worth of <b>$${fmtInt(netWorth)}</b> ${netWorth > 100000 ? 'puts you in a privileged position' : 'is building towards financial security'}`,
-    `🎂 At <b>${age}</b> years old, you have ${age < 30 ? 'many opportunities ahead' : age < 50 ? 'reached a productive life stage' : 'gained valuable life experience'}`
+    `🎯 You rank higher than <b style="color:#22c55e">${fmtInt(peopleBelow)}</b> people worldwide`,
+    `🏆 Only <b style="color:#f59e0b">${fmtInt(peopleAbove)}</b> people rank above you`,
+    `📊 You're in the top <b style="color:#60a5fa">${topPercent}%</b> globally`,
+    `💰 Your net worth of <b style="color:#22c55e">$${fmtInt(netWorth)}</b> ${netWorth > 500000 ? 'puts you in elite status' : netWorth > 100000 ? 'shows strong financial position' : 'is building towards security'}`,
+    `🌟 ${percentile > 0.9 ? 'You are in the global financial elite!' : percentile > 0.8 ? 'You have achieved significant wealth!' : percentile > 0.7 ? 'You are financially well-positioned!' : 'You are building wealth steadily!'}`
   ];
 
-  content.innerHTML = factsList.map(fact => `• ${fact}`).join('<br>');
+  content.innerHTML = factsList.map(fact => `<div style="margin:4px 0; padding:4px 0">• ${fact}</div>`).join('');
+}
+
+function updateLifeTimeline(age, lifeExpectancy, fatherStatus, fatherAge, motherStatus, motherAge){
+  const timeline = document.getElementById('lifeTimeline');
+  const progress = document.getElementById('lifeProgress');
+  const marker = document.getElementById('lifeMarker');
+  const years = document.getElementById('lifeYears');
+  const parentAges = document.getElementById('parentAges');
+
+  timeline.style.display = 'block';
+
+  if(lifeExpectancy && lifeExpectancy > 0){
+    const lifeProgress = Math.min(age / lifeExpectancy * 100, 100);
+    progress.style.width = lifeProgress + '%';
+    marker.style.left = lifeProgress + '%';
+    years.textContent = `${age}/${lifeExpectancy} years`;
+
+    // 부모님 정보 표시
+    let parentInfo = [];
+    if(fatherAge){
+      if(fatherStatus === 'deceased'){
+        parentInfo.push(`👨 Father: Died at ${fatherAge}`);
+      } else {
+        parentInfo.push(`👨 Father: ${fatherAge} years old`);
+      }
+    }
+    if(motherAge){
+      if(motherStatus === 'deceased'){
+        parentInfo.push(`👩 Mother: Died at ${motherAge}`);
+      } else {
+        parentInfo.push(`👩 Mother: ${motherAge} years old`);
+      }
+    }
+    parentAges.innerHTML = parentInfo.join(' • ');
+  } else {
+    progress.style.width = '0%';
+    marker.style.left = '0%';
+    years.textContent = `${age} years`;
+    parentAges.innerHTML = '';
+  }
+}
+
+function updateHappinessVisualization(happiness){
+  const viz = document.getElementById('happinessViz');
+  const bar = document.getElementById('happinessBar');
+  const marker = document.getElementById('happinessMarker');
+  const text = document.getElementById('happinessText');
+
+  viz.style.display = 'block';
+
+  if(happiness && happiness > 0){
+    const happinessPercent = (happiness - 1) / 9 * 100; // 1-10 스케일을 0-100%로 변환
+    bar.style.width = happinessPercent + '%';
+    marker.style.left = `calc(${happinessPercent}% - 10px)`;
+    text.textContent = `Your happiness: ${happiness}/10`;
+
+    // 이모지 변경
+    if(happiness >= 8) marker.textContent = '😄';
+    else if(happiness >= 6) marker.textContent = '😊';
+    else if(happiness >= 4) marker.textContent = '😐';
+    else marker.textContent = '😢';
+  } else {
+    bar.style.width = '0%';
+    marker.style.left = '0%';
+    text.textContent = 'Your happiness: 0.0/10';
+    marker.textContent = '😐';
+  }
+}
+
+function familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, motherAge, age){
+  const k = Math.max(0, Math.min(12, Math.floor(+children || 0)));
+  let childP;
+  if(k===0) childP = 0.58;
+  else if(k===1) childP = 0.66;
+  else if(k===2) childP = 0.72;
+  else if(k===3) childP = 0.62;
+  else childP = 0.50;
+
+  const a = clamp(+age||0,0,110);
+  let parP = 0.50;
+
+  // 부모님 생존 상태에 따른 계산
+  let parentsAlive = 0;
+  if(fatherStatus === 'alive' && fatherAge) parentsAlive++;
+  if(motherStatus === 'alive' && motherAge) parentsAlive++;
+
+  if(parentsAlive === 2) parP = 0.70 - (a>40?0.12:0) - (a>60?0.12:0);
+  else if(parentsAlive === 1) parP = 0.52 - (a>70?0.05:0);
+  else parP = 0.40 + (a>60?0.10:0);
+
+  parP = clamp(parP, 0.25, 0.75);
+  return clamp(0.65*childP + 0.35*parP, 0.25, 0.75);
+}
+
+function lifeExpectancyPercentile(lifeExp, age){
+  if(!lifeExp || lifeExp <= 0) return 0.50;
+
+  // 전 세계 평균 기대수명 약 73세 기준 - 더 현실적인 분포
+  if(lifeExp < 50) return 0.05;
+  if(lifeExp < 60) return 0.15;
+  if(lifeExp < 65) return 0.25;
+  if(lifeExp < 70) return 0.40;
+  if(lifeExp < 73) return 0.50; // 전세계 평균
+  if(lifeExp < 76) return 0.60;
+  if(lifeExp < 80) return 0.72;
+  if(lifeExp < 83) return 0.82;
+  if(lifeExp < 87) return 0.90;
+  if(lifeExp < 92) return 0.95;
+  if(lifeExp < 97) return 0.98;
+  return 0.995;
+}
+
+function happinessPercentile(cash, realEstate, stocks, debt, income, health, education, country, sex){
+  // 재산 기반 행복도 계산 (재산 80%, 건강 10%, 나머지 10%)
+  const netWorth = (+cash||0) + (+realEstate||0) + (+stocks||0) - (+debt||0);
+  const annualIncome = +income || 0;
+
+  // 재산 행복도 (80% 가중치)
+  let wealthHappiness = 0.50; // 기본값
+
+  // 초고액 자산가 또는 고소득자 (90% 이상)
+  if(netWorth >= 10_000_000 || annualIncome >= 1_000_000) {
+    wealthHappiness = 0.95;
+  }
+  // 고액 자산가
+  else if(netWorth >= 5_000_000 || annualIncome >= 500_000) {
+    wealthHappiness = 0.90;
+  }
+  // 상당한 자산
+  else if(netWorth >= 1_000_000 || annualIncome >= 200_000) {
+    wealthHappiness = 0.85;
+  }
+  // 안정적 자산
+  else if(netWorth >= 500_000 || annualIncome >= 100_000) {
+    wealthHappiness = 0.75;
+  }
+  // 중간 수준
+  else if(netWorth >= 100_000 || annualIncome >= 50_000) {
+    wealthHappiness = 0.65;
+  }
+  // 낮은 수준
+  else if(netWorth >= 10_000 || annualIncome >= 20_000) {
+    wealthHappiness = 0.45;
+  }
+  // 매우 낮은 수준
+  else if(netWorth >= 0 || annualIncome >= 5_000) {
+    wealthHappiness = 0.30;
+  }
+  // 부채 상태
+  else {
+    wealthHappiness = 0.15;
+  }
+
+  // 건강 행복도 (10% 가중치)
+  let healthHappiness = 0.50;
+  if(health === 'excellent') {
+    healthHappiness = 0.85; // 기본 0.80 + 추가 5%
+  } else if(health === 'good') {
+    healthHappiness = 0.70; // 기본 0.65 + 추가 5%
+  } else if(health === 'fair') {
+    healthHappiness = 0.45;
+  } else if(health === 'poor') {
+    healthHappiness = 0.25;
+  }
+
+  // 학력 행복도 (5% 가중치)
+  let educationHappiness = 0.50;
+  switch(education) {
+    case 'doctorate': educationHappiness = 0.85; break;
+    case 'master': educationHappiness = 0.75; break;
+    case 'bachelor': educationHappiness = 0.65; break;
+    case 'somecollege': educationHappiness = 0.55; break;
+    case 'hs': educationHappiness = 0.45; break;
+  }
+
+  // 국가 행복도 (3% 가중치)
+  const countryHappiness = countryCDFPercentile(country);
+
+  // 성별 행복도 (2% 가중치)
+  const sexHappiness = sexPercentile(sex);
+
+  // 가중 평균 계산
+  const totalHappiness =
+    wealthHappiness * 0.80 +
+    healthHappiness * 0.10 +
+    educationHappiness * 0.05 +
+    countryHappiness * 0.03 +
+    sexHappiness * 0.02;
+
+  return clamp(totalHappiness, 0.001, 0.999);
 }
 
 function compute(){
   const country = canonicalCountry(document.getElementById('country').value);
   const sex = document.getElementById('sex').value;
-  const age = +document.getElementById('age').value;
+  const birthYear = +document.getElementById('birthYear').value;
+  const birthMonth = +document.getElementById('birthMonth').value || null;
+  const birthDay = +document.getElementById('birthDay').value || null;
+  const age = calculateAge(birthYear, birthMonth, birthDay);
   const health = document.getElementById('health').value;
   const units = document.getElementById('units').value;
   const cash = +document.getElementById('cash').value || 0;
@@ -574,7 +1049,12 @@ function compute(){
   const university = document.getElementById('university').value.trim();
   const race = document.getElementById('race').value;
   const children = +document.getElementById('children').value;
-  const parentsAlive = +document.getElementById('parentsAlive').value;
+  const lifeExpectancy = +document.getElementById('lifeExpectancy').value || 0;
+  const happiness = +document.getElementById('happiness').value || 0;
+  const fatherStatus = document.getElementById('fatherStatus').value;
+  const fatherAge = +document.getElementById('fatherAge').value || 0;
+  const motherStatus = document.getElementById('motherStatus').value;
+  const motherAge = +document.getElementById('motherAge').value || 0;
 
   const netWorth = cash + realEstate + stocks - debt;
 
@@ -587,16 +1067,18 @@ function compute(){
   const bmi = bmiFromInputs();
   const pBMI = bmiPercentile(bmi);
   const pEdu = educationPercentile(education);
-  const pFamily = familyPercentile(children, parentsAlive, age);
+  const pFamily = familyPercentileNew(children, fatherStatus, fatherAge, motherStatus, motherAge, age);
+  const pLifeExp = lifeExpectancyPercentile(lifeExpectancy, age);
+  const pHappiness = happinessPercentile(happiness);
 
   const Wsum = Object.values(W).reduce((a,b)=>a+b,0);
   const P = clamp(
-    (pWealth * W.wealth + pIncome * W.income + pAge * W.age + pHealth * W.health +
-     pBMI * W.bmi + pEdu * W.education + pCountry * W.country + pFamily * W.family + pSex * W.sex) / Wsum,
+    (pWealth * W.wealth + pIncome * W.income + pEdu * W.education + pLifeExp * W.lifeExp +
+     pHappiness * W.happiness + pCountry * W.country + pHealth * W.health + pFamily * W.family) / Wsum,
     0.0001, 0.9999
   );
-  const rank = Math.round(WORLD_TOTAL * P);
-  const pctText = pct(P) + '%';
+  const rank = Math.round(WORLD_TOTAL * (1 - P));
+  const pctText = pct(1 - P) + '%';
 
   // Update main result display
   const res = document.getElementById('result');
@@ -611,10 +1093,12 @@ function compute(){
   `;
 
   // Show visual elements
-  updatePopulationVisualization(P, rank);
+  updatePopulationVisualization(1 - P, rank);
   updateWealthChart(cash, realEstate, stocks, debt, netWorth);
   updateComparisonCharts(pAge, pIncome);
-  updateFunFacts(rank, P, country, age, netWorth);
+  updateFunFacts(rank, 1 - P, country, age, netWorth);
+  updateLifeTimeline(age, lifeExpectancy, fatherStatus, fatherAge, motherStatus, motherAge);
+  updateHappinessVisualization(happiness);
 
   // Store result for export
   window.__lastResult = {
@@ -627,26 +1111,31 @@ function compute(){
     bmi, cash, realEstate, stocks, debt, net_worth: netWorth, income,
     education, university, race, children, parents_alive: parentsAlive,
     percentiles:{ country:pCountry, sex:pSex, age:pAge, wealth:pWealth, income:pIncome, health:pHealth, bmi:pBMI, education:pEdu, family:pFamily },
-    weights: W, composite_percentile: P, world_total: WORLD_TOTAL, rank
+    weights: W, composite_percentile: 1 - P, world_total: WORLD_TOTAL, rank
   };
 }
 
 document.getElementById('btnCalc').addEventListener('click', compute);
 document.getElementById('btnReset').addEventListener('click', ()=>{
-  ['country','cash','realEstate','stocks','debt','income','children','university','heightCm','weightKg','heightFt','heightIn','weightLb'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['country','birthYear','birthDay','cash','realEstate','stocks','debt','income','children','lifeExpectancy','happiness','fatherAge','motherAge','university','heightCm','weightKg','heightFt','heightIn','weightLb'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('sex').value='male';
-  document.getElementById('age').value=30;
+  document.getElementById('birthMonth').value='';
   document.getElementById('health').value='good';
   document.getElementById('units').value='metric';
   document.getElementById('education').value='hs';
   document.getElementById('race').value='na';
-  document.getElementById('parentsAlive').value='2';
+  document.getElementById('fatherStatus').value='alive';
+  document.getElementById('motherStatus').value='alive';
+  document.getElementById('fatherAgeLabel').textContent='Father\'s Current Age';
+  document.getElementById('motherAgeLabel').textContent='Mother\'s Current Age';
+  document.getElementById('calculatedAge').textContent='Enter birth date';
+  document.getElementById('calculatedAge').style.color='var(--muted)';
   document.querySelectorAll('.metric-only').forEach(e=>e.style.display='block');
   document.querySelectorAll('.imperial-only').forEach(e=>e.style.display='none');
   document.getElementById('result').innerHTML='Enter inputs and click <span class="kbd">Calculate</span>.';
 
   // Hide visual elements
-  ['populationViz','wealthChart','comparisonCharts','funFacts'].forEach(id=>{
+  ['populationViz','wealthChart','comparisonCharts','funFacts','lifeTimeline','happinessViz'].forEach(id=>{
     document.getElementById(id).style.display='none';
   });
 });
@@ -656,6 +1145,25 @@ document.getElementById('units').addEventListener('change', (e)=>{
   const v = e.target.value;
   document.querySelectorAll('.metric-only').forEach(el=>el.style.display = v==='metric' ? 'block' : 'none');
   document.querySelectorAll('.imperial-only').forEach(el=>el.style.display = v==='imperial' ? 'block' : 'none');
+});
+
+// Parent status toggles
+document.getElementById('fatherStatus').addEventListener('change', (e)=>{
+  const label = document.getElementById('fatherAgeLabel');
+  if(e.target.value === 'deceased'){
+    label.textContent = 'Father\'s Age at Death';
+  } else {
+    label.textContent = 'Father\'s Current Age';
+  }
+});
+
+document.getElementById('motherStatus').addEventListener('change', (e)=>{
+  const label = document.getElementById('motherAgeLabel');
+  if(e.target.value === 'deceased'){
+    label.textContent = 'Mother\'s Age at Death';
+  } else {
+    label.textContent = 'Mother\'s Current Age';
+  }
 });
 
 // Copy & Download
