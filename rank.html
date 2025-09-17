@@ -3,8 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Global Rank — Ultimate v2.0 (Enhanced)</title>
-<meta name="description" content="Ultimate global ranking with enhanced features: auto-save, advanced visualizations, testing, and comprehensive personal data analysis.">
+<title>Global Human Ranking Calculator - Find Your World Rank Among 8.2 Billion People | Personal Wealth Position</title>
+<meta name="description" content="Calculate your precise global ranking among 8.2 billion people worldwide. Discover where you stand globally based on wealth, income, education, health, and demographics. Free comprehensive analysis tool.">
+<meta name="keywords" content="global ranking, world population rank, wealth calculator, income percentile, global position, human ranking, world statistics, demographics calculator, population analysis, personal ranking tool">
+<meta name="author" content="Global Ranking System">
+<meta property="og:title" content="Global Human Ranking Calculator - Find Your World Position">
+<meta property="og:description" content="Calculate your precise global ranking among 8.2 billion people. Free comprehensive analysis of your world position.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Global Human Ranking Calculator">
+<meta name="twitter:description" content="Find your exact position among 8.2 billion people worldwide. Free ranking calculator.">
 <style>
 :root{
   --bg:#0b0f14; --card:#10161d; --fg:#e6edf3; --muted:#96a1ad;
@@ -68,8 +76,8 @@ button.error{background:var(--error)}
 <body>
 <div class="wrap">
   <header>
-    <h1>My Global Rank <span style="color:var(--accent)">— Ultimate</span> <span class="version">v2.0</span> 🎯</h1>
-    <div class="sub">Calculate your precise global ranking among <b>8.25 billion</b> people with enhanced features: auto-save, advanced visualizations, and comprehensive testing.</div>
+    <h1>Global Human Ranking Calculator <span style="color:var(--accent)">🌍</span></h1>
+    <div class="sub">Discover your precise position among <b id="headerPopulation">8.25 billion</b> people worldwide. Find out where you rank globally based on wealth, demographics, and personal data.</div>
 
     <!-- Real-time World Population Counter -->
     <div style="background:#1a202c; border-radius:12px; padding:12px; margin:10px 0; border:1px solid var(--border)">
@@ -97,52 +105,25 @@ button.error{background:var(--error)}
         </div>
       </div>
 
-      <!-- Continental Population Growth -->
-      <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:10px">
-        <div style="font-size:clamp(10px,2.2vw,11px); color:var(--muted); margin-bottom:8px; text-align:center; font-weight:bold">🌏 Continental Growth (today)</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:clamp(8px,1.8vw,9px)">
-          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
-            <span>🌏 Asia</span>
-            <span style="color:var(--accent); font-weight:bold" id="asiaGrowth">+0</span>
-          </div>
-          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
-            <span>🌍 Africa</span>
-            <span style="color:var(--green); font-weight:bold" id="africaGrowth">+0</span>
-          </div>
-          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
-            <span>🌎 Americas</span>
-            <span style="color:var(--warn); font-weight:bold" id="americasGrowth">+0</span>
-          </div>
-          <div style="padding:3px 6px; background:#0e141b; border-radius:4px; display:flex; justify-content:space-between">
-            <span>🌍 Europe</span>
-            <span style="color:#8b5cf6; font-weight:bold" id="europeGrowth">+0</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div>
-      <span class="badge">v2.0 Enhanced</span>
-      <span class="badge">Auto-Save</span>
-      <span class="badge">Advanced Visualizations</span>
-      <span class="badge">Real-time Population</span>
+      <span class="badge">Real-time Analysis</span>
+      <span class="badge">Global Coverage</span>
+      <span class="badge">Wealth Data</span>
+      <span class="badge">Live Population</span>
+    </div>
+
+    <!-- Calculate Button at Top -->
+    <div style="margin:20px 0; text-align:center">
+      <button id="btnCalc" style="font-size:18px; padding:16px 32px; font-weight:bold; border-radius:16px; background:linear-gradient(135deg, var(--accent), #3b82f6); border:none; color:white; cursor:pointer; box-shadow:0 4px 12px rgba(96,165,250,0.3); transition:transform 0.2s ease">🎯 Calculate My Global Rank</button>
     </div>
   </header>
 
   <section class="grid">
     <div class="card">
-      <h2>Inputs</h2>
+      <h2>Personal Information</h2>
 
-      <!-- Cache Control Panel -->
-      <div style="background:#1a202c; border-radius:8px; padding:10px; margin-bottom:12px; border:1px solid var(--border)">
-        <div class="small" style="margin-bottom:6px; font-weight:bold">💾 Data Management</div>
-        <div class="row">
-          <button id="btnLoadCache" class="ghost" style="flex:1">Load Saved Data</button>
-          <button id="btnClearCache" class="error" style="flex:1">Clear Cache</button>
-          <button id="btnExportData" class="ghost" style="flex:1">Export Data</button>
-        </div>
-        <div id="cacheStatus" class="small" style="margin-top:4px; color:var(--muted)">Auto-save: Enabled</div>
-      </div>
 
       <div class="row">
         <div class="col">
@@ -287,12 +268,22 @@ button.error{background:var(--error)}
           <input id="children" type="number" min="0" max="12" step="1" value="0">
         </div>
         <div class="col">
-          <label>Expected Life Span (years)</label>
-          <input id="lifeExpectancy" type="number" min="50" max="120" step="1" placeholder="World avg: 73">
+          <label>Expected Life Span (years) - Auto-calculated</label>
+          <input id="lifeExpectancy" type="number" min="50" max="120" step="1" placeholder="Auto-calculated" readonly style="background:#0b1218; color:var(--accent);">
+          <div class="small" style="margin-top:2px">
+            <label style="display:inline; margin:0; cursor:pointer">
+              <input type="checkbox" id="lifeExpectancyManual" style="margin-right:4px"> Manual override
+            </label>
+          </div>
         </div>
         <div class="col">
-          <label>Happiness Score (1-10)</label>
-          <input id="happiness" type="number" min="1" max="10" step="0.1" placeholder="World avg: 5.4">
+          <label>Happiness Score (1-10) - Auto-estimated</label>
+          <input id="happiness" type="number" min="1" max="10" step="0.1" placeholder="Auto-calculated" readonly style="background:#0b1218; color:var(--accent);">
+          <div class="small" style="margin-top:2px">
+            <label style="display:inline; margin:0; cursor:pointer">
+              <input type="checkbox" id="happinessManual" style="margin-right:4px"> Manual override
+            </label>
+          </div>
         </div>
       </div>
 
@@ -321,10 +312,8 @@ button.error{background:var(--error)}
         </div>
       </div>
 
-      <div class="row" style="margin-top:12px">
-        <button id="btnCalc">Calculate my global rank</button>
-        <button id="btnReset" class="error">Complete Reset</button>
-        <button id="btnTest" class="warn">Run Tests</button>
+      <div class="row" style="margin-top:16px; margin-bottom:16px">
+        <button id="btnCalc" style="font-size:16px; padding:14px 20px; font-weight:bold">🎯 Calculate My Global Rank</button>
       </div>
     </div>
 
@@ -442,17 +431,18 @@ button.error{background:var(--error)}
         <div id="testOutput" style="font-size:11px; line-height:1.4; font-family:monospace"></div>
       </div>
 
-      <div class="row" style="margin-top:15px">
-        <button id="btnCopy" class="ghost">Copy Result</button>
-        <button id="btnDownload" class="ghost">Download JSON</button>
-        <button id="btnShare" class="ghost">Share Results</button>
-      </div>
 
     </div>
   </section>
 
-  <footer style="margin-top:14px" class="small">
-    Global Ranking System © 2025 - Ultimate Edition v2.0 with Enhanced Features
+  <footer style="margin-top:20px; padding:16px; background:#1a202c; border-radius:12px; border:1px solid var(--border)" class="small">
+    <div style="text-align:center; line-height:1.5">
+      <div style="margin-bottom:8px; color:var(--accent); font-weight:bold">Global Human Ranking Calculator</div>
+      <div style="color:var(--muted)">Find your exact position among billions of people worldwide • Based on real economic data from 60 countries</div>
+      <div style="margin-top:8px; color:var(--muted); font-size:10px">
+        Data sources: World Bank, IMF, National Statistics • Updated 2025
+      </div>
+    </div>
   </footer>
 </div>
 
@@ -488,238 +478,7 @@ function showNotification(message, type = 'info', duration = 3000) {
   }, duration);
 }
 
-// =======================
-// Cache Management System
-// =======================
-function saveToCache() {
-  const data = {};
-  const inputs = ['country', 'sex', 'birthYear', 'birthMonth', 'birthDay', 'health', 'units',
-                 'heightCm', 'weightKg', 'heightFt', 'heightIn', 'weightLb', 'cash', 'realEstate',
-                 'stocks', 'debt', 'income', 'education', 'university', 'race', 'children',
-                 'lifeExpectancy', 'happiness', 'fatherStatus', 'fatherAge', 'motherStatus', 'motherAge'];
 
-  inputs.forEach(id => {
-    const element = document.getElementById(id);
-    if (element) {
-      data[id] = element.value;
-    }
-  });
-
-  data.timestamp = Date.now();
-  data.version = VERSION;
-
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-    updateCacheStatus('Data auto-saved successfully');
-  } catch (e) {
-    updateCacheStatus('Auto-save failed: ' + e.message, 'error');
-  }
-}
-
-function loadFromCache() {
-  try {
-    const cachedData = localStorage.getItem(CACHE_KEY);
-    if (!cachedData) {
-      showNotification('No saved data found', 'info');
-      return false;
-    }
-
-    const data = JSON.parse(cachedData);
-    if (data.version !== VERSION) {
-      showNotification('Saved data is from older version, loading anyway', 'info');
-    }
-
-    Object.keys(data).forEach(key => {
-      if (key !== 'timestamp' && key !== 'version') {
-        const element = document.getElementById(key);
-        if (element && data[key] !== undefined && data[key] !== '') {
-          element.value = data[key];
-        }
-      }
-    });
-
-    updateAge();
-    updateUnitsDisplay();
-    updateParentLabels();
-
-    const date = new Date(data.timestamp);
-    showNotification(`Data loaded from ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`, 'success');
-    updateCacheStatus(`Loaded from ${date.toLocaleDateString()}`);
-    return true;
-  } catch (e) {
-    showNotification('Failed to load cached data: ' + e.message, 'error');
-    return false;
-  }
-}
-
-function clearCache() {
-  try {
-    localStorage.removeItem(CACHE_KEY);
-    showNotification('Cache cleared successfully', 'success');
-    updateCacheStatus('Cache cleared');
-  } catch (e) {
-    showNotification('Failed to clear cache: ' + e.message, 'error');
-  }
-}
-
-function updateCacheStatus(message, type = 'info') {
-  const status = document.getElementById('cacheStatus');
-  if (status) {
-    status.textContent = message;
-    status.style.color = type === 'error' ? 'var(--error)' : 'var(--muted)';
-  }
-}
-
-// Auto-save on input changes
-function setupAutoSave() {
-  const inputs = document.querySelectorAll('input, select');
-  inputs.forEach(input => {
-    input.addEventListener('change', () => {
-      setTimeout(saveToCache, 100); // Small delay to batch rapid changes
-    });
-  });
-}
-
-// =======================
-// Enhanced Testing System
-// =======================
-function runComprehensiveTests() {
-  const testOutput = document.getElementById('testOutput');
-  const testResults = document.getElementById('testResults');
-  testResults.style.display = 'block';
-  testOutput.innerHTML = 'Running comprehensive tests...\n\n';
-
-  const tests = [
-    testRankingLogic,
-    testCacheSystem,
-    testCalculationAccuracy,
-    testEdgeCases,
-    testVisualizationUpdates,
-    testDataValidation
-  ];
-
-  let passed = 0;
-  let total = tests.length;
-
-  tests.forEach((test, index) => {
-    try {
-      const result = test();
-      if (result.passed) {
-        testOutput.innerHTML += `✅ Test ${index + 1}: ${result.name} - PASSED\n`;
-        if (result.details) testOutput.innerHTML += `   ${result.details}\n`;
-        passed++;
-      } else {
-        testOutput.innerHTML += `❌ Test ${index + 1}: ${result.name} - FAILED\n`;
-        if (result.error) testOutput.innerHTML += `   Error: ${result.error}\n`;
-      }
-    } catch (e) {
-      testOutput.innerHTML += `❌ Test ${index + 1}: ${test.name} - CRASHED\n`;
-      testOutput.innerHTML += `   Exception: ${e.message}\n`;
-    }
-    testOutput.innerHTML += '\n';
-  });
-
-  testOutput.innerHTML += `\n📊 Test Summary: ${passed}/${total} tests passed\n`;
-
-  if (passed === total) {
-    testOutput.innerHTML += '🎉 All tests passed! System is working correctly.\n';
-    showNotification('All tests passed!', 'success');
-  } else {
-    testOutput.innerHTML += '⚠️ Some tests failed. Check results above.\n';
-    showNotification(`${total - passed} tests failed`, 'error');
-  }
-}
-
-function testRankingLogic() {
-  // Test that higher percentiles result in better (lower) ranks
-  const mockData = {
-    percentile: 0.99, // Top 1%
-    worldTotal: 1000000
-  };
-
-  const rank = Math.round(mockData.worldTotal * (1 - mockData.percentile));
-  const expectedRank = 10000; // Should be around rank 10,000 out of 1M
-
-  return {
-    name: "Ranking Logic",
-    passed: rank === expectedRank,
-    details: `Rank ${rank} for top 1% of 1M people`,
-    error: rank !== expectedRank ? `Expected ${expectedRank}, got ${rank}` : null
-  };
-}
-
-function testCacheSystem() {
-  const testData = { test: 'value', timestamp: Date.now() };
-
-  try {
-    localStorage.setItem('test_cache', JSON.stringify(testData));
-    const retrieved = JSON.parse(localStorage.getItem('test_cache'));
-    localStorage.removeItem('test_cache');
-
-    return {
-      name: "Cache System",
-      passed: retrieved.test === 'value',
-      details: "Local storage read/write successful"
-    };
-  } catch (e) {
-    return {
-      name: "Cache System",
-      passed: false,
-      error: e.message
-    };
-  }
-}
-
-function testCalculationAccuracy() {
-  // Test wealth percentile calculation
-  const netWorth = 100000;
-  const percentile = wealthPercentile(netWorth, 0, 0, 0);
-  const expectedRange = [0.85, 0.95]; // Should be in this range
-
-  return {
-    name: "Calculation Accuracy",
-    passed: percentile >= expectedRange[0] && percentile <= expectedRange[1],
-    details: `Wealth percentile ${(percentile * 100).toFixed(1)}% for $${netWorth}`,
-    error: percentile < expectedRange[0] || percentile > expectedRange[1] ?
-           `Percentile ${percentile} outside expected range` : null
-  };
-}
-
-function testEdgeCases() {
-  // Test extreme values
-  const extremeWealth = wealthPercentile(0, 0, 0, 1000000); // Heavy debt
-  const extremeAge = agePercentile(150); // Impossible age
-
-  return {
-    name: "Edge Cases",
-    passed: extremeWealth >= 0 && extremeWealth <= 1 && extremeAge >= 0 && extremeAge <= 1,
-    details: `Extreme debt: ${(extremeWealth * 100).toFixed(1)}%, Extreme age: ${(extremeAge * 100).toFixed(1)}%`
-  };
-}
-
-function testVisualizationUpdates() {
-  // Test that visualization elements exist
-  const vizElements = ['populationViz', 'wealthChart', 'comparisonCharts', 'funFacts'];
-  const exists = vizElements.every(id => document.getElementById(id) !== null);
-
-  return {
-    name: "Visualization Elements",
-    passed: exists,
-    details: `All ${vizElements.length} visualization containers found`
-  };
-}
-
-function testDataValidation() {
-  // Test input validation
-  const validCountry = canonicalCountry('South Korea');
-  const invalidCountry = canonicalCountry('');
-
-  return {
-    name: "Data Validation",
-    passed: validCountry === 'South Korea' && invalidCountry === 'Other',
-    details: `Valid: '${validCountry}', Invalid: '${invalidCountry}'`
-  };
-}
 
 // =======================
 // Population System (Same as before but enhanced)
@@ -741,27 +500,11 @@ function updateWorldPopulation() {
   const birthsToday = Math.floor(secondsSinceMidnight * birthsPerSecond);
   const deathsToday = Math.floor(secondsSinceMidnight * deathsPerSecond);
 
-  const continentalGrowthRates = {
-    asia: 0.50,
-    africa: 0.30,
-    americas: 0.12,
-    europe: 0.08
-  };
-
-  const totalGrowthToday = Math.floor(secondsSinceMidnight * (birthsPerSecond - deathsPerSecond));
-  const asiaGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.asia);
-  const africaGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.africa);
-  const americasGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.americas);
-  const europeGrowthToday = Math.floor(totalGrowthToday * continentalGrowthRates.europe);
-
   const popElement = document.getElementById('worldPopulation');
   const growthElement = document.getElementById('populationGrowth');
   const birthsElement = document.getElementById('birthsToday');
   const deathsElement = document.getElementById('deathsToday');
-  const asiaElement = document.getElementById('asiaGrowth');
-  const africaElement = document.getElementById('africaGrowth');
-  const americasElement = document.getElementById('americasGrowth');
-  const europeElement = document.getElementById('europeGrowth');
+  const headerPopElement = document.getElementById('headerPopulation');
 
   if (popElement) {
     popElement.textContent = WORLD_TOTAL.toLocaleString('en-US');
@@ -777,6 +520,10 @@ function updateWorldPopulation() {
     }
   }
 
+  if (headerPopElement) {
+    headerPopElement.textContent = `${(WORLD_TOTAL / 1000000000).toFixed(2)} billion`;
+  }
+
   if (growthElement) {
     growthElement.textContent = populationIncrease > 0 ? `+${populationIncrease.toLocaleString('en-US')}` : '+0';
     growthElement.style.color = populationIncrease > 0 ? '#22c55e' : 'var(--muted)';
@@ -784,48 +531,198 @@ function updateWorldPopulation() {
 
   if (birthsElement) birthsElement.textContent = `+${birthsToday.toLocaleString('en-US')}`;
   if (deathsElement) deathsElement.textContent = `+${deathsToday.toLocaleString('en-US')}`;
-  if (asiaElement) asiaElement.textContent = `+${asiaGrowthToday.toLocaleString('en-US')}`;
-  if (africaElement) africaElement.textContent = `+${africaGrowthToday.toLocaleString('en-US')}`;
-  if (americasElement) americasElement.textContent = `+${americasGrowthToday.toLocaleString('en-US')}`;
-  if (europeElement) europeElement.textContent = `+${europeGrowthToday.toLocaleString('en-US')}`;
+
+  // Update any existing ranking if shown
+  if (window.__lastResult) {
+    const rank = Math.round(WORLD_TOTAL * (1 - window.__lastResult.composite_percentile));
+    const rankElement = document.querySelector('.big b[style*="color:var(--accent)"]');
+    if (rankElement) {
+      rankElement.textContent = `#${fmtInt(rank)}`;
+    }
+  }
 }
 
 // =======================
-// Country Data (Same as before)
+// Country Data (Updated from GitHub CSV)
 // =======================
-const COUNTRY_POP = {
-  "India": 1429000000, "China": 1412000000, "United States": 334000000, "Indonesia": 276000000,
-  "Pakistan": 240000000, "Nigeria": 223000000, "Brazil": 203000000, "Bangladesh": 172000000,
-  "Russia": 146000000, "Mexico": 128000000, "Ethiopia": 126000000, "Japan": 123000000,
-  "Philippines": 117000000, "Egypt": 112000000, "DR Congo": 102000000, "Vietnam": 100000000,
-  "Turkey": 85000000, "Iran": 86000000, "Germany": 84000000, "Thailand": 70000000,
-  "United Kingdom": 67000000, "France": 65000000, "Tanzania": 67000000, "South Africa": 60000000,
-  "Italy": 59000000, "Kenya": 56000000, "Myanmar": 55000000, "South Korea": 52000000,
-  "Colombia": 52000000, "Spain": 48000000, "Argentina": 46000000, "Algeria": 45000000,
-  "Iraq": 45000000, "Afghanistan": 41000000, "Saudi Arabia": 36000000, "Uzbekistan": 36000000,
-  "Ukraine": 36000000, "Morocco": 37000000, "Poland": 38000000, "Canada": 40000000,
-  "Malaysia": 34000000, "Angola": 36000000, "Ghana": 33000000, "Mozambique": 33000000,
-  "Yemen": 34000000, "Nepal": 30000000, "Australia": 26000000, "North Korea": 26000000,
-  "Taiwan": 24000000, "Netherlands": 18000000, "Romania": 19000000, "Belgium": 11700000,
-  "Greece": 10400000, "Czechia": 10700000, "Portugal": 10300000, "Sweden": 10500000,
-  "Hungary": 9600000, "Austria": 9100000, "Switzerland": 8800000, "Israel": 9800000,
-  "Denmark": 5900000, "Finland": 5600000, "Norway": 5500000, "Ireland": 5100000,
-  "New Zealand": 5200000, "Singapore": 5900000, "Hong Kong": 7500000
+const COUNTRY_RANK_DATA = {
+  "Switzerland": {rank: 1, gdp: 878.3, gdp_per_capita: 99398, population: 8.8},
+  "Japan": {rank: 2, gdp: 4264.6, gdp_per_capita: 34017, population: 125.4},
+  "United States": {rank: 3, gdp: 27400.0, gdp_per_capita: 82034, population: 334.2},
+  "Germany": {rank: 4, gdp: 4263.2, gdp_per_capita: 50794, population: 84.0},
+  "United Kingdom": {rank: 5, gdp: 3130.7, gdp_per_capita: 46125, population: 67.9},
+  "Singapore": {rank: 6, gdp: 404.0, gdp_per_capita: 65233, population: 6.2},
+  "Canada": {rank: 7, gdp: 2090.0, gdp_per_capita: 54166, population: 38.6},
+  "France": {rank: 8, gdp: 2940.0, gdp_per_capita: 43659, population: 67.3},
+  "Netherlands": {rank: 9, gdp: 1013.6, gdp_per_capita: 57101, population: 17.8},
+  "South Korea": {rank: 10, gdp: 1813.0, gdp_per_capita: 35196, population: 51.5},
+  "Sweden": {rank: 11, gdp: 635.7, gdp_per_capita: 60239, population: 10.6},
+  "Norway": {rank: 12, gdp: 482.2, gdp_per_capita: 89154, population: 5.4},
+  "Australia": {rank: 13, gdp: 1553.0, gdp_per_capita: 59934, population: 25.9},
+  "Denmark": {rank: 14, gdp: 395.0, gdp_per_capita: 67218, population: 5.9},
+  "Israel": {rank: 15, gdp: 481.6, gdp_per_capita: 52170, population: 9.2},
+  "Finland": {rank: 16, gdp: 300.2, gdp_per_capita: 54327, population: 5.5},
+  "Austria": {rank: 17, gdp: 479.8, gdp_per_capita: 53268, population: 9.0},
+  "Belgium": {rank: 18, gdp: 594.4, gdp_per_capita: 51247, population: 11.6},
+  "New Zealand": {rank: 19, gdp: 249.9, gdp_per_capita: 48781, population: 5.1},
+  "Ireland": {rank: 20, gdp: 499.0, gdp_per_capita: 99014, population: 5.0},
+  "Luxembourg": {rank: 21, gdp: 86.6, gdp_per_capita: 132372, population: 0.654},
+  "Iceland": {rank: 22, gdp: 28.8, gdp_per_capita: 73784, population: 0.394},
+  "Italy": {rank: 23, gdp: 2107.7, gdp_per_capita: 35551, population: 59.3},
+  "Spain": {rank: 24, gdp: 1394.1, gdp_per_capita: 29565, population: 47.2},
+  "Estonia": {rank: 25, gdp: 38.6, gdp_per_capita: 29481, population: 1.3},
+  "Czech Republic": {rank: 26, gdp: 295.7, gdp_per_capita: 27681, population: 10.7},
+  "Slovenia": {rank: 27, gdp: 63.6, gdp_per_capita: 30693, population: 2.1},
+  "Taiwan": {rank: 28, gdp: 790.7, gdp_per_capita: 33565, population: 23.6},
+  "Portugal": {rank: 29, gdp: 253.0, gdp_per_capita: 24252, population: 10.4},
+  "Poland": {rank: 30, gdp: 688.2, gdp_per_capita: 18341, population: 37.5},
+  "Lithuania": {rank: 31, gdp: 71.0, gdp_per_capita: 26024, population: 2.7},
+  "Slovakia": {rank: 32, gdp: 118.0, gdp_per_capita: 21694, population: 5.4},
+  "Latvia": {rank: 33, gdp: 40.9, gdp_per_capita: 21685, population: 1.9},
+  "Cyprus": {rank: 34, gdp: 32.2, gdp_per_capita: 36335, population: 0.896},
+  "Chile": {rank: 35, gdp: 317.1, gdp_per_capita: 16265, population: 19.5},
+  "Russia": {rank: 36, gdp: 2240.4, gdp_per_capita: 15345, population: 146.0},
+  "Greece": {rank: 37, gdp: 219.1, gdp_per_capita: 20821, population: 10.5},
+  "Uruguay": {rank: 38, gdp: 64.0, gdp_per_capita: 18397, population: 3.5},
+  "Hungary": {rank: 39, gdp: 178.8, gdp_per_capita: 18728, population: 9.5},
+  "China": {rank: 40, gdp: 17700.9, gdp_per_capita: 12541, population: 1412.0},
+  "Turkey": {rank: 41, gdp: 819.0, gdp_per_capita: 9661, population: 84.8},
+  "Costa Rica": {rank: 42, gdp: 68.4, gdp_per_capita: 13339, population: 5.1},
+  "Malaysia": {rank: 43, gdp: 432.2, gdp_per_capita: 13315, population: 32.5},
+  "Panama": {rank: 44, gdp: 75.5, gdp_per_capita: 17398, population: 4.3},
+  "Romania": {rank: 45, gdp: 284.1, gdp_per_capita: 14858, population: 19.1},
+  "Croatia": {rank: 46, gdp: 70.2, gdp_per_capita: 17685, population: 4.0},
+  "Argentina": {rank: 47, gdp: 489.0, gdp_per_capita: 10729, population: 45.6},
+  "Brazil": {rank: 48, gdp: 2055.5, gdp_per_capita: 9638, population: 215.3},
+  "Montenegro": {rank: 49, gdp: 6.2, gdp_per_capita: 9929, population: 0.628},
+  "Bulgaria": {rank: 50, gdp: 84.1, gdp_per_capita: 12221, population: 6.9},
+  "Mexico": {rank: 51, gdp: 1293.0, gdp_per_capita: 10045, population: 128.9},
+  "Thailand": {rank: 52, gdp: 534.8, gdp_per_capita: 7607, population: 70.2},
+  "Serbia": {rank: 53, gdp: 63.1, gdp_per_capita: 9230, population: 6.8},
+  "South Africa": {rank: 54, gdp: 419.0, gdp_per_capita: 7055, population: 59.4},
+  "Colombia": {rank: 55, gdp: 343.6, gdp_per_capita: 6687, population: 51.4},
+  "Peru": {rank: 56, gdp: 242.6, gdp_per_capita: 7126, population: 33.0},
+  "India": {rank: 57, gdp: 3737.9, gdp_per_capita: 2612, population: 1430.0},
+  "Indonesia": {rank: 58, gdp: 1319.1, gdp_per_capita: 4786, population: 275.5},
+  "Ukraine": {rank: 59, gdp: 170.0, gdp_per_capita: 4830, population: 36.7},
+  "Nigeria": {rank: 60, gdp: 440.8, gdp_per_capita: 2066, population: 223.8}
 };
+
+// Extract country population data for compatibility
+const COUNTRY_POP = {};
+Object.keys(COUNTRY_RANK_DATA).forEach(country => {
+  COUNTRY_POP[country] = COUNTRY_RANK_DATA[country].population * 1000000; // Convert to actual population
+});
+
+// =======================
+// Wealth Ranking Data (from GitHub CSV)
+// =======================
+const WEALTH_RANK_DATA = [
+  {percentile: 1, netWorth: 1080000, income: 200000},
+  {percentile: 2, netWorth: 900000, income: 150000},
+  {percentile: 3, netWorth: 750000, income: 120000},
+  {percentile: 4, netWorth: 650000, income: 100000},
+  {percentile: 5, netWorth: 580000, income: 90000},
+  {percentile: 10, netWorth: 400000, income: 70000},
+  {percentile: 15, netWorth: 300000, income: 55000},
+  {percentile: 20, netWorth: 250000, income: 45000},
+  {percentile: 25, netWorth: 200000, income: 40000},
+  {percentile: 30, netWorth: 150000, income: 35000},
+  {percentile: 35, netWorth: 120000, income: 30000},
+  {percentile: 40, netWorth: 90000, income: 25000},
+  {percentile: 45, netWorth: 70000, income: 22000},
+  {percentile: 50, netWorth: 50000, income: 20000},
+  {percentile: 55, netWorth: 35000, income: 18000},
+  {percentile: 60, netWorth: 25000, income: 15000},
+  {percentile: 65, netWorth: 18000, income: 12000},
+  {percentile: 70, netWorth: 12000, income: 10000},
+  {percentile: 75, netWorth: 8000, income: 8000},
+  {percentile: 80, netWorth: 5000, income: 6000},
+  {percentile: 85, netWorth: 3000, income: 4000},
+  {percentile: 90, netWorth: 1500, income: 2500},
+  {percentile: 95, netWorth: 500, income: 1000},
+  {percentile: 99, netWorth: 0, income: 0},
+  {percentile: 100, netWorth: 0, income: 0}
+];
 
 const COUNTRY_ALIASES = {
   "usa":"United States","us":"United States","u.s.":"United States","united states of america":"United States",
   "uk":"United Kingdom","great britain":"United Kingdom","britain":"United Kingdom",
   "korea":"South Korea","south korea":"South Korea","republic of korea":"South Korea",
-  "russian federation":"Russia","dr congo":"DR Congo","democratic republic of the congo":"DR Congo",
-  "czech republic":"Czechia"
+  "russian federation":"Russia","czechia":"Czech Republic","czech republic":"Czech Republic",
+  "roc":"Taiwan","republic of china":"Taiwan","chinese taipei":"Taiwan",
+  "holland":"Netherlands","the netherlands":"Netherlands",
+  "republic of ireland":"Ireland","eire":"Ireland",
+  "costa rica":"Costa Rica","bosnia":"Bosnia and Herzegovina",
+  "north macedonia":"Macedonia","fyrom":"Macedonia",
+  "slovak republic":"Slovakia","slovak":"Slovakia",
+  "serbian":"Serbia","srbija":"Serbia",
+  "deutschland":"Germany","german":"Germany",
+  "espana":"Spain","spanish":"Spain",
+  "france":"France","french":"France","república francesa":"France",
+  "italia":"Italy","italian":"Italy","repubblica italiana":"Italy",
+  "polska":"Poland","polish":"Poland","republic of poland":"Poland",
+  "österreich":"Austria","austrian":"Austria","republic of austria":"Austria",
+  "schweiz":"Switzerland","swiss":"Switzerland","suisse":"Switzerland","svizzera":"Switzerland",
+  "sverige":"Sweden","swedish":"Sweden","kingdom of sweden":"Sweden",
+  "norge":"Norway","norwegian":"Norway","kingdom of norway":"Norway",
+  "danmark":"Denmark","danish":"Denmark","kingdom of denmark":"Denmark",
+  "suomi":"Finland","finnish":"Finland","republic of finland":"Finland",
+  "slovenija":"Slovenia","slovene":"Slovenia","republic of slovenia":"Slovenia",
+  "hrvatska":"Croatia","croatian":"Croatia","republic of croatia":"Croatia",
+  "srbija":"Serbia","serbian":"Serbia","republic of serbia":"Serbia",
+  "crna gora":"Montenegro","montenegrin":"Montenegro",
+  "bulgária":"Bulgaria","bulgarian":"Bulgaria","republic of bulgaria":"Bulgaria",
+  "românia":"Romania","romanian":"Romania",
+  "украина":"Ukraine","ukrainian":"Ukraine",
+  "ελλάδα":"Greece","hellenic":"Greece","hellenic republic":"Greece",
+  "türkiye":"Turkey","turkish":"Turkey","republic of turkey":"Turkey",
+  "россия":"Russia","russian":"Russia","russian federation":"Russia",
+  "中国":"China","chinese":"China","people's republic of china":"China","prc":"China",
+  "日本":"Japan","japanese":"Japan","nippon":"Japan","nihon":"Japan",
+  "대한민국":"South Korea","한국":"South Korea","republic of korea":"South Korea",
+  "ประเทศไทย":"Thailand","thai":"Thailand","kingdom of thailand":"Thailand",
+  "malaysia":"Malaysia","malaysian":"Malaysia",
+  "singapore":"Singapore","singaporean":"Singapore","republic of singapore":"Singapore",
+  "indonesia":"Indonesia","indonesian":"Indonesia","republic of indonesia":"Indonesia",
+  "india":"India","indian":"India","republic of india":"India","bharat":"India",
+  "brasil":"Brazil","brazilian":"Brazil","federative republic of brazil":"Brazil",
+  "argentina":"Argentina","argentinian":"Argentina","argentine republic":"Argentina",
+  "méxico":"Mexico","mexican":"Mexico","united mexican states":"Mexico",
+  "colombia":"Colombia","colombian":"Colombia","republic of colombia":"Colombia",
+  "perú":"Peru","peruvian":"Peru","republic of peru":"Peru",
+  "chile":"Chile","chilean":"Chile","republic of chile":"Chile",
+  "uruguay":"Uruguay","uruguayan":"Uruguay","oriental republic of uruguay":"Uruguay",
+  "costa rica":"Costa Rica","costa rican":"Costa Rica","republic of costa rica":"Costa Rica",
+  "panamá":"Panama","panamanian":"Panama","republic of panama":"Panama",
+  "south africa":"South Africa","south african":"South Africa","republic of south africa":"South Africa",
+  "nigeria":"Nigeria","nigerian":"Nigeria","federal republic of nigeria":"Nigeria",
+  "australia":"Australia","australian":"Australia","commonwealth of australia":"Australia",
+  "new zealand":"New Zealand","new zealander":"New Zealand","kiwi":"New Zealand",
+  "canada":"Canada","canadian":"Canada",
+  "israel":"Israel","israeli":"Israel","state of israel":"Israel",
+  "luxembourg":"Luxembourg","luxembourgish":"Luxembourg","grand duchy of luxembourg":"Luxembourg",
+  "iceland":"Iceland","icelandic":"Iceland","republic of iceland":"Iceland",
+  "estonia":"Estonia","estonian":"Estonia","republic of estonia":"Estonia",
+  "latvia":"Latvia","latvian":"Latvia","republic of latvia":"Latvia",
+  "lithuania":"Lithuania","lithuanian":"Lithuania","republic of lithuania":"Lithuania",
+  "cyprus":"Cyprus","cypriot":"Cyprus","republic of cyprus":"Cyprus"
 };
 
-// Populate country datalist
+// Populate country datalist with ranked countries
 (() => {
   const dl = document.getElementById('countryList');
-  Object.keys(COUNTRY_POP).sort().forEach(c=>{
-    const o = document.createElement('option'); o.value = c; dl.appendChild(o);
+  // Sort countries by rank for better UX
+  const sortedCountries = Object.keys(COUNTRY_RANK_DATA)
+    .sort((a, b) => COUNTRY_RANK_DATA[a].rank - COUNTRY_RANK_DATA[b].rank);
+
+  sortedCountries.forEach(country => {
+    const option = document.createElement('option');
+    const rank = COUNTRY_RANK_DATA[country].rank;
+    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
+    option.value = country;
+    option.text = `${country} (Rank #${rank}, GDP/capita: $${gdpPerCapita.toLocaleString()})`;
+    dl.appendChild(option);
   });
 })();
 
@@ -897,22 +794,151 @@ function updateParentLabels() {
 }
 
 // =======================
+// Auto-calculation Functions
+// =======================
+function calculateLifeExpectancy(country, sex, income, education, health) {
+  let baseLifeExpectancy = 73; // World average
+
+  // Country-based life expectancy adjustments
+  if (COUNTRY_RANK_DATA[country]) {
+    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
+    if (gdpPerCapita >= 80000) baseLifeExpectancy = 83;
+    else if (gdpPerCapita >= 60000) baseLifeExpectancy = 81;
+    else if (gdpPerCapita >= 40000) baseLifeExpectancy = 79;
+    else if (gdpPerCapita >= 25000) baseLifeExpectancy = 77;
+    else if (gdpPerCapita >= 15000) baseLifeExpectancy = 75;
+    else if (gdpPerCapita >= 10000) baseLifeExpectancy = 73;
+    else baseLifeExpectancy = 70;
+  }
+
+  // Gender adjustment
+  if (sex === 'female') baseLifeExpectancy += 5;
+  else if (sex === 'male') baseLifeExpectancy += 0;
+
+  // Income adjustment
+  if (income >= 100000) baseLifeExpectancy += 3;
+  else if (income >= 50000) baseLifeExpectancy += 2;
+  else if (income >= 25000) baseLifeExpectancy += 1;
+  else if (income < 10000) baseLifeExpectancy -= 2;
+
+  // Education adjustment
+  switch(education) {
+    case 'doctorate': baseLifeExpectancy += 4; break;
+    case 'master': baseLifeExpectancy += 3; break;
+    case 'bachelor': baseLifeExpectancy += 2; break;
+    case 'somecollege': baseLifeExpectancy += 1; break;
+    case 'hs': baseLifeExpectancy += 0; break;
+  }
+
+  // Health adjustment
+  switch(health) {
+    case 'excellent': baseLifeExpectancy += 5; break;
+    case 'good': baseLifeExpectancy += 2; break;
+    case 'fair': baseLifeExpectancy -= 2; break;
+    case 'poor': baseLifeExpectancy -= 5; break;
+  }
+
+  return Math.max(50, Math.min(120, Math.round(baseLifeExpectancy)));
+}
+
+function calculateHappiness(country, income, education, health, netWorth) {
+  let baseHappiness = 5.4; // World average
+
+  // Country-based happiness adjustments
+  if (COUNTRY_RANK_DATA[country]) {
+    const rank = COUNTRY_RANK_DATA[country].rank;
+    if (rank <= 10) baseHappiness += 2.0;
+    else if (rank <= 20) baseHappiness += 1.5;
+    else if (rank <= 30) baseHappiness += 1.0;
+    else if (rank <= 40) baseHappiness += 0.5;
+    else if (rank >= 50) baseHappiness -= 0.5;
+  }
+
+  // Income adjustment (diminishing returns)
+  if (income >= 100000) baseHappiness += 1.5;
+  else if (income >= 75000) baseHappiness += 1.2;
+  else if (income >= 50000) baseHappiness += 1.0;
+  else if (income >= 30000) baseHappiness += 0.7;
+  else if (income >= 15000) baseHappiness += 0.3;
+  else if (income < 5000) baseHappiness -= 1.0;
+
+  // Net worth adjustment
+  if (netWorth >= 500000) baseHappiness += 1.0;
+  else if (netWorth >= 100000) baseHappiness += 0.7;
+  else if (netWorth >= 50000) baseHappiness += 0.5;
+  else if (netWorth >= 10000) baseHappiness += 0.2;
+  else if (netWorth < 0) baseHappiness -= 0.8;
+
+  // Education adjustment
+  switch(education) {
+    case 'doctorate': baseHappiness += 0.8; break;
+    case 'master': baseHappiness += 0.6; break;
+    case 'bachelor': baseHappiness += 0.4; break;
+    case 'somecollege': baseHappiness += 0.2; break;
+  }
+
+  // Health adjustment
+  switch(health) {
+    case 'excellent': baseHappiness += 1.5; break;
+    case 'good': baseHappiness += 0.8; break;
+    case 'fair': baseHappiness -= 0.5; break;
+    case 'poor': baseHappiness -= 1.5; break;
+  }
+
+  return Math.max(1.0, Math.min(10.0, Math.round(baseHappiness * 10) / 10));
+}
+
+function updateAutoCalculatedFields() {
+  const country = canonicalCountry(document.getElementById('country').value);
+  const sex = document.getElementById('sex').value;
+  const income = +document.getElementById('income').value || 0;
+  const education = document.getElementById('education').value;
+  const health = document.getElementById('health').value;
+  const cash = +document.getElementById('cash').value || 0;
+  const realEstate = +document.getElementById('realEstate').value || 0;
+  const stocks = +document.getElementById('stocks').value || 0;
+  const debt = +document.getElementById('debt').value || 0;
+  const netWorth = cash + realEstate + stocks - debt;
+
+  // Update life expectancy if not manually overridden
+  const lifeExpectancyManual = document.getElementById('lifeExpectancyManual').checked;
+  if (!lifeExpectancyManual) {
+    const lifeExpectancy = calculateLifeExpectancy(country, sex, income, education, health);
+    document.getElementById('lifeExpectancy').value = lifeExpectancy;
+  }
+
+  // Update happiness if not manually overridden
+  const happinessManual = document.getElementById('happinessManual').checked;
+  if (!happinessManual) {
+    const happiness = calculateHappiness(country, income, education, health, netWorth);
+    document.getElementById('happiness').value = happiness;
+  }
+}
+
+// =======================
 // Percentile Calculation Functions (Enhanced)
 // =======================
 function countryCDFPercentile(country){
-  const countryBonus = {
-    'South Korea': 0.82, 'Japan': 0.85, 'United States': 0.88, 'Germany': 0.87,
-    'United Kingdom': 0.86, 'France': 0.84, 'Canada': 0.85, 'Australia': 0.86,
-    'Netherlands': 0.88, 'Switzerland': 0.92, 'Norway': 0.93, 'Denmark': 0.91,
-    'Sweden': 0.90, 'Finland': 0.89, 'Singapore': 0.89, 'Hong Kong': 0.87,
-    'Taiwan': 0.80, 'Israel': 0.83, 'China': 0.65, 'India': 0.45,
-    'Brazil': 0.55, 'Russia': 0.60, 'Mexico': 0.50, 'Indonesia': 0.40
-  };
+  // Use rank-based percentile from CSV data
+  if(COUNTRY_RANK_DATA[country]){
+    const rank = COUNTRY_RANK_DATA[country].rank;
+    const totalCountries = Object.keys(COUNTRY_RANK_DATA).length;
+    // Convert rank to percentile (lower rank = higher percentile)
+    const percentile = (totalCountries - rank + 1) / totalCountries;
 
-  if(countryBonus[country] !== undefined){
-    return countryBonus[country];
+    // Apply GDP per capita bonus for more accurate ranking
+    const gdpPerCapita = COUNTRY_RANK_DATA[country].gdp_per_capita;
+    let bonus = 0;
+    if(gdpPerCapita >= 80000) bonus = 0.15;
+    else if(gdpPerCapita >= 60000) bonus = 0.12;
+    else if(gdpPerCapita >= 40000) bonus = 0.08;
+    else if(gdpPerCapita >= 25000) bonus = 0.05;
+    else if(gdpPerCapita >= 15000) bonus = 0.02;
+
+    return clamp(percentile + bonus, 0.2, 0.95);
   }
 
+  // Fallback for countries not in CSV data
   const sumKnown = Object.values(COUNTRY_POP).reduce((a,b)=>a+b,0);
   const others = Math.max(0, WORLD_TOTAL - sumKnown);
   const entries = Object.entries(COUNTRY_POP).concat([['Other', others]])
@@ -948,45 +974,37 @@ function agePercentile(age){
 
 function wealthPercentile(cash, realEstate, stocks, debt){
   const netWorth = (+cash||0) + (+realEstate||0) + (+stocks||0) - (+debt||0);
-  let p;
-  if(netWorth < -100_000) p = 0.01;
-  else if(netWorth < -50_000) p = 0.05;
-  else if(netWorth < -10_000) p = 0.10;
-  else if(netWorth < 0) p = 0.20;
-  else if(netWorth < 1_000) p = 0.40;
-  else if(netWorth < 5_000) p = 0.55;
-  else if(netWorth < 10_000) p = 0.65;
-  else if(netWorth < 25_000) p = 0.75;
-  else if(netWorth < 50_000) p = 0.82;
-  else if(netWorth < 100_000) p = 0.88;
-  else if(netWorth < 200_000) p = 0.93;
-  else if(netWorth < 300_000) p = 0.96;
-  else if(netWorth < 400_000) p = 0.975;
-  else if(netWorth < 500_000) p = 0.985;
-  else if(netWorth < 1_000_000) p = 0.99;
-  else if(netWorth < 5_000_000) p = 0.997;
-  else if(netWorth < 10_000_000) p = 0.999;
-  else p = 0.9995;
-  return clamp(p, 0.001, 0.999);
+
+  // Use the detailed wealth ranking data from CSV
+  for(let i = 0; i < WEALTH_RANK_DATA.length; i++){
+    const entry = WEALTH_RANK_DATA[i];
+    if(netWorth >= entry.netWorth){
+      // Convert percentile to percentile from bottom (higher percentile = better)
+      const percentile = (100 - entry.percentile) / 100;
+      return clamp(percentile, 0.001, 0.999);
+    }
+  }
+
+  // Fallback for extremely low values
+  return 0.001;
 }
 
 function incomePercentile(inc){
   const x = +inc;
   if(isNaN(x)) return 0.5;
-  if(x < 1000) return 0.10;
-  if(x < 3000) return 0.20;
-  if(x < 5000) return 0.30;
-  if(x < 10000) return 0.45;
-  if(x < 15000) return 0.60;
-  if(x < 25000) return 0.72;
-  if(x < 40000) return 0.80;
-  if(x < 60000) return 0.86;
-  if(x < 80000) return 0.91;
-  if(x < 100000) return 0.95;
-  if(x < 150000) return 0.975;
-  if(x < 250000) return 0.99;
-  if(x < 500000) return 0.997;
-  return 0.999;
+
+  // Use the detailed wealth ranking data from CSV for income as well
+  for(let i = 0; i < WEALTH_RANK_DATA.length; i++){
+    const entry = WEALTH_RANK_DATA[i];
+    if(x >= entry.income){
+      // Convert percentile to percentile from bottom (higher percentile = better)
+      const percentile = (100 - entry.percentile) / 100;
+      return clamp(percentile, 0.001, 0.999);
+    }
+  }
+
+  // Fallback for extremely low values
+  return 0.001;
 }
 
 function healthPercentile(h){
@@ -1415,9 +1433,24 @@ function compute(){
   // Update main result display
   const res = document.getElementById('result');
   const bmiTxt = (bmi && isFinite(bmi)) ? bmi.toFixed(1) : 'N/A';
+
+  // Get country rank and economic data if available
+  let countryInfo = '';
+  if (COUNTRY_RANK_DATA[country]) {
+    const countryData = COUNTRY_RANK_DATA[country];
+    countryInfo = `
+      <div style="margin:6px 0; padding:6px 8px; background:#0e141b; border-radius:6px; font-size:11px; border-left:3px solid var(--accent)">
+        📊 <b>${country}</b> Country Rank: <b>#${countryData.rank}/60</b> ·
+        GDP per capita: <b>$${countryData.gdp_per_capita.toLocaleString()}</b> ·
+        Population: <b>${countryData.population}M</b>
+      </div>
+    `;
+  }
+
   res.innerHTML = `
     <div class="big">🏆 Global Rank: <b style="color:var(--accent)">#${fmtInt(rank)}</b> out of ~${fmtInt(WORLD_TOTAL)} people</div>
     <div style="margin:8px 0; font-size:16px">You're in the top <b style="color:var(--green)">${pctText}</b> globally!</div>
+    ${countryInfo}
     <div class="small" style="margin-top:10px; line-height:1.3; padding:8px; background:#1a202c; border-radius:8px">
       🌍 <b>${country}</b> · ${sex === 'male' ? '👨' : sex === 'female' ? '👩' : '🧑'} <b>${sex}</b> · 🎂 <b>${age}</b> years ·
       💰 Net Worth: <b>$${fmtInt(netWorth)}</b> · 💵 Income: <b>$${fmtInt(income)}</b> · 📏 BMI: <b>${bmiTxt}</b>
@@ -1449,9 +1482,7 @@ function compute(){
     weights: W, composite_percentile: P, world_total: WORLD_TOTAL, rank
   };
 
-  // Auto-save after calculation
-  saveToCache();
-  showNotification('Ranking calculated and auto-saved!', 'success');
+  showNotification('Global ranking calculated successfully!', 'success');
 }
 
 // =======================
@@ -1459,9 +1490,58 @@ function compute(){
 // =======================
 function setupEventListeners() {
   // Birth date listeners for real-time age update
-  document.getElementById('birthYear').addEventListener('input', updateAge);
-  document.getElementById('birthMonth').addEventListener('change', updateAge);
-  document.getElementById('birthDay').addEventListener('input', updateAge);
+  document.getElementById('birthYear').addEventListener('input', () => {
+    updateAge();
+    updateAutoCalculatedFields();
+  });
+  document.getElementById('birthMonth').addEventListener('change', () => {
+    updateAge();
+    updateAutoCalculatedFields();
+  });
+  document.getElementById('birthDay').addEventListener('input', () => {
+    updateAge();
+    updateAutoCalculatedFields();
+  });
+
+  // Auto-calculation triggers
+  document.getElementById('country').addEventListener('input', updateAutoCalculatedFields);
+  document.getElementById('sex').addEventListener('change', updateAutoCalculatedFields);
+  document.getElementById('income').addEventListener('input', updateAutoCalculatedFields);
+  document.getElementById('education').addEventListener('change', updateAutoCalculatedFields);
+  document.getElementById('health').addEventListener('change', updateAutoCalculatedFields);
+  document.getElementById('cash').addEventListener('input', updateAutoCalculatedFields);
+  document.getElementById('realEstate').addEventListener('input', updateAutoCalculatedFields);
+  document.getElementById('stocks').addEventListener('input', updateAutoCalculatedFields);
+  document.getElementById('debt').addEventListener('input', updateAutoCalculatedFields);
+
+  // Manual override toggles
+  document.getElementById('lifeExpectancyManual').addEventListener('change', function() {
+    const input = document.getElementById('lifeExpectancy');
+    if (this.checked) {
+      input.readonly = false;
+      input.style.background = '#0e141b';
+      input.style.color = 'var(--fg)';
+    } else {
+      input.readonly = true;
+      input.style.background = '#0b1218';
+      input.style.color = 'var(--accent)';
+      updateAutoCalculatedFields();
+    }
+  });
+
+  document.getElementById('happinessManual').addEventListener('change', function() {
+    const input = document.getElementById('happiness');
+    if (this.checked) {
+      input.readonly = false;
+      input.style.background = '#0e141b';
+      input.style.color = 'var(--fg)';
+    } else {
+      input.readonly = true;
+      input.style.background = '#0b1218';
+      input.style.color = 'var(--accent)';
+      updateAutoCalculatedFields();
+    }
+  });
 
   // Units toggle
   document.getElementById('units').addEventListener('change', updateUnitsDisplay);
@@ -1470,127 +1550,11 @@ function setupEventListeners() {
   document.getElementById('fatherStatus').addEventListener('change', updateParentLabels);
   document.getElementById('motherStatus').addEventListener('change', updateParentLabels);
 
-  // Main buttons
+  // Main button
   document.getElementById('btnCalc').addEventListener('click', compute);
-
-  document.getElementById('btnReset').addEventListener('click', ()=>{
-    if(confirm('This will clear ALL data including saved cache. Continue?')){
-      resetAllData();
-      clearCache();
-      showNotification('All data reset successfully', 'info');
-    }
-  });
-
-  document.getElementById('btnTest').addEventListener('click', runComprehensiveTests);
-
-  // Cache management buttons
-  document.getElementById('btnLoadCache').addEventListener('click', loadFromCache);
-  document.getElementById('btnClearCache').addEventListener('click', ()=>{
-    if(confirm('Clear all saved data?')){
-      clearCache();
-    }
-  });
-
-  document.getElementById('btnExportData').addEventListener('click', exportAllData);
-
-  // Result buttons
-  document.getElementById('btnCopy').addEventListener('click', copyResult);
-  document.getElementById('btnDownload').addEventListener('click', downloadResult);
-  document.getElementById('btnShare').addEventListener('click', shareResult);
 }
 
-function resetAllData(){
-  ['country','birthYear','birthDay','cash','realEstate','stocks','debt','income','children','lifeExpectancy','happiness','fatherAge','motherAge','university','heightCm','weightKg','heightFt','heightIn','weightLb'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('sex').value='male';
-  document.getElementById('birthMonth').value='';
-  document.getElementById('health').value='good';
-  document.getElementById('units').value='metric';
-  document.getElementById('education').value='hs';
-  document.getElementById('race').value='na';
-  document.getElementById('fatherStatus').value='alive';
-  document.getElementById('motherStatus').value='alive';
-  updateAge();
-  updateUnitsDisplay();
-  updateParentLabels();
-  document.getElementById('result').innerHTML='Enter inputs and click <span class="kbd">Calculate</span>.';
 
-  // Hide all visualizations
-  ['populationViz','wealthChart','comparisonCharts','funFacts','lifeTimeline','happinessViz','testResults'].forEach(id=>{
-    document.getElementById(id).style.display='none';
-  });
-}
-
-function exportAllData(){
-  const R = window.__lastResult;
-  if(!R){
-    showNotification('Please calculate first', 'error');
-    return;
-  }
-
-  const exportData = {
-    ...R,
-    exportDate: new Date().toISOString(),
-    version: VERSION
-  };
-
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `global_rank_ultimate_v${VERSION}_${new Date().toISOString().split('T')[0]}.json`;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-
-  showNotification('Data exported successfully', 'success');
-}
-
-function copyResult(){
-  const R = window.__lastResult;
-  if(!R){
-    showNotification('Please calculate first', 'error');
-    return;
-  }
-  const txt = `🏆 Global Rank: #${fmtInt(R.rank)} out of ${fmtInt(R.world_total)} people (top ${pct(R.composite_percentile)}%)\n` +
-              `📍 ${R.country} • ${R.sex} • ${R.age} years old\n` +
-              `💰 Net Worth: $${fmtInt(R.net_worth||0)} • Income: $${fmtInt(R.income||0)}\n` +
-              `📊 Calculated with Ultimate Global Ranking System v${VERSION}`;
-  navigator.clipboard.writeText(txt).then(()=>showNotification('Copied to clipboard!', 'success')).catch(()=>showNotification('Copy failed', 'error'));
-}
-
-function downloadResult(){
-  const R = window.__lastResult;
-  if(!R){
-    showNotification('Please calculate first', 'error');
-    return;
-  }
-  const blob = new Blob([JSON.stringify(R,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `my_global_rank_ultimate_v${VERSION}_result.json`;
-  document.body.appendChild(a); a.click();
-  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-  showNotification('Result downloaded', 'success');
-}
-
-function shareResult(){
-  const R = window.__lastResult;
-  if(!R){
-    showNotification('Please calculate first', 'error');
-    return;
-  }
-
-  if(navigator.share){
-    navigator.share({
-      title: 'My Global Ranking',
-      text: `I rank #${fmtInt(R.rank)} globally out of ${fmtInt(R.world_total)} people (top ${pct(R.composite_percentile)}%)! Check your ranking too.`,
-      url: window.location.href
-    }).then(()=>showNotification('Shared successfully!', 'success')).catch(()=>showNotification('Share cancelled', 'info'));
-  } else {
-    // Fallback to copy
-    copyResult();
-  }
-}
 
 // =======================
 // Initialization
@@ -1603,20 +1567,10 @@ function initialize() {
   // Setup event listeners
   setupEventListeners();
 
-  // Setup auto-save
-  setupAutoSave();
+  // Initialize auto-calculated fields
+  updateAutoCalculatedFields();
 
-  // Try to load cached data on startup
-  setTimeout(() => {
-    const hasCache = localStorage.getItem(CACHE_KEY);
-    if(hasCache){
-      updateCacheStatus('Saved data available - click "Load Saved Data" to restore');
-    } else {
-      updateCacheStatus('Auto-save enabled - data will be saved automatically');
-    }
-  }, 100);
-
-  showNotification(`Ultimate Global Ranking System v${VERSION} loaded!`, 'success');
+  showNotification('Global Human Ranking Calculator loaded! Enter your data to discover your world position.', 'success');
 }
 
 // Start the application
