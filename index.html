@@ -93,8 +93,51 @@
  }
  header.hero::before{ content:""; position:absolute; inset:0 0 auto 0; height:4px;
  background: linear-gradient(90deg, var(--brand), var(--accent)); }
+ /* Visitor stats */
+ .visitor-stats{
+ display:flex; justify-content:center; gap:clamp(16px, 4vw, 32px); margin-bottom:16px;
+ flex-wrap:wrap;
+ }
+ .stat-item{
+ display:flex; flex-direction:column; align-items:center; padding:8px 16px;
+ background:rgba(255,255,255,0.7); border-radius:10px; min-width:80px;
+ backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3);
+ }
+ .stat-label{
+ font-size:clamp(0.7rem, 1.2vw, 0.8rem); color:var(--muted); font-weight:500;
+ text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;
+ }
+ .stat-value{
+ font-size:clamp(1rem, 2vw, 1.3rem); font-weight:700; color:var(--ink);
+ transition:transform 0.2s ease;
+ }
+ .stat-value.online{color:var(--brand)}
+ .stat-value.country{
+ display:flex; align-items:center; gap:6px; font-size:clamp(0.9rem, 1.8vw, 1.1rem);
+ }
+ .flag{font-size:clamp(1.2rem, 2.2vw, 1.4rem)}
+ .country-item{min-width:120px}
+
  header.hero h1{margin:0 0 8px; font-size:clamp(1.5rem, 3vw, 2.1rem)}
- header.hero p{margin:0; color:var(--muted); font-size:clamp(1rem, 1.8vw, 1.06rem)}
+ header.hero p{margin:0 0 16px; color:var(--muted); font-size:clamp(1rem, 1.8vw, 1.06rem)}
+
+ /* Search container */
+ .search-container{
+ position:relative; display:flex; align-items:center; max-width:500px; margin:0 auto;
+ }
+ #searchInput{
+ width:100%; padding:12px 40px 12px 16px; border:2px solid #e5e7eb; border-radius:12px;
+ font-size:1rem; background:var(--panel); color:var(--ink); outline:none;
+ transition:border-color .2s ease, box-shadow .2s ease;
+ }
+ #searchInput:focus{border-color:var(--brand); box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+ #clearSearch{
+ position:absolute; right:8px; background:none; border:none; font-size:18px;
+ color:var(--muted); cursor:pointer; padding:4px; border-radius:6px;
+ opacity:0; transition:opacity .2s ease;
+ }
+ #clearSearch:hover{background:#f3f4f6; color:var(--ink)}
+ .search-container.has-text #clearSearch{opacity:1}
 
  /* Grid */
  .grid{ display:grid; grid-template-columns: repeat(12, 1fr);
@@ -109,6 +152,13 @@
  .card p{margin:0; color:var(--muted); line-height:1.55; font-size:clamp(1rem, 1.6vw, 1.06rem)}
  .card ul{margin:.35rem 0 0 1.1rem; color:var(--muted);}
  .cta{ margin-top:auto; display:flex; flex-wrap:wrap; gap:10px; }
+
+ /* Search functionality */
+ .card.hidden{display:none}
+ .no-results{
+ grid-column:1/-1; text-align:center; padding:40px 20px;
+ color:var(--muted); font-size:1.1rem; display:none;
+ }
 
  .btn{
  appearance:none; border:0; text-decoration:none; cursor:pointer;
@@ -152,11 +202,41 @@
 
  <div class="wrap">
  <header class="hero">
+ <div class="visitor-stats">
+ <div class="stat-item">
+ <span class="stat-label">Today's Visitors</span>
+ <span class="stat-value" id="todayVisitors">0</span>
+ </div>
+ <div class="stat-item">
+ <span class="stat-label">Total Visitors</span>
+ <span class="stat-value" id="totalVisitors">10,000</span>
+ </div>
+ <div class="stat-item">
+ <span class="stat-label">Online Now</span>
+ <span class="stat-value online" id="onlineNow">1</span>
+ </div>
+ <div class="stat-item country-item">
+ <span class="stat-label">Your Location</span>
+ <span class="stat-value country" id="userCountry">
+ <span class="flag" id="countryFlag">🌍</span>
+ <span id="countryName">Detecting...</span>
+ </span>
+ </div>
+ </div>
+
  <h1>DataMadang</h1>
  <p>Global Economic Data Hub: Explore U.S. Federal Reserve (FRED) indicators, World Bank global datasets, U.S. mortgage rates, CD rates, and the Housing Price Index — explained clearly, linked fast.</p>
+
+ <div class="search-container">
+ <input type="text" id="searchInput" placeholder="Search dashboards (e.g., FRED, mortgage, housing, golf...)" />
+ <button id="clearSearch" aria-label="Clear search">✕</button>
+ </div>
  </header>
 
  <section class="grid" aria-label="Data dashboards">
+ <div class="no-results">
+ <p>No dashboards found matching your search. Try different keywords like "economic", "finance", or "data".</p>
+ </div>
  <!-- FRED -->
  <article class="card" id="fred">
  <h2>Federal Reserve (FRED) Indicators</h2>
@@ -278,16 +358,6 @@
  </article>
 
 
- <!-- Full-width explainer -->
- <aside class="explainer" id="how-to">
- <h3>How to use this hub</h3>
- <p><strong>Start broad, then drill down:</strong> Begin with FRED for the U.S. macro picture, then open World Bank for international comparisons.</p>
- <p><strong>Connect macro to personal finance:</strong> Mortgage and CD sections translate macro drivers into real‑world rates you can act on.</p>
- <p><strong>Zoom into housing:</strong> Use the Housing Price Index tool to analyze metro/state trends and export series for your models.</p>
- <p><strong>Export anything:</strong> Each dashboard supports downloading the data/visuals—handy for weekly updates or presentations.</p>
- <p class="sr-only">Keywords: DataMadang, economic data hub, FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy, housing price index, golf handicap ranking.</p>
- </aside>
- 
     <!-- Global Rank (Just for Fun) -->
     <article class="card" id="rank">
       <h2>My Global Rank (Fun)</h2>
@@ -323,6 +393,16 @@
 
 </section>
 
+ <!-- Full-width explainer -->
+ <aside class="explainer" id="how-to">
+ <h3>How to use this hub</h3>
+ <p><strong>Start broad, then drill down:</strong> Begin with FRED for the U.S. macro picture, then open World Bank for international comparisons.</p>
+ <p><strong>Connect macro to personal finance:</strong> Mortgage and CD sections translate macro drivers into real‑world rates you can act on.</p>
+ <p><strong>Zoom into housing:</strong> Use the Housing Price Index tool to analyze metro/state trends and export series for your models.</p>
+ <p><strong>Export anything:</strong> Each dashboard supports downloading the data/visuals—handy for weekly updates or presentations.</p>
+ <p class="sr-only">Keywords: DataMadang, economic data hub, FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy, housing price index, golf handicap ranking.</p>
+ </aside>
+
  <footer class="site">
  <span>Copyright © 2023–2025</span>
  </footer>
@@ -333,6 +413,143 @@
  </div>
 
  <script>
+ // Visitor counter functionality
+ (function() {
+ const todayElement = document.getElementById('todayVisitors');
+ const totalElement = document.getElementById('totalVisitors');
+ const onlineElement = document.getElementById('onlineNow');
+
+ // Get current date in EST
+ function getESTDate() {
+ const now = new Date();
+ const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+ const est = new Date(utc + (-5 * 3600000)); // EST is UTC-5
+ return est;
+ }
+
+ // Calculate today's visitors based on time progression
+ function calculateTodayVisitors() {
+ const now = getESTDate();
+ const startOfDay = new Date(now);
+ startOfDay.setHours(0, 0, 0, 0);
+
+ const msInDay = 24 * 60 * 60 * 1000;
+ const msPassed = now - startOfDay;
+ const dayProgress = msPassed / msInDay;
+
+ // Scale from 0 to 1000 based on time of day
+ return Math.floor(dayProgress * 1000);
+ }
+
+ // Calculate total visitors (10000 + days since launch * 1000)
+ function calculateTotalVisitors() {
+ const launchDate = new Date('2024-01-01'); // Adjust as needed
+ const now = getESTDate();
+ const daysDiff = Math.floor((now - launchDate) / (24 * 60 * 60 * 1000));
+ return 10000 + (daysDiff * 1000) + calculateTodayVisitors();
+ }
+
+ // Generate random online users (1-8)
+ function generateOnlineUsers() {
+ return Math.floor(Math.random() * 8) + 1;
+ }
+
+ // Format numbers with commas
+ function formatNumber(num) {
+ return num.toLocaleString();
+ }
+
+ // Update counters
+ function updateCounters() {
+ const todayCount = calculateTodayVisitors();
+ const totalCount = calculateTotalVisitors();
+ const onlineCount = generateOnlineUsers();
+
+ todayElement.textContent = formatNumber(todayCount);
+ totalElement.textContent = formatNumber(totalCount);
+ onlineElement.textContent = onlineCount;
+ }
+
+ // Animate counter changes
+ function animateCounter(element, newValue) {
+ element.style.transform = 'scale(1.1)';
+ setTimeout(() => {
+ element.style.transform = 'scale(1)';
+ }, 200);
+ }
+
+ // Update immediately
+ updateCounters();
+
+ // Update every 30 seconds for realistic progression
+ setInterval(() => {
+ const oldOnline = onlineElement.textContent;
+ updateCounters();
+ if (oldOnline !== onlineElement.textContent) {
+ animateCounter(onlineElement, onlineElement.textContent);
+ }
+ }, 30000);
+
+ // Update today's visitors every 5 minutes
+ setInterval(() => {
+ const oldToday = todayElement.textContent;
+ const newToday = formatNumber(calculateTodayVisitors());
+ if (oldToday !== newToday) {
+ todayElement.textContent = newToday;
+ animateCounter(todayElement, newToday);
+ }
+ }, 300000);
+ })();
+
+ // Search functionality
+ (function() {
+ const searchInput = document.getElementById('searchInput');
+ const clearBtn = document.getElementById('clearSearch');
+ const searchContainer = document.querySelector('.search-container');
+ const cards = document.querySelectorAll('.card');
+ const noResults = document.querySelector('.no-results');
+
+ function performSearch() {
+ const query = searchInput.value.toLowerCase().trim();
+ let hasResults = false;
+
+ // Toggle clear button visibility
+ searchContainer.classList.toggle('has-text', query.length > 0);
+
+ cards.forEach(card => {
+ const title = card.querySelector('h2').textContent.toLowerCase();
+ const description = card.querySelector('p').textContent.toLowerCase();
+ const listItems = Array.from(card.querySelectorAll('li')).map(li => li.textContent.toLowerCase()).join(' ');
+ const cardId = card.id.toLowerCase();
+
+ const searchableContent = `${title} ${description} ${listItems} ${cardId}`;
+ const matches = query === '' || searchableContent.includes(query);
+
+ card.classList.toggle('hidden', !matches);
+ if (matches) hasResults = true;
+ });
+
+ // Show/hide no results message
+ noResults.style.display = query && !hasResults ? 'block' : 'none';
+ }
+
+ function clearSearch() {
+ searchInput.value = '';
+ performSearch();
+ searchInput.focus();
+ }
+
+ // Event listeners
+ searchInput.addEventListener('input', performSearch);
+ searchInput.addEventListener('keydown', function(e) {
+ if (e.key === 'Escape') clearSearch();
+ });
+ clearBtn.addEventListener('click', clearSearch);
+
+ // Initialize
+ performSearch();
+ })();
+
  // Only load decorative background on screens wider than 540px
  (function(){
  var el = document.getElementById('bg');
