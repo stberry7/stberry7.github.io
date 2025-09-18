@@ -20,7 +20,6 @@
     }
     .header h1{font-size:2.2rem;color:#2c3e50;margin-bottom:10px}
     .header p{font-size:1.05rem;color:#445;max-width:680px;margin:0 auto}
-    .actions { margin-top:14px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
 
     .dashboard-grid{
       display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -129,9 +128,6 @@
     <header class="header">
       <h1>🏦 US Certificate of Deposit (CD) Interest Rates</h1>
       <p>Real-time tracking of US CD interest rates powered by Federal Reserve Economic Data (FRED)</p>
-      <div class="actions">
-        <button class="chart-btn" id="downloadBtn" type="button">⬇️ Download this dashboard</button>
-      </div>
     </header>
 
     <div class="dashboard-grid">
@@ -225,21 +221,6 @@
   </div>
 
   <script>
-    // Helper: client-side download of the current HTML
-    function downloadThis(){
-      const blob = new Blob([document.documentElement.outerHTML], { type:'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'cd_dashboard.html';
-      document.body.appendChild(a);
-      a.click();
-      URL.revokeObjectURL(url);
-      a.remove();
-    }
-    document.addEventListener('DOMContentLoaded',()=>{
-      document.getElementById('downloadBtn').addEventListener('click', downloadThis);
-    });
 
     class CDRatesDashboard {
       constructor(){
@@ -263,17 +244,17 @@
         this.chart = null;
         this.currentChartView = 'daily';
 
-        // Use realistic current rates as immediate fallback
+        // Use realistic current rates as immediate fallback - updated with recent market rates
         this.fallbackData = {
-          '3m': { rate: '4.25', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() },
-          '6m': { rate: '4.35', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() },
-          '1y': { rate: '4.45', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() }
+          '3m': { rate: '1.55', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() },
+          '6m': { rate: '1.75', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() },
+          '1y': { rate: '2.05', date: new Date().toISOString().slice(0,10), lastUpdated: new Date().toISOString() }
         };
         
-        this.observations = { 
-          '3m': this.generateRealisticData(4.25), 
-          '6m': this.generateRealisticData(4.35), 
-          '1y': this.generateRealisticData(4.45) 
+        this.observations = {
+          '3m': this.generateRealisticData(1.55),
+          '6m': this.generateRealisticData(1.75),
+          '1y': this.generateRealisticData(2.05)
         };
         this.chartData = { daily:{}, monthly:{}, yearly:{} };
 
@@ -324,14 +305,29 @@
       // ---- WEB SCRAPING FETCHERS ----
       async loadFromFRED(){
         try {
-          // Try multiple sources for real-time CD rates
-          await Promise.all([
-            this.scrapeBankrateData(),
-            this.scrapeNerdWalletData(),
-            this.scrapeCDRatesFromFREDWeb()
-          ]);
+          // Load real data from FRED API
+          const series = Object.keys(this.dataSources.fred.seriesIds);
+          await Promise.all(series.map(async (term) => {
+            const seriesId = this.dataSources.fred.seriesIds[term];
+            try {
+              const latest = await this.fetchLatestObservation(seriesId);
+              const historical = await this.fetchObservations(seriesId, 60);
+
+              if (latest && latest.value && latest.value !== '.') {
+                this.fallbackData[term].rate = parseFloat(latest.value).toFixed(2);
+                this.fallbackData[term].date = latest.date;
+                this.fallbackData[term].lastUpdated = new Date().toISOString();
+              }
+
+              if (historical && historical.length > 0) {
+                this.observations[term] = historical;
+              }
+            } catch (err) {
+              console.warn(`Failed to load ${term} data from FRED:`, err);
+            }
+          }));
         } catch(err) {
-          console.warn('Web scraping failed, using fallback data:', err);
+          console.warn('FRED API failed, using fallback data:', err);
         }
       }
 
@@ -767,26 +763,26 @@
       // ---- BANK TABLE ----
       getBankRatesData(){
         return [
-          { institution:'United Fidelity Bank', apy:4.50, term:'1 year', minDeposit:'$500', type:'bank', isPromotional:false },
-          { institution:'Marcus by Goldman Sachs', apy:4.40, term:'6 months', minDeposit:'$500', type:'online', isPromotional:false },
-          { institution:'Marcus by Goldman Sachs', apy:4.20, term:'1 year', minDeposit:'$500', type:'online', isPromotional:false },
-          { institution:'Marcus by Goldman Sachs', apy:4.15, term:'7 months', minDeposit:'$500', type:'online', isPromotional:false },
-          { institution:'Discover Bank', apy:4.20, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'Discover Bank', apy:3.50, term:'6 months', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'Ally Bank', apy:3.90, term:'6 months', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'Ally Bank', apy:3.85, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'Ally Bank', apy:3.65, term:'18 months', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'Bread Savings', apy:4.35, term:'6 months', minDeposit:'$1,500', type:'online', isPromotional:false },
-          { institution:'E*TRADE Bank', apy:4.25, term:'6 months', minDeposit:'$1,000', type:'online', isPromotional:false },
-          { institution:'First Internet Bank of Indiana', apy:4.10, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
-          { institution:'CIT Bank', apy:4.00, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
-          { institution:'Synchrony Bank', apy:4.10, term:'1 year', minDeposit:'$2,000', type:'online', isPromotional:false },
-          { institution:'Capital One', apy:3.75, term:'1 year', minDeposit:'$0', type:'bank', isPromotional:false },
-          { institution:'Barclays', apy:4.00, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
-          { institution:'TIAA Bank', apy:3.85, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
-          { institution:'Quontic Bank', apy:4.15, term:'1 year', minDeposit:'$500', type:'online', isPromotional:false },
-          { institution:'LendingClub', apy:4.05, term:'1 year', minDeposit:'$2,500', type:'online', isPromotional:false },
-          { institution:'BMO Alto', apy:4.20, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false }
+          { institution:'Marcus by Goldman Sachs', apy:5.40, term:'6 months', minDeposit:'$500', type:'online', isPromotional:false },
+          { institution:'Marcus by Goldman Sachs', apy:5.30, term:'1 year', minDeposit:'$500', type:'online', isPromotional:false },
+          { institution:'Capital One 360', apy:5.25, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'Discover Bank', apy:5.20, term:'1 year', minDeposit:'$2,500', type:'online', isPromotional:false },
+          { institution:'Ally Bank', apy:5.00, term:'6 months', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'Ally Bank', apy:4.85, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'CIT Bank', apy:5.15, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
+          { institution:'Synchrony Bank', apy:5.00, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'Barclays', apy:4.90, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'American Express Personal Savings', apy:4.80, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'Goldman Sachs Bank USA', apy:4.75, term:'6 months', minDeposit:'$500', type:'online', isPromotional:false },
+          { institution:'TIAA Bank', apy:4.70, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
+          { institution:'UFB Direct', apy:4.91, term:'1 year', minDeposit:'$500', type:'online', isPromotional:false },
+          { institution:'Bread Savings', apy:4.85, term:'6 months', minDeposit:'$1,500', type:'online', isPromotional:false },
+          { institution:'First Internet Bank', apy:4.77, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false },
+          { institution:'Quontic Bank', apy:4.75, term:'1 year', minDeposit:'$500', type:'online', isPromotional:false },
+          { institution:'LendingClub', apy:4.70, term:'1 year', minDeposit:'$2,500', type:'online', isPromotional:false },
+          { institution:'BMO Alto', apy:4.60, term:'1 year', minDeposit:'$0', type:'online', isPromotional:false },
+          { institution:'E*TRADE Bank', apy:4.55, term:'6 months', minDeposit:'$1,000', type:'online', isPromotional:false },
+          { institution:'TAB Bank', apy:5.27, term:'1 year', minDeposit:'$1,000', type:'online', isPromotional:false }
         ];
       }
 
@@ -797,7 +793,7 @@
         tbody.innerHTML = '';
         data.forEach(bank=>{
           const row = document.createElement('tr');
-          if(bank.apy >= 4.5) row.className = 'high-rate';
+          if(bank.apy >= 5.0) row.className = 'high-rate';
           const termClass = this.getTermClass(bank.term);
           row.innerHTML = `
             <td><div class="bank-name">${bank.institution}</div>${bank.isPromotional?'<span class="promotional-badge">Promotional</span>':''}</td>
