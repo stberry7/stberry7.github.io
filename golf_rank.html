@@ -235,6 +235,58 @@
             font-size: 1.2em;
             color: #1b5e20;
         }
+        .global-ranking {
+            background: #e3f2fd;
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .global-score {
+            font-size: clamp(2em, 8vw, 3em);
+            font-weight: bold;
+            color: #1976d2;
+            margin: 10px 0;
+        }
+        .population-ranking {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .population-number {
+            font-size: clamp(1.8em, 6vw, 2.5em);
+            font-weight: bold;
+            color: #ff9800;
+            margin: 10px 0;
+        }
+        .position-indicator {
+            background: #ffeb3b;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { background-color: #ffeb3b; }
+            50% { background-color: #ffc107; }
+            100% { background-color: #ffeb3b; }
+        }
+        .your-position {
+            background: rgba(255, 235, 59, 0.8);
+            border: 2px solid #ff9800;
+            border-radius: 5px;
+            padding: 2px 5px;
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -257,40 +309,47 @@
 
         <!-- Personal Handicap Calculator -->
         <section class="score-input-section" aria-labelledby="handicap-calculator">
-            <h2 id="handicap-calculator" class="chart-title">Find Your Global Golf Handicap Ranking</h2>
+            <h2 id="handicap-calculator" class="chart-title">Find Your Global Golf Position</h2>
             <div class="input-group">
                 <label for="handicapInput">Your Handicap:</label>
                 <input type="number" id="handicapInput" class="input-field" placeholder="e.g., 15" min="0" max="54" step="0.1">
-                <select id="countryRankSelect">
-                    <option value="USA">USA</option>
-                    <option value="Korea">Korea</option>
-                    <option value="UK">UK</option>
-                    <option value="Australia">Australia</option>
-                    <option value="China">China</option>
-                    <option value="France">France</option>
-                    <option value="Mexico">Mexico</option>
-                    <option value="Brazil">Brazil</option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Chile">Chile</option>
-                </select>
+                <label for="drivingDistanceInput">Driving Distance (yards):</label>
+                <input type="number" id="drivingDistanceInput" class="input-field" placeholder="e.g., 230" min="50" max="400" step="1">
                 <select id="genderRankSelect">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
-                <button class="btn-primary" onclick="calculateRanking()">Calculate Ranking</button>
+                <button class="btn-primary" onclick="calculateGlobalRanking()">Calculate My Ranking</button>
             </div>
-            <div class="ranking-result" id="rankingResult">
-                <div class="ranking-score" id="percentileScore"></div>
-                <div class="ranking-text" id="rankingText"></div>
+
+            <!-- Global Ranking Result -->
+            <div class="global-ranking" id="globalRankingResult" style="display: none;">
+                <h3>🌍 Your Global Golf Ranking</h3>
+                <div class="global-score" id="globalPercentileScore"></div>
+                <div class="ranking-text" id="globalRankingText"></div>
+
+                <div class="population-ranking">
+                    <div>Out of <strong>66,000,000</strong> golfers worldwide</div>
+                    <div class="population-number" id="populationRanking"></div>
+                    <div style="font-size: 1.1em; margin-top: 10px;">
+                        <div id="rankingDetails"></div>
+                    </div>
+                </div>
+
+                <!-- Driving Distance Ranking -->
+                <div class="population-ranking" id="drivingRankingResult" style="display: none; background: #f3e5f5; border-color: #9c27b0;">
+                    <h4 style="color: #9c27b0; margin-top: 0;">🏌️ Your Driving Distance Ranking</h4>
+                    <div class="population-number" id="drivingPercentileScore" style="color: #9c27b0;"></div>
+                    <div id="drivingRankingText" style="color: #6a1b9a;"></div>
+                </div>
             </div>
         </section>
 
         <!-- Handicap Distribution Chart -->
         <section class="chart-container" aria-labelledby="handicap-distribution">
-            <h2 id="handicap-distribution" class="chart-title">Golf Handicap Distribution Analysis by Country</h2>
+            <h2 id="handicap-distribution" class="chart-title">Your Position in Golf Handicap Distribution</h2>
             <div class="controls">
                 <select id="countrySelect">
-                    <option value="all">All Countries</option>
                     <option value="USA">USA</option>
                     <option value="Korea">Korea</option>
                     <option value="UK">UK</option>
@@ -303,7 +362,6 @@
                     <option value="Chile">Chile</option>
                 </select>
                 <select id="genderSelect">
-                    <option value="all">Male & Female</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
@@ -316,11 +374,16 @@
             <div class="chart-wrapper">
                 <canvas id="handicapChart"></canvas>
             </div>
+            <div id="positionIndicator" style="display: none; text-align: center; margin-top: 15px;">
+                <div class="position-indicator">
+                    📍 YOUR POSITION
+                </div>
+            </div>
         </section>
 
         <!-- Driving Distance Chart -->
         <section class="chart-container" aria-labelledby="driving-distance">
-            <h2 id="driving-distance" class="chart-title">Golf Driving Distance Statistics & Analysis</h2>
+            <h2 id="driving-distance" class="chart-title">Your Position in Driving Distance Distribution</h2>
             <div class="controls">
                 <select id="driveCategory">
                     <option value="GlobalAll">All Players</option>
@@ -330,6 +393,11 @@
             </div>
             <div class="chart-wrapper">
                 <canvas id="driveChart"></canvas>
+            </div>
+            <div id="drivingPositionIndicator" style="display: none; text-align: center; margin-top: 15px;">
+                <div class="position-indicator" style="background: #9c27b0; color: white;">
+                    🏌️ YOUR DRIVING DISTANCE
+                </div>
             </div>
         </section>
 
@@ -551,6 +619,10 @@ GlobalFemale,200+,15,100`;
 
         let handicapChart, driveChart;
         let currentChartType = 'bar';
+        let userHandicap = null;
+        let userHandicapRange = '';
+        let userDrivingDistance = null;
+        let userDrivingRange = '';
 
         // 색상 팔레트
         const colors = [
@@ -558,45 +630,82 @@ GlobalFemale,200+,15,100`;
             '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
         ];
 
-        // 핸디캡 차트 업데이트
+        // Update handicap chart with user position highlighted
         function updateHandicapChart() {
             const country = document.getElementById('countrySelect').value;
             const gender = document.getElementById('genderSelect').value;
 
-            let filteredData = handicapParsed;
+            let filteredData = handicapParsed.filter(d => d.Country === country && d.Gender === gender);
 
-            if (country !== 'all') {
-                filteredData = filteredData.filter(d => d.Country === country);
-            }
-
-            if (gender !== 'all') {
-                filteredData = filteredData.filter(d => d.Gender === gender);
-            }
-
-            // 핸디캡 범위별로 데이터 집계
+            // Aggregate data by handicap ranges
             const handicapRanges = {};
             filteredData.forEach(d => {
                 const range = d.HandicapRange;
-                if (!handicapRanges[range]) {
-                    handicapRanges[range] = 0;
-                }
-                handicapRanges[range] += parseFloat(d.Percentage);
+                handicapRanges[range] = parseFloat(d.Percentage);
             });
 
             const labels = Object.keys(handicapRanges);
             const data = Object.values(handicapRanges);
 
-            updateChart(handicapChart, labels, data, currentChartType);
+            // Find user's position in this specific country/gender combination
+            let userRangeIndex = -1;
+            if (userHandicap !== null) {
+                const userRange = findUserHandicapRange(filteredData, userHandicap);
+                userRangeIndex = labels.indexOf(userRange);
+            }
+
+            updateChart(handicapChart, labels, data, currentChartType, userRangeIndex);
+
+            // Show position indicator
+            const positionIndicator = document.getElementById('positionIndicator');
+            if (userRangeIndex >= 0) {
+                positionIndicator.style.display = 'block';
+            } else {
+                positionIndicator.style.display = 'none';
+            }
+
             updateStats(filteredData);
         }
 
-        // 드라이빙 거리 차트 업데이트
+        function findUserHandicapRange(filteredData, handicap) {
+            for (let data of filteredData) {
+                const range = data.HandicapRange;
+                const rangeMatch = range.match(/(\d+(?:\.\d+)?)-?(\d+(?:\.\d+)?|\+)?/);
+
+                if (rangeMatch) {
+                    const minRange = parseFloat(rangeMatch[1]);
+                    const maxRange = rangeMatch[2] === '+' ? 999 : parseFloat(rangeMatch[2] || minRange);
+
+                    if (handicap >= minRange && handicap <= maxRange) {
+                        return range;
+                    }
+                }
+            }
+            return '';
+        }
+
+        // Update driving distance chart with user position highlighted
         function updateDriveChart() {
             const category = document.getElementById('driveCategory').value;
             const filteredData = driveParsed.filter(d => d.Category === category);
 
             const labels = filteredData.map(d => d.DistanceRangeYards);
             const data = filteredData.map(d => parseFloat(d.Percentage));
+
+            // Find user's position in driving distance chart
+            let userRangeIndex = -1;
+            if (userDrivingDistance !== null && !isNaN(userDrivingDistance) && userDrivingDistance > 0) {
+                userRangeIndex = labels.indexOf(userDrivingRange);
+            }
+
+            // Create colors array with user position highlighted
+            let backgroundColors = colors.slice(0, labels.length);
+            let borderColors = Array(labels.length).fill('#fff');
+
+            if (userRangeIndex >= 0) {
+                backgroundColors[userRangeIndex] = '#9c27b0'; // Highlight user's driving range
+                borderColors[userRangeIndex] = '#6a1b9a';
+            }
 
             const ctx = document.getElementById('driveChart').getContext('2d');
 
@@ -610,9 +719,9 @@ GlobalFemale,200+,15,100`;
                     labels: labels,
                     datasets: [{
                         data: data,
-                        backgroundColor: colors.slice(0, labels.length),
-                        borderWidth: 2,
-                        borderColor: '#fff'
+                        backgroundColor: backgroundColors,
+                        borderWidth: userRangeIndex >= 0 ? data.map((_, i) => i === userRangeIndex ? 4 : 2) : 2,
+                        borderColor: borderColors
                     }]
                 },
                 options: {
@@ -625,21 +734,42 @@ GlobalFemale,200+,15,100`;
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return context.label + ': ' + context.parsed + '%';
+                                    const baseLabel = context.label + ': ' + context.parsed + '%';
+                                    if (context.dataIndex === userRangeIndex) {
+                                        return baseLabel + ' (YOUR RANGE)';
+                                    }
+                                    return baseLabel;
                                 }
                             }
                         }
                     }
                 }
             });
+
+            // Show driving position indicator
+            const drivingPositionIndicator = document.getElementById('drivingPositionIndicator');
+            if (userRangeIndex >= 0) {
+                drivingPositionIndicator.style.display = 'block';
+            } else {
+                drivingPositionIndicator.style.display = 'none';
+            }
         }
 
-        // 차트 업데이트 함수
-        function updateChart(chart, labels, data, type) {
+        // Chart update function with user position highlighting
+        function updateChart(chart, labels, data, type, userRangeIndex = -1) {
             const ctx = document.getElementById('handicapChart').getContext('2d');
 
             if (chart) {
                 chart.destroy();
+            }
+
+            // Create colors array with user position highlighted
+            let backgroundColors = colors.slice(0, labels.length);
+            let borderColors = colors.slice(0, labels.length);
+
+            if (userRangeIndex >= 0) {
+                backgroundColors[userRangeIndex] = '#ffeb3b'; // Highlight user's range
+                borderColors[userRangeIndex] = '#ff9800';
             }
 
             const config = {
@@ -649,9 +779,9 @@ GlobalFemale,200+,15,100`;
                     datasets: [{
                         label: 'Percentage (%)',
                         data: data,
-                        backgroundColor: type === 'line' ? 'rgba(54, 162, 235, 0.2)' : colors.slice(0, labels.length),
-                        borderColor: type === 'line' ? 'rgba(54, 162, 235, 1)' : colors.slice(0, labels.length),
-                        borderWidth: 2,
+                        backgroundColor: type === 'line' ? 'rgba(54, 162, 235, 0.2)' : backgroundColors,
+                        borderColor: type === 'line' ? 'rgba(54, 162, 235, 1)' : borderColors,
+                        borderWidth: userRangeIndex >= 0 ? data.map((_, i) => i === userRangeIndex ? 4 : 2) : 2,
                         fill: type === 'line'
                     }]
                 },
@@ -666,7 +796,11 @@ GlobalFemale,200+,15,100`;
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return 'Percentage: ' + context.parsed.y + '%';
+                                    const baseLabel = 'Percentage: ' + context.parsed.y + '%';
+                                    if (context.dataIndex === userRangeIndex) {
+                                        return baseLabel + ' (YOUR RANGE)';
+                                    }
+                                    return baseLabel;
                                 }
                             }
                         }
@@ -695,10 +829,10 @@ GlobalFemale,200+,15,100`;
             updateHandicapChart();
         }
 
-        // Calculate handicap ranking
-        function calculateRanking() {
+        // Calculate global ranking with population numbers
+        function calculateGlobalRanking() {
             const handicap = parseFloat(document.getElementById('handicapInput').value);
-            const country = document.getElementById('countryRankSelect').value;
+            const drivingDistance = parseFloat(document.getElementById('drivingDistanceInput').value);
             const gender = document.getElementById('genderRankSelect').value;
 
             if (isNaN(handicap) || handicap < 0) {
@@ -706,14 +840,164 @@ GlobalFemale,200+,15,100`;
                 return;
             }
 
-            // Filter data for selected country and gender
-            const filteredData = handicapParsed.filter(d =>
-                d.Country === country && d.Gender === gender
-            );
+            userHandicap = handicap;
+            userDrivingDistance = drivingDistance;
 
-            // Calculate percentile based on cumulative percentage
+            // Calculate global average percentile for handicap
+            const countries = ['USA', 'Korea', 'UK', 'Australia', 'China', 'France', 'Mexico', 'Brazil', 'Argentina', 'Chile'];
+            let globalPercentileSum = 0;
+
+            countries.forEach(country => {
+                const filteredData = handicapParsed.filter(d =>
+                    d.Country === country && d.Gender === gender
+                );
+
+                let percentile = calculatePercentileForCountry(filteredData, handicap);
+                globalPercentileSum += percentile;
+            });
+
+            const globalAveragePercentile = globalPercentileSum / countries.length;
+            const globalBetterThan = 100 - globalAveragePercentile;
+
+            // Display global ranking with detailed population info
+            const globalPercentileScore = document.getElementById('globalPercentileScore');
+            const globalRankingText = document.getElementById('globalRankingText');
+            const globalRankingResult = document.getElementById('globalRankingResult');
+            const populationRanking = document.getElementById('populationRanking');
+            const rankingDetails = document.getElementById('rankingDetails');
+
+            // Calculate position out of global golf population (estimated 66 million)
+            const totalGolfers = 66000000;
+            const positionFromTop = Math.round((globalAveragePercentile / 100) * totalGolfers);
+            const playersWorseThanYou = totalGolfers - positionFromTop;
+
+            globalPercentileScore.textContent = `Top ${globalAveragePercentile.toFixed(1)}%`;
+            globalRankingText.innerHTML = `
+                You play better than <strong>${globalBetterThan.toFixed(1)}%</strong> of ${gender.toLowerCase()} golfers globally
+            `;
+
+            populationRanking.innerHTML = `#${positionFromTop.toLocaleString()}`;
+
+            let handicapInfo = `Your handicap: <strong>${handicap}</strong>`;
+            let drivingInfo = '';
+
+            if (!isNaN(drivingDistance) && drivingDistance > 0) {
+                drivingInfo = ` | Driving distance: <strong>${drivingDistance} yards</strong>`;
+                calculateDrivingRanking(drivingDistance, gender);
+            }
+
+            rankingDetails.innerHTML = `
+                <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.8); border-radius: 5px;">
+                    <div><strong>${playersWorseThanYou.toLocaleString()}</strong> golfers play worse than you</div>
+                    <div><strong>${positionFromTop.toLocaleString()}</strong> golfers play better than you</div>
+                </div>
+                <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    ${handicapInfo}${drivingInfo} | Gender: <strong>${gender}</strong>
+                </div>
+            `;
+
+            globalRankingResult.style.display = 'block';
+
+            // Update charts to show user position
+            updateHandicapChart();
+            updateDriveChart();
+        }
+
+        // Calculate driving distance ranking
+        function calculateDrivingRanking(distance, gender) {
+            let category = 'GlobalAll';
+            if (gender === 'Male') {
+                category = 'GlobalMale';
+            } else if (gender === 'Female') {
+                category = 'GlobalFemale';
+            }
+
+            const filteredData = driveParsed.filter(d => d.Category === category);
             let percentile = 0;
-            let handicapRange = '';
+            let drivingRange = '';
+
+            // Find which range the user's distance falls into
+            for (let data of filteredData) {
+                const range = data.DistanceRangeYards;
+
+                if (gender === 'Female') {
+                    // Female ranges: <100, 100-124, 125-149, 150-174, 175-199, 200+
+                    if (range === '<100' && distance < 100) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '100-124' && distance >= 100 && distance <= 124) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '125-149' && distance >= 125 && distance <= 149) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '150-174' && distance >= 150 && distance <= 174) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '175-199' && distance >= 175 && distance <= 199) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '200+' && distance >= 200) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    }
+                } else {
+                    // Male/All ranges: <150, 150-174, 175-199, 200-224, 225-249, 250+
+                    if (range === '<150' && distance < 150) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '150-174' && distance >= 150 && distance <= 174) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '175-199' && distance >= 175 && distance <= 199) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '200-224' && distance >= 200 && distance <= 224) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '225-249' && distance >= 225 && distance <= 249) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    } else if (range === '250+' && distance >= 250) {
+                        percentile = parseFloat(data.CumulativePercentage);
+                        drivingRange = range;
+                        break;
+                    }
+                }
+            }
+
+            userDrivingRange = drivingRange;
+
+            if (percentile > 0) {
+                const betterThan = 100 - percentile;
+                const drivingPercentileScore = document.getElementById('drivingPercentileScore');
+                const drivingRankingText = document.getElementById('drivingRankingText');
+                const drivingRankingResult = document.getElementById('drivingRankingResult');
+
+                drivingPercentileScore.textContent = `${betterThan.toFixed(1)}%`;
+                drivingRankingText.innerHTML = `
+                    You drive farther than <strong>${betterThan.toFixed(1)}%</strong> of ${gender.toLowerCase()} golfers<br>
+                    Your ${distance} yards falls in the <strong>${drivingRange}</strong> range<br>
+                    You are in the <strong>top ${percentile.toFixed(1)}%</strong> for driving distance
+                `;
+
+                drivingRankingResult.style.display = 'block';
+            }
+        }
+
+        function calculatePercentileForCountry(filteredData, handicap) {
+            let percentile = 0;
 
             for (let i = 0; i < filteredData.length; i++) {
                 const range = filteredData[i].HandicapRange;
@@ -725,15 +1009,14 @@ GlobalFemale,200+,15,100`;
 
                     if (handicap >= minRange && handicap <= maxRange) {
                         percentile = parseFloat(filteredData[i].CumulativePercentage);
-                        handicapRange = range;
+                        userHandicapRange = range;
                         break;
                     }
                 }
             }
 
-            // Special handling for ranges that might not match exactly
+            // If no exact match, find closest range
             if (percentile === 0) {
-                // Find the closest range
                 let closestRange = null;
                 let minDiff = Infinity;
 
@@ -752,33 +1035,17 @@ GlobalFemale,200+,15,100`;
 
                 if (closestRange) {
                     percentile = parseFloat(closestRange.CumulativePercentage);
-                    handicapRange = closestRange.HandicapRange;
+                    userHandicapRange = closestRange.HandicapRange;
                 }
             }
 
-            // Display result
-            const percentileScore = document.getElementById('percentileScore');
-            const rankingText = document.getElementById('rankingText');
-            const rankingResult = document.getElementById('rankingResult');
-
-            const betterThan = 100 - percentile;
-
-            percentileScore.textContent = `${betterThan.toFixed(1)}%`;
-            rankingText.innerHTML = `
-                You play better than <strong>${betterThan.toFixed(1)}%</strong> of ${gender.toLowerCase()} golfers in ${country}<br>
-                Your handicap of ${handicap} falls in the <strong>${handicapRange}</strong> range<br>
-                You are in the <strong>top ${percentile.toFixed(1)}%</strong> of players
-            `;
-
-            rankingResult.classList.add('show');
+            return percentile;
         }
 
         // Update statistics
         function updateStats(data) {
             const statsGrid = document.getElementById('statsGrid');
 
-            // Calculate country data
-            const countries = [...new Set(data.map(d => d.Country))];
             const avgHandicap = data.reduce((sum, d) => sum + parseFloat(d.Percentage), 0) / data.length;
             const totalPlayers = data.length;
 
@@ -786,29 +1053,36 @@ GlobalFemale,200+,15,100`;
             const handicapCounts = {};
             data.forEach(d => {
                 const range = d.HandicapRange;
-                handicapCounts[range] = (handicapCounts[range] || 0) + parseFloat(d.Percentage);
+                handicapCounts[range] = parseFloat(d.Percentage);
             });
 
             const mostCommonHandicap = Object.keys(handicapCounts).reduce((a, b) =>
                 handicapCounts[a] > handicapCounts[b] ? a : b
             );
 
+            // User's percentile in this specific country/gender
+            let userPercentileInCountry = 'N/A';
+            if (userHandicap !== null) {
+                const percentile = calculatePercentileForCountry(data, userHandicap);
+                userPercentileInCountry = `${(100 - percentile).toFixed(1)}%`;
+            }
+
             statsGrid.innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-value">${countries.length}</div>
-                    <div class="stat-label">Countries Analyzed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">${avgHandicap.toFixed(1)}%</div>
-                    <div class="stat-label">Average Percentage</div>
+                    <div class="stat-value">${data[0].Country}</div>
+                    <div class="stat-label">Selected Country</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">${mostCommonHandicap}</div>
-                    <div class="stat-label">Most Common Handicap</div>
+                    <div class="stat-label">Most Common Range</div>
+                </div>
+                <div class="stat-card ${userPercentileInCountry !== 'N/A' ? 'your-position' : ''}">
+                    <div class="stat-value">${userPercentileInCountry}</div>
+                    <div class="stat-label">Your Performance</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">${totalPlayers}</div>
-                    <div class="stat-label">Total Data Points</div>
+                    <div class="stat-label">Data Points</div>
                 </div>
             `;
         }
@@ -821,7 +1095,7 @@ GlobalFemale,200+,15,100`;
         // Allow Enter key to calculate ranking
         document.getElementById('handicapInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                calculateRanking();
+                calculateGlobalRanking();
             }
         });
 
