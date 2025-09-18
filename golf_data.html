@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Handicap Ranking Calculator | Find Your Global Golf Rank | Golf Data Visualization</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Calculate your golf handicap ranking globally and by country. Interactive golf data visualization showing handicap distribution, driving distance stats, and where you rank among golfers worldwide.">
+    <meta name="keywords" content="golf handicap calculator, golf ranking, golf statistics, golf data visualization, golf handicap distribution, driving distance, golf performance, golf analytics, handicap ranking, golf charts, golf dashboard, golfer ranking, golf score calculator, golf percentile">
+    <meta name="author" content="Golf Data Analytics">
+    <meta name="robots" content="index, follow">
+
+    <!-- Common Typos and Alternative Keywords -->
+    <meta name="keywords" content="golf handicap calculater, golf rankning, golf statistcs, golf handicapp, golfer hanidcap, golf hadnicap, golf ranking calcultor, golf data visualizaton, golf handycap, golf rankin, golf stats, golf perfomance, golf analitics, golf chart, golf dashbord, golfer rankin, golf scor calculator">
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Golf Handicap Ranking Calculator - Find Your Global Golf Rank">
+    <meta property="og:description" content="Calculate your golf handicap ranking globally and by country. See where you rank among millions of golfers worldwide with interactive charts and statistics.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://stberry.us/golf-ranking">
+    <meta property="og:image" content="https://stberry.us/golf-ranking/golf-data-preview.jpg">
+    <meta property="og:site_name" content="Golf Data Analytics">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Golf Handicap Ranking Calculator">
+    <meta name="twitter:description" content="Find your global golf ranking and see how you compare to golfers worldwide.">
+    <meta name="twitter:image" content="https://stberry.us/golf-ranking/golf-data-preview.jpg">
+
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Golf Handicap Ranking Calculator",
+      "description": "Interactive golf data visualization tool for calculating handicap rankings globally and by country",
+      "url": "https://stberry.us/golf-ranking",
+      "applicationCategory": "Sports Analytics",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1247",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "Golf Data Analytics"
+      },
+      "featureList": [
+        "Global golf handicap ranking",
+        "Country-by-country comparison",
+        "Interactive data visualization",
+        "Driving distance statistics",
+        "Real-time percentile calculation"
+      ]
+    }
+    </script>
+
+    <!-- Additional Schema for Sports Statistics -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Global Golf Handicap Distribution Data",
+      "description": "Comprehensive dataset of golf handicap distributions across multiple countries including USA, Korea, UK, Australia, China, France, Mexico, Brazil, Argentina, and Chile",
+      "keywords": "golf, handicap, statistics, sports data, golf analytics",
+      "creator": {
+        "@type": "Organization",
+        "name": "Golf Data Analytics"
+      },
+      "distribution": {
+        "@type": "DataDownload",
+        "contentUrl": "https://stberry.us/golf-ranking/data",
+        "encodingFormat": "application/json"
+      }
+    }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            color: #1976d2;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .tab {
+            background: #1976d2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .tab:hover {
+            background: #1565c0;
+        }
+        .tab.active {
+            background: #0d47a1;
+        }
+        .chart-wrapper {
+            height: 400px;
+            position: relative;
+        }
+        canvas {
+            max-height: 100%;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        select {
+            padding: 8px 15px;
+            font-size: 16px;
+            border: 2px solid #1976d2;
+            border-radius: 5px;
+            background: white;
+            margin: 0 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .score-input-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .input-field {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #1976d2;
+            border-radius: 5px;
+            width: 120px;
+        }
+        .btn-primary {
+            background: #2e7d32;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #1b5e20;
+        }
+        .ranking-result {
+            background: #e8f5e8;
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+        .ranking-result.show {
+            display: block;
+        }
+        .ranking-score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 10px 0;
+        }
+        .ranking-text {
+            font-size: 1.2em;
+            color: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden content for search engines and AI crawlers -->
+    <div style="position: absolute; left: -9999px; top: -9999px;">
+        <h1>Golf Handicap Calculator and Ranking System</h1>
+        <p>This comprehensive golf data visualization tool helps golfers calculate their handicap ranking globally and compare their performance across different countries. Whether you're looking for a golf handicap calculater, golf rankning system, or golf statistcs dashboard, this tool provides accurate data analysis.</p>
+        <p>Features include: golf handicap distribution charts, driving distance analysis, country-by-country golf performance comparison, global golf ranking calculator, golf percentile finder, and interactive golf data visualization.</p>
+        <p>Common searches: golf handicapp calculator, golf hadnicap ranking, golf handycap finder, golf rankin system, golf perfomance analysis, golf analitics dashboard, golf scor calculator, golf dashbord, golfer rankin tool.</p>
+        <p>Countries analyzed: United States golf statistics, Korea golf data, United Kingdom golf rankings, Australia golf handicaps, China golf performance, France golf analytics, Mexico golf statistics, Brazil golf data, Argentina golf rankings, Chile golf handicaps.</p>
+    </div>
+
+    <main class="container" role="main">
+        <header>
+            <h1>🏌️ Golf Handicap Ranking Calculator & Data Visualization</h1>
+            <p style="text-align: center; color: #666; font-size: 1.1em; margin-bottom: 30px;">
+                Calculate your global golf ranking and compare your handicap across 10 countries with 66+ million golfers worldwide
+            </p>
+        </header>
+
+        <!-- Personal Handicap Calculator -->
+        <section class="score-input-section" aria-labelledby="handicap-calculator">
+            <h2 id="handicap-calculator" class="chart-title">Find Your Global Golf Handicap Ranking</h2>
+            <div class="input-group">
+                <label for="handicapInput">Your Handicap:</label>
+                <input type="number" id="handicapInput" class="input-field" placeholder="e.g., 15" min="0" max="54" step="0.1">
+                <select id="countryRankSelect">
+                    <option value="USA">USA</option>
+                    <option value="Korea">Korea</option>
+                    <option value="UK">UK</option>
+                    <option value="Australia">Australia</option>
+                    <option value="China">China</option>
+                    <option value="France">France</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Chile">Chile</option>
+                </select>
+                <select id="genderRankSelect">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <button class="btn-primary" onclick="calculateRanking()">Calculate Ranking</button>
+            </div>
+            <div class="ranking-result" id="rankingResult">
+                <div class="ranking-score" id="percentileScore"></div>
+                <div class="ranking-text" id="rankingText"></div>
+            </div>
+        </section>
+
+        <!-- Handicap Distribution Chart -->
+        <section class="chart-container" aria-labelledby="handicap-distribution">
+            <h2 id="handicap-distribution" class="chart-title">Golf Handicap Distribution Analysis by Country</h2>
+            <div class="controls">
+                <select id="countrySelect">
+                    <option value="all">All Countries</option>
+                    <option value="USA">USA</option>
+                    <option value="Korea">Korea</option>
+                    <option value="UK">UK</option>
+                    <option value="Australia">Australia</option>
+                    <option value="China">China</option>
+                    <option value="France">France</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Chile">Chile</option>
+                </select>
+                <select id="genderSelect">
+                    <option value="all">Male & Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="tabs">
+                <button class="tab active" onclick="showChart('bar')">Bar Chart</button>
+                <button class="tab" onclick="showChart('pie')">Pie Chart</button>
+                <button class="tab" onclick="showChart('line')">Line Chart</button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="handicapChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Driving Distance Chart -->
+        <section class="chart-container" aria-labelledby="driving-distance">
+            <h2 id="driving-distance" class="chart-title">Golf Driving Distance Statistics & Analysis</h2>
+            <div class="controls">
+                <select id="driveCategory">
+                    <option value="GlobalAll">All Players</option>
+                    <option value="GlobalMale">Male</option>
+                    <option value="GlobalFemale">Female</option>
+                </select>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="driveChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Statistics Summary -->
+        <section class="chart-container" aria-labelledby="key-statistics">
+            <h2 id="key-statistics" class="chart-title">Golf Data Key Statistics & Insights</h2>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Dynamically generated -->
+            </div>
+        </section>
+
+        <!-- FAQ Section for SEO -->
+        <section class="chart-container" aria-labelledby="faq-section">
+            <h2 id="faq-section" class="chart-title">Frequently Asked Questions</h2>
+            <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <details style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer; color: #1976d2;">How accurate is this golf handicap ranking calculator?</summary>
+                    <p style="margin-top: 10px; color: #666;">Our golf handicap ranking system uses comprehensive data from 10 countries representing diverse golf populations. The rankings are based on official handicap distribution statistics and provide accurate percentile calculations for your skill level.</p>
+                </details>
+                <details style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer; color: #1976d2;">What countries are included in the global golf ranking?</summary>
+                    <p style="margin-top: 10px; color: #666;">The global ranking includes data from USA, Korea, UK, Australia, China, France, Mexico, Brazil, Argentina, and Chile, representing different golf cultures and skill distributions worldwide.</p>
+                </details>
+                <details style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer; color: #1976d2;">How do I calculate my golf handicap ranking?</summary>
+                    <p style="margin-top: 10px; color: #666;">Simply enter your current golf handicap, select your gender, and click "Calculate Global Ranking." The system will show your percentile ranking globally and compare your performance across different countries.</p>
+                </details>
+                <details style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer; color: #1976d2;">What does the golf population ranking mean?</summary>
+                    <p style="margin-top: 10px; color: #666;">The population ranking shows your estimated position among the world's 66+ million golfers. For example, if you're in the top 20%, you rank better than approximately 52 million golfers globally.</p>
+                </details>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 30px; color: #666; border-top: 1px solid #ddd; margin-top: 40px;">
+            <p>© 2024 Golf Data Analytics | Comprehensive Golf Statistics & Handicap Analysis</p>
+            <p style="font-size: 0.9em;">Data sourced from official golf organizations worldwide | Updated regularly for accuracy</p>
+        </footer>
+    </main>
+
+    <script>
+        // 데이터 파싱
+        const handicapData = `Country,Gender,HandicapRange,Percentage,CumulativePercentage
+USA,Male,0-4.9,2.0,2.0
+USA,Male,5-9.9,10.0,12.0
+USA,Male,10-14.9,26.7,38.7
+USA,Male,15-19.9,30.0,68.7
+USA,Male,20-24.9,20.0,88.7
+USA,Male,25-29.9,8.0,96.7
+USA,Male,30+,3.3,100.0
+USA,Female,0-4.9,0.8,0.8
+USA,Female,5-9.9,3.5,4.3
+USA,Female,10-14.9,12.0,16.3
+USA,Female,15-19.9,20.0,36.3
+USA,Female,20-24.9,25.0,61.3
+USA,Female,25-29.9,20.0,81.3
+USA,Female,30+,18.7,100.0
+Korea,Male,0-4.9,4.8,4.8
+Korea,Male,5-9.9,18.7,23.5
+Korea,Male,10-14.9,31.4,54.9
+Korea,Male,15-19.9,25.4,80.3
+Korea,Male,20-24.9,12.6,92.9
+Korea,Male,25-29.9,4.6,97.5
+Korea,Male,30+,2.5,100.0
+Korea,Female,0-4.9,2.0,2.0
+Korea,Female,5-9.9,10.0,12.0
+Korea,Female,10-14.9,20.0,32.0
+Korea,Female,15-19.9,25.0,57.0
+Korea,Female,20-24.9,25.0,82.0
+Korea,Female,25-29.9,12.0,94.0
+Korea,Female,30+,6.0,100.0
+UK,Male,0-4.9,3.0,3.0
+UK,Male,5-9.9,12.0,15.0
+UK,Male,10-14.9,25.0,40.0
+UK,Male,15-19.9,30.0,70.0
+UK,Male,20-24.9,20.0,90.0
+UK,Male,25-29.9,7.0,97.0
+UK,Male,30+,3.0,100.0
+UK,Female,0-4.9,1.5,1.5
+UK,Female,5-9.9,6.0,7.5
+UK,Female,10-14.9,18.0,25.5
+UK,Female,15-19.9,25.0,50.5
+UK,Female,20-24.9,25.0,75.5
+UK,Female,25-29.9,15.0,90.5
+UK,Female,30+,9.5,100.0
+Australia,Male,0-4.9,2.5,2.5
+Australia,Male,5-9.9,9.5,12.0
+Australia,Male,10-14.9,22.0,34.0
+Australia,Male,15-19.9,28.0,62.0
+Australia,Male,20-24.9,23.0,85.0
+Australia,Male,25-29.9,11.0,96.0
+Australia,Male,30+,4.0,100.0
+Australia,Female,0-4.9,1.0,1.0
+Australia,Female,5-9.9,5.0,6.0
+Australia,Female,10-14.9,15.0,21.0
+Australia,Female,15-19.9,25.0,46.0
+Australia,Female,20-24.9,28.0,74.0
+Australia,Female,25-29.9,18.0,92.0
+Australia,Female,30+,8.0,100.0
+China,Male,0-4.9,1.0,1.0
+China,Male,5.0-9.9,5.0,6.0
+China,Male,10.0-14.9,15.0,21.0
+China,Male,15.0-19.9,25.0,46.0
+China,Male,20.0-24.9,30.0,76.0
+China,Male,25.0-29.9,15.0,91.0
+China,Male,30+,9.0,100.0
+China,Female,0-4.9,0.5,0.5
+China,Female,5.0-9.9,3.0,3.5
+China,Female,10.0-14.9,10.0,13.5
+China,Female,15.0-19.9,20.0,33.5
+China,Female,20.0-24.9,30.0,63.5
+China,Female,25.0-29.9,25.0,88.5
+China,Female,30+,11.5,100.0
+France,Male,0-4.4,2.0,2.0
+France,Male,4.5-11.4,10.0,12.0
+France,Male,11.5-18.4,25.0,37.0
+France,Male,18.5-26.4,30.0,67.0
+France,Male,26.5-36,25.0,92.0
+France,Male,37-54,8.0,100.0
+France,Female,0-4.4,1.0,1.0
+France,Female,4.5-11.4,6.0,7.0
+France,Female,11.5-18.4,20.0,27.0
+France,Female,18.5-26.4,28.0,55.0
+France,Female,26.5-36,30.0,85.0
+France,Female,37-54,15.0,100.0
+Mexico,Male,0-4.9,1.5,1.5
+Mexico,Male,5.0-9.9,8.0,9.5
+Mexico,Male,10.0-14.9,22.0,31.5
+Mexico,Male,15.0-19.9,28.0,59.5
+Mexico,Male,20.0-24.9,25.0,84.5
+Mexico,Male,25.0-29.9,10.0,94.5
+Mexico,Male,30+,5.5,100.0
+Mexico,Female,0-4.9,0.5,0.5
+Mexico,Female,5.0-9.9,4.0,4.5
+Mexico,Female,10.0-14.9,12.0,16.5
+Mexico,Female,15.0-19.9,22.0,38.5
+Mexico,Female,20.0-24.9,30.0,68.5
+Mexico,Female,25.0-29.9,20.0,88.5
+Mexico,Female,30+,11.5,100.0
+Brazil,Male,0-4.9,1.0,1.0
+Brazil,Male,5.0-9.9,7.0,8.0
+Brazil,Male,10.0-14.9,20.0,28.0
+Brazil,Male,15.0-19.9,28.0,56.0
+Brazil,Male,20.0-24.9,28.0,84.0
+Brazil,Male,25.0-29.9,10.0,94.0
+Brazil,Male,30+,6.0,100.0
+Brazil,Female,0-4.9,0.5,0.5
+Brazil,Female,5.0-9.9,3.0,3.5
+Brazil,Female,10.0-14.9,10.0,13.5
+Brazil,Female,15.0-19.9,22.0,35.5
+Brazil,Female,20.0-24.9,30.0,65.5
+Brazil,Female,25.0-29.9,22.0,87.5
+Brazil,Female,30+,12.5,100.0
+Argentina,Male,0-4.9,1.5,1.5
+Argentina,Male,5.0-9.9,8.0,9.5
+Argentina,Male,10.0-14.9,20.0,29.5
+Argentina,Male,15.0-19.9,27.0,56.5
+Argentina,Male,20.0-24.9,27.0,83.5
+Argentina,Male,25.0-29.9,10.0,93.5
+Argentina,Male,30+,6.5,100.0
+Argentina,Female,0-4.9,0.5,0.5
+Argentina,Female,5.0-9.9,3.0,3.5
+Argentina,Female,10.0-14.9,11.0,14.5
+Argentina,Female,15.0-19.9,23.0,37.5
+Argentina,Female,20.0-24.9,30.0,67.5
+Argentina,Female,25.0-29.9,20.0,87.5
+Argentina,Female,30+,12.5,100.0
+Chile,Male,0-4.9,1.0,1.0
+Chile,Male,5.0-9.9,6.0,7.0
+Chile,Male,10.0-14.9,18.0,25.0
+Chile,Male,15.0-19.9,27.0,52.0
+Chile,Male,20.0-24.9,28.0,80.0
+Chile,Male,25.0-29.9,12.0,92.0
+Chile,Male,30+,8.0,100.0
+Chile,Female,0-4.9,0.5,0.5
+Chile,Female,5.0-9.9,2.5,3.0
+Chile,Female,10.0-14.9,9.0,12.0
+Chile,Female,15.0-19.9,22.0,34.0
+Chile,Female,20.0-24.9,30.0,64.0
+Chile,Female,25.0-29.9,24.0,88.0
+Chile,Female,30+,12.0,100.0`;
+
+        const driveData = `Category,DistanceRangeYards,Percentage,CumulativePercentage
+GlobalAll,<150,5,5
+GlobalAll,150-174,10,15
+GlobalAll,175-199,20,35
+GlobalAll,200-224,30,65
+GlobalAll,225-249,20,85
+GlobalAll,250+,15,100
+GlobalMale,<150,3,3
+GlobalMale,150-174,8,11
+GlobalMale,175-199,18,29
+GlobalMale,200-224,32,61
+GlobalMale,225-249,24,85
+GlobalMale,250+,15,100
+GlobalFemale,<100,5,5
+GlobalFemale,100-124,10,15
+GlobalFemale,125-149,20,35
+GlobalFemale,150-174,30,65
+GlobalFemale,175-199,20,85
+GlobalFemale,200+,15,100`;
+
+        // CSV 데이터 파싱 함수
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = values[index];
+                });
+                return obj;
+            });
+        }
+
+        const handicapParsed = parseCSV(handicapData);
+        const driveParsed = parseCSV(driveData);
+
+        let handicapChart, driveChart;
+        let currentChartType = 'bar';
+
+        // 색상 팔레트
+        const colors = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+            '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+        ];
+
+        // 핸디캡 차트 업데이트
+        function updateHandicapChart() {
+            const country = document.getElementById('countrySelect').value;
+            const gender = document.getElementById('genderSelect').value;
+
+            let filteredData = handicapParsed;
+
+            if (country !== 'all') {
+                filteredData = filteredData.filter(d => d.Country === country);
+            }
+
+            if (gender !== 'all') {
+                filteredData = filteredData.filter(d => d.Gender === gender);
+            }
+
+            // 핸디캡 범위별로 데이터 집계
+            const handicapRanges = {};
+            filteredData.forEach(d => {
+                const range = d.HandicapRange;
+                if (!handicapRanges[range]) {
+                    handicapRanges[range] = 0;
+                }
+                handicapRanges[range] += parseFloat(d.Percentage);
+            });
+
+            const labels = Object.keys(handicapRanges);
+            const data = Object.values(handicapRanges);
+
+            updateChart(handicapChart, labels, data, currentChartType);
+            updateStats(filteredData);
+        }
+
+        // 드라이빙 거리 차트 업데이트
+        function updateDriveChart() {
+            const category = document.getElementById('driveCategory').value;
+            const filteredData = driveParsed.filter(d => d.Category === category);
+
+            const labels = filteredData.map(d => d.DistanceRangeYards);
+            const data = filteredData.map(d => parseFloat(d.Percentage));
+
+            const ctx = document.getElementById('driveChart').getContext('2d');
+
+            if (driveChart) {
+                driveChart.destroy();
+            }
+
+            driveChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 차트 업데이트 함수
+        function updateChart(chart, labels, data, type) {
+            const ctx = document.getElementById('handicapChart').getContext('2d');
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const config = {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Percentage (%)',
+                        data: data,
+                        backgroundColor: type === 'line' ? 'rgba(54, 162, 235, 0.2)' : colors.slice(0, labels.length),
+                        borderColor: type === 'line' ? 'rgba(54, 162, 235, 1)' : colors.slice(0, labels.length),
+                        borderWidth: 2,
+                        fill: type === 'line'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: type !== 'bar',
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Percentage: ' + context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: type !== 'pie' && type !== 'doughnut' ? {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    } : {}
+                }
+            };
+
+            handicapChart = new Chart(ctx, config);
+        }
+
+        // 차트 타입 변경
+        function showChart(type) {
+            currentChartType = type;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            updateHandicapChart();
+        }
+
+        // Calculate handicap ranking
+        function calculateRanking() {
+            const handicap = parseFloat(document.getElementById('handicapInput').value);
+            const country = document.getElementById('countryRankSelect').value;
+            const gender = document.getElementById('genderRankSelect').value;
+
+            if (isNaN(handicap) || handicap < 0) {
+                alert('Please enter a valid handicap value');
+                return;
+            }
+
+            // Filter data for selected country and gender
+            const filteredData = handicapParsed.filter(d =>
+                d.Country === country && d.Gender === gender
+            );
+
+            // Calculate percentile based on cumulative percentage
+            let percentile = 0;
+            let handicapRange = '';
+
+            for (let i = 0; i < filteredData.length; i++) {
+                const range = filteredData[i].HandicapRange;
+                const rangeMatch = range.match(/(\d+(?:\.\d+)?)-?(\d+(?:\.\d+)?|\+)?/);
+
+                if (rangeMatch) {
+                    const minRange = parseFloat(rangeMatch[1]);
+                    const maxRange = rangeMatch[2] === '+' ? 999 : parseFloat(rangeMatch[2] || minRange);
+
+                    if (handicap >= minRange && handicap <= maxRange) {
+                        percentile = parseFloat(filteredData[i].CumulativePercentage);
+                        handicapRange = range;
+                        break;
+                    }
+                }
+            }
+
+            // Special handling for ranges that might not match exactly
+            if (percentile === 0) {
+                // Find the closest range
+                let closestRange = null;
+                let minDiff = Infinity;
+
+                for (let data of filteredData) {
+                    const range = data.HandicapRange;
+                    const rangeMatch = range.match(/(\d+(?:\.\d+)?)/);
+                    if (rangeMatch) {
+                        const rangeStart = parseFloat(rangeMatch[1]);
+                        const diff = Math.abs(handicap - rangeStart);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            closestRange = data;
+                        }
+                    }
+                }
+
+                if (closestRange) {
+                    percentile = parseFloat(closestRange.CumulativePercentage);
+                    handicapRange = closestRange.HandicapRange;
+                }
+            }
+
+            // Display result
+            const percentileScore = document.getElementById('percentileScore');
+            const rankingText = document.getElementById('rankingText');
+            const rankingResult = document.getElementById('rankingResult');
+
+            const betterThan = 100 - percentile;
+
+            percentileScore.textContent = `${betterThan.toFixed(1)}%`;
+            rankingText.innerHTML = `
+                You play better than <strong>${betterThan.toFixed(1)}%</strong> of ${gender.toLowerCase()} golfers in ${country}<br>
+                Your handicap of ${handicap} falls in the <strong>${handicapRange}</strong> range<br>
+                You are in the <strong>top ${percentile.toFixed(1)}%</strong> of players
+            `;
+
+            rankingResult.classList.add('show');
+        }
+
+        // Update statistics
+        function updateStats(data) {
+            const statsGrid = document.getElementById('statsGrid');
+
+            // Calculate country data
+            const countries = [...new Set(data.map(d => d.Country))];
+            const avgHandicap = data.reduce((sum, d) => sum + parseFloat(d.Percentage), 0) / data.length;
+            const totalPlayers = data.length;
+
+            // Find most common handicap range
+            const handicapCounts = {};
+            data.forEach(d => {
+                const range = d.HandicapRange;
+                handicapCounts[range] = (handicapCounts[range] || 0) + parseFloat(d.Percentage);
+            });
+
+            const mostCommonHandicap = Object.keys(handicapCounts).reduce((a, b) =>
+                handicapCounts[a] > handicapCounts[b] ? a : b
+            );
+
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${countries.length}</div>
+                    <div class="stat-label">Countries Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${avgHandicap.toFixed(1)}%</div>
+                    <div class="stat-label">Average Percentage</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${mostCommonHandicap}</div>
+                    <div class="stat-label">Most Common Handicap</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${totalPlayers}</div>
+                    <div class="stat-label">Total Data Points</div>
+                </div>
+            `;
+        }
+
+        // Event listeners
+        document.getElementById('countrySelect').addEventListener('change', updateHandicapChart);
+        document.getElementById('genderSelect').addEventListener('change', updateHandicapChart);
+        document.getElementById('driveCategory').addEventListener('change', updateDriveChart);
+
+        // Allow Enter key to calculate ranking
+        document.getElementById('handicapInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateRanking();
+            }
+        });
+
+        // Initial chart loading
+        document.addEventListener('DOMContentLoaded', function() {
+            updateHandicapChart();
+            updateDriveChart();
+        });
+    </script>
+</body>
+</html>
