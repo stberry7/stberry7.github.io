@@ -1,18 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Global Human Ranking Calculator - Find Your World Rank Among 8.2 Billion People | Personal Wealth Position</title>
-<meta name="description" content="Calculate your precise global ranking among 8.2 billion people worldwide. Discover where you stand globally based on wealth, income, education, health, and demographics. Free comprehensive analysis tool.">
-<meta name="keywords" content="global ranking, world population rank, wealth calculator, income percentile, global position, human ranking, world statistics, demographics calculator, population analysis, personal ranking tool">
-<meta name="author" content="Global Ranking System">
-<meta property="og:title" content="Global Human Ranking Calculator - Find Your World Position">
-<meta property="og:description" content="Calculate your precise global ranking among 8.2 billion people. Free comprehensive analysis of your world position.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Global Human Ranking Calculator">
-<meta name="twitter:description" content="Find your exact position among 8.2 billion people worldwide. Free ranking calculator.">
+<meta content="Calculate your precise global ranking among 8.2 billion people worldwide. Discover where you stand globally based on wealth, income, education, health, and demographics. Free comprehensive analysis tool." name="description"/>
+<meta content="global ranking, world population rank, wealth calculator, income percentile, global position, human ranking, world statistics, demographics calculator, population analysis, personal ranking tool" name="keywords"/>
+<meta content="Global Ranking System" name="author"/>
+<meta content="Global Human Ranking Calculator - Find Your World Position" property="og:title"/>
+<meta content="Calculate your precise global ranking among 8.2 billion people. Free comprehensive analysis of your world position." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Global Human Ranking Calculator" name="twitter:title"/>
+<meta content="Find your exact position among 8.2 billion people worldwide. Free ranking calculator." name="twitter:description"/>
 <style>
 :root{
   --bg:#0b0f14; --card:#10161d; --fg:#e6edf3; --muted:#96a1ad;
@@ -72,376 +73,399 @@ button.error{background:var(--error)}
 .notification.error{background:var(--error)}
 .notification.info{background:var(--accent)}
 </style>
+
+<!-- SEO additions (non-visual): canonical, robots, OG/Twitter, JSON-LD. -->
+<link href="https://stberry.us/rank" rel="canonical"/>
+<meta content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" name="robots"/>
+<meta content="index,follow" name="googlebot"/>
+<meta content="index,follow" name="bingbot"/>
+<!-- Open Graph refinements -->
+<meta content="https://stberry.us/rank" property="og:url"/>
+<meta content="stberry.us" property="og:site_name"/>
+<meta content="en_US" property="og:locale"/>
+<!-- Twitter refinements -->
+<meta content="@stberry_us" name="twitter:site"/>
+<!-- Extra discoverability keywords (typo-safe) -->
+<meta content="worldrank, world rank, global rank, wealth percentile, income percentile, worldrnk, worldrnak, wroldrank, wolrdrank, wordrank, world-bank, worldbnk, woldbank, wordbank, wolrdbank, worldban, worldbnak, world bnak, worldbak, world agbnk, world ank, worldbanck, worldbanlk, worldbqnk, worldbark, worldbznk, worldank" name="keywords"/>
+<!-- JSON-LD: WebSite (SearchAction) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "stberry.us",
+  "url": "https://stberry.us/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://stberry.us/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<!-- JSON-LD: WebPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Global Human Ranking Calculator - Find Your World Rank Among 8.2 Billion People",
+  "url": "https://stberry.us/rank",
+  "description": "Calculate your precise global ranking among 8.2 billion people worldwide. Discover where you stand globally based on wealth, income, education, health, and demographics."
+}
+</script>
+<!-- JSON-LD: Breadcrumbs -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stberry.us/" },
+    { "@type": "ListItem", "position": 2, "name": "Rank", "item": "https://stberry.us/rank" }
+  ]
+}
+</script>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Global Human Ranking Calculator <span style="color:var(--accent)">🌍</span></h1>
-    <div class="sub">Discover your precise position among <b id="headerPopulation">8.25 billion</b> people worldwide. Find out where you rank globally based on wealth, demographics, and personal data.</div>
-
-    <!-- Real-time World Population Counter -->
-    <div style="background:#1a202c; border-radius:12px; padding:12px; margin:10px 0; border:1px solid var(--border)">
-      <div style="text-align:center">
-        <div style="font-size:clamp(11px,2.5vw,12px); color:var(--muted); margin-bottom:4px">🌍 Current World Population</div>
-        <div id="worldPopulation" style="font-size:clamp(18px,4vw,24px); font-weight:bold; color:var(--accent); font-family:monospace; transition:transform 0.2s ease, text-shadow 0.2s ease">8,246,975,554</div>
-        <div style="font-size:clamp(10px,2vw,11px); color:var(--muted); margin-top:4px">
-          <span id="populationGrowth">+0</span> people since you opened this page
+<header>
+<h1>Global Human Ranking Calculator <span style="color:var(--accent)">🌍</span></h1>
+<div class="sub">Discover your precise position among <b id="headerPopulation">8.25 billion</b> people worldwide. Find out where you rank globally based on wealth, demographics, and personal data.</div>
+<!-- Real-time World Population Counter -->
+<div style="background:#1a202c; border-radius:12px; padding:12px; margin:10px 0; border:1px solid var(--border)">
+<div style="text-align:center">
+<div style="font-size:clamp(11px,2.5vw,12px); color:var(--muted); margin-bottom:4px">🌍 Current World Population</div>
+<div id="worldPopulation" style="font-size:clamp(18px,4vw,24px); font-weight:bold; color:var(--accent); font-family:monospace; transition:transform 0.2s ease, text-shadow 0.2s ease">8,246,975,554</div>
+<div style="font-size:clamp(10px,2vw,11px); color:var(--muted); margin-top:4px">
+<span id="populationGrowth">+0</span> people since you opened this page
         </div>
-      </div>
-
-      <!-- Population Growth Statistics -->
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:10px; font-size:clamp(9px,2vw,10px); text-align:center">
-        <div style="padding:4px; background:#0e141b; border-radius:6px">
-          <div style="color:var(--accent); font-weight:bold" id="birthsToday">+0</div>
-          <div style="color:var(--muted)">👶 Births today</div>
-        </div>
-        <div style="padding:4px; background:#0e141b; border-radius:6px">
-          <div style="color:var(--green); font-weight:bold">+4.2/sec</div>
-          <div style="color:var(--muted)">📈 Growth rate</div>
-        </div>
-        <div style="padding:4px; background:#0e141b; border-radius:6px">
-          <div style="color:var(--warn); font-weight:bold" id="deathsToday">+0</div>
-          <div style="color:var(--muted)">💀 Deaths today</div>
-        </div>
-      </div>
-
-    </div>
-
-    <div>
-      <span class="badge">Real-time Analysis</span>
-      <span class="badge">Global Coverage</span>
-      <span class="badge">Wealth Data</span>
-      <span class="badge">Live Population</span>
-    </div>
-
-    <!-- Calculate Button at Top -->
-    <div style="margin:20px 0; text-align:center">
-      <button id="btnCalc" style="font-size:18px; padding:16px 32px; font-weight:bold; border-radius:16px; background:linear-gradient(135deg, var(--accent), #3b82f6); border:none; color:white; cursor:pointer; box-shadow:0 4px 12px rgba(96,165,250,0.3); transition:transform 0.2s ease">🎯 Calculate My Global Rank</button>
-    </div>
-  </header>
-
-  <section class="grid">
-    <div class="card">
-      <h2>Personal Information</h2>
-
-
-      <div class="row">
-        <div class="col">
-          <label>Country</label>
-          <input id="country" list="countryList" placeholder="e.g., South Korea, United States, Japan"><datalist id="countryList"></datalist>
-        </div>
-        <div class="col">
-          <label>Gender</label>
-          <select id="sex">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other / Prefer not to say</option>
-          </select>
-        </div>
-        <div class="col">
-          <label>Birth Date</label>
-          <div class="row" style="gap:6px">
-            <input id="birthYear" type="number" min="1900" max="2025" step="1" placeholder="Year" style="flex:2">
-            <select id="birthMonth" style="flex:1">
-              <option value="">Month</option>
-              <option value="1">Jan</option>
-              <option value="2">Feb</option>
-              <option value="3">Mar</option>
-              <option value="4">Apr</option>
-              <option value="5">May</option>
-              <option value="6">Jun</option>
-              <option value="7">Jul</option>
-              <option value="8">Aug</option>
-              <option value="9">Sep</option>
-              <option value="10">Oct</option>
-              <option value="11">Nov</option>
-              <option value="12">Dec</option>
-            </select>
-            <input id="birthDay" type="number" min="1" max="31" step="1" placeholder="Day" style="flex:1">
-          </div>
-        </div>
-        <div class="col" style="min-width:120px">
-          <label>Current Age</label>
-          <div id="calculatedAge" style="padding:11px 12px; border-radius:12px; border:1px solid var(--border); background:#0e141b; color:var(--accent); font-weight:bold; text-align:center">Enter birth date</div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Self-reported health</label>
-          <select id="health">
-            <option value="good">Good</option>
-            <option value="excellent">Excellent</option>
-            <option value="fair">Fair</option>
-            <option value="poor">Poor</option>
-            <option value="na">Prefer not to say</option>
-          </select>
-        </div>
-        <div class="col">
-          <label>Units</label>
-          <select id="units">
-            <option value="metric" selected>Metric (cm, kg)</option>
-            <option value="imperial">Imperial (ft/in, lb)</option>
-          </select>
-        </div>
-        <div class="col metric-only">
-          <label>Height (cm)</label>
-          <input id="heightCm" type="number" min="80" max="250" step="0.1" placeholder="e.g., 175">
-        </div>
-        <div class="col metric-only">
-          <label>Weight (kg)</label>
-          <input id="weightKg" type="number" min="20" max="300" step="0.1" placeholder="e.g., 70">
-        </div>
-        <div class="col imperial-only" style="display:none">
-          <label>Height (ft + in)</label>
-          <div class="row" style="gap:6px">
-            <input id="heightFt" type="number" min="3" max="8" step="1" placeholder="ft" style="flex:1">
-            <input id="heightIn" type="number" min="0" max="11" step="1" placeholder="in" style="flex:1">
-          </div>
-        </div>
-        <div class="col imperial-only" style="display:none">
-          <label>Weight (lb)</label>
-          <input id="weightLb" type="number" min="50" max="600" step="0.1" placeholder="e.g., 154">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Cash & Savings (USD)</label>
-          <input id="cash" type="number" min="0" step="100" placeholder="e.g., 50000">
-        </div>
-        <div class="col">
-          <label>Real Estate Value (USD)</label>
-          <input id="realEstate" type="number" min="0" step="1000" placeholder="e.g., 300000">
-        </div>
-        <div class="col">
-          <label>Stock/Investment Value (USD)</label>
-          <input id="stocks" type="number" min="0" step="100" placeholder="e.g., 75000">
-        </div>
-        <div class="col">
-          <label>Total Debt (USD)</label>
-          <input id="debt" type="number" min="0" step="100" placeholder="e.g., 25000">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Annual Income (USD)</label>
-          <input id="income" type="number" min="0" step="100" placeholder="e.g., 80000">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Education</label>
-          <select id="education">
-            <option value="hs">High school or below</option>
-            <option value="somecollege">Some college</option>
-            <option value="bachelor">Bachelor's</option>
-            <option value="master">Master's</option>
-            <option value="doctorate">Doctorate</option>
-          </select>
-        </div>
-        <div class="col">
-          <label>University (optional, display-only)</label>
-          <input id="university" type="text" placeholder="e.g., University of Michigan">
-        </div>
-        <div class="col">
-          <label>Race / Ethnicity (not used in score)</label>
-          <select id="race">
-            <option value="na">Prefer not to say</option>
-            <option value="asian">Asian</option>
-            <option value="black">Black</option>
-            <option value="white">White</option>
-            <option value="latino">Hispanic / Latino</option>
-            <option value="mena">Middle Eastern / North African</option>
-            <option value="indigenous">Indigenous</option>
-            <option value="pi">Pacific Islander</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Children</label>
-          <input id="children" type="number" min="0" max="12" step="1" value="0">
-        </div>
-        <div class="col">
-          <label>Expected Life Span (years) - Auto-calculated</label>
-          <input id="lifeExpectancy" type="number" min="50" max="120" step="1" placeholder="Auto-calculated" readonly style="background:#0b1218; color:var(--accent);">
-          <div class="small" style="margin-top:2px">
-            <label style="display:inline; margin:0; cursor:pointer">
-              <input type="checkbox" id="lifeExpectancyManual" style="margin-right:4px"> Manual override
+</div>
+<!-- Population Growth Statistics -->
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:10px; font-size:clamp(9px,2vw,10px); text-align:center">
+<div style="padding:4px; background:#0e141b; border-radius:6px">
+<div id="birthsToday" style="color:var(--accent); font-weight:bold">+0</div>
+<div style="color:var(--muted)">👶 Births today</div>
+</div>
+<div style="padding:4px; background:#0e141b; border-radius:6px">
+<div style="color:var(--green); font-weight:bold">+4.2/sec</div>
+<div style="color:var(--muted)">📈 Growth rate</div>
+</div>
+<div style="padding:4px; background:#0e141b; border-radius:6px">
+<div id="deathsToday" style="color:var(--warn); font-weight:bold">+0</div>
+<div style="color:var(--muted)">💀 Deaths today</div>
+</div>
+</div>
+</div>
+<div>
+<span class="badge">Real-time Analysis</span>
+<span class="badge">Global Coverage</span>
+<span class="badge">Wealth Data</span>
+<span class="badge">Live Population</span>
+</div>
+<!-- Calculate Button at Top -->
+<div style="margin:20px 0; text-align:center">
+<button id="btnCalc" style="font-size:18px; padding:16px 32px; font-weight:bold; border-radius:16px; background:linear-gradient(135deg, var(--accent), #3b82f6); border:none; color:white; cursor:pointer; box-shadow:0 4px 12px rgba(96,165,250,0.3); transition:transform 0.2s ease">🎯 Calculate My Global Rank</button>
+</div>
+</header>
+<section class="grid">
+<div class="card">
+<h2>Personal Information</h2>
+<div class="row">
+<div class="col">
+<label>Country</label>
+<input id="country" list="countryList" placeholder="e.g., South Korea, United States, Japan"/><datalist id="countryList"></datalist>
+</div>
+<div class="col">
+<label>Gender</label>
+<select id="sex">
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other / Prefer not to say</option>
+</select>
+</div>
+<div class="col">
+<label>Birth Date</label>
+<div class="row" style="gap:6px">
+<input id="birthYear" max="2025" min="1900" placeholder="Year" step="1" style="flex:2" type="number"/>
+<select id="birthMonth" style="flex:1">
+<option value="">Month</option>
+<option value="1">Jan</option>
+<option value="2">Feb</option>
+<option value="3">Mar</option>
+<option value="4">Apr</option>
+<option value="5">May</option>
+<option value="6">Jun</option>
+<option value="7">Jul</option>
+<option value="8">Aug</option>
+<option value="9">Sep</option>
+<option value="10">Oct</option>
+<option value="11">Nov</option>
+<option value="12">Dec</option>
+</select>
+<input id="birthDay" max="31" min="1" placeholder="Day" step="1" style="flex:1" type="number"/>
+</div>
+</div>
+<div class="col" style="min-width:120px">
+<label>Current Age</label>
+<div id="calculatedAge" style="padding:11px 12px; border-radius:12px; border:1px solid var(--border); background:#0e141b; color:var(--accent); font-weight:bold; text-align:center">Enter birth date</div>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Self-reported health</label>
+<select id="health">
+<option value="good">Good</option>
+<option value="excellent">Excellent</option>
+<option value="fair">Fair</option>
+<option value="poor">Poor</option>
+<option value="na">Prefer not to say</option>
+</select>
+</div>
+<div class="col">
+<label>Units</label>
+<select id="units">
+<option selected="" value="metric">Metric (cm, kg)</option>
+<option value="imperial">Imperial (ft/in, lb)</option>
+</select>
+</div>
+<div class="col metric-only">
+<label>Height (cm)</label>
+<input id="heightCm" max="250" min="80" placeholder="e.g., 175" step="0.1" type="number"/>
+</div>
+<div class="col metric-only">
+<label>Weight (kg)</label>
+<input id="weightKg" max="300" min="20" placeholder="e.g., 70" step="0.1" type="number"/>
+</div>
+<div class="col imperial-only" style="display:none">
+<label>Height (ft + in)</label>
+<div class="row" style="gap:6px">
+<input id="heightFt" max="8" min="3" placeholder="ft" step="1" style="flex:1" type="number"/>
+<input id="heightIn" max="11" min="0" placeholder="in" step="1" style="flex:1" type="number"/>
+</div>
+</div>
+<div class="col imperial-only" style="display:none">
+<label>Weight (lb)</label>
+<input id="weightLb" max="600" min="50" placeholder="e.g., 154" step="0.1" type="number"/>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Cash &amp; Savings (USD)</label>
+<input id="cash" min="0" placeholder="e.g., 50000" step="100" type="number"/>
+</div>
+<div class="col">
+<label>Real Estate Value (USD)</label>
+<input id="realEstate" min="0" placeholder="e.g., 300000" step="1000" type="number"/>
+</div>
+<div class="col">
+<label>Stock/Investment Value (USD)</label>
+<input id="stocks" min="0" placeholder="e.g., 75000" step="100" type="number"/>
+</div>
+<div class="col">
+<label>Total Debt (USD)</label>
+<input id="debt" min="0" placeholder="e.g., 25000" step="100" type="number"/>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Annual Income (USD)</label>
+<input id="income" min="0" placeholder="e.g., 80000" step="100" type="number"/>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Education</label>
+<select id="education">
+<option value="hs">High school or below</option>
+<option value="somecollege">Some college</option>
+<option value="bachelor">Bachelor's</option>
+<option value="master">Master's</option>
+<option value="doctorate">Doctorate</option>
+</select>
+</div>
+<div class="col">
+<label>University (optional, display-only)</label>
+<input id="university" placeholder="e.g., University of Michigan" type="text"/>
+</div>
+<div class="col">
+<label>Race / Ethnicity (not used in score)</label>
+<select id="race">
+<option value="na">Prefer not to say</option>
+<option value="asian">Asian</option>
+<option value="black">Black</option>
+<option value="white">White</option>
+<option value="latino">Hispanic / Latino</option>
+<option value="mena">Middle Eastern / North African</option>
+<option value="indigenous">Indigenous</option>
+<option value="pi">Pacific Islander</option>
+<option value="other">Other</option>
+</select>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Children</label>
+<input id="children" max="12" min="0" step="1" type="number" value="0"/>
+</div>
+<div class="col">
+<label>Expected Life Span (years) - Auto-calculated</label>
+<input id="lifeExpectancy" max="120" min="50" placeholder="Auto-calculated" readonly="" step="1" style="background:#0b1218; color:var(--accent);" type="number"/>
+<div class="small" style="margin-top:2px">
+<label style="display:inline; margin:0; cursor:pointer">
+<input id="lifeExpectancyManual" style="margin-right:4px" type="checkbox"/> Manual override
             </label>
-          </div>
-        </div>
-        <div class="col">
-          <label>Happiness Score (1-10) - Auto-estimated</label>
-          <input id="happiness" type="number" min="1" max="10" step="0.1" placeholder="Auto-calculated" readonly style="background:#0b1218; color:var(--accent);">
-          <div class="small" style="margin-top:2px">
-            <label style="display:inline; margin:0; cursor:pointer">
-              <input type="checkbox" id="happinessManual" style="margin-right:4px"> Manual override
+</div>
+</div>
+<div class="col">
+<label>Happiness Score (1-10) - Auto-estimated</label>
+<input id="happiness" max="10" min="1" placeholder="Auto-calculated" readonly="" step="0.1" style="background:#0b1218; color:var(--accent);" type="number"/>
+<div class="small" style="margin-top:2px">
+<label style="display:inline; margin:0; cursor:pointer">
+<input id="happinessManual" style="margin-right:4px" type="checkbox"/> Manual override
             </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label>Father Status</label>
-          <select id="fatherStatus">
-            <option value="alive">Alive</option>
-            <option value="deceased">Deceased</option>
-          </select>
-        </div>
-        <div class="col" id="fatherAgeGroup">
-          <label id="fatherAgeLabel">Father's Current Age</label>
-          <input id="fatherAge" type="number" min="30" max="120" step="1" placeholder="e.g., 65">
-        </div>
-        <div class="col">
-          <label>Mother Status</label>
-          <select id="motherStatus">
-            <option value="alive">Alive</option>
-            <option value="deceased">Deceased</option>
-          </select>
-        </div>
-        <div class="col" id="motherAgeGroup">
-          <label id="motherAgeLabel">Mother's Current Age</label>
-          <input id="motherAge" type="number" min="30" max="120" step="1" placeholder="e.g., 62">
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Your Global Rank 🎯</h2>
-      <div id="result" class="resultBox">Enter inputs and click <span class="kbd">Calculate</span>.</div>
-
-      <!-- Enhanced Global Population Visualization -->
-      <div id="populationViz" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold" id="populationVizTitle">🌍 Your Position Among 8.25 Billion People</div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
-          <div style="flex:1; height:24px; background:#1e293b; border-radius:12px; overflow:hidden; position:relative; border:1px solid var(--border)">
-            <div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
-            <div id="rankMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease; box-shadow:0 0 8px rgba(255,255,255,0.6)"></div>
-          </div>
-          <div class="small" id="rankPosition" style="font-weight:bold; color:var(--accent)">You</div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted)">
-          <span>👶 Rank 8.25B (Bottom)</span>
-          <span>👑 Rank 1 (Top)</span>
-        </div>
-        <div id="rankDetails" style="margin-top:8px; padding:8px; background:#1a202c; border-radius:8px; font-size:11px"></div>
-      </div>
-
-      <!-- Enhanced Wealth Breakdown Chart -->
-      <div id="wealthChart" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">💰 Your Wealth Breakdown</div>
-        <div id="wealthBars"></div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; font-size:11px">
-          <div style="padding:4px 8px; background:#1a202c; border-radius:6px">
-            <div class="small" style="color:var(--muted)">Net Worth</div>
-            <div id="netWorthTotal" style="font-weight:bold; color:var(--green)">$0</div>
-          </div>
-          <div style="padding:4px 8px; background:#1a202c; border-radius:6px">
-            <div class="small" style="color:var(--muted)">Wealth Rank</div>
-            <div id="wealthRankDisplay" style="font-weight:bold; color:var(--accent)">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enhanced Comparison Charts -->
-      <div id="comparisonCharts" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">📊 How You Compare Globally</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:12px">
-          <div>
-            <div class="small" style="margin-bottom:5px">👥 Age Distribution</div>
-            <div id="ageChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
-          </div>
-          <div>
-            <div class="small" style="margin-bottom:5px">💵 Income Distribution</div>
-            <div id="incomeChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
-          <div>
-            <div class="small" style="margin-bottom:5px">🎓 Education Level</div>
-            <div id="educationChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
-          </div>
-          <div>
-            <div class="small" style="margin-bottom:5px">🏥 Health Status</div>
-            <div id="healthChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enhanced Fun Facts -->
-      <div id="funFacts" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">🎉 Amazing Facts About Your Global Position</div>
-        <div id="factsContent" style="font-size:12px; line-height:1.4"></div>
-        <div id="comparisonFacts" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--muted)"></div>
-      </div>
-
-      <!-- Enhanced Life Timeline -->
-      <div id="lifeTimeline" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">⏰ Your Life Journey</div>
-        <div id="timelineViz" style="background:#1a202c; border-radius:10px; padding:12px; margin-bottom:8px; border:1px solid var(--border)">
-          <div style="display:flex; align-items:center; margin-bottom:8px">
-            <div style="width:60px; font-size:11px">Life</div>
-            <div style="flex:1; height:24px; background:#2a2a2a; border-radius:12px; overflow:hidden; position:relative; margin:0 8px">
-              <div id="lifeProgress" style="height:100%; background:linear-gradient(90deg,#22c55e,#eab308,#ef4444); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
-              <div id="lifeMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease"></div>
-            </div>
-            <div style="width:80px; font-size:11px; text-align:right" id="lifeYears">0 years</div>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted)">
-            <span>🍼 Birth</span>
-            <span id="currentLifeStage" style="color:var(--accent); font-weight:bold">Current</span>
-            <span>💀 Expected End</span>
-          </div>
-        </div>
-        <div id="parentAges" style="font-size:11px; color:var(--muted)"></div>
-        <div id="lifeStatsGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px; font-size:10px"></div>
-      </div>
-
-      <!-- Enhanced Happiness Visualization -->
-      <div id="happinessViz" style="display:none; margin:15px 0">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">😊 Your Happiness & Well-being</div>
-        <div style="background:#1a202c; border-radius:10px; padding:12px; border:1px solid var(--border)">
-          <div style="display:flex; align-items:center; margin-bottom:8px">
-            <div style="width:50px; font-size:11px">😢 1</div>
-            <div style="flex:1; height:28px; background:#2a2a2a; border-radius:14px; overflow:hidden; position:relative; margin:0 8px">
-              <div id="happinessBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#eab308,#22c55e); border-radius:14px; width:0%; transition:width 0.8s ease"></div>
-              <div id="happinessMarker" style="position:absolute; top:2px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:12px; left:0%; transition:left 0.8s ease; display:flex; align-items:center; justify-content:center; font-size:14px; border:2px solid #333">😊</div>
-            </div>
-            <div style="width:50px; font-size:11px; text-align:right">😄 10</div>
-          </div>
-          <div style="text-align:center; font-size:12px; margin-bottom:6px" id="happinessText">Your happiness: 0.0/10</div>
-          <div style="text-align:center; font-size:10px; color:var(--muted)" id="happinessComparison">World average: 5.4/10</div>
-        </div>
-      </div>
-
-      <!-- Test Results Panel -->
-      <div id="testResults" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
-        <div class="small" style="margin-bottom:8px; font-weight:bold">🧪 Test Results</div>
-        <div id="testOutput" style="font-size:11px; line-height:1.4; font-family:monospace"></div>
-      </div>
-
-
-    </div>
-  </section>
-
-  <footer style="margin-top:20px; padding:16px; background:#1a202c; border-radius:12px; border:1px solid var(--border)" class="small">
-    <div style="text-align:center; line-height:1.5">
-      <div style="margin-bottom:8px; color:var(--accent); font-weight:bold">Global Human Ranking Calculator</div>
-      <div style="color:var(--muted)">Find your exact position among billions of people worldwide • Based on real economic data from 60 countries</div>
-      <div style="margin-top:8px; color:var(--muted); font-size:10px">
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<label>Father Status</label>
+<select id="fatherStatus">
+<option value="alive">Alive</option>
+<option value="deceased">Deceased</option>
+</select>
+</div>
+<div class="col" id="fatherAgeGroup">
+<label id="fatherAgeLabel">Father's Current Age</label>
+<input id="fatherAge" max="120" min="30" placeholder="e.g., 65" step="1" type="number"/>
+</div>
+<div class="col">
+<label>Mother Status</label>
+<select id="motherStatus">
+<option value="alive">Alive</option>
+<option value="deceased">Deceased</option>
+</select>
+</div>
+<div class="col" id="motherAgeGroup">
+<label id="motherAgeLabel">Mother's Current Age</label>
+<input id="motherAge" max="120" min="30" placeholder="e.g., 62" step="1" type="number"/>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>Your Global Rank 🎯</h2>
+<div class="resultBox" id="result">Enter inputs and click <span class="kbd">Calculate</span>.</div>
+<!-- Enhanced Global Population Visualization -->
+<div id="populationViz" style="display:none; margin:15px 0">
+<div class="small" id="populationVizTitle" style="margin-bottom:8px; font-weight:bold">🌍 Your Position Among 8.25 Billion People</div>
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
+<div style="flex:1; height:24px; background:#1e293b; border-radius:12px; overflow:hidden; position:relative; border:1px solid var(--border)">
+<div id="rankBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
+<div id="rankMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease; box-shadow:0 0 8px rgba(255,255,255,0.6)"></div>
+</div>
+<div class="small" id="rankPosition" style="font-weight:bold; color:var(--accent)">You</div>
+</div>
+<div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted)">
+<span>👶 Rank 8.25B (Bottom)</span>
+<span>👑 Rank 1 (Top)</span>
+</div>
+<div id="rankDetails" style="margin-top:8px; padding:8px; background:#1a202c; border-radius:8px; font-size:11px"></div>
+</div>
+<!-- Enhanced Wealth Breakdown Chart -->
+<div id="wealthChart" style="display:none; margin:15px 0">
+<div class="small" style="margin-bottom:8px; font-weight:bold">💰 Your Wealth Breakdown</div>
+<div id="wealthBars"></div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; font-size:11px">
+<div style="padding:4px 8px; background:#1a202c; border-radius:6px">
+<div class="small" style="color:var(--muted)">Net Worth</div>
+<div id="netWorthTotal" style="font-weight:bold; color:var(--green)">$0</div>
+</div>
+<div style="padding:4px 8px; background:#1a202c; border-radius:6px">
+<div class="small" style="color:var(--muted)">Wealth Rank</div>
+<div id="wealthRankDisplay" style="font-weight:bold; color:var(--accent)">-</div>
+</div>
+</div>
+</div>
+<!-- Enhanced Comparison Charts -->
+<div id="comparisonCharts" style="display:none; margin:15px 0">
+<div class="small" style="margin-bottom:8px; font-weight:bold">📊 How You Compare Globally</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:12px">
+<div>
+<div class="small" style="margin-bottom:5px">👥 Age Distribution</div>
+<div id="ageChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+</div>
+<div>
+<div class="small" style="margin-bottom:5px">💵 Income Distribution</div>
+<div id="incomeChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+</div>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
+<div>
+<div class="small" style="margin-bottom:5px">🎓 Education Level</div>
+<div id="educationChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+</div>
+<div>
+<div class="small" style="margin-bottom:5px">🏥 Health Status</div>
+<div id="healthChart" style="height:60px; background:#1e293b; border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border)"></div>
+</div>
+</div>
+</div>
+<!-- Enhanced Fun Facts -->
+<div id="funFacts" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
+<div class="small" style="margin-bottom:8px; font-weight:bold">🎉 Amazing Facts About Your Global Position</div>
+<div id="factsContent" style="font-size:12px; line-height:1.4"></div>
+<div id="comparisonFacts" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--muted)"></div>
+</div>
+<!-- Enhanced Life Timeline -->
+<div id="lifeTimeline" style="display:none; margin:15px 0">
+<div class="small" style="margin-bottom:8px; font-weight:bold">⏰ Your Life Journey</div>
+<div id="timelineViz" style="background:#1a202c; border-radius:10px; padding:12px; margin-bottom:8px; border:1px solid var(--border)">
+<div style="display:flex; align-items:center; margin-bottom:8px">
+<div style="width:60px; font-size:11px">Life</div>
+<div style="flex:1; height:24px; background:#2a2a2a; border-radius:12px; overflow:hidden; position:relative; margin:0 8px">
+<div id="lifeProgress" style="height:100%; background:linear-gradient(90deg,#22c55e,#eab308,#ef4444); border-radius:12px; width:0%; transition:width 0.8s ease"></div>
+<div id="lifeMarker" style="position:absolute; top:-2px; width:3px; height:28px; background:#fff; left:0%; transition:left 0.8s ease"></div>
+</div>
+<div id="lifeYears" style="width:80px; font-size:11px; text-align:right">0 years</div>
+</div>
+<div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted)">
+<span>🍼 Birth</span>
+<span id="currentLifeStage" style="color:var(--accent); font-weight:bold">Current</span>
+<span>💀 Expected End</span>
+</div>
+</div>
+<div id="parentAges" style="font-size:11px; color:var(--muted)"></div>
+<div id="lifeStatsGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px; font-size:10px"></div>
+</div>
+<!-- Enhanced Happiness Visualization -->
+<div id="happinessViz" style="display:none; margin:15px 0">
+<div class="small" style="margin-bottom:8px; font-weight:bold">😊 Your Happiness &amp; Well-being</div>
+<div style="background:#1a202c; border-radius:10px; padding:12px; border:1px solid var(--border)">
+<div style="display:flex; align-items:center; margin-bottom:8px">
+<div style="width:50px; font-size:11px">😢 1</div>
+<div style="flex:1; height:28px; background:#2a2a2a; border-radius:14px; overflow:hidden; position:relative; margin:0 8px">
+<div id="happinessBar" style="height:100%; background:linear-gradient(90deg,#ef4444,#eab308,#22c55e); border-radius:14px; width:0%; transition:width 0.8s ease"></div>
+<div id="happinessMarker" style="position:absolute; top:2px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:12px; left:0%; transition:left 0.8s ease; display:flex; align-items:center; justify-content:center; font-size:14px; border:2px solid #333">😊</div>
+</div>
+<div style="width:50px; font-size:11px; text-align:right">😄 10</div>
+</div>
+<div id="happinessText" style="text-align:center; font-size:12px; margin-bottom:6px">Your happiness: 0.0/10</div>
+<div id="happinessComparison" style="text-align:center; font-size:10px; color:var(--muted)">World average: 5.4/10</div>
+</div>
+</div>
+<!-- Test Results Panel -->
+<div id="testResults" style="display:none; margin:15px 0; padding:12px; background:#1a202c; border-radius:10px; border:1px solid var(--border)">
+<div class="small" style="margin-bottom:8px; font-weight:bold">🧪 Test Results</div>
+<div id="testOutput" style="font-size:11px; line-height:1.4; font-family:monospace"></div>
+</div>
+</div>
+</section>
+<footer class="small" style="margin-top:20px; padding:16px; background:#1a202c; border-radius:12px; border:1px solid var(--border)">
+<div style="text-align:center; line-height:1.5">
+<div style="margin-bottom:8px; color:var(--accent); font-weight:bold">Global Human Ranking Calculator</div>
+<div style="color:var(--muted)">Find your exact position among billions of people worldwide • Based on real economic data from 60 countries</div>
+<div style="margin-top:8px; color:var(--muted); font-size:10px">
         Data sources: World Bank, IMF, National Statistics • Updated 2025
       </div>
-    </div>
-  </footer>
 </div>
-
+</footer>
+</div>
 <script>
 // =======================
 // Version 2.0 Enhanced Global Ranking System
