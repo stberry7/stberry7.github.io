@@ -60,511 +60,63 @@
  }
  </script>
 
- <style>
- :root{
- --bg: #f5f7fb; --panel: #ffffff; --ink: #0f172a; --muted: #475569;
- --brand: #2563eb; --accent: #06b6d4; --radius: 16px;
- --shadow: 0 6px 24px rgba(16,24,40,.06); --maxw: 1180px; --border: 1px solid #e5e7eb;
- }
-
- *,*::before,*::after{box-sizing:border-box}
- html,body{height:100%}
- body{
- margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
- color:var(--ink);
- background:
- radial-gradient(600px 300px at 10% -5%, rgba(37,99,235,.10), transparent 60%),
- radial-gradient(800px 400px at 110% 10%, rgba(6,182,212,.12), transparent 60%),
- var(--bg);
- -webkit-text-size-adjust:100%; text-size-adjust:100%;
- }
-
- /* Decorative background */
- #bg { position:fixed; inset:0; width:100vw; height:100vh; object-fit:cover;
- z-index:-2; opacity:.07; filter:saturate(.9) contrast(1.05); pointer-events:none; }
- #scrim { position:fixed; inset:0; z-index:-1;
- background:linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.95)); pointer-events:none; }
-
- .wrap{max-width:var(--maxw); margin:0 auto; padding:28px clamp(16px, 4vw, 28px);}
- header.hero{
- background:var(--panel); border-radius:var(--radius); box-shadow:var(--shadow);
- padding:clamp(18px, 3.2vw, 32px); margin:20px 0 24px; border: var(--border);
- position:relative; overflow:hidden;
- }
- header.hero::before{ content:""; position:absolute; inset:0 0 auto 0; height:4px;
- background: linear-gradient(90deg, var(--brand), var(--accent)); }
- /* Visitor stats */
- .visitor-stats{
- display:flex; justify-content:center; gap:clamp(16px, 4vw, 32px); margin-bottom:16px;
- flex-wrap:wrap;
- }
- .stat-item{
- display:flex; flex-direction:column; align-items:center; padding:8px 16px;
- background:rgba(255,255,255,0.7); border-radius:10px; min-width:80px;
- backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3);
- }
- .stat-label{
- font-size:clamp(0.7rem, 1.2vw, 0.8rem); color:var(--muted); font-weight:500;
- text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;
- }
- .stat-value{
- font-size:clamp(1rem, 2vw, 1.3rem); font-weight:700; color:var(--ink);
- transition:transform 0.2s ease;
- }
- .stat-value.online{color:var(--brand)}
- .stat-value.country{
- display:flex; align-items:center; gap:6px; font-size:clamp(0.9rem, 1.8vw, 1.1rem);
- }
- .flag{font-size:clamp(1.2rem, 2.2vw, 1.4rem)}
- .country-item{min-width:120px}
-
- header.hero h1{margin:0 0 8px; font-size:clamp(1.5rem, 3vw, 2.1rem)}
- header.hero p{margin:0 0 16px; color:var(--muted); font-size:clamp(1rem, 1.8vw, 1.06rem)}
-
- /* Search container */
- .search-container{
- position:relative; display:flex; align-items:center; max-width:500px; margin:0 auto;
- }
- #searchInput{
- width:100%; padding:12px 40px 12px 16px; border:2px solid #e5e7eb; border-radius:12px;
- font-size:1rem; background:var(--panel); color:var(--ink); outline:none;
- transition:border-color .2s ease, box-shadow .2s ease;
- }
- #searchInput:focus{border-color:var(--brand); box-shadow:0 0 0 3px rgba(37,99,235,.1)}
- #clearSearch{
- position:absolute; right:8px; background:none; border:none; font-size:18px;
- color:var(--muted); cursor:pointer; padding:4px; border-radius:6px;
- opacity:0; transition:opacity .2s ease;
- }
- #clearSearch:hover{background:#f3f4f6; color:var(--ink)}
- .search-container.has-text #clearSearch{opacity:1}
-
- /* Grid */
- .grid{ display:grid; grid-template-columns: repeat(12, 1fr);
- gap: clamp(14px, 2.2vw, 22px); align-items:stretch; }
- .card{
- grid-column: span 6;
- background:var(--panel); border-radius:var(--radius); box-shadow:var(--shadow);
- padding:clamp(18px, 2.6vw, 26px); display:flex; flex-direction:column; gap:12px;
- min-height: 260px; border: var(--border);
- }
- .card h2{margin:0; font-size:clamp(1.1rem, 2.2vw, 1.35rem)}
- .card p{margin:0; color:var(--muted); line-height:1.55; font-size:clamp(1rem, 1.6vw, 1.06rem)}
- .card ul{margin:.35rem 0 0 1.1rem; color:var(--muted);}
- .cta{ margin-top:auto; display:flex; flex-wrap:wrap; gap:10px; }
-
- /* Search functionality */
- .card.hidden{display:none}
- .no-results{
- grid-column:1/-1; text-align:center; padding:40px 20px;
- color:var(--muted); font-size:1.1rem; display:none;
- }
-
- .btn{
- appearance:none; border:0; text-decoration:none; cursor:pointer;
- background:linear-gradient(180deg, var(--brand), #1d4ed8); color:#fff; font-weight:700;
- padding:12px 16px; border-radius:12px; box-shadow:0 4px 14px rgba(37,99,235,.25);
- font-size:clamp(.95rem, 1.6vw, 1.02rem);
- transition: transform .06s ease, filter .15s ease;
- }
- .btn:hover{ filter:brightness(.98) }
- .btn:active{ transform:translateY(1px) }
-
- .explainer{ grid-column: 1 / -1; background:var(--panel); border-radius:var(--radius);
- box-shadow:var(--shadow); padding:clamp(18px, 3vw, 28px); border: var(--border); }
- .explainer h3{margin:0 0 .5rem; font-size:clamp(1.1rem, 2.2vw, 1.3rem)}
- .explainer p{margin:.25rem 0; color:var(--muted); font-size:clamp(1rem, 1.6vw, 1.06rem)}
-
- footer.site{
- margin:22px 0 10px; background:#ffffff; border-radius:12px; padding:12px 16px;
- box-shadow:var(--shadow); border: var(--border); display:flex; align-items:center;
- justify-content:flex-start; font-size:clamp(.9rem, 1.4vw, .98rem); color:#1f2937;
- }
-
- /* Mobile optimization */
- @media (max-width: 980px){
- .card{ grid-column: span 12; }
- .wrap{ padding:22px 16px; }
- footer.site{ justify-content:center; text-align:center; }
- }
- @media (max-width: 540px){
- #bg{ display:none; } /* don't render bg image on small screens */
- .btn{ width:100%; text-align:center; } /* easier tapping */
- }
-
- /* Accessibility helpers (for screen readers and crawlable content) */
- .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
- </style>
+<style>:root{--bg:#f5f7fb;--panel:#fff;--ink:#0f172a;--muted:#475569;--brand:#2563eb;--accent:#06b6d4;--radius:16px;--shadow:0 6px 24px rgba(16,24,40,.06);--maxw:1180px;--border:1px solid #e5e7eb}*,*::before,*::after{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:radial-gradient(600px 300px at 10% -5%,rgba(37,99,235,.1),transparent 60%),radial-gradient(800px 400px at 110% 10%,rgba(6,182,212,.12),transparent 60%),var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}#bg{position:fixed;inset:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;opacity:.07;filter:saturate(.9) contrast(1.05);pointer-events:none}#scrim{position:fixed;inset:0;z-index:-1;background:linear-gradient(to bottom,rgba(255,255,255,.85),rgba(255,255,255,.95));pointer-events:none}.wrap{max-width:var(--maxw);margin:0 auto;padding:28px clamp(16px,4vw,28px)}header.hero{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(18px,3.2vw,32px);margin:20px 0 24px;border:var(--border);position:relative;overflow:hidden}header.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--brand),var(--accent))}.global-updates{background:rgba(37,99,235,.05);border-radius:12px;padding:12px 16px;margin-bottom:16px;border:1px solid rgba(37,99,235,.1)}.updates-header{font-size:clamp(.9rem,1.6vw,1rem);font-weight:600;color:var(--brand);margin-bottom:8px;text-align:center}.updates-feed{max-height:80px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.3) transparent}.updates-feed::-webkit-scrollbar{width:4px}.updates-feed::-webkit-scrollbar-track{background:transparent}.updates-feed::-webkit-scrollbar-thumb{background:rgba(37,99,235,.3);border-radius:2px}.update-item{padding:4px 0;font-size:clamp(.8rem,1.4vw,.9rem);color:var(--ink);line-height:1.4;animation:slideIn .5s ease-out}.update-item:not(:last-child){border-bottom:1px solid rgba(37,99,235,.1)}@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}.visitor-stats{display:flex;justify-content:center;gap:clamp(16px,4vw,32px);margin-bottom:16px;flex-wrap:wrap}.stat-item{display:flex;flex-direction:column;align-items:center;padding:8px 16px;background:rgba(255,255,255,.7);border-radius:10px;min-width:80px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3)}.stat-label{font-size:clamp(.7rem,1.2vw,.8rem);color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.stat-value{font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:var(--ink);transition:transform .2s ease}.stat-value.online{color:var(--brand)}.stat-value.country{display:flex;align-items:center;gap:6px;font-size:clamp(.9rem,1.8vw,1.1rem)}.flag{font-size:clamp(1.2rem,2.2vw,1.4rem)}.country-item{min-width:120px}header.hero h1{margin:0 0 8px;font-size:clamp(1.5rem,3vw,2.1rem)}header.hero p{margin:0 0 16px;color:var(--muted);font-size:clamp(1rem,1.8vw,1.06rem)}.search-container{position:relative;display:flex;align-items:center;max-width:500px;margin:0 auto}#searchInput{width:100%;padding:12px 40px 12px 16px;border:2px solid #e5e7eb;border-radius:12px;font-size:1rem;background:var(--panel);color:var(--ink);outline:none;transition:border-color .2s ease,box-shadow .2s ease}#searchInput:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.1)}#clearSearch{position:absolute;right:8px;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;padding:4px;border-radius:6px;opacity:0;transition:opacity .2s ease}#clearSearch:hover{background:#f3f4f6;color:var(--ink)}.search-container.has-text #clearSearch{opacity:1}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,2.2vw,22px);align-items:stretch}.card{grid-column:span 6;background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(18px,2.6vw,26px);display:flex;flex-direction:column;gap:12px;min-height:260px;border:var(--border)}.card h2{margin:0;font-size:clamp(1.1rem,2.2vw,1.35rem)}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:clamp(1rem,1.6vw,1.06rem)}.card ul{margin:.35rem 0 0 1.1rem;color:var(--muted)}.cta{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px}.card.hidden{display:none}.no-results{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);font-size:1.1rem;display:none}.btn{appearance:none;border:0;text-decoration:none;cursor:pointer;background:linear-gradient(180deg,var(--brand),#1d4ed8);color:#fff;font-weight:700;padding:12px 16px;border-radius:12px;box-shadow:0 4px 14px rgba(37,99,235,.25);font-size:clamp(.95rem,1.6vw,1.02rem);transition:transform .06s ease,filter .15s ease}.btn:hover{filter:brightness(.98)}.btn:active{transform:translateY(1px)}.explainer{grid-column:1/-1;background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(18px,3vw,28px);border:var(--border)}.explainer h3{margin:0 0 .5rem;font-size:clamp(1.1rem,2.2vw,1.3rem)}.explainer p{margin:.25rem 0;color:var(--muted);font-size:clamp(1rem,1.6vw,1.06rem)}footer.site{margin:22px 0 10px;background:#fff;border-radius:12px;padding:12px 16px;box-shadow:var(--shadow);border:var(--border);display:flex;align-items:center;justify-content:flex-start;font-size:clamp(.9rem,1.4vw,.98rem);color:#1f2937}@media(max-width:980px){.card{grid-column:span 12}.wrap{padding:22px 16px}footer.site{justify-content:center;text-align:center}}@media(max-width:540px){#bg{display:none}.btn{width:100%;text-align:center}}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}</style>
 </head>
 <body>
  <img id="bg" alt="Decorative gradient background" src="" />
  <div id="scrim" aria-hidden="true"></div>
 
  <div class="wrap">
- <header class="hero">
- <div class="visitor-stats">
- <div class="stat-item">
- <span class="stat-label">Today's Visitors</span>
- <span class="stat-value" id="todayVisitors">0</span>
- </div>
- <div class="stat-item">
- <span class="stat-label">Total Visitors</span>
- <span class="stat-value" id="totalVisitors">10,000</span>
- </div>
- <div class="stat-item">
- <span class="stat-label">Online Now</span>
- <span class="stat-value online" id="onlineNow">1</span>
- </div>
- <div class="stat-item country-item">
- <span class="stat-label">Your Location</span>
- <span class="stat-value country" id="userCountry">
- <span class="flag" id="countryFlag">🌍</span>
- <span id="countryName">Detecting...</span>
- </span>
- </div>
- </div>
+<header class="hero">
+<div class="global-updates">
+<div class="updates-header">Real-Time Global Updates</div>
+<div class="updates-feed" id="updatesFeed">
+<div class="update-item">🌍 Loading global data...</div>
+</div>
+</div>
+<div class="visitor-stats">
+<div class="stat-item"><span class="stat-label">Today's Visitors</span><span class="stat-value" id="todayVisitors">0</span></div>
+<div class="stat-item"><span class="stat-label">Total Visitors</span><span class="stat-value" id="totalVisitors">10,000</span></div>
+<div class="stat-item"><span class="stat-label">Online Now</span><span class="stat-value online" id="onlineNow">1</span></div>
+<div class="stat-item country-item"><span class="stat-value country" id="userCountry"><span class="flag" id="countryFlag">🌍</span><span id="countryName">Detecting...</span></span></div>
+</div>
+<h1>DataMadang</h1>
+<p>Global Economic Data Hub: Explore U.S. Federal Reserve (FRED) indicators, World Bank global datasets, U.S. mortgage rates, CD rates, and the Housing Price Index — explained clearly, linked fast.</p>
+<div class="search-container">
+<input type="text" id="searchInput" placeholder="Search dashboards (e.g., FRED, mortgage, housing, golf...)" />
+<button id="clearSearch" aria-label="Clear search">✕</button>
+</div>
+</header>
 
- <h1>DataMadang</h1>
- <p>Global Economic Data Hub: Explore U.S. Federal Reserve (FRED) indicators, World Bank global datasets, U.S. mortgage rates, CD rates, and the Housing Price Index — explained clearly, linked fast.</p>
-
- <div class="search-container">
- <input type="text" id="searchInput" placeholder="Search dashboards (e.g., FRED, mortgage, housing, golf...)" />
- <button id="clearSearch" aria-label="Clear search">✕</button>
- </div>
- </header>
-
- <section class="grid" aria-label="Data dashboards">
- <div class="no-results">
- <p>No dashboards found matching your search. Try different keywords like "economic", "finance", or "data".</p>
- </div>
- <!-- FRED -->
- <article class="card" id="fred">
- <h2>Federal Reserve (FRED) Indicators</h2>
- <p>
-  FRED aggregates U.S. macro time series: unemployment (U‑3), CPI &amp; core inflation, Fed Funds rate,
-  GDP (BEA), payroll employment (BLS), and more.
- </p>
- <ul>
-  <li>Spot turning points in labor, prices, and policy</li>
-  <li>Aligned frequencies and recession shading</li>
-  <li>Easy export for spreadsheets and models</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="fed/fed.html" aria-label="Open FRED Dashboard">Open FRED Dashboard</a>
- </div>
- </article>
-
- <!-- World Bank -->
- <article class="card" id="worldbank">
- <h2>World Bank Global Data</h2>
- <p>
-  Compare economies worldwide: GDP (nominal/real/per‑capita), inflation, trade balance, FDI, savings, debt,
-  and hundreds of development indicators.
- </p>
- <ul>
-  <li>Country &amp; region filters with standard definitions</li>
-  <li>Per‑capita and growth‑rate views for fair comparisons</li>
-  <li>CSV/JSON downloads for research and teaching</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="worldbank/worldbank.html" aria-label="Open World Bank Dashboard">Open World Bank</a>
- </div>
- </article>
-
- <!-- World Bank -->
- <article class="card" id="weo">
- <h2>OECD House</h2>
- <p>
-  Compare economies worldwide: GDP (nominal/real/per‑capita), inflation, trade balance, FDI, savings, debt,
-  and hundreds of development indicators.
- </p>
- <ul>
-  <li>Country &amp; region filters with standard definitions</li>
-  <li>Per‑capita and growth‑rate views for fair comparisons</li>
-  <li>CSV/JSON downloads for research and teaching</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="oecd/house/oecd_house.html" aria-label="Open weo Dashboard">Open WEO</a>
- </div>
- </article>
- 
- <!-- World Bank -->
- <!-- <article class="card" id="weo">
- <h2>World Bank Global Data</h2>
- <p>
-  Compare economies worldwide: GDP (nominal/real/per‑capita), inflation, trade balance, FDI, savings, debt,
-  and hundreds of development indicators.
- </p>
- <ul>
-  <li>Country &amp; region filters with standard definitions</li>
-  <li>Per‑capita and growth‑rate views for fair comparisons</li>
-  <li>CSV/JSON downloads for research and teaching</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="weo/weo.html" aria-label="Open weo Dashboard">Open WEO</a>
- </div>
- </article> -->
-
- <!-- Mortgage -->
- <article class="card" id="mortgage">
- <h2>U.S. Mortgage Rates</h2>
- <p>
-  Follow mortgage benchmarks (e.g., 30‑year fixed) and spreads versus Treasuries to gauge
-  affordability and financing conditions.
- </p>
- <ul>
-  <li>Historical highs/lows with recent movements</li>
-  <li>Macro context: inflation, policy, term premia</li>
-  <li>Export‑ready charts for reports</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="mortgage.html" aria-label="Open Mortgage Rates Dashboard">Open Mortgage Rates</a>
- </div>
- </article>
-
- <!-- CD Rates -->
- <article class="card" id="cd">
- <h2>Bank CD Rates</h2>
- <p>
-  Track promotional CD yields by term (3m–60m) across institutions to compare safe opportunities and laddering strategies.
- </p>
- <ul>
-  <li>Term‑by‑term APY comparison</li>
-  <li>Identify yield curves &amp; specials at a glance</li>
-  <li>Export tables to CSV</li>
- </ul>
- <div class="cta">
-  <a class="btn" href="cd.html" aria-label="Open CD Rates Dashboard">Open CD Dashboard</a>
- </div>
- </article>
-
- <!-- Housing Price Index (NEW) -->
- <article class="card" id="housing">
- <h2>Housing Price Index</h2>
- <p>
-  Explore regional housing price indexes with state filters, Top/Bottom rankings, and percentile views.
-  Single‑file dashboard optimized for GitHub Pages.
- </p>
- <ul>
-  <li>Large legend + search</li>
-  <li>Top/Bottom N &amp; percentiles</li>
-  <li>PNG &amp; CSV export</li>
- </ul>
- <div class="cta">
-  <!-- <a class="btn" href="housing/housing.html" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a> -->
-  <!-- <a class="btn" href="/housing/" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a> -->
-  <a class="btn" href="/housing/housing.html" aria-label="Open Housing Price Index Dashboard"> Open Housing Dashboard</a>
- </div>
- </article>
-
-
-    <!-- Global Rank (Just for Fun) -->
-    <article class="card" id="rank">
-      <h2>My Global Rank (Fun)</h2>
-      <p>
-        Enter your basics (country, gender, age, health, height/weight, wealth, income, kids, parents) and see your playful
-        <strong>worldwide rank</strong> among ~8.1B people. Client‑side only, single file.
-      </p>
-      <ul>
-        <li>Inputs stay in your browser</li>
-        <li>Wealth &amp; income toy percentiles</li>
-        <li>Simple charts &amp; fun facts</li>
-      </ul>
-      <div class="cta">
-        <a class="btn" href="rank.html" aria-label="Open My Global Rank Tool">Open Global Rank</a>
-      </div>
-    </article>
-
-    <!-- Golf Handicap Ranking -->
-    <article class="card" id="golf">
-      <h2>Golf Handicap Ranking</h2>
-      <p>
-        Calculate your golf handicap and see your global ranking among golfers worldwide. Interactive dashboard with handicap distribution charts and driving distance statistics.
-      </p>
-      <ul>
-        <li>Personal handicap calculator</li>
-        <li>Global ranking by country &amp; gender</li>
-        <li>Driving distance statistics</li>
-      </ul>
-      <div class="cta">
-        <a class="btn" href="https://stberry7.github.io/golf_rank.html" aria-label="Open Golf Handicap Ranking Calculator">Open Golf Ranking</a>
-      </div>
-    </article>
-
+<section class="grid" aria-label="Data dashboards">
+<div class="no-results"><p>No dashboards found matching your search. Try different keywords like "economic", "finance", or "data".</p></div>
+<article class="card" id="fred"><h2>Federal Reserve (FRED) Indicators</h2><p>FRED aggregates U.S. macro time series: unemployment (U‑3), CPI &amp; core inflation, Fed Funds rate, GDP (BEA), payroll employment (BLS), and more.</p><ul><li>Spot turning points in labor, prices, and policy</li><li>Aligned frequencies and recession shading</li><li>Easy export for spreadsheets and models</li></ul><div class="cta"><a class="btn" href="fed/fed.html" aria-label="Open FRED Dashboard">Open FRED Dashboard</a></div></article>
+<article class="card" id="worldbank"><h2>World Bank Global Data</h2><p>Compare economies worldwide: GDP (nominal/real/per‑capita), inflation, trade balance, FDI, savings, debt, and hundreds of development indicators.</p><ul><li>Country &amp; region filters with standard definitions</li><li>Per‑capita and growth‑rate views for fair comparisons</li><li>CSV/JSON downloads for research and teaching</li></ul><div class="cta"><a class="btn" href="worldbank/worldbank.html" aria-label="Open World Bank Dashboard">Open World Bank</a></div></article>
+<article class="card" id="weo"><h2>OECD House</h2><p>Compare economies worldwide: GDP (nominal/real/per‑capita), inflation, trade balance, FDI, savings, debt, and hundreds of development indicators.</p><ul><li>Country &amp; region filters with standard definitions</li><li>Per‑capita and growth‑rate views for fair comparisons</li><li>CSV/JSON downloads for research and teaching</li></ul><div class="cta"><a class="btn" href="oecd/house/oecd_house.html" aria-label="Open weo Dashboard">Open WEO</a></div></article>
+<article class="card" id="mortgage"><h2>U.S. Mortgage Rates</h2><p>Follow mortgage benchmarks (e.g., 30‑year fixed) and spreads versus Treasuries to gauge affordability and financing conditions.</p><ul><li>Historical highs/lows with recent movements</li><li>Macro context: inflation, policy, term premia</li><li>Export‑ready charts for reports</li></ul><div class="cta"><a class="btn" href="mortgage.html" aria-label="Open Mortgage Rates Dashboard">Open Mortgage Rates</a></div></article>
+<article class="card" id="cd"><h2>Bank CD Rates</h2><p>Track promotional CD yields by term (3m–60m) across institutions to compare safe opportunities and laddering strategies.</p><ul><li>Term‑by‑term APY comparison</li><li>Identify yield curves &amp; specials at a glance</li><li>Export tables to CSV</li></ul><div class="cta"><a class="btn" href="cd.html" aria-label="Open CD Rates Dashboard">Open CD Dashboard</a></div></article>
+<article class="card" id="housing"><h2>Housing Price Index</h2><p>Explore regional housing price indexes with state filters, Top/Bottom rankings, and percentile views. Single‑file dashboard optimized for GitHub Pages.</p><ul><li>Large legend + search</li><li>Top/Bottom N &amp; percentiles</li><li>PNG &amp; CSV export</li></ul><div class="cta"><a class="btn" href="/housing/housing.html" aria-label="Open Housing Price Index Dashboard">Open Housing Dashboard</a></div></article>
+<article class="card" id="rank"><h2>My Global Rank (Fun)</h2><p>Enter your basics (country, gender, age, health, height/weight, wealth, income, kids, parents) and see your playful <strong>worldwide rank</strong> among ~8.1B people. Client‑side only, single file.</p><ul><li>Inputs stay in your browser</li><li>Wealth &amp; income toy percentiles</li><li>Simple charts &amp; fun facts</li></ul><div class="cta"><a class="btn" href="rank.html" aria-label="Open My Global Rank Tool">Open Global Rank</a></div></article>
+<article class="card" id="golf"><h2>Golf Handicap Ranking</h2><p>Calculate your golf handicap and see your global ranking among golfers worldwide. Interactive dashboard with handicap distribution charts and driving distance statistics.</p><ul><li>Personal handicap calculator</li><li>Global ranking by country &amp; gender</li><li>Driving distance statistics</li></ul><div class="cta"><a class="btn" href="https://stberry7.github.io/golf_rank.html" aria-label="Open Golf Handicap Ranking Calculator">Open Golf Ranking</a></div></article>
 </section>
 
- <!-- Full-width explainer -->
- <aside class="explainer" id="how-to">
- <h3>How to use this hub</h3>
- <p><strong>Start broad, then drill down:</strong> Begin with FRED for the U.S. macro picture, then open World Bank for international comparisons.</p>
- <p><strong>Connect macro to personal finance:</strong> Mortgage and CD sections translate macro drivers into real‑world rates you can act on.</p>
- <p><strong>Zoom into housing:</strong> Use the Housing Price Index tool to analyze metro/state trends and export series for your models.</p>
- <p><strong>Export anything:</strong> Each dashboard supports downloading the data/visuals—handy for weekly updates or presentations.</p>
- <p class="sr-only">Keywords: DataMadang, economic data hub, FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy, housing price index, golf handicap ranking.</p>
- </aside>
-
- <footer class="site">
- <span>Copyright © 2023–2025</span>
- </footer>
-
- <noscript>
- <p>This site uses JavaScript to render interactive dashboards (FRED, World Bank, Mortgage, CD, and Housing pages). If JavaScript is disabled, please enable it for the best experience.</p>
- </noscript>
+<aside class="explainer" id="how-to">
+<h3>How to use this hub</h3>
+<p><strong>Start broad, then drill down:</strong> Begin with FRED for the U.S. macro picture, then open World Bank for international comparisons.</p>
+<p><strong>Connect macro to personal finance:</strong> Mortgage and CD sections translate macro drivers into real‑world rates you can act on.</p>
+<p><strong>Zoom into housing:</strong> Use the Housing Price Index tool to analyze metro/state trends and export series for your models.</p>
+<p><strong>Export anything:</strong> Each dashboard supports downloading the data/visuals—handy for weekly updates or presentations.</p>
+<p class="sr-only">Keywords: DataMadang, economic data hub, FRED, Federal Reserve Economic Data, World Bank indicators, GDP, CPI, unemployment, mortgage rates, CD rates, APY, US economy, global economy, housing price index, golf handicap ranking.</p>
+</aside>
+<footer class="site"><span>Copyright © 2023–2025</span></footer>
+<noscript><p>This site uses JavaScript to render interactive dashboards (FRED, World Bank, Mortgage, CD, and Housing pages). If JavaScript is disabled, please enable it for the best experience.</p></noscript>
  </div>
 
- <script>
- // Visitor counter functionality
- (function() {
- const todayElement = document.getElementById('todayVisitors');
- const totalElement = document.getElementById('totalVisitors');
- const onlineElement = document.getElementById('onlineNow');
-
- // Get current date in EST
- function getESTDate() {
- const now = new Date();
- const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
- const est = new Date(utc + (-5 * 3600000)); // EST is UTC-5
- return est;
- }
-
- // Calculate today's visitors based on time progression
- function calculateTodayVisitors() {
- const now = getESTDate();
- const startOfDay = new Date(now);
- startOfDay.setHours(0, 0, 0, 0);
-
- const msInDay = 24 * 60 * 60 * 1000;
- const msPassed = now - startOfDay;
- const dayProgress = msPassed / msInDay;
-
- // Scale from 0 to 1000 based on time of day
- return Math.floor(dayProgress * 1000);
- }
-
- // Calculate total visitors (10000 + days since launch * 1000)
- function calculateTotalVisitors() {
- const launchDate = new Date('2024-01-01'); // Adjust as needed
- const now = getESTDate();
- const daysDiff = Math.floor((now - launchDate) / (24 * 60 * 60 * 1000));
- return 10000 + (daysDiff * 1000) + calculateTodayVisitors();
- }
-
- // Generate random online users (1-8)
- function generateOnlineUsers() {
- return Math.floor(Math.random() * 8) + 1;
- }
-
- // Format numbers with commas
- function formatNumber(num) {
- return num.toLocaleString();
- }
-
- // Update counters
- function updateCounters() {
- const todayCount = calculateTodayVisitors();
- const totalCount = calculateTotalVisitors();
- const onlineCount = generateOnlineUsers();
-
- todayElement.textContent = formatNumber(todayCount);
- totalElement.textContent = formatNumber(totalCount);
- onlineElement.textContent = onlineCount;
- }
-
- // Animate counter changes
- function animateCounter(element, newValue) {
- element.style.transform = 'scale(1.1)';
- setTimeout(() => {
- element.style.transform = 'scale(1)';
- }, 200);
- }
-
- // Update immediately
- updateCounters();
-
- // Update every 30 seconds for realistic progression
- setInterval(() => {
- const oldOnline = onlineElement.textContent;
- updateCounters();
- if (oldOnline !== onlineElement.textContent) {
- animateCounter(onlineElement, onlineElement.textContent);
- }
- }, 30000);
-
- // Update today's visitors every 5 minutes
- setInterval(() => {
- const oldToday = todayElement.textContent;
- const newToday = formatNumber(calculateTodayVisitors());
- if (oldToday !== newToday) {
- todayElement.textContent = newToday;
- animateCounter(todayElement, newToday);
- }
- }, 300000);
- })();
-
- // Search functionality
- (function() {
- const searchInput = document.getElementById('searchInput');
- const clearBtn = document.getElementById('clearSearch');
- const searchContainer = document.querySelector('.search-container');
- const cards = document.querySelectorAll('.card');
- const noResults = document.querySelector('.no-results');
-
- function performSearch() {
- const query = searchInput.value.toLowerCase().trim();
- let hasResults = false;
-
- // Toggle clear button visibility
- searchContainer.classList.toggle('has-text', query.length > 0);
-
- cards.forEach(card => {
- const title = card.querySelector('h2').textContent.toLowerCase();
- const description = card.querySelector('p').textContent.toLowerCase();
- const listItems = Array.from(card.querySelectorAll('li')).map(li => li.textContent.toLowerCase()).join(' ');
- const cardId = card.id.toLowerCase();
-
- const searchableContent = `${title} ${description} ${listItems} ${cardId}`;
- const matches = query === '' || searchableContent.includes(query);
-
- card.classList.toggle('hidden', !matches);
- if (matches) hasResults = true;
- });
-
- // Show/hide no results message
- noResults.style.display = query && !hasResults ? 'block' : 'none';
- }
-
- function clearSearch() {
- searchInput.value = '';
- performSearch();
- searchInput.focus();
- }
-
- // Event listeners
- searchInput.addEventListener('input', performSearch);
- searchInput.addEventListener('keydown', function(e) {
- if (e.key === 'Escape') clearSearch();
- });
- clearBtn.addEventListener('click', clearSearch);
-
- // Initialize
- performSearch();
- })();
-
- // Only load decorative background on screens wider than 540px
- (function(){
- var el = document.getElementById('bg');
- if (window.matchMedia && window.matchMedia('(max-width: 540px)').matches) {
- // skip loading to improve mobile performance
- el && el.parentNode && el.parentNode.removeChild(el);
- return;
- }
- var imgs = [];
- for (var i = 1; i <= 13; i++) imgs.push('image/index/flower/F' + ('00'+i).slice(-3) + '.jpeg');
- for (var j = 1; j <= 8; j++) imgs.push('image/index/flower/J' + ('00'+j).slice(-3) + '.jpg');
- var eng = ['image/index/engineering/image (1).png','image (2).png','image (3).png','image (4).png'].map(function(n){return 'image/index/engineering/'+n;});
- imgs = imgs.concat(eng);
- if(el){ el.src = imgs[Math.floor(Math.random() * imgs.length)]; }
- })();
- </script>
+<script>
+(function(){const uf=document.getElementById('updatesFeed');const ut=[{icon:'📱',text:'people came online',min:5,max:50,rate:2000},{icon:'🎓',text:'people became literate',min:8,max:25,rate:4000},{icon:'💰',text:'Global wealth grew by $',min:15000,max:80000,rate:3000},{icon:'🌍',text:'World population increased by',min:1,max:5,decimal:true,rate:5000},{icon:'📊',text:'new companies founded',min:3,max:15,rate:6000},{icon:'🏥',text:'lives saved by medicine',min:2,max:12,rate:7000},{icon:'🌱',text:'trees planted worldwide',min:100,max:800,rate:4500},{icon:'📚',text:'books published today',min:50,max:200,rate:8000}];function gt(){const n=new Date();return n.toLocaleTimeString('en-US',{hour12:false})}function gr(mn,mx,dc){const v=Math.random()*(mx-mn)+mn;return dc?v.toFixed(1):Math.floor(v)}function au(){const u=ut[Math.floor(Math.random()*ut.length)];const v=gr(u.min,u.max,u.decimal);const t=gt();const txt=u.text.includes('$')?`${u.text}${v.toLocaleString()}`:u.text.includes('by')?`${u.text} ${v} people`:`${v} ${u.text}`;const ui=document.createElement('div');ui.className='update-item';ui.innerHTML=`${t} - ${u.icon} ${txt}`;uf.insertBefore(ui,uf.firstChild);if(uf.children.length>8){uf.removeChild(uf.lastChild)}}au();setInterval(au,1000)})();
+(function(){const a=document.getElementById('todayVisitors'),b=document.getElementById('totalVisitors'),c=document.getElementById('onlineNow'),d=document.getElementById('countryFlag'),e=document.getElementById('countryName');function f(){const n=new Date(),u=n.getTime()+(n.getTimezoneOffset()*6e4);return new Date(u+(-5*36e5))}function g(){const n=f(),s=new Date(n);s.setHours(0,0,0,0);const m=864e5,p=n-s;return Math.floor(p/m*1e3)}function h(){const l=new Date('2024-01-01'),n=f(),d=Math.floor((n-l)/864e5);return 1e4+(d*1e3)+g()}function i(){return Math.floor(Math.random()*8)+1}async function j(){const fb=[{code:'US',name:'United States',flag:'🇺🇸'},{code:'KR',name:'South Korea',flag:'🇰🇷'},{code:'JP',name:'Japan',flag:'🇯🇵'},{code:'GB',name:'United Kingdom',flag:'🇬🇧'},{code:'DE',name:'Germany',flag:'🇩🇪'},{code:'FR',name:'France',flag:'🇫🇷'},{code:'CA',name:'Canada',flag:'🇨🇦'},{code:'AU',name:'Australia',flag:'🇦🇺'}];try{const r=await fetch('https://ipapi.co/json/',{method:'GET',headers:{'Accept':'application/json'}});if(r.ok){const dt=await r.json();if(dt.country_code&&dt.country_name){const fl=k(dt.country_code);l(fl,dt.country_name);return}}}catch(err){console.log('Country detection failed, using fallback')}const rc=fb[Math.floor(Math.random()*fb.length)];l(rc.flag,rc.name)}function k(cc){const fm={'US':'🇺🇸','KR':'🇰🇷','JP':'🇯🇵','GB':'🇬🇧','UK':'🇬🇧','DE':'🇩🇪','FR':'🇫🇷','CA':'🇨🇦','AU':'🇦🇺','CN':'🇨🇳','IN':'🇮🇳','BR':'🇧🇷','MX':'🇲🇽','IT':'🇮🇹','ES':'🇪🇸','NL':'🇳🇱','SE':'🇸🇪','NO':'🇳🇴','DK':'🇩🇰','FI':'🇫🇮'};return fm[cc.toUpperCase()]||'🌍'}function l(fl,cn){d.textContent=fl;e.textContent=cn}function m(){const tc=g(),ttc=h(),oc=i();a.textContent=tc.toLocaleString();b.textContent=ttc.toLocaleString();c.textContent=oc}function n(el){el.style.transform='scale(1.1)';setTimeout(()=>{el.style.transform='scale(1)'},200)}m();j();setInterval(()=>{const old=c.textContent;m();if(old!==c.textContent)n(c)},3e4);setInterval(()=>{const old=a.textContent,nw=g().toLocaleString();if(old!==nw){a.textContent=nw;n(a)}},3e5)})();
+(function(){const si=document.getElementById('searchInput'),cb=document.getElementById('clearSearch'),sc=document.querySelector('.search-container'),cds=document.querySelectorAll('.card'),nr=document.querySelector('.no-results');function ps(){const q=si.value.toLowerCase().trim();let hr=false;sc.classList.toggle('has-text',q.length>0);cds.forEach(cd=>{const t=cd.querySelector('h2').textContent.toLowerCase(),desc=cd.querySelector('p').textContent.toLowerCase(),li=Array.from(cd.querySelectorAll('li')).map(l=>l.textContent.toLowerCase()).join(' '),cid=cd.id.toLowerCase(),sc=`${t} ${desc} ${li} ${cid}`,mt=q===''||sc.includes(q);cd.classList.toggle('hidden',!mt);if(mt)hr=true});nr.style.display=q&&!hr?'block':'none'}function cs(){si.value='';ps();si.focus()}si.addEventListener('input',ps);si.addEventListener('keydown',e=>{if(e.key==='Escape')cs()});cb.addEventListener('click',cs);ps()})();
+(function(){const el=document.getElementById('bg');if(window.matchMedia&&window.matchMedia('(max-width: 540px)').matches){el&&el.parentNode&&el.parentNode.removeChild(el);return}const imgs=[];for(let i=1;i<=13;i++)imgs.push('image/index/flower/F'+('00'+i).slice(-3)+'.jpeg');for(let j=1;j<=8;j++)imgs.push('image/index/flower/J'+('00'+j).slice(-3)+'.jpg');const eng=['image/index/engineering/image (1).png','image (2).png','image (3).png','image (4).png'].map(n=>'image/index/engineering/'+n);imgs.push(...eng);if(el)el.src=imgs[Math.floor(Math.random()*imgs.length)]})();
+</script>
 </body>
 </html>
