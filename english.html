@@ -371,7 +371,7 @@ p {
 <button id="myBtn" onclick="topFunction()" title="Go to top">Top</button>
 
 <!-- SHOW/HIDE 버튼 -->
-<button id="toggle-button">Show/Hide</button>
+<button id="toggle-button">HIDE</button>
 
 <main>
 
@@ -15282,28 +15282,83 @@ dateFilter.addEventListener('change', function() {
 </main>
 
 <script>
-    document.getElementById('toggle-button').addEventListener('click', function() {
-        const explanations = document.querySelectorAll('.term + p');
-        explanations.forEach((explanation) => {
-            if (explanation.style.display === 'none') {
-                explanation.style.display = 'block';
+/* SHOW/HIDE 버튼: 전체 설명을 한 번에 숨기기/보이기 (개별 단어 클릭은 그대로 유지) */
+window.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggle-button');
+    const explanationNodes = Array.from(document.querySelectorAll('.term + p'));
+    const termNodes = Array.from(document.querySelectorAll('.term'));
+
+    if (!toggleBtn) return;
+
+    // 초기 상태: 기본은 '모두 보임'으로 가정
+    let allHidden = false;
+
+    function anyVisible() {
+        return explanationNodes.some(p => p && p.style.display !== 'none' && getComputedStyle(p).display !== 'none');
+    }
+
+    function hideAll() {
+        explanationNodes.forEach(p => {
+            if (p) p.style.display = 'none';
+        });
+        allHidden = true;
+        toggleBtn.textContent = 'SHOW';
+    }
+
+    function showAll() {
+        explanationNodes.forEach(p => {
+            if (p) p.style.display = 'block';
+        });
+        allHidden = false;
+        toggleBtn.textContent = 'HIDE';
+    }
+
+    // 버튼 클릭: 무조건 "전체"를 숨기거나 "전체"를 보여주기
+    toggleBtn.addEventListener('click', function () {
+        if (allHidden) {
+            showAll();
+        } else {
+            hideAll();
+        }
+    });
+
+    // 개별 단어 클릭: (1) 이미 열려 있으면 닫기 / (2) 닫혀 있으면 '그 단어만' 열기
+    termNodes.forEach(term => {
+        term.addEventListener('click', function () {
+            const p = term.nextElementSibling;
+            if (!p || p.tagName.toLowerCase() !== 'p') return;
+
+            const isVisible = (p.style.display !== 'none' && getComputedStyle(p).display !== 'none');
+
+            if (isVisible) {
+                // 열려 있던 걸 닫기
+                p.style.display = 'none';
+
+                // 이제 정말로 전부 숨겨졌으면 버튼 상태도 맞춰줌
+                if (!anyVisible()) {
+                    allHidden = true;
+                    toggleBtn.textContent = 'SHOW';
+                }
             } else {
-                explanation.style.display = 'none';
+                // 닫혀 있던 걸 열 때는 '이것만' 열기
+                hideAll();
+                p.style.display = 'block';
+
+                allHidden = false;
+                toggleBtn.textContent = 'HIDE';
             }
         });
     });
 
-
-    document.querySelectorAll('.term').forEach(term => {
-        term.addEventListener('click', function() {
-            const explanation = this.nextElementSibling;
-            if (explanation.style.display === 'none') {
-                explanation.style.display = 'block';
-            } else {
-                explanation.style.display = 'none';
-            }
-        });
-    });
+    // 혹시 HTML에서 이미 <p>가 inline style로 숨겨져 시작하는 경우가 있으면 상태 동기화
+    // (처음부터 전부 숨겨져 있으면 버튼을 SHOW로)
+    if (!anyVisible()) {
+        allHidden = true;
+        toggleBtn.textContent = 'SHOW';
+    } else {
+        toggleBtn.textContent = 'HIDE';
+    }
+});
 </script>
 
 <script>
