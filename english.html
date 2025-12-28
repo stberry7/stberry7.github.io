@@ -1251,7 +1251,7 @@ Butterflies (= butterflies in one’s stomach)
   </p>
 </li><li>
   <p>
-    <span class="term">
+    <span class="term" id="BUY_OFF">
       Buy Off
     </span>
     <p>
@@ -14681,6 +14681,28 @@ Mood of the times: "Mood of the times"는 그 시대의 기분이나 분위기�
   </p>
 </li></ul>
 </main>
+<script>
+// 페이지 로드 시 URL term 파라미터 확인 후 해당 단어로 스크롤 이동
+
+
+window.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    let term = params.get('term'); // 예: "buy-off 뜻", "buy off 뜻"
+
+    if(term) {
+        term = term.trim().toUpperCase()              // 대문자로 변환
+                   .replace(/[\s\-]+/g, '_')        // 공백과 '-'를 '_'로 변환
+                   .replace(/뜻/g, '');           // '뜻' 제거
+        const element = document.getElementById(term);
+        if(element) {
+            element.scrollIntoView({behavior: 'smooth', block: 'center'});
+            element.style.backgroundColor = '#f7f59e';
+        }
+    }
+});
+
+
+</script>
 <footer>
   © 2023~2026 영어 표현 공부. All rights reserved.
   <a href="mailto:stberry7@gmail.com?subject=Hello&amp;body=Nice%20to%20meet%20you">
