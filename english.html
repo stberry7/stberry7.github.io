@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="ko"><head>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Google Tag Manager -->
 <script>
    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -146,74 +145,6 @@ main {
   background: #fff59e;
   padding: 0 2px;
   border-radius: 4px;
-}
-
-
-/* --- Mobile usability upgrades --- */
-#top-controls{
-  position: sticky;
-  top: 0;
-  z-index: 1200;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 6px;
-}
-
-/* Align date + checkbox nicely */
-.filters-row{
-  width: 100%;
-  max-width: 980px;
-  margin: 0 auto 8px auto;
-  padding: 0 12px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
-
-/* Date dropdown touch target */
-#date-filter{
-  min-height: 52px;
-  padding: 10px 14px;
-  font-size: 20px;
-  border: 2px solid #d1d5db;
-  border-radius: 12px;
-  background: #fff;
-}
-
-/* Checkbox area bigger + easier to tap */
-.desc-search-toggle, .desc-search-toggle label{
-  font-size: 18px;
-}
-.desc-search-toggle input[type="checkbox"]{
-  width: 22px;
-  height: 22px;
-  transform: translateY(2px);
-}
-
-/* Make term header easier to tap on mobile */
-.term{
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Reduce accidental double-tap zoom feeling */
-html{ scroll-behavior: smooth; }
-
-/* Smaller phones */
-@media (max-width: 600px){
-  .filters-row{ gap: 10px; }
-  #date-filter{ width: 100%; font-size: 24px; min-height: 60px; }
-  .desc-search-toggle, .desc-search-toggle label{ font-size: 20px; }
-  .desc-search-toggle{ width: 100%; }
-}
-
-/* Ultra small */
-@media (max-width: 420px){
-  #term-search{ font-size: 22px; }
 }
 
 </style>
@@ -547,26 +478,19 @@ p {
     }
 }
 </style>
-
-<div id="top-controls">
-  <div class="search-bar">
-<input autocomplete="off" id="term-search" placeholder="단어 검색 (예: a, ac, accolade) — 입력 즉시 필터링" type="search"/ autocapitalize="off" spellcheck="false">
+<div class="search-bar">
+<input autocomplete="off" id="term-search" placeholder="단어 검색 (예: a, ac, accolade) — 입력 즉시 필터링" type="text"/>
 <div class="search-options">
   <label><input type="checkbox" id="search-in-desc"/> 설명도 함께 검색</label>
 </div>
 </div>
-  <div class="filters-row">
-    <select id="date-filter">
+<select id="date-filter">
 <option value="">전체</option>
 <option value="2025-12-29">2025-12-29</option>
 <option value="2025-12-28">2025-12-28</option>
 <option value="2025-12-27">2025-12-27</option>
 <option value="2025-08-27">2025-08-27</option>
 </select>
-    
-  </div>
-</div>
-
 <h2>
    표현 목록
   </h2>
