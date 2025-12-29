@@ -103,9 +103,48 @@ main {
 #term-search:focus{
   border-color: #4a6cf7;
 }
+
+/* --- Search options (include description) --- */
+.search-options{
+  margin-top: 8px;
+  font-size: 16px;
+  color: #111827;
+}
+.search-options label{
+  cursor: pointer;
+  user-select: none;
+}
+.search-options input[type="checkbox"]{
+  transform: scale(1.15);
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* 모바일에서 검색/체크박스 터치 영역 확대 */
+@media screen and (max-width: 768px) {
+  #term-search{
+    font-size: 28px;
+    padding: 18px 20px;
+  }
+  .search-options{
+    font-size: 24px;
+  }
+  .search-options input[type="checkbox"]{
+    transform: scale(1.6);
+    margin-right: 14px;
+  }
+}
 /* 모바일에서 더 크게 */
 @media (max-width: 600px){
   #term-search{ font-size: 24px; padding: 18px 18px; }
+}
+
+
+/* --- Search highlight (description) --- */
+.search-hit{
+  background: #fff59e;
+  padding: 0 2px;
+  border-radius: 4px;
 }
 
 </style>
@@ -441,6 +480,9 @@ p {
 </style>
 <div class="search-bar">
 <input autocomplete="off" id="term-search" placeholder="단어 검색 (예: a, ac, accolade) — 입력 즉시 필터링" type="text"/>
+<div class="search-options">
+  <label><input type="checkbox" id="search-in-desc"/> 설명도 함께 검색</label>
+</div>
 </div>
 <select id="date-filter">
 <option value="">전체</option>
@@ -710,8 +752,65 @@ window.addEventListener('DOMContentLoaded', function () {
   function setupFilters(){
     const dateFilter = document.getElementById('date-filter');
     const qInput = document.getElementById('term-search');
+    const inDesc = document.getElementById('search-in-desc');
 
-    function apply(){
+    
+    // --- highlight helpers ---
+    function escapeRegExp(s){
+      return (s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function clearHighlights(root){
+      if(!root) return;
+      const marks = root.querySelectorAll('span.search-hit');
+      marks.forEach(m=>{
+        const parent = m.parentNode;
+        if(!parent) return;
+        parent.replaceChild(document.createTextNode(m.textContent || ''), m);
+        parent.normalize();
+      });
+    }
+    function highlightText(root, q){
+      if(!root || !q) return;
+      const re = new RegExp(escapeRegExp(q), 'ig');
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node){
+          if(!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+          if(!re.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+          // skip if inside already-highlighted span
+          if(node.parentElement && node.parentElement.closest && node.parentElement.closest('span.search-hit')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while(walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node=>{
+        const text = node.nodeValue;
+        const frag = document.createDocumentFragment();
+        let last = 0;
+        text.replace(re, (match, offset)=>{
+          const before = text.slice(last, offset);
+          if(before) frag.appendChild(document.createTextNode(before));
+          const span = document.createElement('span');
+          span.className = 'search-hit';
+          span.textContent = match;
+          frag.appendChild(span);
+          last = offset + match.length;
+          return match;
+        });
+        const after = text.slice(last);
+        if(after) frag.appendChild(document.createTextNode(after));
+        node.parentNode.replaceChild(frag, node);
+      });
+    }
+
+    // debounce to keep it smooth on large pages
+    let _applyTimer = null;
+    function scheduleApply(){
+      if(_applyTimer) clearTimeout(_applyTimer);
+      _applyTimer = setTimeout(apply, 40);
+    }
+
+function apply(){
       const dateVal = dateFilter ? (dateFilter.value || '').trim() : '';
       const q = qInput ? (qInput.value || '').toLowerCase().trim() : '';
 
@@ -722,12 +821,38 @@ window.addEventListener('DOMContentLoaded', function () {
         const itemDate = sp ? (sp.dataset.date || '') : '';
 
         const passDate = !dateVal ? true : (itemDate === dateVal);
-        const passSearch = !q ? true : term.startsWith(q);
+        let passSearch = true;
+        if(q){
+          const useDesc = inDesc && inDesc.checked;
+          if(!useDesc){
+            passSearch = term.startsWith(q);
+          }else{
+            // 단어 제목은 prefix 우선, 설명은 포함 검색(너무 과도한 매칭 방지 위해 q>=2일 때만)
+            const termMatch = term.startsWith(q) || term.includes(q);
+            const p = li.querySelector('p');
+            const desc = p ? (p.textContent || '').toLowerCase() : '';
+            const descMatch = (q.length >= 2) ? desc.includes(q) : false;
+            passSearch = termMatch || descMatch;
+          }
+        }
 
         li.style.display = (passDate && passSearch) ? 'block' : 'none';
       });
 
-      // divider show/hide: if searching, hide empty letters; otherwise show all
+      
+      // --- highlight (only when '설명도 함께 검색' is ON, and query length >= 2) ---
+      const listRoot = document.getElementById('terms-list');
+      clearHighlights(listRoot);
+
+      if(inDesc && inDesc.checked && q && q.length >= 2){
+        const visibleLis = Array.from(document.querySelectorAll('#terms-list > li'))
+          .filter(li => li.style.display !== 'none');
+        visibleLis.forEach(li=>{
+          const p = li.querySelector('p');
+          if(p) highlightText(p, q);
+        });
+      }
+// divider show/hide: if searching, hide empty letters; otherwise show all
       const divs = Array.from(document.querySelectorAll('#terms-list > .alpha-divider'));
       if(!q){
         divs.forEach(d => d.style.display = '');
@@ -746,7 +871,8 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    if(qInput) qInput.addEventListener('input', apply);
+    if(qInput) qInput.addEventListener('input', scheduleApply);
+    if(inDesc) inDesc.addEventListener('change', apply);
     if(dateFilter) dateFilter.addEventListener('change', apply);
 
     // initial
