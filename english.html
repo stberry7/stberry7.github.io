@@ -337,14 +337,17 @@ p {
     padding-bottom: 20px;
   }
 }
-</style></head>
-<body><header>
+</style>
+</head>
+<body>
+
+<header>
 <a class="home-button" href="index.html">
    Home
   </a>
 <h1>
    미국 엔지니어들의 영어 표현
-  </h1>
+  </h1><div class="total-count" id="total-count">총 448개</div>
 <p>
    미국 엔지니어들의 영어 표현을 쉽게 배울 수 있는 웹페이지입니다.
   </p>
@@ -12792,4 +12795,57 @@ function topFunction() {
     return;  // 클릭 이벤트에서 아무 것도 하지 않음
 });
  </script>
+
+
+<script id="synonyms-blue-script">
+window.addEventListener('DOMContentLoaded', function () {
+  // "비슷한 표현:" 줄에서, 영어 표현(괄호 앞)만 파란색으로 표시
+  var ps = document.querySelectorAll('li > p');
+  ps.forEach(function(p){
+    // 이미 처리된 경우 스킵
+    if (p.querySelector('.syn-word')) return;
+    var html = p.innerHTML;
+    var marker = '비슷한 표현:';
+    var idx = html.indexOf(marker);
+    if (idx === -1) return;
+
+    // marker 이후 내용을 끝까지(보통 마지막 줄) 처리
+    var before = html.slice(0, idx + marker.length);
+    var after = html.slice(idx + marker.length);
+
+    // 줄바꿈 기준으로 첫 줄만(=비슷한 표현 리스트) 우선 처리
+    // <br> 또는 
+(HTML에 따라) 모두 커버
+    var split = after.split(/<br\s*\/?\s*>|\n/);
+    var line = split[0];
+
+    // 쉼표로 항목 분리
+    var parts = line.split(',');
+    var rebuilt = parts.map(function(part){
+      var s = part;
+      // 공백 정리
+      s = s.replace(/^\s+|\s+$/g,'');
+      if(!s) return '';
+      // 괄호가 있으면 괄호 앞만 파란색
+      var m = s.match(/^(.*?)(\([^)]*\))\s*$/);
+      if (m){
+        var w = m[1].trim();
+        var rest = m[2];
+        if(w) return '' + w + '' + rest;
+        return s;
+      } else {
+        return '' + s + '';
+      }
+    }).filter(Boolean).join(', ');
+
+    // 원본 after에서 line 부분만 교체
+    split[0] = rebuilt;
+    var after2 = split.join('\n');
+    p.innerHTML = before + after2;
+  });
+});
+</script>
+
+
+
 </body></html>
