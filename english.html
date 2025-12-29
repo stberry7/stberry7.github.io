@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ko"><head>
 <!-- Google Tag Manager -->
 <script>
@@ -110,9 +111,6 @@
     background-color: darkblue;
 } */
   </style>
-
-
-
 <style>
 
 /* 기본 화면에서 버튼 고정 및 위치 */
@@ -154,7 +152,7 @@
 
 
 
-</style>  
+</style>
 <style>
    .circle {
     position: absolute;
@@ -239,8 +237,6 @@ p {
     border-radius: 4px;
 }
 </style>
-
-
 <style>
 .date-section {
     border-left: 4px solid #4a6cf7;
@@ -311,34 +307,37 @@ p {
         }
     }
 </style>
-
-
-<style id="alpha-divider-override">
-/* 알파벳 구분선(A,B,C...)이 단어(.term)와 헷갈리지 않도록 더 크게/다른 색으로 강조 */
+<style>
+/* ===== Alphabet divider: Option 3 (Minimal underline) ===== */
 .alpha-divider{
-  margin: 42px 0 22px;
-  padding: 18px 16px;
-  background: #f59e0b;   /* 눈에 띄는 색 */
-  color: #111827;        /* 진한 글자색 */
-  border-radius: 14px;
-  font-size: 56px;       /* 데스크탑: 크게 */
+  margin: 52px 0 18px;
+  padding: 10px 6px 18px;
+  background: transparent;
+  color: #111827;
+  border-radius: 0;
+  font-size: 64px;
   font-weight: 1000;
-  text-align: center;
+  text-align: left;
   letter-spacing: 2px;
-  border: 6px solid #111827;
+  border: none;
+  border-bottom: 8px solid #4a6cf7;
+  text-transform: uppercase;
+}
+.alpha-divider::after{
+  content: "";
+  display: block;
+  height: 10px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(74,108,247,0.35), rgba(74,108,247,0));
 }
 @media screen and (max-width: 768px){
   .alpha-divider{
-    font-size: 72px;      /* 모바일: 더 크게 */
-    padding: 22px 18px;
+    font-size: 80px;
+    padding-bottom: 20px;
   }
 }
-</style>
-
-</head>
-
-
-
+</style></head>
 <body><header>
 <a class="home-button" href="index.html">
    Home
@@ -349,51 +348,41 @@ p {
 <p>
    미국 엔지니어들의 영어 표현을 쉽게 배울 수 있는 웹페이지입니다.
   </p>
-
- <div class="alphabet-links">
-        <a href="#A">A</a>
-        <a href="#B">B</a>
-        <a href="#C">C</a>
-        <a href="#D">D</a>
-        <a href="#E">E</a>
-        <a href="#F">F</a>
-        <a href="#G">G</a>
-        <a href="#H">H</a>
-        <a href="#I">I</a>
-        <a href="#J">J</a>
-        <a href="#K">K</a>
-        <a href="#L">L</a>
-        <a href="#M">M</a>
-        <a href="#N">N</a>
-        <a href="#O">O</a>
-        <a href="#P">P</a>
-        <a href="#Q">Q</a>
-        <a href="#R">R</a>
-        <a href="#S">S</a>
-        <a href="#T">T</a>
-        <a href="#U">U</a>
-        <a href="#V">V</a>
-        <a href="#W">W</a>
-        <a href="#X">X</a>
-        <a href="#Y">Y</a>
-        <a href="#Z">Z</a>
-    </div>
+<div class="alphabet-links">
+<a href="#A">A</a>
+<a href="#B">B</a>
+<a href="#C">C</a>
+<a href="#D">D</a>
+<a href="#E">E</a>
+<a href="#F">F</a>
+<a href="#G">G</a>
+<a href="#H">H</a>
+<a href="#I">I</a>
+<a href="#J">J</a>
+<a href="#K">K</a>
+<a href="#L">L</a>
+<a href="#M">M</a>
+<a href="#N">N</a>
+<a href="#O">O</a>
+<a href="#P">P</a>
+<a href="#Q">Q</a>
+<a href="#R">R</a>
+<a href="#S">S</a>
+<a href="#T">T</a>
+<a href="#U">U</a>
+<a href="#V">V</a>
+<a href="#W">W</a>
+<a href="#X">X</a>
+<a href="#Y">Y</a>
+<a href="#Z">Z</a>
+</div>
 </header>
-
-
-
-
 <!-- TOP 버튼 -->
 <button id="myBtn" onclick="topFunction()" title="Go to top">Top</button>
-
 <!-- SHOW/HIDE 버튼 -->
 <button id="toggle-button">HIDE</button>
-
 <main>
-
-
 <div id="recent-container"></div>
-
 <style>
 /* 기본 스타일 */
 #date-filter {
@@ -412,28 +401,20 @@ p {
     }
 }
 </style>
-
 <select id="date-filter">
-  <option value="">전체</option>
-  <option value="2025-12-28">2025-12-28</option>
-  <option value="2025-12-27">2025-12-27</option>
-  <option value="2025-08-27">2025-08-27</option>
+<option value="">전체</option>
+<option value="2025-12-28">2025-12-28</option>
+<option value="2025-12-27">2025-12-27</option>
+<option value="2025-08-27">2025-08-27</option>
 </select>
-
-
 <h2>
    표현 목록
   </h2>
-
-
-
 <!-- [Alphabet][A] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* -->   
-
+<!-- /******************************************************************************************************************************* -->
 <ul><div class="alpha-divider" id="A">A</div>
-
 <li><span class="term">Abatement</span><p>
 **“abatement”**는 영어에서 **‘약화, 감소, 완화, 중단’**을 의미하는 비교적 격식 있고 제도적인 표현입니다. 이 단어는 어떤 현상이나 부담이 자연스럽게 줄어들거나, 의도적으로 억제·경감되는 과정을 가리킬 때 사용되며, 핵심은 완전히 제거하는 것이 아니라 강도·영향·규모를 낮춘다는 점에 있습니다. 따라서 문제를 뿌리째 없애는 상황보다는, 통제 가능한 수준으로 누그러뜨리거나 일시적으로 멈추는 상태를 묘사할 때 적합합니다.
 
@@ -441,10 +422,7 @@ p {
 
 비슷한 표현들과 비교해 보면 의미 차이가 더 분명해집니다. reduction이 단순히 수치나 양이 줄어든 사실 자체를 말하는 비교적 중립적이고 일반적인 표현이라면, abatement는 문제성 있는 요소를 의도적으로 누그러뜨린다는 정책적·기술적 뉘앙스가 강합니다. mitigation 역시 완화라는 뜻을 가지지만, 이는 피해나 부정적 결과를 최소화하려는 노력이나 전략에 초점이 있으며, abatement는 그 결과로 강도가 실제로 낮아진 상태를 더 직접적으로 가리킵니다. 반면 elimination이나 eradication처럼 완전 제거를 뜻하는 단어들과는 명확히 구분되는데, abatement는 문제의 존재 자체는 남아 있지만 영향력만 줄어든 상태를 전제합니다. 또한 suspension이 일시적 중단을 강조한다면, abatement는 점진적 감소나 지속적인 완화의 뉘앙스가 더 강합니다.
 </p></li>
-
-
-
-  <li><span class="term" data-date="2025-12-28">Accolade</span><p>
+<li><span class="term" data-date="2025-12-28">Accolade</span><p>
 Accolade
 발음(한글): 애컬레이드
 강세: a-COL-ade
@@ -456,7 +434,6 @@ Accolade
 
 따라서 *“The film received widespread critical accolades.”*라고 하면, 그 영화가 단순히 반응이 좋았다는 뜻이 아니라 비평가들로부터 공식적이고 높은 수준의 찬사를 받으며 명성을 얻었다는 의미가 됩니다. 즉, accolade는 가볍게 주고받는 칭찬이 아니라, 사회적으로 무게가 실린 인정과 영예를 강조하는 단어입니다.
 </p></li>
-
 <li><span class="term">Accomplice</span><p>
 Accomplice
 발음(한글): 어컴플리스
@@ -469,7 +446,6 @@ Accomplice
 
 그래서 *“He was charged as an accomplice.”*라는 문장은, 그가 단순히 현장에 있었던 것이 아니라 범죄를 알고 도왔으며 그 결과에 대해 법적 책임을 함께 지게 되었다는 의미를 담고 있습니다. 즉, accomplice는 “관련자” 정도로 가볍게 이해할 수 있는 단어가 아니라, 범죄의 성립과 결과에 깊이 얽힌 공범을 정확히 지칭하는 표현입니다.
 </p></li>
-
 <li><span class="term">Accusations</span><p>
 Accusations
 발음(한글): 애큐제이션즈
@@ -482,7 +458,6 @@ Accusations
 
 그래서 *“He denied all accusations.”*이라는 문장은, 그가 이미 유죄 판결을 받았다는 뜻이 아니라, 자신을 향해 제기된 여러 혐의와 비난을 모두 부인했다는 의미입니다. 즉, accusations는 사실 여부가 확정되지 않은 상태에서 제기되는 책임 추궁과 비난의 주장들을 가리키는 단어로, 그 자체만으로는 유죄를 의미하지 않는다는 점이 중요합니다.
 </p></li>
-
 <li><span class="term">Ace up his sleeve</span><p>
 Ace up his sleeve
 발음(한글): 에이스 업 히즈 슬리브
@@ -497,7 +472,6 @@ Ace up his sleeve
 
 따라서 *“He still has an ace up his sleeve.”*라고 하면, 그는 이미 패배한 것처럼 보이더라도 아직 공개하지 않은 비장의 수단을 가지고 있으며, 상황을 뒤집을 가능성이 남아 있다는 의미가 됩니다. 즉, 이 표현은 숨겨진 준비와 전략적 여유를 강조하는 숙어입니다.
 </p></li>
-
 <li><span class="term">Administer poison</span><p>
 Administer poison
 발음(한글): 어드미니스터 포이즌
@@ -512,7 +486,6 @@ Administer poison
 
 그래서 *“He was accused of administering poison to the victim.”*이라는 문장은, 단순히 해를 가했다는 뜻이 아니라 독을 투여하는 계획적 행위를 했다는 혐의가 제기되었다는 의미를 전달합니다. 즉, administer poison은 결과보다 의도와 행위의 성격을 강조하는 표현입니다.
 </p></li>
-
 <li><span class="term">Adrenergic</span><p>
   
 Adrenergic
@@ -529,7 +502,6 @@ Adrenergic
 따라서 *“An adrenergic response was triggered.”*라는 문장은, 단순히 놀랐다는 의미가 아니라 아드레날린 분비로 인해 신체가 즉각적인 대응 상태로 전환되었다는 것을 뜻합니다. 즉, adrenergic은 감정 표현이 아니라 신체의 각성 메커니즘을 정확히 지칭하는 전문 용어입니다.
 
 </p></li>
-
 <li><span class="term">Agoraphobia</span><p>
 Agoraphobia
 발음(한글): 애거러포비아
@@ -544,7 +516,6 @@ Agoraphobia
 
 따라서 *“She suffers from agoraphobia.”*라는 문장은, 그녀가 단순히 외출을 싫어한다는 뜻이 아니라 특정 환경에서 극심한 불안과 공포를 느끼는 임상적 상태를 겪고 있다는 의미입니다. 즉, agoraphobia는 일상적인 감정 표현이 아니라, 전문적인 진단과 치료의 대상이 되는 공포 장애를 정확히 지칭하는 용어입니다.
 </p></li>
-
 <li><span class="term">All for naught</span><p>
   
 All for naught
@@ -560,8 +531,6 @@ All for naught
 
 그래서 *“Years of sacrifice were all for naught.”*라는 문장은, 단순히 성과가 없었다는 뜻이 아니라 오랜 희생과 노력이 아무런 보상도 남기지 못한 채 허무하게 끝났다는 감정을 강하게 전달합니다. 즉, all for naught는 실패 그 자체보다, 그 실패가 남긴 공허함과 상실감을 표현하는 데 적합한 숙어입니다.
 </p></li>
-
-
 <li><span class="term">All the rage</span><p>
 All the rage
 발음(한글): 올 더 레이지
@@ -576,7 +545,6 @@ All the rage
 
 그래서 *“Plant-based diets are all the rage these days.”*라고 하면, 단순히 채식이 인기가 있다는 뜻이 아니라 요즘 사회 전반에서 화제가 되고 많은 사람들이 따라 하는 유행이라는 의미가 됩니다. 즉, all the rage는 현재 시점의 집중된 인기와 유행성을 강조하는 표현입니다.
 </p></li>
-
 <li><span class="term">Amatriciana</span><p>
 Amatriciana
 발음(한글): 아마트리차나 / 아마트리치아나
@@ -589,7 +557,6 @@ Amatriciana
 
 그래서 *“I ordered spaghetti all’Amatriciana.”*라고 하면, 단순히 토마토 파스타를 시켰다는 뜻이 아니라 로마 전통에 뿌리를 둔, 강한 풍미와 단순한 구성의 클래식한 파스타를 선택했다는 의미가 됩니다. 즉, Amatriciana는 재료의 수보다 조합의 정확성과 전통성으로 평가받는 대표적인 이탈리아 요리입니다.
 </p></li>
-
 <li><span class="term">Annihilate</span><p>
 Annihilate
 발음(한글): 어나이얼레이트
@@ -604,7 +571,6 @@ Annihilate
 
 따라서 *“The team was annihilated in the final match.”*라는 문장은, 그 팀이 그냥 졌다는 뜻이 아니라 전혀 상대가 되지 못한 채 철저히 무너진 참패였음을 강조합니다. 즉, annihilate는 결과의 크기보다도 그 결과가 얼마나 결정적이고 회복 불가능한지를 강하게 드러내는 단어입니다.
 </p></li>
-
 <li><span class="term">Antidote</span><p>
 Antidote
 발음(한글): 앤티도트
@@ -619,7 +585,6 @@ Antidote
 
 그래서 *“There is no known antidote to the poison.”*이라는 문장은, 단순히 치료가 어렵다는 뜻이 아니라 그 독의 작용을 근본적으로 막을 수 있는 수단이 없다는 심각한 상황을 의미합니다. 또한 *“Laughter is often the antidote to stress.”*라고 하면, 웃음이 스트레스를 단순히 덜어주는 수준이 아니라 정반대 작용으로 스트레스를 무너뜨리는 해결책이라는 의미가 됩니다. 즉, antidote는 의학적이든 비유적이든, 원인을 직접 겨냥해 상쇄하는 해법을 강조하는 단어입니다.
 </p></li>
-
 <li><span class="term">Apnea</span><p>
 Apnea
 발음(한글): 앱니아
@@ -634,7 +599,6 @@ Apnea
 
 따라서 *“The patient experienced episodes of apnea.”*라는 문장은, 그 환자가 단순히 숨쉬기 힘들어했다는 뜻이 아니라 일정 시간 동안 실제로 호흡이 멈추는 무호흡 상태가 발생했다는 의미입니다. 즉, apnea는 일상적 표현이 아닌, 호흡 기능의 중대한 이상을 정확히 지칭하는 의학 용어입니다.
 </p></li>
-
 <li><span class="term">Append anyway</span><p>
 Append anyway
 발음(한글): 어펜드 애니웨이
@@ -649,7 +613,6 @@ Append anyway
 
 그래서 *“It may not be necessary, but I’ll append it anyway.”*라는 문장은, 그 내용이 필수는 아닐 수 있으나 혹시 모를 상황을 대비해 끝에 덧붙이겠다는 의미를 전달합니다. 즉, append anyway는 강하게 밀어붙이는 추가가 아니라, **신중하지만 실무적인 판단에 따른 ‘그래도 덧붙임’**을 나타내는 표현입니다.
 </p></li>
-
 <li><span class="term">Appomattox</span><p>
 Appomattox
 발음(한글): 애퍼매톡스
@@ -662,7 +625,6 @@ Appomattox
 
 예를 들어 *“This agreement could be their Appomattox.”*라고 하면, 이는 단순한 타협이 아니라 상대가 더 이상 버틸 수 없어 완전히 물러나는 결정적 순간을 뜻합니다. 이때의 Appomattox는 패배의 굴욕만을 강조하기보다는, 긴 갈등이 마침내 끝나는 역사적 마침표라는 의미를 함께 담습니다.
 </p></li>
-
 <li><span class="term">Aristocracy</span><p>
 Aristocracy
 발음(한글): 애리스토크러시
@@ -677,7 +639,6 @@ Aristocracy
 
 그래서 *“The old aristocracy resisted political reform.”*이라는 문장은, 단순히 부유층이 변화를 싫어했다는 뜻이 아니라 전통적인 귀족 지배 계층이 자신들의 세습적 권한을 지키기 위해 개혁에 반대했다는 의미를 담고 있습니다. 즉, aristocracy는 개인이 아니라, 혈통과 특권을 기반으로 형성된 지배 계층과 그 체제 전체를 가리키는 단어입니다.
 </p></li>
-
 <li><span class="term">Arrhythmia</span><p>
 Arrhythmia
 발음(한글): 어리드미아 / 어리듬미아
@@ -692,8 +653,6 @@ Arrhythmia
 
 따라서 *“The patient was diagnosed with arrhythmia.”*라는 문장은, 단순히 심장이 불편하다는 뜻이 아니라 심장 박동의 리듬에 의학적으로 의미 있는 이상이 확인되었다는 의미를 전달합니다. 즉, arrhythmia는 감각적 표현이 아닌, 심장 기능 이상을 정확히 지칭하는 전문 용어입니다.
 </p></li>
-
-
 <li><span class="term">Ascent</span><p>
 Ascent
 발음(한글): 어센트
@@ -708,7 +667,6 @@ Ascent
 
 그래서 *“His rapid ascent to power surprised many.”*라는 문장은, 그가 권력을 얻게 되었다는 단순한 사실을 넘어서, 짧은 시간 안에 눈에 띄게 지위가 상승해 간 과정이 인상적이었음을 강조합니다. 즉, ascent는 도착점보다 올라가는 흐름과 그 의미를 드러내는 단어입니다.
 </p></li>
-
 <li><span class="term">Ascribe</span><p>
 Ascribe
 발음(한글): 어스크라이브
@@ -739,8 +697,6 @@ Asinine cause
 따라서 *“The project failed for an asinine cause.”*라는 문장은, 프로젝트가 실패했다는 사실뿐 아니라 그 실패 원인이 이해 불가능할 정도로 어리석었다는 강한 비판을 담고 있습니다. 즉, asinine cause는 중립적인 설명이 아니라, 분노·경멸·비아냥이 섞인 평가적 표현이라는 점이 핵심입니다.
 
 </p></li>
-
-
 <li><span class="term">Aspiration</span><p>
 Aspiration
 발음(한글): 애스퍼레이션
@@ -755,17 +711,10 @@ Aspiration
 
 따라서 *“She has aspirations of becoming a doctor.”*라고 하면, 이는 단순한 희망이 아니라 삶의 방향을 규정할 만큼 진지한 목표와 포부를 가지고 있다는 뜻입니다. 반대로 *“The patient suffered aspiration during surgery.”*라고 하면, 수술 중 이물질을 흡인하는 의학적 사고를 의미합니다. 즉, aspiration은 맥락에 따라 이상과 포부를 뜻할 수도 있고, 흡인이라는 전문적 의학 개념을 가리킬 수도 있는 단어입니다.
 </p></li>
-
-
-
-
 <!-- [Alphabet][B] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* -->   
-
-
-
+<!-- /******************************************************************************************************************************* -->
 <li><span class="term">Atrocity</span><p>
 Atrocity
 발음(한글): 어트로서티
@@ -779,7 +728,6 @@ Atrocity
 
 비슷한 표현: war crime(전쟁범죄), massacre(학살), brutality(잔혹함), barbarity(야만적 행위), heinous act(극악무도한 행위)
 </p></li>
-
 <li><span class="term">AWOL</span><p>
 AWOL
 발음(한글): 에이월
@@ -794,7 +742,6 @@ AWOL
 비슷한 표현: absent without notice(연락 없이 결근/부재), no-show(노쇼), missing(행방불명/없음), MIA(실종/행방불명), off the grid(연락 두절)
 </p></li>
 <div class="alpha-divider" id="B">B</div>
-
 <li><span class="term" data-date="2025-08-27">Balm</span><p>
      "밤(balm)"은 일반적으로 피부에 바르는 제품으로, 주로 피부를 진정시키거나 보호하는데 사용됩니다. 밤은 크림이나
 로션과는 다르게 일반적으로 더 진한 질감을 가지고 있으며, 보통 왁스, 오일, 허브 추출물 등으로 만들어집니다.힐링 밤(Healing
@@ -808,8 +755,6 @@ Balm): 에센셜 오일 밤은 아로마테라피 목적으로 사용되며, 특
 밤은 머슬 밤으로 분류될 수 있으며, 통증 완화 및 염증 완화 효과가 있습니다. 이러한 밤 제품을 사용할 때는 항상 제품 라벨을 확인하고 지시에
 따라 사용하는 것이 중요합니다."
   </p></li>
-  
-  
 <li><span class="term">Bandit</span><p> 
 Bandit
 발음(한글): 밴딧
@@ -824,8 +769,6 @@ Bandit
 
 그래서 *“The bandits attacked travelers on the road.”*라고 하면, 단순한 절도가 아니라 위협과 폭력을 동반한 조직적 강탈을 의미합니다. 반면 *“That company is charging bandit prices.”*라고 하면, 터무니없이 비싸게 돈을 뜯어간다는 비판적 표현이 됩니다. 즉, bandit은 문자 그대로든 비유적으로든, 부당한 힘이나 수법으로 남의 것을 빼앗는 존재를 강조하는 단어입니다.
 </p></li>
-
-
 <li><span class="term">Barf</span><p> 
 Barf
 발음(한글): 바프
@@ -840,8 +783,6 @@ vomit이 비교적 중립적이거나 의학적인 표현이라면, barf는 훨�
 
 즉, barf는 정확하고 점잖은 표현이 아니라, 감정이 강하게 실린 즉각적·본능적 반응을 전달하는 단어로 이해하시면 됩니다.
 </p></li>
-
-
 <li><span class="term">Barmaid</span><p>
 Barmaid
 발음(한글): 바메이드
@@ -856,7 +797,6 @@ Barmaid
 
 따라서 *“The barmaid wiped down the counter.”*라는 문장은, 단순히 바 직원이 일을 하고 있다는 뜻을 넘어서 전통적인 술집 풍경과 분위기를 떠올리게 합니다. 즉, barmaid는 의미 자체보다도 사용 맥락과 시대적 뉘앙스를 함께 고려해야 하는 단어입니다.
 </p></li>
-
 <li><span class="term">Barrel roll</span><p> 
 Barrel roll
 발음(한글): 배럴 롤
@@ -871,8 +811,6 @@ Barrel roll
 
 그래서 *“The pilot executed a perfect barrel roll.”*이라고 하면, 단순한 회전이 아니라 고난도의 기술과 통제력이 요구되는 정교한 공중 기동을 의미합니다. 또한 *“The project took a barrel roll.”*이라고 하면, 상황이 급격히 꼬이거나 방향이 크게 틀어졌다는 비유적 의미가 됩니다. 즉, barrel roll은 문자 그대로든 비유적으로든, 역동적이고 극적인 회전 동작을 강조하는 표현입니다.
 </p></li>
-
-
 <li><span class="term">Basking</span><p> 
 Basking
 발음(한글): 배스킹
@@ -888,8 +826,6 @@ Basking
 그래서 *“She was basking in the praise.”*라고 하면, 단순히 칭찬을 받았다는 뜻이 아니라 그 긍정적인 평가를 기분 좋게 받아들이며 여운을 즐기고 있었다는 의미가 됩니다. 즉, basking은 따뜻함이나 긍정적인 감정 속에 편안히 잠겨 있는 상태를 표현하는 단어입니다.
 
 </p></li>
-
-
 <li><span class="term">Bayonet</span><p> 
 Bayonet
 발음(한글): 배여닛 / 베이어닛
@@ -904,8 +840,6 @@ Bayonet
 
 그래서 *“The soldiers fixed their bayonets.”*라는 문장은, 단순히 무기를 준비했다는 뜻을 넘어서 근접 전투가 임박했음을 알리는 긴박한 상황을 의미합니다. 즉, bayonet은 단순한 무기 명칭이 아니라, 백병전과 최후의 충돌을 상징하는 군사적 표현입니다.
 </p></li>
-
-
 <li><span class="term">Be in the limelight</span><p> 
 Be in the limelight
 발음(한글): 비 인 더 라임라이트
@@ -920,8 +854,6 @@ Be in the limelight
 
 그래서 *“She has been in the limelight since the scandal broke.”*라고 하면, 이는 그녀가 단순히 유명해졌다는 뜻이 아니라 사건 이후 계속해서 언론과 대중의 시선 한가운데에 놓여 있다는 의미가 됩니다. 즉, be in the limelight는 명성과 관심의 달콤함뿐 아니라, 노출과 부담까지 함께 내포한 표현입니다.
 </p></li>
-
-
 <li><span class="term">Benching me</span><p> 
 Benching me
 발음(한글): 벤칭 미
@@ -936,8 +868,6 @@ Benching me
 
 그래서 *“They’re benching me on this project.”*라는 문장은, 단순히 일을 안 시킨다는 뜻이 아니라 중요한 역할에서 의도적으로 제외되어 있으며, 그 결정에 불만이나 상처를 느끼고 있다는 의미를 담고 있습니다. 즉, benching me는 중립적인 업무 배치 표현이 아니라, 배제·좌절·신뢰 상실의 뉘앙스가 실린 구어 표현입니다.
 </p></li>
-
-
 <li><span class="term">Blackout</span><p> 
 Blackout
 발음(한글): 블랙아웃
@@ -952,8 +882,6 @@ Blackout
 
 그래서 *“There was a citywide blackout.”*이라고 하면 도시 전체가 정전 상태에 빠졌다는 뜻이고, *“He had a blackout after the accident.”*이라고 하면 사고 이후 일정 시간 동안 의식이나 기억이 완전히 끊겼다는 의미입니다. 즉, blackout은 부분적 문제나 약화가 아니라, 짧든 길든 ‘완전한 단절’을 강조하는 표현입니다.
 </p></li>
-
-
 <li><span class="term">Blasting away</span><p> 
 Blasting away
 발음(한글): 블래스팅 어웨이
@@ -968,8 +896,6 @@ Blasting away
 
 그래서 *“He was blasting away at the target.”*이라고 하면, 단순히 몇 발 쐈다는 뜻이 아니라 멈추지 않고 거칠게 계속 사격하고 있었다는 의미가 됩니다. 또 *“She’s been blasting away at her emails all morning.”*이라고 하면, 이메일을 그냥 처리했다는 뜻이 아니라 아침 내내 정신없이, 쉬지 않고 몰아쳐서 처리하고 있었다는 뉘앙스를 전달합니다. 즉, blasting away는 행동의 결과보다도 그 과정의 강도와 지속성을 강조하는 표현입니다.
 </p></li>
-
-
 <li><span class="term">Body of work</span><p> 
 Body of work
 발음(한글): 바디 오브 워크
@@ -984,8 +910,6 @@ Body of work
 
 그래서 *“You should judge her by her body of work.”*라는 문장은, 한 번의 실수나 단일 성과로 판단하지 말고 그동안 쌓아 온 전체 업적을 기준으로 평가해야 한다는 의미가 됩니다. 즉, body of work는 개인의 능력과 가치를 장기적·총체적으로 바라보는 관점을 담은 표현입니다.
 </p></li>
-
-
 <li><span class="term">Boots on the ground</span><p>
 Boots on the ground
 발음(한글): 부츠 온 더 그라운드
@@ -1000,8 +924,6 @@ Boots on the ground
 
 그래서 *“We need boots on the ground to fix this.”*라는 문장은, 단순히 더 논의하자는 뜻이 아니라 현장에 사람을 보내 직접 문제를 해결해야 할 단계에 왔다는 의미를 전달합니다. 즉, boots on the ground는 말이나 계획이 아니라, 현실에서 몸으로 실행하는 단계와 그 책임을 강조하는 표현입니다.
 </p></li>
-  
-
 <li><span class="term">Bora Bora</span><p>
 Bora Bora
 발음(한글): 보라 보라
@@ -1016,7 +938,6 @@ Bora Bora는 남태평양에 위치한 **Bora Bora**로, 행정적으로는 **Fr
 
 예를 들어 *“That vacation felt like Bora Bora.”*라고 하면, 실제 장소를 말하는 것이 아니라 완벽하고 호화로운 휴식 경험을 강조하는 표현입니다. 즉, Bora Bora는 지리적 명칭인 동시에, 럭셔리·낙원·이상적인 휴식의 대명사로 기능하는 단어입니다.
 </p></li>
-
 <li><span class="term">Bradycardia</span><p>
 Bradycardia
 발음(한글): 브래디카디아
@@ -1031,8 +952,6 @@ Bradycardia
 
 따라서 *“The patient was found to have bradycardia.”*라는 문장은, 단순히 심장이 느리게 뛰는 느낌이 아니라 검사 결과 심박수가 의학적 기준 이하로 확인되었다는 의미를 전달합니다. 즉, bradycardia는 감각적 표현이 아닌, 심장 박동 속도의 이상을 정확히 지칭하는 전문 용어입니다.
 </p></li>
-
-
 <li><span class="term">Brain-dead</span><p>
 Brain-dead
 발음(한글): 브레인 데드
@@ -1053,7 +972,6 @@ Brain-dead
 
 후자의 용법은 무례하거나 공격적으로 들릴 수 있으므로, 사용 맥락과 대상에 각별한 주의가 필요한 단어입니다.
 </p></li>
-
 <li><span class="term">Bravado</span><p>
 Bravado
 발음(한글): 브러바도 / 브라바도
@@ -1068,7 +986,6 @@ Bravado
 
 그래서 *“His tough talk was pure bravado.”*라는 문장은, 그 말이 실제 능력이나 계획에 근거한 것이 아니라 두려움을 숨기기 위한 허세에 불과했다는 의미를 전달합니다. 즉, bravado는 겉보기의 대담함과 달리, 속이 빈 과장된 자신감을 비판적으로 지칭하는 단어입니다.
 </p></li>
-  
 <li><span class="term">Breach of</span><p>
 Breach of
 발음(한글): 브리치 오브
@@ -1083,9 +1000,6 @@ breach 단독으로는 “틈, 파괴, 돌파” 같은 물리적 의미도 가�
 
 그래서 *“This constitutes a breach of contract.”*라는 문장은, 단순히 계약을 잘 지키지 않았다는 의미가 아니라 계약상 의무를 위반해 법적 문제로 이어질 수 있는 상황임을 명확히 합니다. 즉, breach of는 가벼운 규칙 위반이 아니라, 책임과 결과가 따르는 중대한 위반을 정확히 지칭하는 표현입니다.
 </p></li>
-
-
-
 <li><span class="term">Breach the wall</span><p>
 Breach the wall
 발음(한글): 브리치 더 월
@@ -1100,8 +1014,6 @@ Breach the wall
 
 그래서 *“Hackers managed to breach the wall of security.”*라고 하면, 단순한 취약점 발견이 아니라 견고하다고 여겨지던 보안 장벽이 실제로 무너졌다는 의미를 전달합니다. 또한 *“He finally breached the wall she had built around herself.”*라고 하면, 오랜 경계와 감정적 차단을 뚫고 마음에 들어갔다는 비유적 의미가 됩니다. 즉, breach the wall은 저항·차단·경계를 무력화하는 결정적 돌파를 강조하는 표현입니다.
 </p></li>
-  
-
 <li><span class="term">Break the bank</span><p>
 Break the bank
 발음(한글): 브레이크 더 뱅크
@@ -1116,8 +1028,6 @@ Break the bank
 
 그래서 *“I’d love to buy it, but it would break the bank.”*라고 하면, 사고 싶기는 하지만 그 돈을 쓰면 재정적으로 무리가 된다는 의미입니다. 즉, break the bank는 가격 그 자체보다 지불하는 사람에게 주는 재정적 충격을 강조하는 표현입니다.
 </p></li>
-    
-
 <li><span class="term">Break your brain</span><p>
 Break your brain
 발음(한글): 브레이크 유어 브레인
@@ -1132,7 +1042,6 @@ Break your brain
 
 그래서 *“That puzzle will break your brain.”*이라고 하면, 그 퍼즐이 단순히 어렵다는 뜻이 아니라 집중해서 생각하다 보면 머리가 멍해질 정도로 난도가 높다는 의미가 됩니다. 즉, break your brain은 지적인 손상이나 무능을 말하는 것이 아니라, 사고 용량을 넘어서는 복잡함과 부담을 강조하는 구어 표현입니다.
 </p></li>
-
 <li><span class="term">Brown-bag</span><p>
 Brown-bag / Brown-bagging
 발음(한글): 브라운 배그 / 브라운 배깅
@@ -1149,8 +1058,6 @@ Brown-bag / Brown-bagging
 
 그래서 *“I’m brown-bagging it today.”*라는 문장은, 단순히 점심을 먹는다는 뜻이 아니라 밖에서 사 먹지 않고, 도시락으로 간단히 해결하겠다는 선택을 자연스럽게 전달합니다. 즉, brown-bag는 음식 그 자체보다 절약·실용·일상적인 선택을 강조하는 표현입니다.
   </p></li>
-
-
 <li><span class="term">Burst a gut laughing</span><p>
 Burst a gut laughing
 발음(한글): 버스트 어 것 래핑
@@ -1165,9 +1072,6 @@ Burst a gut laughing
 
 그래서 *“I burst a gut laughing at that joke.”*라고 하면, 그 농담이 그냥 웃겼다는 뜻이 아니라 참을 수 없을 정도로 크게 웃어 배가 아플 만큼 웃었다는 의미가 됩니다. 즉, burst a gut laughing은 웃음의 결과가 아니라, 웃음의 강도와 신체적 과부하를 과장해 표현하는 생생한 구어 표현입니다.
 </p></li>
-    
-
-
 <li><span class="term">Butterflies</span><p>
 Butterflies (= butterflies in one’s stomach)
 발음(한글): 버터플라이즈
@@ -1182,8 +1086,6 @@ Butterflies (= butterflies in one’s stomach)
 
 그래서 *“I had butterflies before the interview.”*라고 하면, 이는 극도의 공포에 떨었다는 뜻이 아니라 중요한 면접을 앞두고 긴장과 설렘이 섞인 자연스러운 불안감을 느꼈다는 의미입니다. 즉, butterflies는 감정의 약함이 아니라, 중요하게 여기고 있다는 신호를 부드럽게 전달하는 표현입니다.
 </p></li>
-
-
 <li><span class="term">Buy Off</span><p>
      buy-off라는 단어를 간단히 설명드리겠습니다. buy-off는 우리말로 승인하다, 확인하다 정도의 뜻입니다. 예를
 들어, A 씨가 B 씨에게 무언가를 제안했습니다.B 씨가 그 제안 내용을 검토한 뒤, 마음에 든다고 판단하고 공식적으로 승인하는 것을 buy-
@@ -1191,8 +1093,6 @@ off라고 합니다. 구체적인 상황으로는, 회사에서 신제품 디자
 서명하면, 이를 buy-off라고 합니다.친구의 신제품 구매 제안을 듣고 나도 좋다고 동의하면, 나는 네 제안을 buy-off한다고 말할 수
 있습니다.이렇듯 buy-off는 누군가의 의견이나 제안을 입수하여 검토한 뒤, 확인이나 승인을 의미하는 말입니다.
     </p></li>
-
-
 <li><span class="term">Buzzwords</span><p>
 Buzzwords
 발음(한글): 버즈워즈
@@ -1207,18 +1107,11 @@ Buzzwords
 
 그래서 *“The presentation was full of buzzwords.”*라는 문장은, 발표가 전문적으로 들리기는 했지만 실제 내용이나 구체성은 부족했다는 의미를 담고 있습니다. 즉, buzzwords는 단순한 유행어가 아니라, **과도하게 소비되는 ‘겉치레용 핵심어’**를 비판적으로 가리키는 표현입니다.
 </p></li>
-
-
-
-
-
-
-
 <!-- [Alphabet][C] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-  <div class="alpha-divider" id="C">C</div><li><span class="term">Cadence</span><p>
+<!-- /******************************************************************************************************************************* -->
+<div class="alpha-divider" id="C">C</div><li><span class="term">Cadence</span><p>
 
      Cadence 고객인 무스타파가 협력업체 프로젝트 매니저인 마티아스에게 아래와 같이 물어보더라구요. Are you okay with
 the meeting cadence?그 뜻을 찾아보니,  'Cadence'는 일정한 리듬이나 속도를 의미였네요. 회의의 경우, 얼마나 자주
@@ -1308,8 +1201,6 @@ Cellmate
 
 예를 들어 *“He met his cellmate in prison.”*이라는 문장은, 단순한 만남이 아니라 극도로 제한된 환경에서 형성된 관계를 의미합니다. 즉, cellmate는 장소를 설명하는 단어이면서 동시에, 강제된 친밀함과 긴장감이 내포된 관계를 지칭하는 표현입니다.
 </p></li>
-
-
 <li><span class="term" data-date="2025-12-28">Charismatic</span><p>
 Charismatic
 
@@ -1360,7 +1251,6 @@ Captivating: 매료시키는, 사람들의 관심을 사로잡는.
 **"Charismatic"**은 사람들을 끌어당기고 영향력을 발휘하는 매력적인 성격을 나타내는 형용사입니다.
 
 </p></li>
-
 <li><span class="term">Chirping</span><p>
 Chirping
 발음(한글): 처어핑
@@ -1444,7 +1334,6 @@ Citation
 즉, citation은 맥락에 따라 출처 인용, 공식 위반 통지, 공로 인정을 모두 가리키지만, 공통적으로는 공식적이고 기록으로 남는 지목이라는 개념을 중심에 둔 단어입니다.
 
 </p></li>
-
 <li><span class="term" data-date="2025-12-28">Clairvoyant</span><p>Clairvoyant
 
 발음 (한글): 클레어보이언트
@@ -1530,9 +1419,6 @@ Cliché
 
 그래서 *“That line sounds like a cliché.”*라는 문장은, 그 문장이 틀렸다는 뜻이 아니라 너무 흔해서 더 이상 인상이나 설득력이 없다는 의미입니다. 즉, cliché는 표현의 진위보다도, 얼마나 새롭고 살아 있는지에 대한 평가를 담은 단어입니다.
   </p></li>
-
-
-
 <li><span class="term" data-date="2025-12-28">Clusterfuck</span><p>
 Clusterfuck
 
@@ -1581,8 +1467,7 @@ Snafu: "Snafu"는 혼란스러운 상황을 나타내는 군대 속어로, "Clus
 
 
   </p></li>
-  
-  <li><span class="term">Cobble Together</span><p>
+<li><span class="term">Cobble Together</span><p>
 
      'cobble together'는 '여러 가지를 모아서 서투르게 만들다'라는 의미의
 표현입니다.'cobble'은 보통 작고 불규칙한 돌들을 이용해 길이나 건물을 만드는 것을 의미합니다.이를 바탕으로 'cobble
@@ -1986,14 +1871,10 @@ Cut-and-dried
 비슷한 표현과 비교하면, skepticism은 증거를 요구하는 이성적 의심으로 반드시 부정적이지 않습니다. 반면 cynicism은 동기의 순수함 자체를 부정하는 점에서 훨씬 날카롭고 부정적입니다. realism이 현실을 있는 그대로 보려는 태도라면, cynicism은 그 현실을 의심과 냉소의 렌즈로만 해석합니다. 또한 sarcasm이 말투나 표현 방식이라면, cynicism은 사고방식과 세계관에 가깝습니다.
 
 그래서 *“Public trust has been eroded by widespread cynicism.”*이라는 문장은, 단순한 비판 여론이 아니라 사람들이 제도와 인물의 선의를 더 이상 믿지 않게 된 상태를 의미합니다. 즉, cynicism은 날카로운 통찰처럼 보일 수 있지만, 동시에 신뢰·협력·이상을 무력화시키는 태도를 가리키는 단어입니다.</p></li>
-
-
 <!-- [Alphabet][D] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-
-
+<!-- /******************************************************************************************************************************* -->
 <li><span class="term">Covert work</span><p>
 Covert work
 발음(한글): 코우버트 워크
@@ -2007,7 +1888,6 @@ Covert work
 
 비슷한 표현: undercover work(잠입/위장 수사), clandestine operation(비밀 작전), secret mission(비밀 임무), espionage(첩보/스파이 활동), covert ops(코버트 작전)
 </p></li>
-
 <li><span class="term">Crony</span><p>
 Crony
 발음(한글): 크로우니
@@ -2246,15 +2126,11 @@ Ducks in a row (= get/have your ducks in a row)
 즉, ducks in a row는 막연한 준비가 아니라, 실수를 최소화하기 위해 모든 것을 체계적으로 정렬해 둔 상태를 표현하는 말입니다.
 
 </p></li>
-
-
-
 <!-- [Alphabet][E] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-
-  <div class="alpha-divider" id="E">E</div>
+<!-- /******************************************************************************************************************************* -->
+<div class="alpha-divider" id="E">E</div>
 <li><span class="term">Emissary</span><p>
 Emissary
 발음(한글): 에미서리
@@ -2271,7 +2147,6 @@ Emissary
 
 그래서 *“The president sent an emissary to negotiate.”*라고 하면, 그 인물은 개인 자격이 아니라 대통령의 의사를 대표해 협상을 맡은 공식 파견자라는 의미가 됩니다. 즉, emissary는 전달자라기보다, **의지를 대신 들고 움직이는 ‘대표자’**를 가리키는 단어입니다.
 </p></li>
-
 <li><span class="term">Empathy</span><p>
 Empathy
 발음(한글): 엠퍼시
@@ -2287,7 +2162,6 @@ Empathy
 그래서 *“She showed real empathy for his situation.”*이라고 하면, 단순히 위로의 말을 건넸다는 뜻이 아니라 그 사람이 처한 상황과 감정을 깊이 이해하고 그에 맞게 반응했다는 의미입니다. 즉, empathy는 착한 마음을 뜻하는 단어가 아니라, 타인의 감정을 정확히 읽고 함께 느낄 수 있는 능력을 가리키는 표현입니다.
 
   </p></li>
-
 <li><span class="term">En masse</span><p>
 En masse
 발음(한글): 앙 마스
@@ -2306,8 +2180,7 @@ En masse
 
 즉, en masse는 ‘많이’가 아니라, ‘따로가 아닌 하나로’ 움직였다는 집단 행동의 성격을 정확히 짚어내는 표현입니다.
   </p></li>
-  
-  <li><span class="term">Endowed with</span><p>
+<li><span class="term">Endowed with</span><p>
 Endowed with
 발음(한글): 인다우드 위드
 강세: en-DOWED with
@@ -2752,15 +2625,11 @@ Furlough
 즉, furlough는 직원이 직무에서 일시적으로 제외되지만, 해고가 아니고, 일정 기간 후 복귀할 수 있는 상태를 나타내는 단어입니다.
 
 </p></li>
-
-
 <!-- [Alphabet][G] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-
+<!-- /******************************************************************************************************************************* -->
 <div class="alpha-divider" id="G">G</div>
-  
 <li><span class="term" data-date="2025-08-27">Gavotte</span><p>
 Gavotte
 
@@ -2781,8 +2650,6 @@ Courante: 가보트와 같은 모음곡에 등장하는 경쾌한 춤곡.
 (바흐의 첼로 모음곡에는 아름다운 가보트가 포함되어 있다.)
 **"Gavotte"**는 프랑스에서 유래한 우아하고 경쾌한 춤과 그에 맞춘 음악을 의미하는 표현으로, 바로크 시대 궁정 문화와 깊은 관련이 있습니다.
 </p></li>
-
-
 <li><span class="term">Gelignite</span><p>Gelignite
 발음(한글): 젤리그나이트
 강세: GEL-i-nite
@@ -2805,8 +2672,6 @@ Gelignite는 주로 나이트로셀룰로스와 나이트로글리세린을 혼�
 여기서는 젤리그나이트가 광산 작업에서 강력한 폭발물로 사용된다는 의미입니다.
 
 Gelignite는 일반적으로 고위험 상황에서 다루어야 하는 물질로, 그 사용과 취급에 신중함을 요구하는 물질입니다.</p></li>
-
-
 <li><span class="term">Get grub</span><p>
 Get grub
 발음(한글): 겟 그럽
@@ -2954,8 +2819,7 @@ Gluttony는 단순히 "많이 먹는 것"을 넘어서, 자기 통제를 상실�
 뜻합니다. 이는 특히 귀중한 정보, 통찰, 아이디어 등을 발견했을 때 이를 표현하는 데 자주 사용됩니다. 결과적으로, "Gold nugget"은
 드물고 소중한 무언가를 상징하며, 발견이나 성취의 기쁨을 강조하는 표현입니다.
     </p></li>
-
-  <li><span class="term" data-date="2025-08-28">Goofy</span><p>
+<li><span class="term" data-date="2025-08-28">Goofy</span><p>
      "A little goofy to me"는 비격식적인 영어 표현으로, 누군가나 무언가가 약간
 우스꽝스럽거나 웃긴 느낌을 주는 것을 나타냅니다. 이 표현은 주로 긍정적인 뉘앙스로 사용되며, 상대방을 해치거나 비난하는 의도가 없이 그저
 웃기거나 기묘한 면을 갖고 있다고 느끼는 상황에서 자주 사용됩니다.예를 들어, 어떤 사람이 엉뚱한 장난을 치거나 귀여운 실수를 저지르면 주변
@@ -2964,7 +2828,6 @@ Gluttony는 단순히 "많이 먹는 것"을 넘어서, 자기 통제를 상실�
 사용하며, 친밀한 사이에서 서로를 잘 이해하고 웃을 수 있는 상황에서 자주 듣게 됩니다. 일반적으로 친밀한 관계에서 사용되는 표현이므로, 혼자서
 낯선 사람에게 사용하기보다는 친한 친구나 가족과 함께 있을 때 자연스럽게 사용하는 것이 좋습니다. "
   </p></li>
-
 <li><span class="term">Grapple</span><p>
 Grapple
 발음(한글): 그래플
@@ -3084,13 +2947,10 @@ Groundhog Day
 Groundhog Day는 본래 절기를 의미하지만, 매일 반복되는 상황이나 지루함을 비유적으로 나타내는 표현으로도 널리 사용됩니다.
 
 </p></li>
-
-
 <!-- [Alphabet][H] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-
+<!-- /******************************************************************************************************************************* -->
 <div class="alpha-divider" id="H">H</div><li><span class="term">Half centigrade</span><p>
 Half centigrade
 발음(한글): 하프 센티그레이드
@@ -3232,14 +3092,12 @@ He is toying with you는 상대방을 장난처럼 다루거나, 감정을 가�
 선수들에게 head start가 있다.이렇듯 'a head start'는 경쟁 우위를 점하기 위한 선제적 행동이나 상황을 이야기할 때 자주
 쓰입니다.한 마디로 '앞서 나가는' 이점이라는 뜻으로 이해하시면 될 것 같습니다.
     </p></li>
-
 <li><span class="term">Heartbreaker</span><p>"Heartbreaker"는 영어에서 사용되는 표현으로, 긍정적이지 않은 의미를 갖습니다. 이 용어는 누군가가
 다른 사람의 마음을 상하게 하거나, 감정적으로 상처를 주는 사람을 묘사할 때 사용됩니다. 주로 불공평하게 행동하거나 상대방의 감정을 무시하거나
 배신하는 행동을 하는 사람에게 쓰이는 표현입니다.예를 들어, 연인 사이에서 한 쪽이 다른 쪽의 감정을 무시하고 감정적으로 상처를 주는 행동을
 한다면 그 사람을 "heartbreaker"라고 할 수 있습니다. 또한, 친구나 가족 사이에서도 이 용어를 사용하여 누군가가 다른 사람의 마음을
 상처로 만드는 행동을 지칭할 수 있습니다."Heartbreaker"는 사람을 비판하는 용어이므로, 사용할 때 주의해야 합니다. 상황에 따라서는
 무책임하게 사용하면 사람들을 상처주거나 감정적으로 상할 수 있으므로, 서로를 존중하고 배려하는 언어 사용에 주의해야 합니다."</p></li>
-
 <li><span class="term">Heinous assault</span><p>
 Heinous assault
 발음(한글): 헤이너스 어솔트
@@ -3272,15 +3130,13 @@ Heinous assault는 단순한 폭행을 넘어서, 윤리적으로, 사회적으�
 세계, 영역, 활동 범위를 나누는 개념으로 확장되기도 합니다. 이 단어는 단순한 half보다 학문적이고 정확한 분할을 강조하는 뉘앙스를
 가집니다.
     </p></li>
-
-  <li><span class="term" data-date="2025-12-28">Hired gun</span><p>
+<li><span class="term" data-date="2025-12-28">Hired gun</span><p>
   “a hired gun”은 영어에서 본래 돈을 받고 사람을 죽이는 청부 살인자를 가리키던 표현이지만, 현대 영어에서는 대부분 **비유적으로 사용되어 <span class="highlight">‘대가를 위해 특정 임무를 수행하는 사람’</span>**을 의미합니다. 이 표현의 핵심은 단순히 외부 인력이라는 사실이 아니라, 능력과 전문성은 뛰어나지만 충성심·신념·소속감보다는 보수가 우선이라는 인식에 있습니다. 필요할 때 투입되어 조직이 직접 하기 껄끄러운 거친 역할이나 공격적인 일을 대신 처리하고, 목적이 달성되면 미련 없이 빠져나가는 냉정하고 도구적인 존재라는 뉘앙스를 강하게 담고 있습니다.
 
 이 때문에 “a hired gun”은 정치, 비즈니스, 법률, 스포츠, 언론, 범죄 서사 등 다양한 맥락에서 쓰이지만, 전반적으로 중립적인 표현이라기보다는 냉소·불신·비판적 시선이 깔린 말로 받아들여집니다. 겉으로 보면 freelancer나 contractor처럼 계약 기반으로 일하는 사람을 가리키는 말과 비슷해 보일 수 있지만, 이 두 표현이 비교적 중립적이고 행정적인 뉘앙스를 갖는 데 비해, a hired gun은 “돈 때문에 움직이며 공격적인 역할을 맡는다”는 인상이 훨씬 강합니다. 의미상으로는 mercenary와 가장 가까운데, mercenary가 도덕적 비난을 보다 직접적으로 드러내는 표현이라면 a hired gun은 더 구어적이고 상황 묘사적인 표현이라 할 수 있습니다. 또한 실제 범죄 맥락에서 사람을 죽이는 hitman과는 달리, a hired gun은 현대 영어에서 훨씬 완화된 비유 표현으로 쓰이며, fixer처럼 문제를 해결하는 인물과도 겹치는 부분이 있지만, fixer가 전략가나 조율자 이미지가 강한 데 비해 a hired gun은 공격을 대신 수행하는 실행자에 가깝습니다.
 
 따라서 *“They brought him in as a hired gun.”*이라는 문장은, 그 인물이 팀의 가치나 철학을 공유하는 내부 인재라기보다는 필요한 일을 대신 처리하기 위해 고용된 전문 해결사이며, 그 동기는 이상이나 충성보다는 대가와 결과에 있다는 뉘앙스를 강하게 전달합니다.
 </p></li>
-
 <li><span class="term">Hold your horses</span><p>
 Hold your horses
 발음(한글): 홀드 유어 호시즈
@@ -3362,7 +3218,6 @@ Old-fashioned values: 옛날의 전통적 가치, 즉 과거의 방식에 뿌리
 Homespun value는 소박하고 전통적인 가치를 강조하며, 간단하지만 중요한 도덕적 원칙이나 실용적인 삶의 방식을 지지하는 태도를 나타냅니다.
 
 </p></li>
-
 <li><span class="term" data-date="2025-12-28">Honk Victory</span><p>Honk Victory
 
 발음 (한글): 혼크 빅토리
@@ -3567,7 +3422,6 @@ Frantic: Frantic은 혼란스럽고 급박하게 행동하는 상황을 나타�
 Hysterical은 감정적인 극단성을 나타내는 표현으로, 자신의 감정이나 상황을 과도하게 표현하는 경우에 사용됩니다.
 
 </p></li><div class="alpha-divider" id="I">I</div>
-
 <li><span class="term">I am not gonna to sweat it.</span><p>
 
      "I am not gonna to sweat it"은 영어에서 사용되는 구어
@@ -3581,8 +3435,7 @@ to sweat it. I'll do my best and see what happens."라고 말한다면, 그 친�
 최선을 다하겠다는 자신감을 표현하고 있습니다.이렇게 긍정적인 마인드셋을 가지는 것은 자신을 안정시키고 더 좋은 결과를 이끌어낼 수 있는데 도움이
 될 수 있습니다.
     </p></li>
-    
-    <li><span class="term">I got your back</span><p>'I got your back'는 '나는 너를 도와줄게' 또는 '나는 너를 지지하고 뒷받침할게'라는
+<li><span class="term">I got your back</span><p>'I got your back'는 '나는 너를 도와줄게' 또는 '나는 너를 지지하고 뒷받침할게'라는
 의미의 표현입니다.'back'이 '등'을 뜻하듯이, 누군가의 'back을 가지다'는 그 사람의 편에 서서 지지하고 돕는다는 의미입니다.예를
 들어, 해고 위기에 놓인 동료에게 걱정마, 내가 너를 돕고 지지하겠다고 말할 때 I got your back이라고 표현할 수 있습니다.어려운
 일을 하고 있는 친구에게 내가 여기 있으니 너를 돕을게라고 말할 때 I got your back이라고 할 수 있습니다.'I got your
@@ -3744,8 +3597,6 @@ Conflagration: Conflagration은 큰 화재를 의미하는 다른 단어로, inf
 Inferno는 파괴적이고 극단적인 불을 묘사할 때 사용되는 표현으로, 대규모 화재나 불길을 강조하는 데 쓰입니다.
 
 </p></li>
-
-
 <li><span class="term" data-date="2025-12-28">Infidel</span><p>
 “Infidel”은 <span class="highlight">특정 종교의 관점에서 그 종교를 믿지 않는 사람을 지칭하는 표현</span>입니다. 역사적으로는 중세나 종교 전쟁 시기에
 비교적 일반적인 용어로 사용되었으며, 특히 십자군 전쟁과 같은 맥락에서 자주 등장합니다. 그러나 현대 영어에서는 이 단어가 매우 공격적이거나
@@ -3753,8 +3604,6 @@ Inferno는 파괴적이고 극단적인 불을 묘사할 때 사용되는 표현
 따라서 이 표현은 역사적 설명이나 종교·문화적 맥락을 설명할 때만 제한적으로 사용하는 것이 바람직합니다. 예를 들어, “The term was
 widely used during the Crusades.”는 역사적 사실을 설명하는 문맥에서는 자연스럽게 사용될 수 있습니다.
 </p></li>
-
-
 <li><span class="term" data-date="2025-12-28">Infiltrated</span><p>Infiltrated
 
 발음 (한글): 인필트레이티드
@@ -4055,14 +3904,10 @@ It’s up to you: 결정은 너에게 달려 있다는 의미로, it’s your ca
 It’s your call은 결정이나 선택을 상대방에게 맡기고 책임을 지게 하는 표현으로, 대화에서 선택권을 주거나 중요 결정을 위임할 때 자주 사용됩니다.
 
 </p></li>
-
-
-
 <!-- [Alphabet][J] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
-
+<!-- /******************************************************************************************************************************* -->
 <li><span class="term">I feel like a complete heel</span><p>
 I feel like a complete heel
 발음(한글): 아이 필 라이크 어 컴플리트 힐
@@ -4076,7 +3921,6 @@ I feel like a complete heel
 
 비슷한 표현: I feel like a total jerk(완전 못되게 굴었네), I feel like such a cad(비열했네), I feel awful(너무 미안/괴롭다), I was really out of line(내가 선 넘었네)
 </p></li>
-
 <li><span class="term">In plain English</span><p>
 In plain English
 발음(한글): 인 플레인 잉글리시
@@ -4090,7 +3934,6 @@ In plain English
 
 비슷한 표현: in simple terms(쉽게 말해), put simply(간단히 말하면), in layman's terms(전문용어 없이), to put it plainly(솔직히/직설적으로 말하면), plain and simple(그냥 단순히)
 </p></li>
-
 <li><span class="term">Intimacy</span><p>
 Intimacy
 발음(한글): 인티머시
@@ -4191,7 +4034,6 @@ Go with the flow: 흐름에 따라가다, 즉 대세를 따르다는 의미로, 
 Jump on the bandwagon은 유행을 따라가는 사람을 표현하거나, 인기를 얻은 것에 참여하는 행동을 설명할 때 사용되는 표현입니다.
 
 </p></li>
-
 <li><span class="term" data-date="2025-12-28">Junta</span><p>Junta
 
 발음 (한글): 후른타
@@ -4235,14 +4077,10 @@ Authoritarian government: 권위주의 정부, 개인의 자유보다 권력 유
 (군사 정권은 엄격한 법을 시행하고 언론을 검열했다.)
 
 **"Junta"**는 군사 쿠데타로 권력을 잡은 소수 군부 집단을 의미하며, 권위주의적 통치나 비민주적 정부를 설명할 때 사용되는 정치적 용어입니다.</p></li>
-
-
-
-
 <!-- [Alphabet][K] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-<!-- /******************************************************************************************************************************* --> 
+<!-- /******************************************************************************************************************************* -->
 <div class="alpha-divider" id="K">K</div><li><span class="term">Knock pegs out</span><p>
 Knock pegs out
 발음(한글): 녹 펙스 아웃
@@ -4351,15 +4189,10 @@ Well done, everyone: 모두 잘했다는 의미로, 일반적인 칭찬 표현�
 Kudos for all은 모든 사람을 향한 칭찬과 감사를 전하는 표현으로, 그들의 노력과 기여를 인정하고 높이 평가하는 의미입니다.
 
 </p></li>
-
-
-
-
 <!-- [Alphabet][L] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-
 <li><span class="term">Key lime</span><p>
 Key lime
 발음(한글): 키 라임
@@ -4799,8 +4632,7 @@ CC’d: 이메일에서 "CC’d"는 참조에 포함되어 정보를 받는 것�
 (협상 과정 내내 나에게도 정보를 공유해 주세요.)
 
 **"Looped in"**은 업무나 프로젝트에서 누군가를 정보의 흐름과 소통에 포함시키다는 의미로, 최신 정보 공유와 커뮤니케이션을 강조하는 표현입니다.</p></li>
-
-    <li><span class="term">Looks legit</span><p>
+<li><span class="term">Looks legit</span><p>
 Looks legit
 
 발음 (한글): 룩스 리짓
@@ -4886,9 +4718,6 @@ Usage (사용법):
 Lunatic는 의사적 기준에서 정신질환을 지칭하는 데 사용되기도 했으나, 오늘날에는 극단적이고 비이성적인 행동을 하는 사람을 경멸하는 의미로 쓰이는 경우가 많습니다.
 
 </p></li>
-
-
-
 <!-- [Alphabet][M] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
@@ -5346,15 +5175,10 @@ Insurrection: "Insurrection"은 내부의 폭동이나 반란을 의미하며, "
 'My question is kind of a rhetorical question.'이라는 표현은 상사가 부하사원에게 사용되며, 실제로 답을
 원하는 것이 아니라 단순히 주장을 강조하거나 상사의 의견을 강제로 받아들이도록 유도하는 데 사용될 수 있습니다.
     </p></li>
-
-
-
-
 <!-- [Alphabet][N] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
-
 <li><span class="term">Murky pool</span><p>
 Murky pool
 발음(한글): 머키 풀
@@ -5817,11 +5641,6 @@ Step up: "Step up"은 책임을 지고, 더 나은 행동을 하다는 의미로
 "Nut up"은 어려운 상황에서 용기를 내고 결단력 있게 행동하라는 표현으로, 구어체에서 자신감을 가지라는 의미로 사용됩니다.
 
 </p></li>
-
-
-
-
-
 <!-- [Alphabet][O] -->
 <!-- /******************************************************************************************************************************* -->
 <!-- /******************************************************************************************************************************* -->
@@ -6098,7 +5917,7 @@ More than that: "More than that"는 그 이상 또는 그보다 더 중요한 �
 
 "Our relationship is far beyond that"는 단순한 수준이나 일반적인 정의를 넘어서, 더 깊고 특별한 관계를 강조하는 표현입니다.
 
-</p></li><li><span class="term">Papaya</span><p>
+</p></li><div class="alpha-divider" id="P">P</div><li><span class="term">Papaya</span><p>
 Papaya
 
 발음 (한글): 파파야
@@ -7417,7 +7236,7 @@ Button your lip: 격식 있는 표현으로, “입 다물다”라는 의미.
 (회의 중에 그녀는 마침내 말을 멈추고 다른 사람들에게 발언권을 주었다.)
 
 **"Put a knot in it"**은 누군가의 수다나 말을 멈추게 할 때 사용하는 구어체 표현으로, 주로 비공식적 상황에서 사용됩니다.
-    </p></li><li><span class="term">Quack</span><p>
+    </p></li><div class="alpha-divider" id="Q">Q</div><li><span class="term">Quack</span><p>
 Quack
 
 발음 (한글): 퀙
@@ -7547,7 +7366,7 @@ Born leader: "Born leader"는 타고난 리더십을 가진 사람을 의미하�
 
 "Queen in the making"은 미래의 리더나 큰 인물이 될 잠재력을 가진 사람을 나타내는 표현으로, 여성에게 특별히 사용되는 말입니다.
 
-</p></li><li><span class="term">Rag-tag band</span><p>
+</p></li><div class="alpha-divider" id="R">R</div><li><span class="term">Rag-tag band</span><p>
 Rag-tag band
 
 발음 (한글): 랙태그 밴드
@@ -8840,7 +8659,7 @@ Hustling: "Hustling"은 급히 또는 분주하게 일을 처리하거나 움직
      "Running point"는 진행 중인 상황이나 프로젝트에서 중심 역할을 맡아 이를 주도하거나 관리하는
 것을 의미합니다. 이는 팀의 리더로서 책임을 지고 중요한 결정과 조율을 담당하며, 전반적인 흐름을 이끄는 역할을 강조합니다. 결과적으로,
 "Running point"는 책임감을 바탕으로 핵심적인 업무를 이끌고 목표를 달성하기 위해 조율하는 중요한 위치를 나타냅니다.
-    </p></li><li><span class="term">Samarium</span><p>
+    </p></li><div class="alpha-divider" id="S">S</div><li><span class="term">Samarium</span><p>
 Samarium
 
 발음 (한글): 사마리움
@@ -10660,7 +10479,7 @@ Moderator: "Moderator"는 온라인 커뮤니티에서 사용자 활동을 관�
 
 **"Sysop"**은 주로 온라인 시스템에서 시스템 운영을 담당하는 사람을 나타내는 용어로, BBS와 같은 초기 온라인 서비스에서 중요한 역할을 하던 개념입니다.
 
-</p></li><li><span class="term">Tahiti</span><p>
+</p></li><div class="alpha-divider" id="T">T</div><li><span class="term">Tahiti</span><p>
 Tahiti
 
 발음 (한글): 타히티
@@ -11555,7 +11374,7 @@ Jerk: "Jerk"는 "Turd"와 유사하게, 불쾌한 사람을 비하하는 표현�
 (그가 파티에서 그렇게 불쾌하게 행동하다니 믿을 수 없다.)
 
 **"Turd"**는 대변을 가리키는 비속어이자, 사람이나 상황을 모욕하는 데 사용되는 표현으로, 거친 언어나 불쾌한 상황에서 자주 사용됩니다.
-  </p></li><li><span class="term">Unredacted</span><p>
+  </p></li><div class="alpha-divider" id="U">U</div><li><span class="term">Unredacted</span><p>
 Unredacted
 
 발음 (한글): 언리댁티드
@@ -11642,7 +11461,7 @@ Plenty of: "Plenty of"는 "Up the wazoo"보다 덜 과장된 표현이지만, �
 (그 회사는 데이터가 넘칠 정도로 많아서, 모두 분석하는 데 몇 주가 걸릴 것이다.)
 
 **"Up the wazoo"**는 매우 많은 양이나 과장된 수량을 나타내는 속어 표현으로, 주로 유머러스하거나 강조된 상황에서 사용됩니다.
-  </p></li><li><span class="term">Vermin</span><p>
+  </p></li><div class="alpha-divider" id="V">V</div><li><span class="term">Vermin</span><p>
 Vermin
 
 발음 (한글): 벌민
@@ -11776,7 +11595,7 @@ Chemical weapon: "Chemical weapon"은 화학 무기를 의미하며, VX는 그 �
 
 **"VX Gas"**는 극히 치명적인 독성을 지닌 신경작용제로, 화학전에서의 사용이 금지되어 있으며, 인체에 미치는 영향은 매우 심각하고 치명적입니다.
 
-</p></li><li><span class="term">Walk the walk (don’t just talk the talk)</span><p>
+</p></li><div class="alpha-divider" id="W">W</div><div class="alpha-divider" id="X">X</div><li><span class="term">Walk the walk (don’t just talk the talk)</span><p>
 Walk the Walk
 
 발음 (한글): 워크 더 워크
@@ -12473,7 +12292,7 @@ Get someone worked up: "Get someone worked up"은 누군가를 감정적으로 �
 
 **"Works them up"**은 감정적으로 자극하거나 흥분시키다는 의미로 사용되며, 누군가의 감정을 고조시키거나 강한 반응을 유도하는 상황에서 사용됩니다.
   
-</p></li><li><span class="term">Yammering</span><p>
+</p></li><div class="alpha-divider" id="Y">Y</div><li><span class="term">Yammering</span><p>
 Yammering
 
 발음 (한글): 야머링
@@ -12604,7 +12423,7 @@ Deprived of power: "Deprived of power"는 권력이나 영향력을 상실한 �
 
 **"You have been castrated"**는 고환을 제거하는 수술의 직접적인 의미와 함께, 권한이나 능력이 약해진 상황을 비유적으로 표현할 때 사용될 수 있습니다.
 
-</p></li><li><span class="term">Zealot</span><p>
+</p></li><div class="alpha-divider" id="Z">Z</div><li><span class="term">Zealot</span><p>
 Zealot
 
 발음 (한글): 젤럿
@@ -12694,8 +12513,6 @@ Mood of the times: "Mood of the times"는 그 시대의 기분이나 분위기�
 **"Zeitgeist"**는 특정 시대의 정신이나 사회적, 문화적 흐름을 나타내는 표현으로, 그 시대의 가치관, 생각, 분위기를 포괄하는 개념입니다.
 
 </p></li>
-<div class="alpha-divider" id="P">P</div>
-
 <li><span class="term">Palling around</span><p>
 Palling around
 발음(한글): 팔링 어라운드
@@ -12709,7 +12526,6 @@ Palling around
 
 비슷한 표현: hang out(어울리다), spend time together(같이 시간 보내다), fraternize(어울리다/친하게 지내다), buddy up(붙어 다니다), consort with(어울리다—의심스러운 뉘앙스 가능)
 </p></li>
-
 <li><span class="term">Polygraph</span><p>
 Polygraph
 발음(한글): 폴리그래프
@@ -12723,11 +12539,6 @@ Polygraph
 
 비슷한 표현: lie detector(거짓말 탐지기), polygraph test(폴리그래프 검사), truth verification test(진술 검증 검사)
 </p></li>
-
-<div class="alpha-divider" id="Q">Q</div>
-
-<div class="alpha-divider" id="R">R</div>
-
 <li><span class="term">Rube</span><p>
 Rube
 발음(한글): 루브
@@ -12741,11 +12552,6 @@ Rube
 
 비슷한 표현: sucker(호구), dupe(속는 사람), gull(잘 속는 사람), mark(타깃/봉), hick/bumpkin(촌뜨기), naive person(순진한 사람)
 </p></li>
-
-<div class="alpha-divider" id="S">S</div>
-
-<div class="alpha-divider" id="T">T</div>
-
 <li><span class="term">Travesty</span><p>
 Travesty
 발음(한글): 트래버스티
@@ -12759,11 +12565,6 @@ Travesty
 
 비슷한 표현: farce(희극/막장 같은 일), mockery(조롱거리), sham(가짜/눈속임), disgrace(치욕), miscarriage of justice(사법적 오판/부당함)
 </p></li>
-
-<div class="alpha-divider" id="U">U</div>
-
-<div class="alpha-divider" id="V">V</div>
-
 <li><span class="term">Veep</span><p>
 Veep
 발음(한글): 비프
@@ -12777,13 +12578,6 @@ Veep
 
 비슷한 표현: vice president(부통령), VP(약어), deputy(부대표/부), second-in-command(2인자)
 </p></li>
-
-<div class="alpha-divider" id="W">W</div>
-
-<div class="alpha-divider" id="X">X</div>
-
-<div class="alpha-divider" id="Y">Y</div>
-
 <li><span class="term">You look it</span><p>
 You look it
 발음(한글): 유 룩 잇
@@ -12797,10 +12591,7 @@ You look it
 
 비슷한 표현: you look the part(딱 그 역할/이미지다), you seem it(그렇게 보인다), it suits you(너에게 잘 어울린다), you look like it(그래 보인다)
 </p></li>
-
-<div class="alpha-divider" id="Z">Z</div>
 </ul></main>
-
 <script>
 /* SHOW/HIDE 버튼: 전체 설명을 한 번에 숨기기/보이기 (개별 단어 클릭은 그대로 유지) */
 window.addEventListener('DOMContentLoaded', function () {
@@ -12880,7 +12671,6 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
-
 <script>
   
 // 페이지 로드 시 URL term 파라미터 확인 후 해당 단어로 스크롤 이동
@@ -12902,16 +12692,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
-
-
-
 <footer>
   © 2023~2026 영어 표현 공부. All rights reserved.
   <a href="mailto:stberry7@gmail.com?subject=Hello&amp;body=Nice%20to%20meet%20you">
    Email me
   </a>
 </footer>
-
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     const dateFilter = document.getElementById('date-filter');
@@ -12941,7 +12727,6 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 <style>
   .firework {
     position: absolute;
@@ -12967,7 +12752,6 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
  </style>
-
 <style>
   @keyframes shake {
   0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -13008,5 +12792,4 @@ function topFunction() {
     return;  // 클릭 이벤트에서 아무 것도 하지 않음
 });
  </script>
-
 </body></html>
