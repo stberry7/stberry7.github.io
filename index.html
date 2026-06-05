@@ -304,6 +304,65 @@ button,input,textarea,select{
   }
 }
 
+
+/* Compact mobile header */
+@media(max-width:900px){
+  .side{
+    padding:10px 12px !important;
+  }
+  .desc{
+    display:none !important;
+  }
+  .brand{
+    font-size:16px !important;
+    margin-bottom:6px !important;
+  }
+  .search{
+    margin:4px 0 8px !important;
+    padding:9px 12px !important;
+  }
+  .topbar{
+    position:static !important;
+    padding:0 !important;
+    margin-bottom:8px !important;
+  }
+  .controls{
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:6px !important;
+  }
+  .btn,select{
+    min-height:38px !important;
+    padding:8px 6px !important;
+    font-size:12px !important;
+  }
+  #printBtn{
+    margin-top:6px !important;
+    min-height:38px !important;
+  }
+  .mobileToggle{
+    margin:4px 0 6px !important;
+    padding:8px 10px !important;
+    min-height:38px !important;
+    font-size:13px !important;
+  }
+  .question{
+    font-size:20px !important;
+    margin:6px 0 10px !important;
+  }
+  .timerBox{
+    padding:8px !important;
+    margin:10px 0 !important;
+  }
+  .timer{
+    font-size:24px !important;
+  }
+}
+@media(max-width:430px){
+  .controls{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>
