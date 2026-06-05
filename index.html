@@ -363,6 +363,154 @@ button,input,textarea,select{
   }
 }
 
+
+/* ===== Mobile viewer-only mode ===== */
+.mobileFullListBtn{
+  display:none;
+  width:100%;
+  margin:6px 0 8px;
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid #334155;
+  background:#0f766e;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.mobileListOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(15,23,42,.72);
+  padding:12px;
+}
+.mobileListPanel{
+  background:#ffffff;
+  color:#172033;
+  border-radius:18px;
+  max-height:92dvh;
+  overflow:auto;
+  padding:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.28);
+}
+.mobileListHeader{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:#fff;
+  padding-bottom:10px;
+  border-bottom:1px solid #dfe5ef;
+  z-index:2;
+}
+.mobileListTitle{
+  font-size:16px;
+  font-weight:900;
+}
+.mobileCloseBtn{
+  border:1px solid #dfe5ef;
+  background:#fee2e2;
+  color:#7f1d1d;
+  border-radius:10px;
+  padding:8px 10px;
+  font-weight:900;
+}
+.mobileJumpGrid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:12px 0;
+}
+.mobileJumpNum{
+  border:1px solid #dfe5ef;
+  background:#f8fafc;
+  color:#172033;
+  border-radius:10px;
+  padding:9px 4px;
+  font-weight:900;
+}
+.mobileJumpNum.active{
+  background:#2563eb;
+  color:#fff;
+  border-color:#2563eb;
+}
+.mobileFullItems{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:12px;
+}
+.mobileFullItem{
+  border:1px solid #dfe5ef;
+  background:#fff;
+  color:#172033;
+  border-radius:12px;
+  padding:10px 12px;
+  text-align:left;
+  line-height:1.4;
+}
+.mobileFullItem.active{
+  border-color:#2563eb;
+  background:#eff6ff;
+}
+.mobileFullItem .miniNum{
+  font-size:12px;
+  color:#2563eb;
+  font-weight:900;
+  margin-right:6px;
+}
+@media(max-width:900px){
+  .mobileFullListBtn{
+    display:block;
+    min-height:38px;
+    font-size:13px;
+  }
+  .mobileListOverlay.open{
+    display:block;
+  }
+
+  /* Mobile: viewer-only. Hide save/edit/delete/export/memo/practice-management UI */
+  #timeSelect,
+  #startBtn,
+  #resetBtn,
+  #doneBtn,
+  #printBtn,
+  .timerBox,
+  .memoTitleMobileHide,
+  #memo,
+  .historyToolbar,
+  .note,
+  .historyPanel,
+  #status{
+    display:none !important;
+  }
+  .meta .pill:nth-child(3){
+    display:none !important;
+  }
+
+  /* Keep only navigation and answer-view controls compact */
+  .topbar .controls{
+    grid-template-columns:repeat(3,1fr) !important;
+  }
+  .card > .controls{
+    display:block !important;
+  }
+  #showBtn{
+    width:100%;
+  }
+}
+@media(max-width:430px){
+  .mobileJumpGrid{
+    grid-template-columns:repeat(4,1fr);
+  }
+  .topbar .controls{
+    grid-template-columns:repeat(3,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -370,6 +518,7 @@ button,input,textarea,select{
   <aside class="side">
     <div class="brand">전극 프로세스 엔지니어 인터뷰 연습</div>
     <button class="mobileToggle" id="mobileQuestionToggle" type="button" data-ready="1">질문 목록 열기/닫기</button>
+    <button class="mobileFullListBtn" id="mobileFullListBtn" type="button">전체 리스트 / 번호 이동</button>
     <div class="desc">전극 프로세스 엔지니어 예상 질문을 보고 먼저 1~3분 동안 직접 답변한 뒤, 모범 답변과 비교하세요. 핵심은 “공정 목적 → 관리 항목 → 발생 문제 → 개선 접근” 흐름입니다.</div>
     <input class="search" id="search" placeholder="검색: coating, drying, slurry...">
     <div class="navTitle">질문 카드</div>
@@ -419,7 +568,7 @@ button,input,textarea,select{
         <div class="checks" id="checks"><label class="check"><input type="checkbox"> 전체 흐름을 순서대로 말했는가</label><label class="check"><input type="checkbox"> 각 공정 목적을 설명했는가</label><label class="check"><input type="checkbox"> CTQ를 언급했는가</label><label class="check"><input type="checkbox"> 공정 간 연결성을 설명했는가</label></div>
       </div>
 
-      <div class="sectionTitle">내 답변 메모</div>
+      <div class="sectionTitle memoTitleMobileHide">내 답변 메모</div>
       <textarea class="memo" id="memo" placeholder="내가 말한 답변을 짧게 적어보세요."></textarea>
       <div class="historyToolbar">
         <button class="btn primary" id="saveMemoBtn">날짜/시간으로 저장</button>
@@ -2191,6 +2340,7 @@ function exportHtmlBackup(){
 }
 
 function restoreHtmlBackupIfNeeded(){
+  if(window.matchMedia && window.matchMedia("(max-width:900px)").matches) return;
   if(!window.__INTERVIEW_BACKUP__ || !window.__INTERVIEW_BACKUP__.data) return;
   if(localStorage.getItem("memoHistory") || localStorage.getItem("memos") || localStorage.getItem("doneCards")) return;
 
@@ -2240,6 +2390,7 @@ function render(){
   $("status").textContent="먼저 답변을 말해본 뒤, 답변 보기를 누르세요.";
   renderHistory();
   renderList();
+  if(document.getElementById("mobileListOverlay") && document.getElementById("mobileListOverlay").classList.contains("open")) renderMobileFullList();
   setTime(parseInt($("timeSelect").value,10), false);
 }
 function setTime(sec, updateTotal=true){
@@ -2307,6 +2458,60 @@ $("clearAllHistoryBtn").onclick=()=>{
 };
 $("clearMemoBtn").onclick=()=>{if(confirm("현재 입력창의 내용만 지울까요? 저장된 기록은 유지됩니다.")){memos[idx]="";localStorage.setItem("memos",JSON.stringify(memos));$("memo").value="";$("status").textContent="현재 입력창을 지웠습니다. 저장된 기록은 유지됩니다.";}}
 $("memo").oninput=()=>{memos[idx]=$("memo").value;localStorage.setItem("memos",JSON.stringify(memos))};
+
+function openMobileFullList(){
+  let overlay=document.getElementById("mobileListOverlay");
+  if(!overlay){
+    overlay=document.createElement("div");
+    overlay.id="mobileListOverlay";
+    overlay.className="mobileListOverlay";
+    overlay.innerHTML=`
+      <div class="mobileListPanel" role="dialog" aria-modal="true" aria-label="전체 질문 리스트">
+        <div class="mobileListHeader">
+          <div class="mobileListTitle">전체 질문 리스트</div>
+          <button class="mobileCloseBtn" id="mobileListCloseBtn" type="button">닫기</button>
+        </div>
+        <div class="mobileJumpGrid" id="mobileJumpGrid"></div>
+        <div class="mobileFullItems" id="mobileFullItems"></div>
+      </div>`;
+    document.body.appendChild(overlay);
+    document.getElementById("mobileListCloseBtn").onclick=closeMobileFullList;
+    overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeMobileFullList(); });
+  }
+  renderMobileFullList();
+  overlay.classList.add("open");
+}
+function closeMobileFullList(){
+  const overlay=document.getElementById("mobileListOverlay");
+  if(overlay) overlay.classList.remove("open");
+}
+function renderMobileFullList(){
+  const grid=document.getElementById("mobileJumpGrid");
+  const items=document.getElementById("mobileFullItems");
+  if(!grid || !items) return;
+  grid.innerHTML="";
+  items.innerHTML="";
+  cards.forEach((c,i)=>{
+    const n=document.createElement("button");
+    n.className="mobileJumpNum"+(i===idx?" active":"");
+    n.type="button";
+    n.textContent=String(i+1).padStart(2,"0");
+    n.onclick=()=>{idx=i;show=false;render();closeMobileFullList();window.scrollTo({top:0,behavior:"smooth"});};
+    grid.appendChild(n);
+
+    const item=document.createElement("button");
+    item.className="mobileFullItem"+(i===idx?" active":"");
+    item.type="button";
+    item.innerHTML=`<span class="miniNum">${String(i+1).padStart(2,"0")}</span>${c.title}<br><span style="font-size:12px;color:#657086">${c.cat}</span>`;
+    item.onclick=()=>{idx=i;show=false;render();closeMobileFullList();window.scrollTo({top:0,behavior:"smooth"});};
+    items.appendChild(item);
+  });
+}
+const mobileFullListBtn=document.getElementById("mobileFullListBtn");
+if(mobileFullListBtn){
+  mobileFullListBtn.onclick=openMobileFullList;
+}
+
 render();
 restoreHtmlBackupIfNeeded();
 </script>
