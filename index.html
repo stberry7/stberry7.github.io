@@ -363,162 +363,25 @@ button,input,textarea,select{
   }
 }
 
-
-/* ===== Mobile viewer-only mode ===== */
-.mobileFullListBtn{
-  display:none;
-  width:100%;
-  margin:6px 0 8px;
-  padding:10px 14px;
-  border-radius:12px;
-  border:1px solid #334155;
-  background:#0f766e;
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-}
-.mobileListOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:rgba(15,23,42,.72);
-  padding:12px;
-}
-.mobileListPanel{
-  background:#ffffff;
-  color:#172033;
-  border-radius:18px;
-  max-height:92dvh;
-  overflow:auto;
-  padding:16px;
-  box-shadow:0 20px 50px rgba(0,0,0,.28);
-}
-.mobileListHeader{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  background:#fff;
-  padding-bottom:10px;
-  border-bottom:1px solid #dfe5ef;
-  z-index:2;
-}
-.mobileListTitle{
-  font-size:16px;
-  font-weight:900;
-}
-.mobileCloseBtn{
-  border:1px solid #dfe5ef;
-  background:#fee2e2;
-  color:#7f1d1d;
-  border-radius:10px;
-  padding:8px 10px;
-  font-weight:900;
-}
-.mobileJumpGrid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  margin:12px 0;
-}
-.mobileJumpNum{
-  border:1px solid #dfe5ef;
-  background:#f8fafc;
-  color:#172033;
-  border-radius:10px;
-  padding:9px 4px;
-  font-weight:900;
-}
-.mobileJumpNum.active{
-  background:#2563eb;
-  color:#fff;
-  border-color:#2563eb;
-}
-.mobileFullItems{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  margin-top:12px;
-}
-.mobileFullItem{
-  border:1px solid #dfe5ef;
-  background:#fff;
-  color:#172033;
-  border-radius:12px;
-  padding:10px 12px;
-  text-align:left;
-  line-height:1.4;
-}
-.mobileFullItem.active{
-  border-color:#2563eb;
-  background:#eff6ff;
-}
-.mobileFullItem .miniNum{
-  font-size:12px;
-  color:#2563eb;
-  font-weight:900;
-  margin-right:6px;
-}
-@media(max-width:900px){
-  .mobileFullListBtn{
-    display:block;
-    min-height:38px;
-    font-size:13px;
-  }
-  .mobileListOverlay.open{
-    display:block;
-  }
-
-  /* Mobile: viewer-only. Hide save/edit/delete/export/memo/practice-management UI */
-  #timeSelect,
-  #startBtn,
-  #resetBtn,
-  #doneBtn,
-  #printBtn,
-  .timerBox,
-  .memoTitleMobileHide,
-  #memo,
-  .historyToolbar,
-  .note,
-  .historyPanel,
-  #status{
-    display:none !important;
-  }
-  .meta .pill:nth-child(3){
-    display:none !important;
-  }
-
-  /* Keep only navigation and answer-view controls compact */
-  .topbar .controls{
-    grid-template-columns:repeat(3,1fr) !important;
-  }
-  .card > .controls{
-    display:block !important;
-  }
-  #showBtn{
-    width:100%;
-  }
-}
-@media(max-width:430px){
-  .mobileJumpGrid{
-    grid-template-columns:repeat(4,1fr);
-  }
-  .topbar .controls{
-    grid-template-columns:repeat(3,1fr) !important;
-  }
-}
-
 </style>
+
+<style>
+.historyActions{display:none !important;}
+.memo,.note{display:none !important;}
+.historyEdit[readonly]{background:#f8fafc;border:1px solid #dfe5ef;}
+.mobileJump{display:none;}
+@media(max-width:900px){
+.mobileJump{display:block;margin:8px 0;}
+.mobileJump select{width:100%;}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
   <aside class="side">
     <div class="brand">전극 프로세스 엔지니어 인터뷰 연습</div>
     <button class="mobileToggle" id="mobileQuestionToggle" type="button" data-ready="1">질문 목록 열기/닫기</button>
-    <button class="mobileFullListBtn" id="mobileFullListBtn" type="button">전체 리스트 / 번호 이동</button>
     <div class="desc">전극 프로세스 엔지니어 예상 질문을 보고 먼저 1~3분 동안 직접 답변한 뒤, 모범 답변과 비교하세요. 핵심은 “공정 목적 → 관리 항목 → 발생 문제 → 개선 접근” 흐름입니다.</div>
     <input class="search" id="search" placeholder="검색: coating, drying, slurry...">
     <div class="navTitle">질문 카드</div>
@@ -568,14 +431,14 @@ button,input,textarea,select{
         <div class="checks" id="checks"><label class="check"><input type="checkbox"> 전체 흐름을 순서대로 말했는가</label><label class="check"><input type="checkbox"> 각 공정 목적을 설명했는가</label><label class="check"><input type="checkbox"> CTQ를 언급했는가</label><label class="check"><input type="checkbox"> 공정 간 연결성을 설명했는가</label></div>
       </div>
 
-      <div class="sectionTitle memoTitleMobileHide">내 답변 메모</div>
+      <div class="sectionTitle">내 답변 메모</div>
       <textarea class="memo" id="memo" placeholder="내가 말한 답변을 짧게 적어보세요."></textarea>
       <div class="historyToolbar">
-        <button class="btn primary" id="saveMemoBtn">날짜/시간으로 저장</button>
-        <button class="btn" id="showCurrentHistoryBtn">현재 질문 기록</button><button class="btn bad" id="clearCurrentHistoryBtn">현재 질문 기록 삭제</button>
-        <button class="btn" id="showAllHistoryBtn">전체 기록</button>
-        <button class="btn" id="exportMemoBtn">기록 내보내기</button><button class="btn warn" id="exportHtmlBackupBtn">기록 포함 HTML 생성</button><button class="btn bad" id="clearAllHistoryBtn">전체 기록 삭제</button>
-        <button class="btn bad" id="clearMemoBtn">현재 입력 지우기</button>
+        <button class="btn primary" id="saveMemoBtn" style="display:none">날짜/시간으로 저장</button>
+        <button class="btn" id="showCurrentHistoryBtn">현재 질문 기록</button><button class="btn bad" id="clearCurrentHistoryBtn" style="display:none">현재 질문 기록 삭제</button>
+        <button class="btn" id="showAllHistoryBtn" style="display:none">전체 기록</button>
+        <button class="btn" id="exportMemoBtn" style="display:none">기록 내보내기</button><button class="btn warn" id="exportHtmlBackupBtn" style="display:none">기록 포함 HTML 생성</button><button class="btn bad" id="clearAllHistoryBtn" style="display:none">전체 기록 삭제</button>
+        <button class="btn bad" id="clearMemoBtn" style="display:none">현재 입력 지우기</button>
       </div>
       <div class="note">저장한 답변은 localStorage에 저장됩니다. 저장 기록은 화면에서 직접 수정할 수 있고, ‘기록 포함 HTML 생성’을 누르면 기록이 HTML 안에 포함되어 파일 하나만 보내도 전체 기록을 볼 수 있습니다.</div>
       <div class="historyPanel">
@@ -583,7 +446,7 @@ button,input,textarea,select{
         <div class="historyList" id="historyList">
       <div class="historyItem">
         <div class="historyMeta">2026-06-05 10:18:00 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_0" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 659px;">Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 주요 관리 항목은 viscosity, solid content, rheology, dispersion 상태, mixing time, mixing sequence, 탈포 및 여과입니다. 이러한 조건들이 안정적으로 관리되어야 슬러리의 유동성과 코팅성이 확보됩니다. 관리가 제대로 되지 않으면 분산 불량에 따른 입자 응집(agglomerate), 점도 편차, 기포 등이 발생할 수 있으며, 이후 Coating 공정에서 streak, pinhole, die clogging, loading variation 등의 문제로 이어질 수 있습니다.
+        <textarea readonly class="historyEdit" id="historyEdit_0" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 659px;">Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 주요 관리 항목은 viscosity, solid content, rheology, dispersion 상태, mixing time, mixing sequence, 탈포 및 여과입니다. 이러한 조건들이 안정적으로 관리되어야 슬러리의 유동성과 코팅성이 확보됩니다. 관리가 제대로 되지 않으면 분산 불량에 따른 입자 응집(agglomerate), 점도 편차, 기포 등이 발생할 수 있으며, 이후 Coating 공정에서 streak, pinhole, die clogging, loading variation 등의 문제로 이어질 수 있습니다.
 
 Coating에서는 슬러리를 Al 또는 Cu foil 위에 균일하게 도포하여 목표 loading, thickness, coating width를 형성하는 것이 목적입니다. 주요 관리 항목은 coating gap, slurry flow rate, pump 안정성, web tension, coating speed, coating width, thickness profile입니다. 이러한 조건이 안정적으로 유지되어야 전극의 두께와 로딩이 균일하게 형성될 수 있습니다. 관리가 제대로 되지 않으면 thickness variation, loading variation, pinhole, streak, edge defect 등이 발생할 수 있으며, 이는 셀 성능 편차, 수율 저하 및 안전성 리스크로 이어질 수 있습니다.
 
@@ -602,7 +465,7 @@ Notching에서는 Slitting된 전극을 셀 설계에 맞는 형상과 길이로
     
       <div class="historyItem">
         <div class="historyMeta">2026-06-05 08:59:37 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_1" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 256px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다.
+        <textarea readonly class="historyEdit" id="historyEdit_1" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 256px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다.
 
 믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다.
 
@@ -619,7 +482,7 @@ Notching에서는 Slitting된 전극을 셀 설계에 맞는 형상과 길이로
     
       <div class="historyItem">
         <div class="historyMeta">2026-06-05 08:58:55 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_2" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 323px;">“전극 제조 공정은 크게 Mixing, Coating, Drying, Calendering, Slitting 또는 Notching 순서로 진행됩니다. Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 이때 viscosity, solid content, rheology, dispersion 상태를 관리하고, 분산이 불량하면 agglomerate, streak, die clogging, loading variation으로 이어질 수 있습니다.
+        <textarea readonly class="historyEdit" id="historyEdit_2" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 323px;">“전극 제조 공정은 크게 Mixing, Coating, Drying, Calendering, Slitting 또는 Notching 순서로 진행됩니다. Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 이때 viscosity, solid content, rheology, dispersion 상태를 관리하고, 분산이 불량하면 agglomerate, streak, die clogging, loading variation으로 이어질 수 있습니다.
 
 Coating에서는 슬러리를 Al 또는 Cu foil 위에 균일하게 도포하여 목표 loading, thickness, coating width를 형성합니다. 이후 Drying에서는 용매를 제거하면서 전극 구조와 binder distribution을 안정화합니다. 건조가 너무 빠르면 binder migration으로 adhesion 문제가 생길 수 있고, 건조가 부족하면 residual solvent 문제가 발생할 수 있기 때문에 zone별 온도, air flow, residence time을 관리합니다.
 
@@ -634,7 +497,7 @@ Calendering에서는 건조된 전극을 압연하여 target thickness, density,
     
       <div class="historyItem">
         <div class="historyMeta">2026-06-05 08:58:34 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_3" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 502px;">전체적으로 60점 정도입니다. 공정 순서는 알고 있지만, 면접 답변으로는 아직 얕고, 일부 핵심 공정이 빠져 있고, 용어가 애매합니다.
+        <textarea readonly class="historyEdit" id="historyEdit_3" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 502px;">전체적으로 60점 정도입니다. 공정 순서는 알고 있지만, 면접 답변으로는 아직 얕고, 일부 핵심 공정이 빠져 있고, 용어가 애매합니다.
 
 가장 큰 문제는 Drying을 공정 순서에서 빼먹은 것처럼 보인다는 점입니다. 처음에 “믹싱, 코팅, 캘린더링, 슬리팅”이라고 말했는데, 실제 전극 공정 흐름은 보통 Mixing → Coating → Drying → Calendering → Slitting/Notching입니다. 뒤에서 드라잉을 설명하긴 했지만, 첫 문장에서 빠지면 면접관은 “공정 흐름을 정확히 못 잡고 있나?”라고 볼 수 있습니다.
 
@@ -655,7 +518,7 @@ Calendering에서는 건조된 전극을 압연하여 target thickness, density,
     
       <div class="historyItem">
         <div class="historyMeta">2026-06-05 08:58:12 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_4" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다. 믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다. 코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다. 캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다. 슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다."</textarea>
+        <textarea readonly class="historyEdit" id="historyEdit_4" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다. 믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다. 코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다. 캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다. 슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다."</textarea>
         <div class="historyActions">
           <button class="btn good" onclick="saveHistoryEdit(4)">이 기록 수정 저장</button>
           <button class="btn bad" onclick="deleteHistoryRecord(4)">이 기록 삭제</button>
@@ -664,7 +527,7 @@ Calendering에서는 건조된 전극을 압연하여 target thickness, density,
     
       <div class="historyItem">
         <div class="historyMeta">2026-06-04 13:50:44 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
-        <textarea class="historyEdit" id="historyEdit_18" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"영어는 처음에 그 슬러리 이제 믹싱 공정이 있고 코팅 공정이 있고 칼렌더링 공정이 있고 슬러팅 슬리팅 공정이 있습니다. 그 전극 믹싱 공정에는 이제 바인더와 첨가제와 할물질을 섞어가지고 고르게 분산하는 음 분산을 하고 그다음에 그 이제 잘 분산된 슬러리를 코팅으로 보내줍니다. 그러면 코팅에서는 일정한 두께로 코팅을 하고 그다음 코팅하고 나서 칼렌딩으로 보내면은 칼렌딩에서는 이제 요구되는 두께에 맞춰서 칼렌드링을 하고 슬리팅에서는 이제 슬리팅을 하는 거죠. 그 믹싱의 주요 KPI는 비스코스티가 있고 슬러리 이제 고형분 솔리드 콘텐츠가 있습니다. 그 코팅에서는 그 티크니스 유니포머티 가 있고 칼렌드링에서는 이제 티크니스가 있고 슬리팅에서는 이제 버가 있습니다."</textarea>
+        <textarea readonly class="historyEdit" id="historyEdit_18" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"영어는 처음에 그 슬러리 이제 믹싱 공정이 있고 코팅 공정이 있고 칼렌더링 공정이 있고 슬러팅 슬리팅 공정이 있습니다. 그 전극 믹싱 공정에는 이제 바인더와 첨가제와 할물질을 섞어가지고 고르게 분산하는 음 분산을 하고 그다음에 그 이제 잘 분산된 슬러리를 코팅으로 보내줍니다. 그러면 코팅에서는 일정한 두께로 코팅을 하고 그다음 코팅하고 나서 칼렌딩으로 보내면은 칼렌딩에서는 이제 요구되는 두께에 맞춰서 칼렌드링을 하고 슬리팅에서는 이제 슬리팅을 하는 거죠. 그 믹싱의 주요 KPI는 비스코스티가 있고 슬러리 이제 고형분 솔리드 콘텐츠가 있습니다. 그 코팅에서는 그 티크니스 유니포머티 가 있고 칼렌드링에서는 이제 티크니스가 있고 슬리팅에서는 이제 버가 있습니다."</textarea>
         <div class="historyActions">
           <button class="btn good" onclick="saveHistoryEdit(18)">이 기록 수정 저장</button>
           <button class="btn bad" onclick="deleteHistoryRecord(18)">이 기록 삭제</button>
@@ -2227,7 +2090,7 @@ function renderHistory(){
     return `
       <div class="historyItem">
         <div class="historyMeta">${x.ts} · ${escapeHtml(x.cat||"")} · ${escapeHtml(x.title||"")}</div>
-        <textarea class="historyEdit" id="historyEdit_${originalIndex}" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1">${escapeHtml(x.text||"")}</textarea>
+        <textarea readonly class="historyEdit" id="historyEdit_${originalIndex}" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1">${escapeHtml(x.text||"")}</textarea>
         <div class="historyActions">
           <button class="btn good" onclick="saveHistoryEdit(${originalIndex})">이 기록 수정 저장</button>
           <button class="btn bad" onclick="deleteHistoryRecord(${originalIndex})">이 기록 삭제</button>
@@ -2340,7 +2203,6 @@ function exportHtmlBackup(){
 }
 
 function restoreHtmlBackupIfNeeded(){
-  if(window.matchMedia && window.matchMedia("(max-width:900px)").matches) return;
   if(!window.__INTERVIEW_BACKUP__ || !window.__INTERVIEW_BACKUP__.data) return;
   if(localStorage.getItem("memoHistory") || localStorage.getItem("memos") || localStorage.getItem("doneCards")) return;
 
@@ -2390,7 +2252,6 @@ function render(){
   $("status").textContent="먼저 답변을 말해본 뒤, 답변 보기를 누르세요.";
   renderHistory();
   renderList();
-  if(document.getElementById("mobileListOverlay") && document.getElementById("mobileListOverlay").classList.contains("open")) renderMobileFullList();
   setTime(parseInt($("timeSelect").value,10), false);
 }
 function setTime(sec, updateTotal=true){
@@ -2458,60 +2319,6 @@ $("clearAllHistoryBtn").onclick=()=>{
 };
 $("clearMemoBtn").onclick=()=>{if(confirm("현재 입력창의 내용만 지울까요? 저장된 기록은 유지됩니다.")){memos[idx]="";localStorage.setItem("memos",JSON.stringify(memos));$("memo").value="";$("status").textContent="현재 입력창을 지웠습니다. 저장된 기록은 유지됩니다.";}}
 $("memo").oninput=()=>{memos[idx]=$("memo").value;localStorage.setItem("memos",JSON.stringify(memos))};
-
-function openMobileFullList(){
-  let overlay=document.getElementById("mobileListOverlay");
-  if(!overlay){
-    overlay=document.createElement("div");
-    overlay.id="mobileListOverlay";
-    overlay.className="mobileListOverlay";
-    overlay.innerHTML=`
-      <div class="mobileListPanel" role="dialog" aria-modal="true" aria-label="전체 질문 리스트">
-        <div class="mobileListHeader">
-          <div class="mobileListTitle">전체 질문 리스트</div>
-          <button class="mobileCloseBtn" id="mobileListCloseBtn" type="button">닫기</button>
-        </div>
-        <div class="mobileJumpGrid" id="mobileJumpGrid"></div>
-        <div class="mobileFullItems" id="mobileFullItems"></div>
-      </div>`;
-    document.body.appendChild(overlay);
-    document.getElementById("mobileListCloseBtn").onclick=closeMobileFullList;
-    overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeMobileFullList(); });
-  }
-  renderMobileFullList();
-  overlay.classList.add("open");
-}
-function closeMobileFullList(){
-  const overlay=document.getElementById("mobileListOverlay");
-  if(overlay) overlay.classList.remove("open");
-}
-function renderMobileFullList(){
-  const grid=document.getElementById("mobileJumpGrid");
-  const items=document.getElementById("mobileFullItems");
-  if(!grid || !items) return;
-  grid.innerHTML="";
-  items.innerHTML="";
-  cards.forEach((c,i)=>{
-    const n=document.createElement("button");
-    n.className="mobileJumpNum"+(i===idx?" active":"");
-    n.type="button";
-    n.textContent=String(i+1).padStart(2,"0");
-    n.onclick=()=>{idx=i;show=false;render();closeMobileFullList();window.scrollTo({top:0,behavior:"smooth"});};
-    grid.appendChild(n);
-
-    const item=document.createElement("button");
-    item.className="mobileFullItem"+(i===idx?" active":"");
-    item.type="button";
-    item.innerHTML=`<span class="miniNum">${String(i+1).padStart(2,"0")}</span>${c.title}<br><span style="font-size:12px;color:#657086">${c.cat}</span>`;
-    item.onclick=()=>{idx=i;show=false;render();closeMobileFullList();window.scrollTo({top:0,behavior:"smooth"});};
-    items.appendChild(item);
-  });
-}
-const mobileFullListBtn=document.getElementById("mobileFullListBtn");
-if(mobileFullListBtn){
-  mobileFullListBtn.onclick=openMobileFullList;
-}
-
 render();
 restoreHtmlBackupIfNeeded();
 </script>
