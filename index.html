@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>전극 프로세스 엔지니어 인터뷰 연습</title>
+<style>
+:root{
+  --bg:#f4f7fb;--panel:#fff;--text:#172033;--muted:#657086;--line:#dfe5ef;
+  --accent:#2563eb;--accent2:#0f766e;--good:#15803d;--warn:#b45309;--bad:#b91c1c;
+  --shadow:0 12px 30px rgba(17,24,39,.10);--radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#f8fafc,#eaf1ff);color:var(--text)}
+.app{display:grid;grid-template-columns:330px 1fr;min-height:100vh}
+.side{background:#0f172a;color:#e5e7eb;padding:22px;overflow:auto;max-height:100vh;position:sticky;top:0}
+.brand{font-size:20px;font-weight:900;margin-bottom:8px}
+.desc{font-size:13px;color:#aab3c4;line-height:1.55;margin-bottom:16px}
+.search{width:100%;padding:12px;border-radius:12px;border:1px solid #334155;background:#111827;color:#fff;margin:8px 0 14px}
+.navTitle{font-size:12px;color:#94a3b8;margin:18px 0 8px;font-weight:800;text-transform:uppercase}
+.qList{display:flex;flex-direction:column;gap:8px}
+.qItem{border:1px solid #334155;background:#111827;color:#e5e7eb;border-radius:12px;padding:11px 12px;text-align:left;cursor:pointer;line-height:1.35}
+.qItem:hover,.qItem.active{background:#1d4ed8;border-color:#60a5fa}
+.qItem.done{border-color:#22c55e}
+.qItem .num{font-size:12px;color:#a5b4fc;margin-right:6px}
+.main{padding:28px;display:grid;grid-template-rows:auto 1fr;gap:18px}
+.topbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.controls{display:flex;flex-wrap:wrap;gap:10px}
+.btn,select{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
+.btn.good{background:#dcfce7;color:#14532d}
+.btn.warn{background:#ffedd5;color:#7c2d12}
+.btn.bad{background:#fee2e2;color:#7f1d1d}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;max-width:1050px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.pill{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:7px 11px;background:#f8fafc;color:#475569;font-weight:700}
+.question{font-size:30px;line-height:1.28;margin:8px 0 20px;font-weight:900;letter-spacing:-.5px}
+.prompt{background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:16px;line-height:1.7;font-size:17px;margin:14px 0}
+.answer{display:none;margin-top:18px;border-top:1px solid var(--line);padding-top:20px}
+.answer.show{display:block}
+.answer p{font-size:18px;line-height:1.78;margin:0 0 16px}
+.sectionTitle{font-size:16px;font-weight:900;margin-top:22px;color:#334155}
+.tail{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.tail p{font-size:17px;line-height:1.65;margin:8px 0}
+.timerBox{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:14px;margin:16px 0}
+.timer{font-size:36px;font-weight:900;letter-spacing:1px}
+.progressWrap{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;flex:1;min-width:180px}
+.progress{height:100%;width:0;background:var(--accent2);transition:.2s}
+.memo{width:100%;min-height:110px;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:16px;line-height:1.5;margin-top:10px}
+.scoreRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:10px;margin-top:12px}
+.check{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font-size:14px}
+.status{font-size:14px;color:var(--muted);margin-top:12px}
+.footerHelp{margin-top:20px;color:#94a3b8;font-size:12px;line-height:1.6}
+
+.historyPanel{margin-top:14px;padding:0;border:0;background:transparent}
+.historyToolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.historyList{display:block;max-height:none;overflow:visible;padding-right:0}
+.historyItem{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 0;line-height:1.65}
+.historyMeta{font-size:12px;color:var(--muted);margin-bottom:6px}
+.historyText{white-space:pre-wrap;font-size:14px}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;max-height:none}.main{padding:18px}.question{font-size:24px}.checks{grid-template-columns:1fr}}
+@media print{.side,.topbar,.timerBox,.memo,.scoreRow,.footerHelp{display:none}.app{display:block}.main{padding:0}.card{box-shadow:none;border:0}.answer{display:block!important}}
+
+.historyEdit{width:100%;min-height:80px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.6;font-family:inherit;background:#fff;color:var(--text);margin-top:8px;overflow:hidden;resize:none}
+.historyActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.historyActions .btn{padding:8px 11px;font-size:13px}
+
+
+/* Force saved-answer edit boxes to expand instead of showing internal scrollbars */
+.historyEdit{
+  overflow-y:hidden !important;
+  overflow-x:hidden !important;
+  resize:none !important;
+  height:auto;
+}
+.historyEdit::-webkit-scrollbar{display:none}
+
+
+/* ===== GitHub Pages + iPhone responsive improvements ===== */
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+}
+body{
+  min-width:0;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+button,input,textarea,select{
+  font:inherit;
+}
+.mobileToggle{
+  display:none;
+  width:100%;
+  margin:10px 0 12px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid #334155;
+  background:#1d4ed8;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.card{
+  width:100%;
+}
+.historyEdit,
+.memo{
+  -webkit-appearance:none;
+  appearance:none;
+}
+@media(max-width:900px){
+  body{
+    background:#f4f7fb;
+  }
+  .app{
+    display:block;
+    min-height:100dvh;
+  }
+  .side{
+    position:relative;
+    top:auto;
+    max-height:none;
+    overflow:visible;
+    padding:16px;
+    border-bottom:1px solid #23304a;
+  }
+  .brand{
+    font-size:18px;
+    line-height:1.35;
+  }
+  .desc{
+    font-size:12px;
+    margin-bottom:10px;
+  }
+  .mobileToggle{
+    display:block;
+  }
+  .search{
+    position:sticky;
+    top:0;
+    z-index:5;
+    font-size:16px;
+    padding:12px;
+  }
+  .qList{
+    display:none;
+    max-height:58dvh;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-right:2px;
+  }
+  .qList.mobileOpen{
+    display:flex;
+  }
+  .qItem{
+    font-size:14px;
+    padding:12px;
+  }
+  .main{
+    display:block;
+    padding:12px;
+  }
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(244,247,251,.96);
+    backdrop-filter:blur(8px);
+    padding:8px 0 10px;
+    margin:0 0 8px;
+  }
+  .controls{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    width:100%;
+  }
+  .topbar > .controls{
+    width:100%;
+  }
+  .btn,select{
+    width:100%;
+    min-height:44px;
+    padding:10px 9px;
+    border-radius:11px;
+    font-size:14px;
+    white-space:normal;
+  }
+  #printBtn{
+    width:100%;
+    margin-top:8px;
+  }
+  .card{
+    padding:16px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(17,24,39,.08);
+    max-width:none;
+  }
+  .meta{
+    gap:6px;
+    margin-bottom:12px;
+  }
+  .pill{
+    font-size:12px;
+    padding:6px 9px;
+  }
+  .question{
+    font-size:24px;
+    line-height:1.35;
+    letter-spacing:-.3px;
+    margin:8px 0 14px;
+    word-break:keep-all;
+    overflow-wrap:anywhere;
+  }
+  .prompt{
+    font-size:15px;
+    line-height:1.65;
+    padding:12px;
+    border-radius:14px;
+  }
+  .timerBox{
+    gap:10px;
+    padding:12px;
+    border-radius:14px;
+  }
+  .timer{
+    font-size:30px;
+  }
+  .progressWrap{
+    min-width:120px;
+    flex-basis:100%;
+  }
+  .answer p{
+    font-size:16px;
+    line-height:1.75;
+  }
+  .tail{
+    padding:12px;
+  }
+  .tail p{
+    font-size:15px;
+  }
+  .sectionTitle{
+    font-size:15px;
+    margin-top:18px;
+  }
+  .checks{
+    grid-template-columns:1fr;
+  }
+  .memo,
+  .historyEdit{
+    font-size:16px;
+    line-height:1.65;
+    border-radius:12px;
+    padding:12px;
+  }
+  .historyToolbar{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .historyActions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .historyActions .btn{
+    min-height:40px;
+    font-size:13px;
+  }
+  .historyMeta{
+    font-size:11px;
+    line-height:1.45;
+  }
+  .historyItem{
+    padding:14px 0;
+  }
+}
+@media(max-width:430px){
+  .main{
+    padding:10px;
+  }
+  .card{
+    padding:14px;
+    border-radius:14px;
+  }
+  .question{
+    font-size:22px;
+  }
+  .controls{
+    grid-template-columns:1fr;
+  }
+  .timer{
+    font-size:28px;
+  }
+  .historyActions{
+    grid-template-columns:1fr;
+  }
+}
+@media(min-width:901px){
+  .qList{
+    display:flex !important;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">전극 프로세스 엔지니어 인터뷰 연습</div>
+    <button class="mobileToggle" id="mobileQuestionToggle" type="button">질문 목록 열기/닫기</button>
+    <div class="desc">전극 프로세스 엔지니어 예상 질문을 보고 먼저 1~3분 동안 직접 답변한 뒤, 모범 답변과 비교하세요. 핵심은 “공정 목적 → 관리 항목 → 발생 문제 → 개선 접근” 흐름입니다.</div>
+    <input class="search" id="search" placeholder="검색: coating, drying, slurry...">
+    <div class="navTitle">질문 카드</div>
+    <div class="qList" id="qList"><button class="qItem active"><span class="num">01</span>전극 제조 공정을 처음부터 끝까지 설명해 보세요.<br><span style="font-size:12px;color:#94a3b8">전극 공정 전반</span></button><button class="qItem"><span class="num">02</span>Mixing 공정의 목적은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Mixing</span></button><button class="qItem"><span class="num">03</span>Coating 공정의 목적은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Coating</span></button><button class="qItem"><span class="num">04</span>Drying 공정이 중요한 이유는 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">05</span>Calendering 공정의 목적은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Calendering</span></button><button class="qItem"><span class="num">06</span>Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Slitting</span></button><button class="qItem"><span class="num">07</span>전극 공정에서 가장 중요한 CTQ는 무엇이라고 생각합니까?<br><span style="font-size:12px;color:#94a3b8">CTQ</span></button><button class="qItem"><span class="num">08</span>양극과 음극 제조 공정의 차이점은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">전극 공정 전반</span></button><button class="qItem"><span class="num">09</span>Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Slurry</span></button><button class="qItem"><span class="num">10</span>Rheology와 Viscosity의 차이는 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Slurry</span></button><button class="qItem"><span class="num">11</span>Slurry 고형분(Solid Content)이 높아지면 어떤 문제가 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Slurry</span></button><button class="qItem"><span class="num">12</span>Slurry 분산 상태는 어떻게 평가합니까?<br><span style="font-size:12px;color:#94a3b8">Mixing</span></button><button class="qItem"><span class="num">13</span>Mixing 시간이 부족하면 어떤 문제가 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Mixing</span></button><button class="qItem"><span class="num">14</span>Carbon 분산이 불량하면 어떤 현상이 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Mixing</span></button><button class="qItem"><span class="num">15</span>Binder의 역할은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Binder</span></button><button class="qItem"><span class="num">16</span>PVDF는 왜 사용하는 것입니까?<br><span style="font-size:12px;color:#94a3b8">Binder</span></button><button class="qItem"><span class="num">17</span>NMP의 역할은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Solvent</span></button><button class="qItem"><span class="num">18</span>Slurry Gelation 현상은 왜 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Slurry</span></button><button class="qItem"><span class="num">19</span>Slot Die Coating 원리를 설명해 보세요.<br><span style="font-size:12px;color:#94a3b8">Slot Die</span></button><button class="qItem"><span class="num">20</span>Loading이란 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Coating</span></button><button class="qItem"><span class="num">21</span>Coating Thickness는 어떻게 관리합니까?<br><span style="font-size:12px;color:#94a3b8">Coating</span></button><button class="qItem"><span class="num">22</span>Coating 불량 종류를 설명해 보세요.<br><span style="font-size:12px;color:#94a3b8">Coating Defect</span></button><button class="qItem"><span class="num">23</span>Edge Curling은 왜 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Edge Defect</span></button><button class="qItem"><span class="num">24</span>Side Wrinkle은 왜 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Edge Defect</span></button><button class="qItem"><span class="num">25</span>Streak Defect는 왜 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Coating Defect</span></button><button class="qItem"><span class="num">26</span>Ribbing 현상은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Coating Defect</span></button><button class="qItem"><span class="num">27</span>Air Bubble이 Coating에 미치는 영향은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Coating Defect</span></button><button class="qItem"><span class="num">28</span>A/B Side Alignment가 중요한 이유는 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Alignment</span></button><button class="qItem"><span class="num">29</span>Binder Migration이 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">30</span>건조 온도가 너무 높으면 어떤 문제가 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">31</span>건조 온도가 너무 낮으면 어떤 문제가 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">32</span>Drying Profile은 어떻게 설정합니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">33</span>Solvent Residual은 왜 관리해야 합니까?<br><span style="font-size:12px;color:#94a3b8">Drying</span></button><button class="qItem"><span class="num">34</span>Density와 Porosity 관계를 설명해 보세요.<br><span style="font-size:12px;color:#94a3b8">Calendering</span></button><button class="qItem"><span class="num">35</span>압연률(Reduction Ratio)이 높으면 어떤 문제가 발생합니까?<br><span style="font-size:12px;color:#94a3b8">Calendering</span></button><button class="qItem"><span class="num">36</span>Electrode Cracking 원인은 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Cracking</span></button><button class="qItem"><span class="num">37</span>Calendering 후 Curling이 발생하는 이유는 무엇입니까?<br><span style="font-size:12px;color:#94a3b8">Calendering</span></button><button class="qItem"><span class="num">38</span>SPC는 왜 사용하는 것입니까?<br><span style="font-size:12px;color:#94a3b8">품질/데이터</span></button><button class="qItem"><span class="num">39</span>품질 불량이 발생했을 때 어떻게 접근합니까?<br><span style="font-size:12px;color:#94a3b8">문제 해결</span></button><button class="qItem"><span class="num">40</span>공정 최적화 경험을 설명해 보세요.<br><span style="font-size:12px;color:#94a3b8">공정 최적화</span></button><button class="qItem"><span class="num">41</span>전극 품질 개선 경험이 있습니까?<br><span style="font-size:12px;color:#94a3b8">전체 경험</span></button></div>
+    <div class="footerHelp">사용법: 랜덤 질문 → 타이머 시작 → 직접 말하기 → 답변 보기 → 체크리스트 확인.</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="controls">
+        <button class="btn primary" id="randomBtn">랜덤 질문</button>
+        <button class="btn" id="prevBtn">이전</button>
+        <button class="btn" id="nextBtn">다음</button>
+        <select id="timeSelect">
+          <option value="60">1분</option>
+          <option value="120">2분</option>
+          <option value="180" selected="">3분</option>
+          <option value="300">5분</option>
+        </select>
+        <button class="btn good" id="startBtn">타이머 시작</button>
+        <button class="btn bad" id="resetBtn">리셋</button>
+      </div>
+      <button class="btn warn" id="printBtn">인쇄/저장</button>
+    </div>
+
+    <section class="card">
+      <div class="meta" id="meta"><span class="pill">1 / 41</span><span class="pill">전극 공정 전반</span><span class="pill">연습 중</span></div>
+      <div class="question" id="question">전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+      <div class="prompt" id="prompt">Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.</div>
+
+      <div class="timerBox">
+        <div class="timer" id="timer">03:00</div>
+        <div class="progressWrap"><div class="progress" id="progress" style="width: 0%;"></div></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn primary" id="showBtn">답변 보기</button>
+        <button class="btn good" id="doneBtn">외웠음 표시</button>
+      </div>
+
+      <div class="answer" id="answer">
+        <div class="sectionTitle">면접 답변 예시</div>
+        <div id="answerText"><p>전극 제조 공정은 크게 mixing, coating, drying, calendering, slitting 또는 notching 순서로 설명할 수 있습니다.</p><p>먼저 mixing에서는 활물질, 도전재, 바인더, 용매를 균일하게 분산시켜 coating 가능한 slurry를 만듭니다. 이때 viscosity, solid content, dispersion quality가 중요합니다.</p><p>Coating에서는 slurry를 Cu 또는 Al foil 위에 균일한 loading과 thickness로 도포합니다. 이후 drying에서 용매를 제거하고 binder network를 형성합니다.</p><p>Calendering에서는 전극을 압연하여 target thickness, density, porosity를 맞추고, 마지막으로 slitting/notching에서 cell 설계에 맞는 폭과 형상으로 가공합니다.</p><p>핵심은 각 공정이 독립적이지 않고 slurry 품질이 coating에, drying 조건이 adhesion에, calendering 조건이 density와 cracking에 영향을 준다는 점입니다.</p></div>
+        <div class="sectionTitle">꼬리질문 대비</div>
+        <div class="tail" id="tails"><p>• 각 공정에서 가장 중요한 CTQ는 무엇인가요?</p><p>• Mixing 불량이 coating 불량으로 어떻게 이어지나요?</p><p>• Calendering 후 품질 항목은 무엇을 봐야 하나요?</p></div>
+        <div class="sectionTitle">답변 체크리스트</div>
+        <div class="checks" id="checks"><label class="check"><input type="checkbox"> 전체 흐름을 순서대로 말했는가</label><label class="check"><input type="checkbox"> 각 공정 목적을 설명했는가</label><label class="check"><input type="checkbox"> CTQ를 언급했는가</label><label class="check"><input type="checkbox"> 공정 간 연결성을 설명했는가</label></div>
+      </div>
+
+      <div class="sectionTitle">내 답변 메모</div>
+      <textarea class="memo" id="memo" placeholder="내가 말한 답변을 짧게 적어보세요."></textarea>
+      <div class="historyToolbar">
+        <button class="btn primary" id="saveMemoBtn">날짜/시간으로 저장</button>
+        <button class="btn" id="showCurrentHistoryBtn">현재 질문 기록</button><button class="btn bad" id="clearCurrentHistoryBtn">현재 질문 기록 삭제</button>
+        <button class="btn" id="showAllHistoryBtn">전체 기록</button>
+        <button class="btn" id="exportMemoBtn">기록 내보내기</button><button class="btn warn" id="exportHtmlBackupBtn">기록 포함 HTML 생성</button><button class="btn bad" id="clearAllHistoryBtn">전체 기록 삭제</button>
+        <button class="btn bad" id="clearMemoBtn">현재 입력 지우기</button>
+      </div>
+      <div class="note">저장한 답변은 localStorage에 저장됩니다. 저장 기록은 화면에서 직접 수정할 수 있고, ‘기록 포함 HTML 생성’을 누르면 기록이 HTML 안에 포함되어 파일 하나만 보내도 전체 기록을 볼 수 있습니다.</div>
+      <div class="historyPanel">
+        <div class="sectionTitle" style="margin-top:0">저장된 답변 기록</div>
+        <div class="historyList" id="historyList">
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-05 08:59:37 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+        <textarea class="historyEdit" id="historyEdit_0" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 256px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다.
+
+믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다.
+
+코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다.
+
+캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다.
+
+슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(0)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(0)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-05 08:58:55 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+        <textarea class="historyEdit" id="historyEdit_1" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 323px;">“전극 제조 공정은 크게 Mixing, Coating, Drying, Calendering, Slitting 또는 Notching 순서로 진행됩니다. Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 이때 viscosity, solid content, rheology, dispersion 상태를 관리하고, 분산이 불량하면 agglomerate, streak, die clogging, loading variation으로 이어질 수 있습니다.
+
+Coating에서는 슬러리를 Al 또는 Cu foil 위에 균일하게 도포하여 목표 loading, thickness, coating width를 형성합니다. 이후 Drying에서는 용매를 제거하면서 전극 구조와 binder distribution을 안정화합니다. 건조가 너무 빠르면 binder migration으로 adhesion 문제가 생길 수 있고, 건조가 부족하면 residual solvent 문제가 발생할 수 있기 때문에 zone별 온도, air flow, residence time을 관리합니다.
+
+Calendering에서는 건조된 전극을 압연하여 target thickness, density, porosity를 맞춥니다. 이 공정은 energy density와 particle contact를 개선하지만, 과도한 압연은 pore collapse, cracking, delamination을 유발할 수 있어 압력, gap, line speed, thickness profile을 함께 관리해야 합니다.
+
+마지막으로 Slitting/Notching에서는 전극을 셀 설계에 맞는 폭과 형상으로 가공합니다. 이때 slit width, burr, particle, edge crack을 관리하며, burr나 particle은 separator damage와 internal short risk로 이어질 수 있기 때문에 매우 중요하게 봅니다.”</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(1)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(1)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-05 08:58:34 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+        <textarea class="historyEdit" id="historyEdit_2" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 502px;">전체적으로 60점 정도입니다. 공정 순서는 알고 있지만, 면접 답변으로는 아직 얕고, 일부 핵심 공정이 빠져 있고, 용어가 애매합니다.
+
+가장 큰 문제는 Drying을 공정 순서에서 빼먹은 것처럼 보인다는 점입니다. 처음에 “믹싱, 코팅, 캘린더링, 슬리팅”이라고 말했는데, 실제 전극 공정 흐름은 보통 Mixing → Coating → Drying → Calendering → Slitting/Notching입니다. 뒤에서 드라잉을 설명하긴 했지만, 첫 문장에서 빠지면 면접관은 “공정 흐름을 정확히 못 잡고 있나?”라고 볼 수 있습니다.
+
+두 번째 문제는 KPI라는 표현이 조금 부정확합니다. 점도와 유동 분석은 KPI라기보다는 관리 항목 또는 CTQ/공정 특성에 가깝습니다. 면접에서는 “주요 관리 항목은 viscosity, solid content, rheology, dispersion 상태입니다”라고 말하는 게 더 자연스럽습니다.
+
+세 번째 문제는 Mixing 설명이 너무 짧습니다. “제대로 분산”은 맞지만, 무엇이 안 되면 어떤 문제가 생기는지가 없습니다. Mixing이 안 좋으면 agglomerate, streak, die clogging, loading variation, adhesion 저하로 이어진다고 말해야 공정 이해가 있어 보입니다.
+
+네 번째 문제는 Coating과 Drying을 너무 단순화했습니다. Coating은 단순히 “도포”가 아니라 target loading, wet thickness, coating width, edge quality, A/B alignment를 만드는 공정입니다. Drying도 단순히 용매 제거가 아니라 binder distribution, adhesion, residual solvent, pore structure를 결정합니다. 지금 답변은 “용매 제거”에서 끝나서 깊이가 부족합니다.
+
+다섯 번째 문제는 Calendering 설명이 약합니다. “알맞은 두께로 만들어서 밀도를 구성”은 어색합니다. Calendering은 target thickness와 density를 맞추고, porosity와 particle contact를 조절하는 공정입니다. 압력이 과하면 cracking, delamination, pore collapse가 생길 수 있다는 trade-off가 있어야 합니다.
+
+여섯 번째 문제는 Slitting 설명도 안전 관점이 빠졌습니다. Width와 Burr는 잘 말했지만, burr/particle이 separator damage나 internal short risk로 이어질 수 있다는 말이 들어가야 전극 면접 답변답습니다.</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(2)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(2)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-05 08:58:12 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+        <textarea class="historyEdit" id="historyEdit_3" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다. 믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다. 코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다. 캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다. 슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(3)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(3)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 16:07:02 · Slurry · Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_4" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 368px;">[제미나이] 첫째, 투입 순서 관리입니다. 바인더를 먼저 충분히 용해시키고, 도전재를 잘 젖게 한 뒤 활물질을 넣어야 합니다. 도전재나 활물질이 제대로 wetting되지 않으면 응집이 생기고, 고전단에서는 잘 흐르지 않고 무전단에서는 불안정하게 처질 수 있습니다.
+둘째, 전단 에너지 관리입니다. Mixing rpm, 시간, blade type, kneading 조건을 조절해서 입자 응집을 깨고 균일한 network를 만들어야 합니다. 전단이 부족하면 응집 때문에 streak나 die clogging이 생기고, 전단이 과하면 도전재 network나 binder structure가 깨져 점도 회복성이 약해질 수 있습니다.
+셋째, 고형분과 바인더 농도 관리입니다. Solid content가 높으면 점도와 yield stress가 올라가 edge 유지에는 유리할 수 있지만, 너무 높으면 pumpability와 coating stability가 나빠집니다. 반대로 너무 낮으면 코팅 후 흐름성이 커져 edge sagging이나 thickness variation이 생길 수 있습니다.
+넷째, rheology 측정으로 검증해야 합니다. 단순 Brookfield 점도만 보면 부족하고, shear rate sweep으로 shear thinning 특성을 보고, 3-step thixotropy test로 고전단 후 점도 회복 속도를 확인해야 합니다. 즉 “다이를 통과할 때는 낮아지고, foil 위에서는 빠르게 회복되는지”를 믹싱 후 QC에서 확인하는 것입니다.
+
+면접 답변으로는 이렇게 말하면 좋습니다.
+
+“믹싱 단계에서는 슬러리의 비뉴턴 거동을 만들고 안정화하는 것이 중요합니다. 이를 위해 원재료 투입 순서, 바인더 용해, 도전재 분산, mixing rpm과 time, solid content를 관리합니다. 특히 고전단에서 점도가 낮아지는 shear thinning과 코팅 후 점도가 회복되는 thixotropy는 단순 점도 값만으로 판단하기 어렵기 때문에 rheometer를 통해 shear rate sweep과 recovery test를 확인해야 합니다. 결국 믹싱의 목적은 단순히 재료를 섞는 것이 아니라, slot die에서는 잘 흐르고 집전체 위에서는 패턴과 edge를 유지할 수 있는 slurry structure를 만드는 것이라고 생각합니다.”</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(4)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(4)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:58:31 · Slurry · Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_5" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">[재미나이 개선된 답변 예시]
+"슬러리 점도 제어가 치명적인 이유는 슬러리가 가져야 하는 비뉴턴 유체의 특징인 전단 박화(Shear Thinning)와 요변성(Thixotropy) 기술을 제어해야 하기 때문입니다.
+구체적으로, 코팅 헤드의 다이를 통과하는 고전단(High Shear) 구간에서는 점도가 일시적으로 낮아져 유동성을 확보해야 정밀하고 균일한 도포가 가능합니다.
+반면, 집전체에 안착한 직후인 무전단(Zero Shear) 구간에서는 점도가 즉각적으로 회복되어 뭉치는 힘을 가져야만, 슬러리가 흘러내리지 않고 코팅 패턴의 에지(Edge) 형상과 목표 두께를 유지할 수 있기 때문입니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(5)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(5)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:58:09 · Slurry · Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_6" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"슬러리 점도가 중요한 이유는 무엇입니까 슬러리 점도가 중요한 이유는 코팅을 할 때 초반에는 잘 흘러가고 나중에는 이제 이제 좀 뭉치도록 하는 게 필요해서 그렇습니다"</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(6)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(6)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:54:11 · CTQ · 전극 공정에서 가장 중요한 CTQ는 무엇이라고 생각합니까?</div>
+        <textarea class="historyEdit" id="historyEdit_7" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"전극 공정에서 가장 중요한 CTQ는... 음 믹싱에서는 점도, 솔리드 콘텐트, 유동 슬러리 유동 특성, 분산, 응집... 그다음 코팅에서는 댄서피... 아 로딩, 로딩, 티크니스 유니포머티, 코팅 위쓰, 디펙트 유무, AB 얼라인먼트... 칼렌더링에서는 포로스티, 밀도... 슬리팅에서는 슬릿 위쓰, 버 콘트롤..."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(7)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(7)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:12:51 · Slitting · Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_8" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 166px;">[제미나이 개선된 답변 예시]
+"슬리팅 공정에서 가장 치명적으로 관리해야 할 핵심 품질 항목은 단연 엣지 버(Edge Burr)와 나이프 치수 관리입니다.
+슬리팅 시 발생하는 기준치 이상의 버(Burr)는 향후 분리막을 전단하여 셀 내부 단락(Short)과 열폭주를 유발하는 화재의 직접적인 원인이 됩니다. 따라서 당사 공정에서는 이를 억제하기 위해 상하부 나이프의 정밀 갭(Gap)과 오버랩(Overlap)을 상시 모니터링하고 있습니다.
+아울러, 버 관리와 더불어 전단 단면의 활물질 더스트(Dust) 탈락을 방지하기 위한 크리닝 시스템 운영, 그리고 극판의 변형을 막기 위한 텐션(Tension) 제어 및 슬리팅 폭(Width) 치수 정밀도 확보를 핵심 KPI로 관리하고 있습니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(8)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(8)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:10:52 · Slitting · Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_9" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"슬러리에서 공정에서 관리해야 할 핵심 항목은 무엇입니까 슬러리 공정에서는 엣지 버 관리 가 가장 중요합니다"</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(9)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(9)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:07:36 · Calendering · Calendering 공정의 목적은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_10" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">[개선된 답변 예시]
+"캘린더링 공정의 궁극적인 목적은 극판의 **에너지 밀도(Density)**를 극대화하는 동시에, 배터리의 전기화학적 성능을 좌우하는 **공극률(Porosity)**을 최적화하는 것입니다.
+롤(Roll) 압착을 통해 활물질 간의 전자 접촉 저항을 낮춰 전도도(Conductivity)를 향상시키는 것이 핵심이며, 동시에 전해액이 원활히 침투할 수 있는 최적의 다공성(Optimal Porosity) 구조를 확보하여 셀의 출력과 수명 특성을 균형 있게 제어하는 필수 공정입니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(10)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(10)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 15:07:19 · Calendering · Calendering 공정의 목적은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_11" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"칼렌드링 공정의 목적은 제품 포로스티 제품 댄스티 및 포로스트리를 결정하는 결정하여 결정하는 공정입니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(11)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(11)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 14:57:44 · Drying · Drying 공정이 중요한 이유는 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_12" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 122px;">제미나이 추천 : Drying 공정은 코팅된 슬러리에서 용매를 제거하고 전극 구조를 안정적으로 형성하는 공정입니다. Drying 조건이 적절하지 않으면 Binder Migration이 발생할 수 있습니다. 예를 들어 건조가 너무 빠르면 표면에서 먼저 용매가 증발하면서 바인더가 표면 쪽으로 이동할 수 있고, 이 경우 집전체와 활물질층 사이의 접착력이 저하되어 Adhesion 문제가 발생할 수 있습니다. 반대로 건조가 너무 느리면 잔류 용매가 증가하고 생산성이 저하될 수 있습니다. 따라서 Drying 공정은 단순히 용매를 제거하는 것이 아니라 Binder 분포, Adhesion, 전극 구조 안정성까지 결정하는 중요한 공정이라고 생각합니다.</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(12)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(12)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 14:57:22 · Drying · Drying 공정이 중요한 이유는 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_13" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"드라이 공정이 중요한 이유는 코팅을 하고 나서 드라이잉이 제대로 안 되면은 드라이잉이 너무 빨리 되면은 그 슬러리 바인더와 활물질이 표면적으로 올라와서 웻 어드히전 이슈가 발생이 됩니다. 드라이가 드라이가 너무 늦으면은 제품 품질이 불량이 됩니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(13)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(13)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 14:41:31 · Coating · Coating 공정의 목적은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_14" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"코팅 공정의 목적은 슬러리를 일정하게 분산시켜 슬러리를 일정하게 도포시켜서 일정하게 도포시키는"</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(14)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(14)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 14:39:05 (수정) · Mixing · Mixing 공정의 목적은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_15" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 99px;">추천답변 : 믹싱 공정의 목적은 활물질, 도전재, 바인더를 균일하게 분산시켜 안정적인 슬러리를 만드는 것입니다.
+주요 관리 항목은 분산 상태, 응집 여부, 점도, 고형분 함량, 슬러리 유동 특성, 기포, 그리고 금속 이물 혼입입니다.
+이러한 항목들이 관리되지 않으면 코팅 불량, 도포량 편차, 핀홀 등의 문제가 발생할 수 있습니다. 참고</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(15)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(15)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 14:26:09 · Mixing · Mixing 공정의 목적은 무엇입니까?</div>
+        <textarea class="historyEdit" id="historyEdit_16" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 86px;">"믹싱의 믹싱 공정의 목적은 믹싱 공정은 코팅이 잘 되도록 활물질 이제 슬러리를 제대로 만드는 게 목적입니다. 그래서 코팅이 잘 되게 하기 위해서는 슬러리 분산이 잘 되어야 되고 그 슬러리의 기포가 없어야 되고 그다음 슬러리 내 이물질 특히 철 성분이 없어야 되고"</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(16)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(16)">이 기록 삭제</button>
+        </div>
+      </div>
+    
+      <div class="historyItem">
+        <div class="historyMeta">2026-06-04 13:50:44 · 전극 공정 전반 · 전극 제조 공정을 처음부터 끝까지 설명해 보세요.</div>
+        <textarea class="historyEdit" id="historyEdit_17" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1" style="overflow: hidden; height: 144px;">"영어는 처음에 그 슬러리 이제 믹싱 공정이 있고 코팅 공정이 있고 칼렌더링 공정이 있고 슬러팅 슬리팅 공정이 있습니다. 그 전극 믹싱 공정에는 이제 바인더와 첨가제와 할물질을 섞어가지고 고르게 분산하는 음 분산을 하고 그다음에 그 이제 잘 분산된 슬러리를 코팅으로 보내줍니다. 그러면 코팅에서는 일정한 두께로 코팅을 하고 그다음 코팅하고 나서 칼렌딩으로 보내면은 칼렌딩에서는 이제 요구되는 두께에 맞춰서 칼렌드링을 하고 슬리팅에서는 이제 슬리팅을 하는 거죠. 그 믹싱의 주요 KPI는 비스코스티가 있고 슬러리 이제 고형분 솔리드 콘텐츠가 있습니다. 그 코팅에서는 그 티크니스 유니포머티 가 있고 칼렌드링에서는 이제 티크니스가 있고 슬리팅에서는 이제 버가 있습니다."</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(17)">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(17)">이 기록 삭제</button>
+        </div>
+      </div>
+    </div>
+      </div>
+      <div class="status" id="status">전체 저장 기록을 보고 있습니다.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+
+/* 기록 포함 HTML 백업/복원용 데이터 */
+window.__INTERVIEW_BACKUP__ = {"exportedAt":"2026-06-05T13:24:05.355Z","app":"전극 프로세스 엔지니어 인터뷰 연습","version":"editable-localStorage-html-backup-v2","data":{"doneCards":{},"memos":{"0":"\"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다.\n\n믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다.\n\n코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다.\n\n캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다.\n\n슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다.\"","1":"추천답변 : 믹싱 공정의 목적은 활물질, 도전재, 바인더를 균일하게 분산시켜 안정적인 슬러리를 만드는 것입니다.\n주요 관리 항목은 분산 상태, 응집 여부, 점도, 고형분 함량, 슬러리 유동 특성, 기포, 그리고 금속 이물 혼입입니다.\n이러한 항목들이 관리되지 않으면 코팅 불량, 도포량 편차, 핀홀 등의 문제가 발생할 수 있습니다. 참고","2":"\"코팅 공정의 목적은 슬러리를 일정하게 분산시켜 슬러리를 일정하게 도포시켜서 일정하게 도포시키는\"","3":"제미나이 추천 : Drying 공정은 코팅된 슬러리에서 용매를 제거하고 전극 구조를 안정적으로 형성하는 공정입니다. Drying 조건이 적절하지 않으면 Binder Migration이 발생할 수 있습니다. 예를 들어 건조가 너무 빠르면 표면에서 먼저 용매가 증발하면서 바인더가 표면 쪽으로 이동할 수 있고, 이 경우 집전체와 활물질층 사이의 접착력이 저하되어 Adhesion 문제가 발생할 수 있습니다. 반대로 건조가 너무 느리면 잔류 용매가 증가하고 생산성이 저하될 수 있습니다. 따라서 Drying 공정은 단순히 용매를 제거하는 것이 아니라 Binder 분포, Adhesion, 전극 구조 안정성까지 결정하는 중요한 공정이라고 생각합니다.","4":"[개선된 답변 예시]\n\"캘린더링 공정의 궁극적인 목적은 극판의 **에너지 밀도(Density)**를 극대화하는 동시에, 배터리의 전기화학적 성능을 좌우하는 **공극률(Porosity)**을 최적화하는 것입니다.\n롤(Roll) 압착을 통해 활물질 간의 전자 접촉 저항을 낮춰 전도도(Conductivity)를 향상시키는 것이 핵심이며, 동시에 전해액이 원활히 침투할 수 있는 최적의 다공성(Optimal Porosity) 구조를 확보하여 셀의 출력과 수명 특성을 균형 있게 제어하는 필수 공정입니다.\"","5":"[제미나이 개선된 답변 예시]\n\"슬리팅 공정에서 가장 치명적으로 관리해야 할 핵심 품질 항목은 단연 엣지 버(Edge Burr)와 나이프 치수 관리입니다.\n슬리팅 시 발생하는 기준치 이상의 버(Burr)는 향후 분리막을 전단하여 셀 내부 단락(Short)과 열폭주를 유발하는 화재의 직접적인 원인이 됩니다. 따라서 당사 공정에서는 이를 억제하기 위해 상하부 나이프의 정밀 갭(Gap)과 오버랩(Overlap)을 상시 모니터링하고 있습니다.\n아울러, 버 관리와 더불어 전단 단면의 활물질 더스트(Dust) 탈락을 방지하기 위한 크리닝 시스템 운영, 그리고 극판의 변형을 막기 위한 텐션(Tension) 제어 및 슬리팅 폭(Width) 치수 정밀도 확보를 핵심 KPI로 관리하고 있습니다.\"","6":"\"전극 공정에서 가장 중요한 CTQ는... 음 믹싱에서는 점도, 솔리드 콘텐트, 유동 슬러리 유동 특성, 분산, 응집... 그다음 코팅에서는 댄서피... 아 로딩, 로딩, 티크니스 유니포머티, 코팅 위쓰, 디펙트 유무, AB 얼라인먼트... 칼렌더링에서는 포로스티, 밀도... 슬리팅에서는 슬릿 위쓰, 버 콘트롤...\"","8":"[제미나이] 첫째, 투입 순서 관리입니다. 바인더를 먼저 충분히 용해시키고, 도전재를 잘 젖게 한 뒤 활물질을 넣어야 합니다. 도전재나 활물질이 제대로 wetting되지 않으면 응집이 생기고, 고전단에서는 잘 흐르지 않고 무전단에서는 불안정하게 처질 수 있습니다.\n둘째, 전단 에너지 관리입니다. Mixing rpm, 시간, blade type, kneading 조건을 조절해서 입자 응집을 깨고 균일한 network를 만들어야 합니다. 전단이 부족하면 응집 때문에 streak나 die clogging이 생기고, 전단이 과하면 도전재 network나 binder structure가 깨져 점도 회복성이 약해질 수 있습니다.\n셋째, 고형분과 바인더 농도 관리입니다. Solid content가 높으면 점도와 yield stress가 올라가 edge 유지에는 유리할 수 있지만, 너무 높으면 pumpability와 coating stability가 나빠집니다. 반대로 너무 낮으면 코팅 후 흐름성이 커져 edge sagging이나 thickness variation이 생길 수 있습니다.\n넷째, rheology 측정으로 검증해야 합니다. 단순 Brookfield 점도만 보면 부족하고, shear rate sweep으로 shear thinning 특성을 보고, 3-step thixotropy test로 고전단 후 점도 회복 속도를 확인해야 합니다. 즉 “다이를 통과할 때는 낮아지고, foil 위에서는 빠르게 회복되는지”를 믹싱 후 QC에서 확인하는 것입니다.\n\n면접 답변으로는 이렇게 말하면 좋습니다.\n\n“믹싱 단계에서는 슬러리의 비뉴턴 거동을 만들고 안정화하는 것이 중요합니다. 이를 위해 원재료 투입 순서, 바인더 용해, 도전재 분산, mixing rpm과 time, solid content를 관리합니다. 특히 고전단에서 점도가 낮아지는 shear thinning과 코팅 후 점도가 회복되는 thixotropy는 단순 점도 값만으로 판단하기 어렵기 때문에 rheometer를 통해 shear rate sweep과 recovery test를 확인해야 합니다. 결국 믹싱의 목적은 단순히 재료를 섞는 것이 아니라, slot die에서는 잘 흐르고 집전체 위에서는 패턴과 edge를 유지할 수 있는 slurry structure를 만드는 것이라고 생각합니다.”"},"memoHistory":[{"ts":"2026-06-05 08:59:37","qid":"q_001_전극_제조_공정을_처음부터_끝까지_설명해_보세요","idx":0,"title":"전극 제조 공정을 처음부터 끝까지 설명해 보세요.","cat":"전극 공정 전반","prompt":"Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.","text":"\"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다.\n\n믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다.\n\n코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다.\n\n캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다.\n\n슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다.\""},{"ts":"2026-06-05 08:58:55","qid":"q_001_전극_제조_공정을_처음부터_끝까지_설명해_보세요","idx":0,"title":"전극 제조 공정을 처음부터 끝까지 설명해 보세요.","cat":"전극 공정 전반","prompt":"Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.","text":"“전극 제조 공정은 크게 Mixing, Coating, Drying, Calendering, Slitting 또는 Notching 순서로 진행됩니다. Mixing에서는 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 코팅 가능한 슬러리를 만드는 것이 목적입니다. 이때 viscosity, solid content, rheology, dispersion 상태를 관리하고, 분산이 불량하면 agglomerate, streak, die clogging, loading variation으로 이어질 수 있습니다.\n\nCoating에서는 슬러리를 Al 또는 Cu foil 위에 균일하게 도포하여 목표 loading, thickness, coating width를 형성합니다. 이후 Drying에서는 용매를 제거하면서 전극 구조와 binder distribution을 안정화합니다. 건조가 너무 빠르면 binder migration으로 adhesion 문제가 생길 수 있고, 건조가 부족하면 residual solvent 문제가 발생할 수 있기 때문에 zone별 온도, air flow, residence time을 관리합니다.\n\nCalendering에서는 건조된 전극을 압연하여 target thickness, density, porosity를 맞춥니다. 이 공정은 energy density와 particle contact를 개선하지만, 과도한 압연은 pore collapse, cracking, delamination을 유발할 수 있어 압력, gap, line speed, thickness profile을 함께 관리해야 합니다.\n\n마지막으로 Slitting/Notching에서는 전극을 셀 설계에 맞는 폭과 형상으로 가공합니다. 이때 slit width, burr, particle, edge crack을 관리하며, burr나 particle은 separator damage와 internal short risk로 이어질 수 있기 때문에 매우 중요하게 봅니다.”"},{"ts":"2026-06-05 08:58:34","qid":"q_001_전극_제조_공정을_처음부터_끝까지_설명해_보세요","idx":0,"title":"전극 제조 공정을 처음부터 끝까지 설명해 보세요.","cat":"전극 공정 전반","prompt":"Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.","text":"전체적으로 60점 정도입니다. 공정 순서는 알고 있지만, 면접 답변으로는 아직 얕고, 일부 핵심 공정이 빠져 있고, 용어가 애매합니다.\n\n가장 큰 문제는 Drying을 공정 순서에서 빼먹은 것처럼 보인다는 점입니다. 처음에 “믹싱, 코팅, 캘린더링, 슬리팅”이라고 말했는데, 실제 전극 공정 흐름은 보통 Mixing → Coating → Drying → Calendering → Slitting/Notching입니다. 뒤에서 드라잉을 설명하긴 했지만, 첫 문장에서 빠지면 면접관은 “공정 흐름을 정확히 못 잡고 있나?”라고 볼 수 있습니다.\n\n두 번째 문제는 KPI라는 표현이 조금 부정확합니다. 점도와 유동 분석은 KPI라기보다는 관리 항목 또는 CTQ/공정 특성에 가깝습니다. 면접에서는 “주요 관리 항목은 viscosity, solid content, rheology, dispersion 상태입니다”라고 말하는 게 더 자연스럽습니다.\n\n세 번째 문제는 Mixing 설명이 너무 짧습니다. “제대로 분산”은 맞지만, 무엇이 안 되면 어떤 문제가 생기는지가 없습니다. Mixing이 안 좋으면 agglomerate, streak, die clogging, loading variation, adhesion 저하로 이어진다고 말해야 공정 이해가 있어 보입니다.\n\n네 번째 문제는 Coating과 Drying을 너무 단순화했습니다. Coating은 단순히 “도포”가 아니라 target loading, wet thickness, coating width, edge quality, A/B alignment를 만드는 공정입니다. Drying도 단순히 용매 제거가 아니라 binder distribution, adhesion, residual solvent, pore structure를 결정합니다. 지금 답변은 “용매 제거”에서 끝나서 깊이가 부족합니다.\n\n다섯 번째 문제는 Calendering 설명이 약합니다. “알맞은 두께로 만들어서 밀도를 구성”은 어색합니다. Calendering은 target thickness와 density를 맞추고, porosity와 particle contact를 조절하는 공정입니다. 압력이 과하면 cracking, delamination, pore collapse가 생길 수 있다는 trade-off가 있어야 합니다.\n\n여섯 번째 문제는 Slitting 설명도 안전 관점이 빠졌습니다. Width와 Burr는 잘 말했지만, burr/particle이 separator damage나 internal short risk로 이어질 수 있다는 말이 들어가야 전극 면접 답변답습니다."},{"ts":"2026-06-05 08:58:12","qid":"q_001_전극_제조_공정을_처음부터_끝까지_설명해_보세요","idx":0,"title":"전극 제조 공정을 처음부터 끝까지 설명해 보세요.","cat":"전극 공정 전반","prompt":"Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.","text":"\"전극 제조 공정을 처음부터 끝까지 설명해 보세요. 전극 제조 공정은 믹싱, 코팅, 캘린더링, 슬리팅 부분이 있습니다. 믹싱 부분에서는 활물질과 도전제, 바인더를 제대로 분산시키는 게 목적이고, 주요 KPI는 점도와 유동 분석이 있습니다. 코팅은 슬러리를 일정하게 집전체 포일(Foil) 위에 도포를 하고, 드라잉(건조) 부분에서는 용매를 제거하는 것입니다. 코팅에서 주요 관리 포인트는 로딩량, 두께 균일성(Thickness Uniformity), 코팅 폭(Width)이 있고, 드라잉에서는 건조 온도 제어, 존(Zone)별 온도 관리, 에어 플로우(Air Flow) 등이 있습니다. 캘린더링은 코팅된 전극을 알맞은 두께로 만들어서 밀도를 구성하는 것입니다. 주요 관리 포인트는 덴시티(Density)가 있습니다. 슬리팅은 캘린더링된 전극을 스펙에 맞도록 제대로 자르는 게 목적이고, 주요 관리 포인트는 슬리팅 폭(Slitting Width)과 버(Burr)가 있습니다.\""},{"ts":"2026-06-04 16:07:02","qid":"q_009_slurry_점도_viscosity_가_중요한_이유는_무엇입니까","idx":8,"title":"Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?","cat":"Slurry","prompt":"Coating stability, loading uniformity, defect와 연결하세요.","text":"[제미나이] 첫째, 투입 순서 관리입니다. 바인더를 먼저 충분히 용해시키고, 도전재를 잘 젖게 한 뒤 활물질을 넣어야 합니다. 도전재나 활물질이 제대로 wetting되지 않으면 응집이 생기고, 고전단에서는 잘 흐르지 않고 무전단에서는 불안정하게 처질 수 있습니다.\n둘째, 전단 에너지 관리입니다. Mixing rpm, 시간, blade type, kneading 조건을 조절해서 입자 응집을 깨고 균일한 network를 만들어야 합니다. 전단이 부족하면 응집 때문에 streak나 die clogging이 생기고, 전단이 과하면 도전재 network나 binder structure가 깨져 점도 회복성이 약해질 수 있습니다.\n셋째, 고형분과 바인더 농도 관리입니다. Solid content가 높으면 점도와 yield stress가 올라가 edge 유지에는 유리할 수 있지만, 너무 높으면 pumpability와 coating stability가 나빠집니다. 반대로 너무 낮으면 코팅 후 흐름성이 커져 edge sagging이나 thickness variation이 생길 수 있습니다.\n넷째, rheology 측정으로 검증해야 합니다. 단순 Brookfield 점도만 보면 부족하고, shear rate sweep으로 shear thinning 특성을 보고, 3-step thixotropy test로 고전단 후 점도 회복 속도를 확인해야 합니다. 즉 “다이를 통과할 때는 낮아지고, foil 위에서는 빠르게 회복되는지”를 믹싱 후 QC에서 확인하는 것입니다.\n\n면접 답변으로는 이렇게 말하면 좋습니다.\n\n“믹싱 단계에서는 슬러리의 비뉴턴 거동을 만들고 안정화하는 것이 중요합니다. 이를 위해 원재료 투입 순서, 바인더 용해, 도전재 분산, mixing rpm과 time, solid content를 관리합니다. 특히 고전단에서 점도가 낮아지는 shear thinning과 코팅 후 점도가 회복되는 thixotropy는 단순 점도 값만으로 판단하기 어렵기 때문에 rheometer를 통해 shear rate sweep과 recovery test를 확인해야 합니다. 결국 믹싱의 목적은 단순히 재료를 섞는 것이 아니라, slot die에서는 잘 흐르고 집전체 위에서는 패턴과 edge를 유지할 수 있는 slurry structure를 만드는 것이라고 생각합니다.”"},{"ts":"2026-06-04 15:58:31","qid":"q_009_slurry_점도_viscosity_가_중요한_이유는_무엇입니까","idx":8,"title":"Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?","cat":"Slurry","prompt":"Coating stability, loading uniformity, defect와 연결하세요.","text":"[재미나이 개선된 답변 예시]\n\"슬러리 점도 제어가 치명적인 이유는 슬러리가 가져야 하는 비뉴턴 유체의 특징인 전단 박화(Shear Thinning)와 요변성(Thixotropy) 기술을 제어해야 하기 때문입니다.\n구체적으로, 코팅 헤드의 다이를 통과하는 고전단(High Shear) 구간에서는 점도가 일시적으로 낮아져 유동성을 확보해야 정밀하고 균일한 도포가 가능합니다.\n반면, 집전체에 안착한 직후인 무전단(Zero Shear) 구간에서는 점도가 즉각적으로 회복되어 뭉치는 힘을 가져야만, 슬러리가 흘러내리지 않고 코팅 패턴의 에지(Edge) 형상과 목표 두께를 유지할 수 있기 때문입니다.\""},{"ts":"2026-06-04 15:58:09","qid":"q_009_slurry_점도_viscosity_가_중요한_이유는_무엇입니까","idx":8,"title":"Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?","cat":"Slurry","prompt":"Coating stability, loading uniformity, defect와 연결하세요.","text":"\"슬러리 점도가 중요한 이유는 무엇입니까 슬러리 점도가 중요한 이유는 코팅을 할 때 초반에는 잘 흘러가고 나중에는 이제 이제 좀 뭉치도록 하는 게 필요해서 그렇습니다\""},{"ts":"2026-06-04 15:54:11","qid":"q_007_전극_공정에서_가장_중요한_ctq는_무엇이라고_생각합니까","idx":6,"title":"전극 공정에서 가장 중요한 CTQ는 무엇이라고 생각합니까?","cat":"CTQ","prompt":"Loading, thickness, density, adhesion, alignment 중 우선순위를 설명하세요.","text":"\"전극 공정에서 가장 중요한 CTQ는... 음 믹싱에서는 점도, 솔리드 콘텐트, 유동 슬러리 유동 특성, 분산, 응집... 그다음 코팅에서는 댄서피... 아 로딩, 로딩, 티크니스 유니포머티, 코팅 위쓰, 디펙트 유무, AB 얼라인먼트... 칼렌더링에서는 포로스티, 밀도... 슬리팅에서는 슬릿 위쓰, 버 콘트롤...\""},{"ts":"2026-06-04 15:12:51","idx":5,"title":"Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?","cat":"Slitting","prompt":"폭, burr, particle, edge quality를 중심으로 답하세요.","text":"[제미나이 개선된 답변 예시]\n\"슬리팅 공정에서 가장 치명적으로 관리해야 할 핵심 품질 항목은 단연 엣지 버(Edge Burr)와 나이프 치수 관리입니다.\n슬리팅 시 발생하는 기준치 이상의 버(Burr)는 향후 분리막을 전단하여 셀 내부 단락(Short)과 열폭주를 유발하는 화재의 직접적인 원인이 됩니다. 따라서 당사 공정에서는 이를 억제하기 위해 상하부 나이프의 정밀 갭(Gap)과 오버랩(Overlap)을 상시 모니터링하고 있습니다.\n아울러, 버 관리와 더불어 전단 단면의 활물질 더스트(Dust) 탈락을 방지하기 위한 크리닝 시스템 운영, 그리고 극판의 변형을 막기 위한 텐션(Tension) 제어 및 슬리팅 폭(Width) 치수 정밀도 확보를 핵심 KPI로 관리하고 있습니다.\""},{"ts":"2026-06-04 15:10:52","idx":5,"title":"Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?","cat":"Slitting","prompt":"폭, burr, particle, edge quality를 중심으로 답하세요.","text":"\"슬러리에서 공정에서 관리해야 할 핵심 항목은 무엇입니까 슬러리 공정에서는 엣지 버 관리 가 가장 중요합니다\""},{"ts":"2026-06-04 15:07:36","idx":4,"title":"Calendering 공정의 목적은 무엇입니까?","cat":"Calendering","prompt":"Thickness, density, porosity, contact 개선을 중심으로 설명하세요.","text":"[개선된 답변 예시]\n\"캘린더링 공정의 궁극적인 목적은 극판의 **에너지 밀도(Density)**를 극대화하는 동시에, 배터리의 전기화학적 성능을 좌우하는 **공극률(Porosity)**을 최적화하는 것입니다.\n롤(Roll) 압착을 통해 활물질 간의 전자 접촉 저항을 낮춰 전도도(Conductivity)를 향상시키는 것이 핵심이며, 동시에 전해액이 원활히 침투할 수 있는 최적의 다공성(Optimal Porosity) 구조를 확보하여 셀의 출력과 수명 특성을 균형 있게 제어하는 필수 공정입니다.\""},{"ts":"2026-06-04 15:07:19","idx":4,"title":"Calendering 공정의 목적은 무엇입니까?","cat":"Calendering","prompt":"Thickness, density, porosity, contact 개선을 중심으로 설명하세요.","text":"\"칼렌드링 공정의 목적은 제품 포로스티 제품 댄스티 및 포로스트리를 결정하는 결정하여 결정하는 공정입니다.\""},{"ts":"2026-06-04 14:57:44","idx":3,"title":"Drying 공정이 중요한 이유는 무엇입니까?","cat":"Drying","prompt":"용매 제거뿐 아니라 binder distribution, adhesion, porosity를 형성하는 공정으로 설명하세요.","text":"제미나이 추천 : Drying 공정은 코팅된 슬러리에서 용매를 제거하고 전극 구조를 안정적으로 형성하는 공정입니다. Drying 조건이 적절하지 않으면 Binder Migration이 발생할 수 있습니다. 예를 들어 건조가 너무 빠르면 표면에서 먼저 용매가 증발하면서 바인더가 표면 쪽으로 이동할 수 있고, 이 경우 집전체와 활물질층 사이의 접착력이 저하되어 Adhesion 문제가 발생할 수 있습니다. 반대로 건조가 너무 느리면 잔류 용매가 증가하고 생산성이 저하될 수 있습니다. 따라서 Drying 공정은 단순히 용매를 제거하는 것이 아니라 Binder 분포, Adhesion, 전극 구조 안정성까지 결정하는 중요한 공정이라고 생각합니다."},{"ts":"2026-06-04 14:57:22","idx":3,"title":"Drying 공정이 중요한 이유는 무엇입니까?","cat":"Drying","prompt":"용매 제거뿐 아니라 binder distribution, adhesion, porosity를 형성하는 공정으로 설명하세요.","text":"\"드라이 공정이 중요한 이유는 코팅을 하고 나서 드라이잉이 제대로 안 되면은 드라이잉이 너무 빨리 되면은 그 슬러리 바인더와 활물질이 표면적으로 올라와서 웻 어드히전 이슈가 발생이 됩니다. 드라이가 드라이가 너무 늦으면은 제품 품질이 불량이 됩니다.\""},{"ts":"2026-06-04 14:41:31","idx":2,"title":"Coating 공정의 목적은 무엇입니까?","cat":"Coating","prompt":"Foil 위에 균일한 loading과 geometry를 형성하는 공정으로 설명하세요.","text":"\"코팅 공정의 목적은 슬러리를 일정하게 분산시켜 슬러리를 일정하게 도포시켜서 일정하게 도포시키는\""},{"ts":"2026-06-04 14:39:05 (수정)","idx":1,"title":"Mixing 공정의 목적은 무엇입니까?","cat":"Mixing","prompt":"분산, 점도, 고형분, coating 안정성을 연결하세요.","text":"추천답변 : 믹싱 공정의 목적은 활물질, 도전재, 바인더를 균일하게 분산시켜 안정적인 슬러리를 만드는 것입니다.\n주요 관리 항목은 분산 상태, 응집 여부, 점도, 고형분 함량, 슬러리 유동 특성, 기포, 그리고 금속 이물 혼입입니다.\n이러한 항목들이 관리되지 않으면 코팅 불량, 도포량 편차, 핀홀 등의 문제가 발생할 수 있습니다. 참고"},{"ts":"2026-06-04 14:26:09","idx":1,"title":"Mixing 공정의 목적은 무엇입니까?","cat":"Mixing","prompt":"분산, 점도, 고형분, coating 안정성을 연결하세요.","text":"\"믹싱의 믹싱 공정의 목적은 믹싱 공정은 코팅이 잘 되도록 활물질 이제 슬러리를 제대로 만드는 게 목적입니다. 그래서 코팅이 잘 되게 하기 위해서는 슬러리 분산이 잘 되어야 되고 그 슬러리의 기포가 없어야 되고 그다음 슬러리 내 이물질 특히 철 성분이 없어야 되고\""},{"ts":"2026-06-04 13:50:44","idx":0,"title":"전극 제조 공정을 처음부터 끝까지 설명해 보세요.","cat":"전극 공정 전반","prompt":"Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.","text":"\"영어는 처음에 그 슬러리 이제 믹싱 공정이 있고 코팅 공정이 있고 칼렌더링 공정이 있고 슬러팅 슬리팅 공정이 있습니다. 그 전극 믹싱 공정에는 이제 바인더와 첨가제와 할물질을 섞어가지고 고르게 분산하는 음 분산을 하고 그다음에 그 이제 잘 분산된 슬러리를 코팅으로 보내줍니다. 그러면 코팅에서는 일정한 두께로 코팅을 하고 그다음 코팅하고 나서 칼렌딩으로 보내면은 칼렌딩에서는 이제 요구되는 두께에 맞춰서 칼렌드링을 하고 슬리팅에서는 이제 슬리팅을 하는 거죠. 그 믹싱의 주요 KPI는 비스코스티가 있고 슬러리 이제 고형분 솔리드 콘텐츠가 있습니다. 그 코팅에서는 그 티크니스 유니포머티 가 있고 칼렌드링에서는 이제 티크니스가 있고 슬리팅에서는 이제 버가 있습니다.\""}]}};
+
+const cards = [
+  {
+    "cat": "전극 공정 전반",
+    "title": "전극 제조 공정을 처음부터 끝까지 설명해 보세요.",
+    "prompt": "Mixing → Coating → Drying → Calendering → Slitting/Notching 흐름과 각 목적을 연결해서 말하세요.",
+    "answer": [
+      "전극 제조 공정은 크게 mixing, coating, drying, calendering, slitting 또는 notching 순서로 설명할 수 있습니다.",
+      "먼저 mixing에서는 활물질, 도전재, 바인더, 용매를 균일하게 분산시켜 coating 가능한 slurry를 만듭니다. 이때 viscosity, solid content, dispersion quality가 중요합니다.",
+      "Coating에서는 slurry를 Cu 또는 Al foil 위에 균일한 loading과 thickness로 도포합니다. 이후 drying에서 용매를 제거하고 binder network를 형성합니다.",
+      "Calendering에서는 전극을 압연하여 target thickness, density, porosity를 맞추고, 마지막으로 slitting/notching에서 cell 설계에 맞는 폭과 형상으로 가공합니다.",
+      "핵심은 각 공정이 독립적이지 않고 slurry 품질이 coating에, drying 조건이 adhesion에, calendering 조건이 density와 cracking에 영향을 준다는 점입니다."
+    ],
+    "tails": [
+      "각 공정에서 가장 중요한 CTQ는 무엇인가요?",
+      "Mixing 불량이 coating 불량으로 어떻게 이어지나요?",
+      "Calendering 후 품질 항목은 무엇을 봐야 하나요?"
+    ],
+    "checks": [
+      "전체 흐름을 순서대로 말했는가",
+      "각 공정 목적을 설명했는가",
+      "CTQ를 언급했는가",
+      "공정 간 연결성을 설명했는가"
+    ]
+  },
+  {
+    "cat": "Mixing",
+    "title": "Mixing 공정의 목적은 무엇입니까?",
+    "prompt": "분산, 점도, 고형분, coating 안정성을 연결하세요.",
+    "answer": [
+      "Mixing 공정의 목적은 활물질, 도전재, 바인더를 용매 안에 균일하게 분산시켜 coating 가능한 slurry를 만드는 것입니다.",
+      "특히 도전재와 바인더가 균일하게 분산되어야 전극 내부의 전도성 network와 adhesion이 안정적으로 형성됩니다.",
+      "Mixing이 부족하면 agglomerate, viscosity variation, coating streak, pinhole, loading variation 같은 문제가 발생할 수 있습니다.",
+      "따라서 mixing에서는 투입 순서, mixing time, shear energy, 온도, viscosity, solid content, rheology를 관리해야 합니다."
+    ],
+    "tails": [
+      "도전재 분산이 왜 중요한가요?",
+      "Mixing 시간이 과하면 어떤 문제가 생기나요?",
+      "Slurry 품질을 어떻게 확인하나요?"
+    ],
+    "checks": [
+      "분산 목적을 설명했는가",
+      "도전재/바인더 역할을 언급했는가",
+      "불량과 연결했는가",
+      "관리 항목을 말했는가"
+    ]
+  },
+  {
+    "cat": "Coating",
+    "title": "Coating 공정의 목적은 무엇입니까?",
+    "prompt": "Foil 위에 균일한 loading과 geometry를 형성하는 공정으로 설명하세요.",
+    "answer": [
+      "Coating 공정의 목적은 slurry를 집전체 foil 위에 균일한 두께와 loading으로 도포하여 전극 active layer를 형성하는 것입니다.",
+      "이때 중요한 품질 항목은 loading, wet/dry thickness, coating width, edge quality, A/B alignment, defect 유무입니다.",
+      "Coating이 불안정하면 streak, pinhole, ribbing, edge bead, loading variation 같은 결함이 발생하고, 이는 cell capacity, resistance, safety에 영향을 줄 수 있습니다.",
+      "따라서 slurry 공급 안정성, slot die gap, flow rate, line speed, web tension, filtration, degassing을 함께 관리해야 합니다."
+    ],
+    "tails": [
+      "Loading이 cell 성능에 주는 영향은 무엇인가요?",
+      "Slot die gap이 변하면 어떤 문제가 생기나요?",
+      "A/B alignment가 중요한 이유는 무엇인가요?"
+    ],
+    "checks": [
+      "coating 목적을 정확히 말했는가",
+      "loading/thickness를 언급했는가",
+      "불량 예시를 들었는가",
+      "공정 변수와 연결했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "Drying 공정이 중요한 이유는 무엇입니까?",
+    "prompt": "용매 제거뿐 아니라 binder distribution, adhesion, porosity를 형성하는 공정으로 설명하세요.",
+    "answer": [
+      "Drying은 단순히 용매를 제거하는 공정이 아니라 전극의 binder distribution, adhesion, pore structure를 결정하는 중요한 공정입니다.",
+      "건조가 너무 빠르면 표면에서 용매가 급격히 날아가 binder migration이 발생할 수 있고, 이 경우 집전체와 active layer 사이 adhesion이 약해질 수 있습니다.",
+      "반대로 건조가 너무 느리거나 부족하면 residual solvent가 남아 후공정과 cell 성능에 문제를 줄 수 있습니다.",
+      "따라서 drying profile은 zone별 temperature, airflow, residence time, solvent evaporation rate를 고려해서 설정해야 합니다."
+    ],
+    "tails": [
+      "Binder migration이 무엇인가요?",
+      "건조 온도가 너무 높으면 어떤 문제가 생기나요?",
+      "Residual solvent는 왜 위험한가요?"
+    ],
+    "checks": [
+      "용매 제거 외 역할을 설명했는가",
+      "binder migration을 언급했는가",
+      "과건조/미건조 문제를 구분했는가",
+      "profile 관리 항목을 말했는가"
+    ]
+  },
+  {
+    "cat": "Calendering",
+    "title": "Calendering 공정의 목적은 무엇입니까?",
+    "prompt": "Thickness, density, porosity, contact 개선을 중심으로 설명하세요.",
+    "answer": [
+      "Calendering의 목적은 건조된 전극을 압연하여 target thickness와 density를 맞추고, 입자 간 접촉과 전극 표면 평탄도를 개선하는 것입니다.",
+      "Calendering을 통해 porosity가 조절되고, 전극의 energy density와 electrical contact가 개선될 수 있습니다.",
+      "하지만 압력이 과하면 pore가 너무 줄어 ion transport가 나빠지고, cracking, delamination, edge wrinkle 같은 기계적 결함이 발생할 수 있습니다.",
+      "따라서 calendering에서는 roll gap, pressure, temperature, line speed, thickness profile, density, CPK를 함께 관리해야 합니다."
+    ],
+    "tails": [
+      "Density와 porosity는 어떤 관계인가요?",
+      "Calender pressure가 너무 높으면 어떤 문제가 생기나요?",
+      "Thickness 평균과 CPK 중 무엇이 더 중요한가요?"
+    ],
+    "checks": [
+      "압연 목적을 설명했는가",
+      "density/porosity를 언급했는가",
+      "과압 문제를 말했는가",
+      "관리 변수를 제시했는가"
+    ]
+  },
+  {
+    "cat": "Slitting",
+    "title": "Slitting 공정에서 관리해야 할 핵심 항목은 무엇입니까?",
+    "prompt": "폭, burr, particle, edge quality를 중심으로 답하세요.",
+    "answer": [
+      "Slitting 공정에서는 전극 roll을 cell 설계에 맞는 폭으로 절단하기 때문에 width accuracy와 edge quality가 중요합니다.",
+      "핵심 관리 항목은 slit width, burr height, particle 발생, edge crack, blade condition, tension, alignment입니다.",
+      "Slitting 품질이 나쁘면 burr나 particle이 발생하고, 이는 separator damage나 internal short risk로 연결될 수 있습니다.",
+      "따라서 blade wear, clearance, web tension, vacuum/dust collection, edge inspection을 주기적으로 관리해야 합니다."
+    ],
+    "tails": [
+      "Burr가 왜 safety risk인가요?",
+      "Blade clearance가 맞지 않으면 어떤 문제가 생기나요?",
+      "Slitting에서 particle을 줄이는 방법은 무엇인가요?"
+    ],
+    "checks": [
+      "width와 edge를 모두 언급했는가",
+      "burr/particle risk를 설명했는가",
+      "장비 조건을 말했는가",
+      "safety와 연결했는가"
+    ]
+  },
+  {
+    "cat": "CTQ",
+    "title": "전극 공정에서 가장 중요한 CTQ는 무엇이라고 생각합니까?",
+    "prompt": "Loading, thickness, density, adhesion, alignment 중 우선순위를 설명하세요.",
+    "answer": [
+      "전극 공정에서 가장 중요한 CTQ는 loading, thickness, density, adhesion, alignment라고 생각합니다.",
+      "Loading은 cell capacity와 직결되고, thickness와 density는 energy density, resistance, ion transport에 영향을 줍니다.",
+      "Adhesion은 후공정에서 delamination이나 particle 발생을 막기 위해 중요하며, A/B alignment와 tab alignment는 stacking과 welding 품질에 직접 연결됩니다.",
+      "또 평균값만 보는 것이 아니라 variation과 CPK를 함께 봐야 양산 안정성을 판단할 수 있습니다."
+    ],
+    "tails": [
+      "Loading이 높으면 항상 좋은가요?",
+      "Adhesion이 낮으면 어떤 문제가 생기나요?",
+      "CTQ를 CPK로 관리하는 이유는 무엇인가요?"
+    ],
+    "checks": [
+      "주요 CTQ를 4개 이상 말했는가",
+      "성능/안전/후공정과 연결했는가",
+      "CPK를 언급했는가",
+      "우선순위가 명확한가"
+    ]
+  },
+  {
+    "cat": "전극 공정 전반",
+    "title": "양극과 음극 제조 공정의 차이점은 무엇입니까?",
+    "prompt": "재료, 집전체, 용매/바인더, 공정 민감도 차이를 설명하세요.",
+    "answer": [
+      "양극과 음극은 기본 공정 흐름은 비슷하지만 재료와 집전체, slurry 특성에서 차이가 있습니다.",
+      "일반적으로 양극은 Al foil을 사용하고, 음극은 Cu foil을 사용합니다. 양극은 NMP/PVDF 기반이 많이 사용되고, 음극은 수계 binder인 SBR/CMC 기반이 많이 사용됩니다.",
+      "양극은 활물질 비용과 loading, adhesion, cracking 관리가 중요하고, 음극은 graphite swelling, binder distribution, water-based drying, lithium plating risk와 관련된 균일성이 중요합니다.",
+      "공정적으로는 slurry rheology, drying behavior, calender density target이 다르기 때문에 동일한 장비라도 조건 최적화가 각각 필요합니다."
+    ],
+    "tails": [
+      "왜 양극은 Al foil을 사용하나요?",
+      "음극에서 수계 binder를 쓰는 이유는 무엇인가요?",
+      "양극과 음극의 drying 차이는 무엇인가요?"
+    ],
+    "checks": [
+      "Al/Cu foil 차이를 말했는가",
+      "binder/solvent 차이를 언급했는가",
+      "공정 민감도 차이를 설명했는가",
+      "성능 risk와 연결했는가"
+    ]
+  },
+  {
+    "cat": "Slurry",
+    "title": "Slurry 점도(Viscosity)가 중요한 이유는 무엇입니까?",
+    "prompt": "Coating stability, loading uniformity, defect와 연결하세요.",
+    "answer": [
+      "Slurry viscosity는 coating stability와 loading uniformity에 직접 영향을 주기 때문에 중요합니다.",
+      "점도가 너무 낮으면 slurry가 흐르기 쉬워 edge flow, sagging, loading variation이 생길 수 있고, 너무 높으면 pumpability가 나빠지고 slot die에서 streak이나 coating 불안정이 발생할 수 있습니다.",
+      "또 점도는 solid content, binder 상태, 분산 정도, 온도에 따라 변하기 때문에 단독 값보다는 rheology와 함께 봐야 합니다.",
+      "따라서 viscosity는 coating 가능한 process window 안에서 관리하고, 최종 loading, thickness, CPK와 연결해서 평가해야 합니다."
+    ],
+    "tails": [
+      "점도가 높으면 무조건 좋은가요?",
+      "점도와 rheology의 차이는 무엇인가요?",
+      "온도가 점도에 미치는 영향은 무엇인가요?"
+    ],
+    "checks": [
+      "점도의 중요성을 설명했는가",
+      "높거나 낮을 때 문제를 구분했는가",
+      "rheology와 연결했는가",
+      "최종 CTQ와 연결했는가"
+    ]
+  },
+  {
+    "cat": "Slurry",
+    "title": "Rheology와 Viscosity의 차이는 무엇입니까?",
+    "prompt": "Viscosity는 한 조건의 값, rheology는 shear rate에 따른 거동으로 설명하세요.",
+    "answer": [
+      "Viscosity는 특정 조건에서 측정한 slurry의 흐름 저항 값이고, rheology는 shear rate 변화에 따른 점도와 유동 거동 전체를 보는 개념입니다.",
+      "전극 slurry는 보통 shear thinning 특성을 가지기 때문에 저전단과 고전단에서 점도가 다르게 나타납니다.",
+      "Coating 공정에서는 탱크, 배관, 펌프, slot die lip에서 받는 shear가 다르기 때문에 단일 viscosity 값만으로 coating성을 판단하기 어렵습니다.",
+      "따라서 rheometer data를 통해 process condition에서 slurry가 안정적으로 흐를 수 있는지 확인하는 것이 중요합니다."
+    ],
+    "tails": [
+      "Shear thinning이란 무엇인가요?",
+      "왜 단일 점도 값만으로 부족한가요?",
+      "Rheometer data를 coating 조건에 어떻게 활용하나요?"
+    ],
+    "checks": [
+      "viscosity/rheology 차이를 명확히 말했는가",
+      "shear rate를 언급했는가",
+      "slot die coating과 연결했는가",
+      "실무 활용을 설명했는가"
+    ]
+  },
+  {
+    "cat": "Slurry",
+    "title": "Slurry 고형분(Solid Content)이 높아지면 어떤 문제가 발생합니까?",
+    "prompt": "점도, 분산, coating성, drying load를 연결하세요.",
+    "answer": [
+      "Slurry solid content가 높아지면 동일한 용매량 대비 고체 입자 농도가 증가하기 때문에 viscosity가 상승하고 분산이 어려워질 수 있습니다.",
+      "고형분이 높으면 coating 후 건조해야 할 용매량은 줄어 생산성에는 유리할 수 있지만, slurry flowability가 나빠져 streak, agglomerate, coating 불균일이 생길 수 있습니다.",
+      "또 pump 압력 상승, filter clogging, deaeration 어려움, slot die 내부 압력 불안정 같은 설비 이슈도 발생할 수 있습니다.",
+      "따라서 solid content는 생산성과 coating 안정성 사이에서 최적 window를 잡아야 합니다."
+    ],
+    "tails": [
+      "고형분을 높이는 장점은 무엇인가요?",
+      "solid content가 loading에 미치는 영향은 무엇인가요?",
+      "고형분이 높을 때 어떤 장비 문제가 생기나요?"
+    ],
+    "checks": [
+      "고형분 상승 효과를 설명했는가",
+      "장점과 단점을 모두 말했는가",
+      "coating defect와 연결했는가",
+      "process window 개념을 언급했는가"
+    ]
+  },
+  {
+    "cat": "Mixing",
+    "title": "Slurry 분산 상태는 어떻게 평가합니까?",
+    "prompt": "점도, 입도, grind gauge, rheology, coating 결과를 함께 말하세요.",
+    "answer": [
+      "Slurry 분산 상태는 하나의 방법만으로 판단하기보다 여러 데이터를 함께 봐야 합니다.",
+      "기본적으로 viscosity, solid content, rheology를 확인하고, 입자 응집 여부는 particle size distribution, grind gauge, filtration residue 등으로 평가할 수 있습니다.",
+      "또 실제 coating 후 streak, pinhole, agglomerate, surface defect가 발생하는지도 중요한 간접 지표입니다.",
+      "필요하면 SEM, optical microscope, conductivity, adhesion 결과까지 함께 확인하여 분산이 전극 구조와 성능에 미치는 영향을 판단합니다."
+    ],
+    "tails": [
+      "Grind gauge는 무엇을 확인하나요?",
+      "분산 불량이 coating streak로 이어지는 이유는 무엇인가요?",
+      "분산 상태가 adhesion에 영향을 줄 수 있나요?"
+    ],
+    "checks": [
+      "여러 평가법을 언급했는가",
+      "직접/간접 지표를 구분했는가",
+      "coating 결과와 연결했는가",
+      "전극 성능까지 확장했는가"
+    ]
+  },
+  {
+    "cat": "Mixing",
+    "title": "Mixing 시간이 부족하면 어떤 문제가 발생합니까?",
+    "prompt": "분산 불량, 점도 불안정, agglomerate, coating defect를 설명하세요.",
+    "answer": [
+      "Mixing 시간이 부족하면 활물질, 도전재, 바인더가 충분히 분산되지 않아 slurry가 불균일해질 수 있습니다.",
+      "이 경우 입자 응집이나 binder distribution 불균일이 생기고, viscosity가 안정화되지 않거나 batch 간 variation이 커질 수 있습니다.",
+      "Coating 단계에서는 agglomerate로 인한 streak, pinhole, scratch, die clogging, loading variation이 발생할 수 있습니다.",
+      "또 전극 내부 도전 network와 adhesion이 불균일해져 resistance 증가나 delamination risk로 이어질 수 있습니다."
+    ],
+    "tails": [
+      "Mixing 시간이 너무 길면 어떤 문제가 생기나요?",
+      "분산 불량과 die clogging은 어떤 관계인가요?",
+      "도전재 분산이 cell resistance에 미치는 영향은 무엇인가요?"
+    ],
+    "checks": [
+      "분산 불량을 설명했는가",
+      "viscosity variation을 언급했는가",
+      "coating defect와 연결했는가",
+      "전기적/기계적 품질 영향까지 말했는가"
+    ]
+  },
+  {
+    "cat": "Mixing",
+    "title": "Carbon 분산이 불량하면 어떤 현상이 발생합니까?",
+    "prompt": "전도성 network, resistance, coating defect, agglomerate를 연결하세요.",
+    "answer": [
+      "Carbon은 전극 내부에서 전도성 network를 형성하는 역할을 하기 때문에 분산이 매우 중요합니다.",
+      "Carbon 분산이 불량하면 국부적으로 carbon agglomerate가 생기고, 반대로 일부 영역은 도전재가 부족해져 전자전도성이 떨어질 수 있습니다.",
+      "그 결과 electrode resistance가 증가하고, rate capability나 power performance가 저하될 수 있습니다.",
+      "또 carbon agglomerate는 coating streak, surface defect, die clogging, particle defect의 원인이 될 수 있습니다."
+    ],
+    "tails": [
+      "Carbon black과 CNT 분산은 왜 어려운가요?",
+      "도전재가 너무 많으면 어떤 문제가 있나요?",
+      "Carbon agglomerate가 safety risk로 이어질 수 있나요?"
+    ],
+    "checks": [
+      "carbon 역할을 설명했는가",
+      "agglomerate 문제를 언급했는가",
+      "resistance와 연결했는가",
+      "coating defect와 연결했는가"
+    ]
+  },
+  {
+    "cat": "Binder",
+    "title": "Binder의 역할은 무엇입니까?",
+    "prompt": "입자-입자, 입자-foil adhesion과 기계적 안정성을 설명하세요.",
+    "answer": [
+      "Binder의 역할은 활물질과 도전재 입자를 서로 붙이고, 전극 active layer를 집전체 foil에 접착시키는 것입니다.",
+      "Binder가 적절히 분포해야 coating layer가 drying, calendering, slitting, cell assembly 과정에서 떨어지지 않고 mechanical integrity를 유지할 수 있습니다.",
+      "Binder가 부족하거나 분포가 불균일하면 adhesion 저하, delamination, particle 발생, cracking 문제가 생길 수 있습니다.",
+      "반대로 binder가 너무 많으면 active material 비율이 낮아지고, ion/electron transport가 방해되어 resistance가 증가할 수 있습니다."
+    ],
+    "tails": [
+      "Binder가 많으면 무조건 좋은가요?",
+      "Binder migration은 왜 문제가 되나요?",
+      "Binder 분포는 어떤 공정에서 결정되나요?"
+    ],
+    "checks": [
+      "binder 기본 역할을 말했는가",
+      "adhesion을 설명했는가",
+      "부족/과다 문제를 모두 말했는가",
+      "성능 영향과 연결했는가"
+    ]
+  },
+  {
+    "cat": "Binder",
+    "title": "PVDF는 왜 사용하는 것입니까?",
+    "prompt": "양극 binder로서 화학적 안정성, 접착력, NMP 용해성을 설명하세요.",
+    "answer": [
+      "PVDF는 주로 양극에서 사용되는 binder로, 전극 입자와 Al foil 사이의 접착력을 제공하고 전극 구조를 유지하는 역할을 합니다.",
+      "PVDF는 전해액과 양극 환경에서 비교적 화학적, 전기화학적 안정성이 좋고, NMP에 용해되어 slurry 제조가 가능합니다.",
+      "Drying 과정에서 NMP가 제거되면서 PVDF가 고화되어 binder network를 형성합니다.",
+      "다만 PVDF 분포가 불균일하거나 drying 조건이 부적절하면 binder migration, adhesion 저하, resistance 증가 문제가 생길 수 있습니다."
+    ],
+    "tails": [
+      "PVDF는 왜 NMP와 같이 쓰이나요?",
+      "PVDF가 너무 많으면 어떤 문제가 생기나요?",
+      "PVDF binder migration은 어떤 조건에서 발생하나요?"
+    ],
+    "checks": [
+      "PVDF 용도와 적용 위치를 말했는가",
+      "NMP 용해성을 언급했는가",
+      "화학적 안정성을 설명했는가",
+      "drying/adhesion과 연결했는가"
+    ]
+  },
+  {
+    "cat": "Solvent",
+    "title": "NMP의 역할은 무엇입니까?",
+    "prompt": "PVDF 용해, slurry flow, coating 후 제거되어야 하는 용매로 설명하세요.",
+    "answer": [
+      "NMP는 PVDF binder를 용해하여 양극 slurry를 제조할 수 있게 하는 용매입니다.",
+      "NMP가 있어야 활물질, 도전재, binder가 적절한 유동성을 가진 slurry 형태로 혼합되고 coating 공정에서 균일하게 도포될 수 있습니다.",
+      "Coating 후에는 drying 공정에서 NMP를 제거해야 하며, residual solvent가 남으면 전극 mechanical property나 cell 품질에 영향을 줄 수 있습니다.",
+      "또 NMP는 환경과 안전 관리가 중요한 용매이기 때문에 회수 시스템, 배기, 잔류량 관리가 필요합니다."
+    ],
+    "tails": [
+      "NMP가 잔류하면 어떤 문제가 생기나요?",
+      "NMP 회수 시스템이 필요한 이유는 무엇인가요?",
+      "수계 음극 공정과 비교하면 어떤 차이가 있나요?"
+    ],
+    "checks": [
+      "NMP 역할을 설명했는가",
+      "PVDF와 연결했는가",
+      "drying 후 제거 필요성을 말했는가",
+      "EHS 관점을 언급했는가"
+    ]
+  },
+  {
+    "cat": "Slurry",
+    "title": "Slurry Gelation 현상은 왜 발생합니까?",
+    "prompt": "입자 상호작용, binder/solvent, pH, 시간, 온도를 설명하세요.",
+    "answer": [
+      "Slurry gelation은 시간이 지나면서 slurry의 유동성이 떨어지고 점도가 급격히 상승하거나 gel처럼 변하는 현상입니다.",
+      "원인은 입자 간 응집, binder와 용매의 상호작용 변화, pH 또는 ionic condition 변화, 수분 오염, 온도, 장시간 보관 등이 될 수 있습니다.",
+      "Gelation이 발생하면 pumpability가 나빠지고 filter clogging, coating streak, loading variation, die pressure instability가 발생할 수 있습니다.",
+      "따라서 slurry pot life, storage condition, temperature, mixing 후 aging time, viscosity trend를 관리해야 합니다."
+    ],
+    "tails": [
+      "Gelation과 sedimentation의 차이는 무엇인가요?",
+      "Gelation을 조기에 발견하는 방법은 무엇인가요?",
+      "Gelation이 coating defect로 이어지는 메커니즘은 무엇인가요?"
+    ],
+    "checks": [
+      "gelation 정의를 설명했는가",
+      "원인을 여러 개 언급했는가",
+      "coating 문제와 연결했는가",
+      "관리 방법을 말했는가"
+    ]
+  },
+  {
+    "cat": "Slot Die",
+    "title": "Slot Die Coating 원리를 설명해 보세요.",
+    "prompt": "정량 공급, die gap, web speed, wet thickness 관계를 설명하세요.",
+    "answer": [
+      "Slot die coating은 pump를 통해 slurry를 die 내부로 정량 공급하고, die lip과 moving web 사이의 gap을 통해 slurry를 균일하게 도포하는 방식입니다.",
+      "기본적으로 wet thickness는 slurry flow rate, coating width, web speed에 의해 결정되고, die gap과 lip condition은 coating bead 안정성에 영향을 줍니다.",
+      "장점은 closed system이라 오염과 solvent loss를 줄일 수 있고, loading 제어와 고속 coating에 유리하다는 점입니다.",
+      "하지만 slurry rheology, die lip contamination, pump pulsation, web tension, gap variation에 민감해서 streak나 thickness variation이 발생할 수 있습니다."
+    ],
+    "tails": [
+      "Wet thickness는 어떤 변수로 결정되나요?",
+      "Slot die에서 streak가 생기는 이유는 무엇인가요?",
+      "Comma coating과 slot die coating 차이는 무엇인가요?"
+    ],
+    "checks": [
+      "정량 공급 원리를 설명했는가",
+      "flow rate/web speed/gap을 언급했는가",
+      "장점과 민감도를 말했는가",
+      "불량과 연결했는가"
+    ]
+  },
+  {
+    "cat": "Coating",
+    "title": "Loading이란 무엇입니까?",
+    "prompt": "단위 면적당 active material mass로 설명하고 capacity와 연결하세요.",
+    "answer": [
+      "Loading은 전극 단위 면적당 도포된 active material 또는 건조 coating mass를 의미하며 보통 mg/cm² 단위로 관리합니다.",
+      "Loading은 cell capacity와 직접 연결되기 때문에 전극 공정의 가장 중요한 CTQ 중 하나입니다.",
+      "Loading이 target보다 낮으면 capacity가 부족할 수 있고, 너무 높거나 variation이 크면 drying, calendering, ion transport, cell balance에 문제가 생길 수 있습니다.",
+      "따라서 A-side, B-side, double-side loading을 구분해서 측정하고 평균뿐 아니라 variation과 CPK를 함께 관리해야 합니다."
+    ],
+    "tails": [
+      "Loading이 높으면 왜 drying이 어려워질 수 있나요?",
+      "A-side/B-side loading 차이가 크면 어떤 문제가 있나요?",
+      "Loading과 thickness는 항상 비례하나요?"
+    ],
+    "checks": [
+      "loading 정의와 단위를 말했는가",
+      "capacity와 연결했는가",
+      "높거나 낮을 때 문제를 설명했는가",
+      "A/B side와 CPK를 언급했는가"
+    ]
+  },
+  {
+    "cat": "Coating",
+    "title": "Coating Thickness는 어떻게 관리합니까?",
+    "prompt": "Wet/dry/calendered thickness를 구분하고 profile과 CPK를 말하세요.",
+    "answer": [
+      "Coating thickness는 wet thickness, dry thickness, calendered thickness로 구분해서 관리해야 합니다.",
+      "Wet thickness는 coating 조건과 slurry solid content에 영향을 받고, dry thickness는 drying 후 solvent 제거와 loading에 영향을 받습니다.",
+      "Calendered thickness는 press 조건에 따라 달라지며 최종 density와 porosity를 결정합니다.",
+      "관리는 inline 또는 offline thickness gauge, cross-web profile, roll direction trend, 평균과 CPK를 함께 확인하는 방식으로 진행합니다."
+    ],
+    "tails": [
+      "Wet thickness와 dry thickness의 차이는 무엇인가요?",
+      "Thickness profile이 나쁘면 어떤 문제가 생기나요?",
+      "Calendered thickness가 중요한 이유는 무엇인가요?"
+    ],
+    "checks": [
+      "두께 종류를 구분했는가",
+      "solid content/loading과 연결했는가",
+      "calendered thickness를 언급했는가",
+      "profile/CPK를 말했는가"
+    ]
+  },
+  {
+    "cat": "Coating Defect",
+    "title": "Coating 불량 종류를 설명해 보세요.",
+    "prompt": "Pinhole, streak, ribbing, edge defect, thickness variation 등을 말하세요.",
+    "answer": [
+      "Coating 불량에는 pinhole, streak, ribbing, edge bead, edge curl, coating void, thickness non-uniformity, agglomerate defect 등이 있습니다.",
+      "Pinhole은 기포, 오염, wetting 불량, 탈포 부족으로 발생할 수 있고, streak는 die lip contamination, agglomerate, slurry 불균일, pump pulsation이 원인이 될 수 있습니다.",
+      "Ribbing은 coating bead instability와 rheology, gap, speed 조건과 관련되고, edge defect는 web tension, edge flow, coating width, drying shrinkage와 연결될 수 있습니다.",
+      "이런 불량은 cell capacity variation, resistance 증가, adhesion 저하, safety risk로 이어질 수 있어 조기에 검출하고 원인을 분리해야 합니다."
+    ],
+    "tails": [
+      "가장 critical한 coating defect는 무엇이라고 생각하나요?",
+      "Pinhole과 void의 차이는 무엇인가요?",
+      "Streak 원인을 어떻게 찾겠습니까?"
+    ],
+    "checks": [
+      "불량 종류를 5개 이상 말했는가",
+      "원인을 유형별로 연결했는가",
+      "품질 영향까지 설명했는가",
+      "원인분리 접근을 언급했는가"
+    ]
+  },
+  {
+    "cat": "Edge Defect",
+    "title": "Edge Curling은 왜 발생합니까?",
+    "prompt": "Stress balance, drying shrinkage, calendering, tension을 연결하세요.",
+    "answer": [
+      "Edge curling은 전극 edge 부위에서 foil과 coating layer 사이의 응력 균형이 맞지 않아 휘어지는 현상입니다.",
+      "주요 원인은 drying shrinkage 차이, coating edge loading 편차, calender 압축 불균일, foil/coating 두께 단차, web tension variation입니다.",
+      "특히 코팅부와 bare foil부의 경계에서는 기계적 특성이 달라 응력이 집중되기 쉽습니다.",
+      "Curling은 notching, stacking, feeding, alignment 문제로 이어질 수 있기 때문에 발생 시점을 coating 후, drying 후, calender 후로 나누어 확인해야 합니다."
+    ],
+    "tails": [
+      "curling과 wrinkle은 어떻게 다르나요?",
+      "bare foil width가 curling에 영향을 줄 수 있나요?",
+      "curling이 후공정에 미치는 영향은 무엇인가요?"
+    ],
+    "checks": [
+      "curling 원인을 stress balance로 설명했는가",
+      "drying/calender/tension을 언급했는가",
+      "edge 경계부를 설명했는가",
+      "후공정 영향까지 말했는가"
+    ]
+  },
+  {
+    "cat": "Edge Defect",
+    "title": "Side Wrinkle은 왜 발생합니까?",
+    "prompt": "Edge stress, tension, calendering, coating/drying nonuniformity를 말하세요.",
+    "answer": [
+      "Side wrinkle은 전극 edge 부위에 국부적인 압축 또는 장력 불균형이 발생하면서 주름이 생기는 현상입니다.",
+      "원인으로는 web tension 불안정, roller alignment, calender pressure imbalance, coating edge 두께 편차, drying shrinkage 차이, bare foil width 조건을 볼 수 있습니다.",
+      "특히 calendering 후에 심해진다면 roll gap, pressure, edge thickness profile, web tracking을 확인해야 합니다.",
+      "Side wrinkle은 slitting, notching, stacking에서 feeding과 alignment 문제로 이어질 수 있어 단순 외관 불량이 아니라 후공정 risk로 봐야 합니다."
+    ],
+    "tails": [
+      "Side wrinkle이 calender 후 심해지는 이유는 무엇인가요?",
+      "Tension 문제인지 coating 문제인지 어떻게 구분하나요?",
+      "Side wrinkle 개선 시 첫 번째로 볼 데이터는 무엇인가요?"
+    ],
+    "checks": [
+      "주름 발생 메커니즘을 설명했는가",
+      "원인을 4개 이상 언급했는가",
+      "calender 이후 확인 항목을 말했는가",
+      "후공정 risk와 연결했는가"
+    ]
+  },
+  {
+    "cat": "Coating Defect",
+    "title": "Streak Defect는 왜 발생합니까?",
+    "prompt": "Die lip, agglomerate, pump pulsation, slurry property를 중심으로 답하세요.",
+    "answer": [
+      "Streak defect는 coating 방향으로 길게 나타나는 선형 결함입니다.",
+      "주요 원인은 die lip 오염이나 damage, slurry agglomerate, filter 불량, pump pulsation, 유량 분포 불균일, slot die gap 편차입니다.",
+      "또 slurry viscosity나 rheology가 불안정하면 coating bead가 흔들려 streak가 발생할 수 있습니다.",
+      "해결을 위해서는 die lip cleaning, filtration, slurry dispersion 확인, pump 안정성, pressure trend, streak 위치 재현성을 확인해야 합니다."
+    ],
+    "tails": [
+      "Streak가 항상 같은 위치에 있으면 무엇을 의심하나요?",
+      "Streak가 랜덤하면 무엇을 의심하나요?",
+      "Die lip cleaning 외에 어떤 조치를 하겠습니까?"
+    ],
+    "checks": [
+      "streak 정의를 말했는가",
+      "설비/재료 원인을 구분했는가",
+      "위치 재현성 분석을 언급했는가",
+      "해결 접근을 제시했는가"
+    ]
+  },
+  {
+    "cat": "Coating Defect",
+    "title": "Ribbing 현상은 무엇입니까?",
+    "prompt": "Coating bead instability와 줄무늬 패턴으로 설명하세요.",
+    "answer": [
+      "Ribbing은 coating 표면에 일정한 간격의 줄무늬 또는 물결무늬가 생기는 현상으로, coating bead instability와 관련이 있습니다.",
+      "원인은 line speed, die gap, flow rate, slurry viscosity/rheology, surface tension, wetting 상태가 coating window를 벗어날 때 발생할 수 있습니다.",
+      "Ribbing이 발생하면 thickness uniformity가 나빠지고 표면 품질과 loading profile에 영향을 줄 수 있습니다.",
+      "개선하려면 coating speed와 flow rate를 조정하고, slurry rheology, die gap, substrate wetting, coating bead 안정성을 확인해야 합니다."
+    ],
+    "tails": [
+      "Ribbing과 streak의 차이는 무엇인가요?",
+      "Coating window란 무엇인가요?",
+      "Ribbing이 발생할 때 speed를 낮추면 항상 해결되나요?"
+    ],
+    "checks": [
+      "ribbing 정의를 설명했는가",
+      "bead instability를 언급했는가",
+      "공정 변수와 연결했는가",
+      "개선 방향을 말했는가"
+    ]
+  },
+  {
+    "cat": "Coating Defect",
+    "title": "Air Bubble이 Coating에 미치는 영향은 무엇입니까?",
+    "prompt": "Pinhole, void, streak, pump instability를 설명하세요.",
+    "answer": [
+      "Air bubble이 slurry 안에 남아 있으면 coating 중 pinhole, void, surface defect의 원인이 될 수 있습니다.",
+      "기포가 slot die나 coating bead를 지나가면 순간적으로 slurry 공급이 불안정해지고 coating thickness variation이나 streak가 생길 수 있습니다.",
+      "또 pump pressure fluctuation이나 filter 문제를 유발할 수도 있습니다.",
+      "따라서 mixing 후 deaeration, vacuum defoaming, slurry transfer 조건, tank agitation, filtration 상태를 관리해야 합니다."
+    ],
+    "tails": [
+      "기포는 mixing 중 왜 발생하나요?",
+      "Deaeration이 부족하면 어떤 defect가 생기나요?",
+      "기포와 pinhole을 어떻게 연결해서 설명하나요?"
+    ],
+    "checks": [
+      "기포 영향 불량을 말했는가",
+      "slot die/pump 영향과 연결했는가",
+      "탈포 관리 방법을 설명했는가",
+      "pinhole 원인을 설명했는가"
+    ]
+  },
+  {
+    "cat": "Alignment",
+    "title": "A/B Side Alignment가 중요한 이유는 무엇입니까?",
+    "prompt": "양면 코팅 위치 정밀도가 notching/stacking/welding에 미치는 영향을 설명하세요.",
+    "answer": [
+      "A/B side alignment는 양면 코팅에서 앞면과 뒷면의 coating 위치가 얼마나 잘 맞는지를 의미합니다.",
+      "A/B alignment가 나쁘면 electrode edge, tab 위치, active area 위치가 설계와 달라져 notching, stacking, welding에서 정렬 문제가 생길 수 있습니다.",
+      "또 양면 loading balance와 geometry가 맞지 않으면 cell capacity variation이나 local stress 문제로 이어질 수 있습니다.",
+      "따라서 A/B alignment는 coating width와 loading만큼 중요한 치수 CTQ로 보고 capability를 관리해야 합니다."
+    ],
+    "tails": [
+      "A/B alignment는 어떻게 측정하나요?",
+      "Alignment 불량은 어떤 후공정 불량으로 이어지나요?",
+      "EPC가 alignment에 어떤 역할을 하나요?"
+    ],
+    "checks": [
+      "A/B alignment 정의를 말했는가",
+      "후공정 영향이 드러났는가",
+      "치수 CTQ로 설명했는가",
+      "capability 관리 필요성을 언급했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "Binder Migration이 무엇입니까?",
+    "prompt": "건조 중 binder가 표면으로 이동해 adhesion과 resistance에 영향을 주는 현상입니다.",
+    "answer": [
+      "Binder migration은 drying 과정에서 용매가 증발하면서 binder가 전극 표면 쪽으로 이동해 농도 구배가 생기는 현상입니다.",
+      "건조가 너무 빠르면 표면에서 용매가 급격히 증발하고 내부 용매가 표면으로 이동하면서 binder도 함께 이동할 수 있습니다.",
+      "그 결과 집전체와 active layer 계면의 binder가 부족해져 adhesion이 약해지고, 표면 쪽 binder가 많아져 ion transport나 resistance에 영향을 줄 수 있습니다.",
+      "따라서 drying profile은 초기 구간에서 너무 급격한 건조를 피하고, zone별 온도와 airflow를 균형 있게 설정하는 것이 중요합니다."
+    ],
+    "tails": [
+      "Binder migration이 adhesion을 낮추는 이유는 무엇인가요?",
+      "건조 profile을 어떻게 바꾸면 완화할 수 있나요?",
+      "표면 binder가 많으면 성능에 어떤 영향이 있나요?"
+    ],
+    "checks": [
+      "migration 정의를 설명했는가",
+      "건조 속도와 연결했는가",
+      "adhesion/resistance 영향을 말했는가",
+      "profile 개선 방향을 제시했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "건조 온도가 너무 높으면 어떤 문제가 발생합니까?",
+    "prompt": "Binder migration, cracking, adhesion 저하, surface skinning을 말하세요.",
+    "answer": [
+      "건조 온도가 너무 높으면 용매가 급격히 증발하면서 binder migration이나 surface skinning이 발생할 수 있습니다.",
+      "표면이 먼저 마르면 내부 용매 이동이 제한되고, 전극 내부 구조가 불균일해질 수 있습니다.",
+      "또 drying stress가 커져 cracking, curling, adhesion 저하가 발생할 수 있고, 일부 소재나 binder에 열적 손상을 줄 수도 있습니다.",
+      "따라서 높은 온도를 무조건 적용하기보다 zone별로 점진적인 drying profile을 설계해야 합니다."
+    ],
+    "tails": [
+      "Surface skinning이란 무엇인가요?",
+      "건조 온도를 올리면 생산성은 왜 좋아질 수 있나요?",
+      "높은 온도의 trade-off는 무엇인가요?"
+    ],
+    "checks": [
+      "과건조 문제를 설명했는가",
+      "binder migration을 언급했는가",
+      "cracking/curling과 연결했는가",
+      "점진 profile을 말했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "건조 온도가 너무 낮으면 어떤 문제가 발생합니까?",
+    "prompt": "Residual solvent, drying 부족, adhesion/후공정 문제를 설명하세요.",
+    "answer": [
+      "건조 온도가 너무 낮으면 용매 제거가 충분하지 않아 residual solvent가 남을 수 있습니다.",
+      "Residual solvent는 전극의 기계적 강도, adhesion, calendering 안정성, cell 성능에 부정적인 영향을 줄 수 있습니다.",
+      "또 drying 시간이 길어져 생산성이 떨어지고, 완전히 건조되지 않은 전극은 winding이나 calendering 중 blocking, sticking, deformation 문제가 생길 수 있습니다.",
+      "따라서 낮은 온도 조건에서는 residence time, airflow, solvent removal rate를 함께 확인해야 합니다."
+    ],
+    "tails": [
+      "Residual solvent는 어떻게 측정할 수 있나요?",
+      "건조 부족이 calendering에 미치는 영향은 무엇인가요?",
+      "온도 대신 residence time을 늘리면 항상 해결되나요?"
+    ],
+    "checks": [
+      "저온 건조 문제를 설명했는가",
+      "residual solvent를 언급했는가",
+      "후공정 문제와 연결했는가",
+      "생산성 trade-off를 말했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "Drying Profile은 어떻게 설정합니까?",
+    "prompt": "초기/중간/후반 zone 역할과 용매 제거 속도를 설명하세요.",
+    "answer": [
+      "Drying profile은 slurry의 solvent evaporation behavior, coating loading, wet thickness, line speed, dryer length를 고려해서 설정합니다.",
+      "초기 zone에서는 너무 급격한 표면 건조를 피해서 binder migration과 cracking을 줄이고, 중간 zone에서는 안정적으로 용매를 제거합니다.",
+      "후반 zone에서는 residual solvent를 낮추되 과도한 열 손상이나 전극 변형이 없도록 관리합니다.",
+      "결국 drying profile은 adhesion, porosity, residual solvent, 생산성을 동시에 만족하는 process window로 설정해야 합니다."
+    ],
+    "tails": [
+      "초기 zone 온도를 너무 높이면 왜 문제가 되나요?",
+      "Line speed가 빨라지면 drying profile은 어떻게 바뀌어야 하나요?",
+      "Airflow는 drying에 어떤 영향을 주나요?"
+    ],
+    "checks": [
+      "zone별 역할을 설명했는가",
+      "binder migration 방지를 언급했는가",
+      "residual solvent와 연결했는가",
+      "생산성까지 고려했는가"
+    ]
+  },
+  {
+    "cat": "Drying",
+    "title": "Solvent Residual은 왜 관리해야 합니까?",
+    "prompt": "전극 안정성, cell 성능, 후공정 risk, 안전 관점으로 답하세요.",
+    "answer": [
+      "Residual solvent는 drying 후 전극에 남아 있는 용매로, 전극 품질과 cell 성능에 영향을 줄 수 있어 관리해야 합니다.",
+      "잔류 용매가 많으면 binder network 형성이 불완전하거나 전극 mechanical strength가 낮아질 수 있고, calendering이나 cell assembly에서 deformation 문제가 생길 수 있습니다.",
+      "또 cell 내부에서 electrolyte와 interaction하거나 gas generation, impedance 증가, cycle performance 저하로 이어질 수 있습니다.",
+      "따라서 drying 조건과 residual solvent 측정을 통해 spec 이내로 관리해야 합니다."
+    ],
+    "tails": [
+      "Residual solvent 측정 방법은 무엇이 있나요?",
+      "NMP 잔류가 많으면 어떤 문제가 생기나요?",
+      "Drying 부족과 adhesion은 어떤 관계인가요?"
+    ],
+    "checks": [
+      "residual solvent 정의를 말했는가",
+      "후공정과 cell 성능 영향을 설명했는가",
+      "gas/impedance risk를 언급했는가",
+      "spec 관리 필요성을 말했는가"
+    ]
+  },
+  {
+    "cat": "Calendering",
+    "title": "Density와 Porosity 관계를 설명해 보세요.",
+    "prompt": "Density가 올라가면 porosity가 낮아지는 trade-off를 말하세요.",
+    "answer": [
+      "전극 density와 porosity는 서로 반대 방향으로 움직이는 경우가 많습니다.",
+      "Calendering 압력을 높이면 전극이 더 압축되어 density는 증가하고 porosity는 감소합니다.",
+      "Density가 높아지면 volumetric energy density와 입자 간 contact는 좋아질 수 있지만, porosity가 너무 낮아지면 electrolyte wetting과 lithium ion transport가 나빠질 수 있습니다.",
+      "따라서 최적 calender 조건은 전기적 contact와 ion transport 사이의 균형을 맞추는 것입니다."
+    ],
+    "tails": [
+      "Porosity가 너무 낮으면 rate capability가 왜 나빠지나요?",
+      "Density가 너무 낮으면 어떤 문제가 있나요?",
+      "Calendering으로 resistance가 좋아질 수도 나빠질 수도 있는 이유는 무엇인가요?"
+    ],
+    "checks": [
+      "density/porosity 반비례를 설명했는가",
+      "장점과 단점을 모두 말했는가",
+      "ion transport를 언급했는가",
+      "최적 균형으로 마무리했는가"
+    ]
+  },
+  {
+    "cat": "Calendering",
+    "title": "압연률(Reduction Ratio)이 높으면 어떤 문제가 발생합니까?",
+    "prompt": "Cracking, pore collapse, adhesion 저하, edge defect를 설명하세요.",
+    "answer": [
+      "압연률이 높다는 것은 calendering에서 전극을 많이 압축한다는 의미입니다.",
+      "적정 수준에서는 density와 contact가 좋아지지만, 과도하면 pore collapse가 발생해 electrolyte wetting과 ion transport가 나빠질 수 있습니다.",
+      "또 active layer cracking, delamination, adhesion 저하, edge wrinkle, particle generation이 생길 수 있습니다.",
+      "따라서 reduction ratio는 target density와 thickness뿐 아니라 porosity, resistance, adhesion, defect risk를 함께 보고 설정해야 합니다."
+    ],
+    "tails": [
+      "Reduction ratio를 어떻게 계산하나요?",
+      "과도한 압연이 adhesion을 떨어뜨리는 이유는 무엇인가요?",
+      "압연률과 cell resistance는 어떤 관계인가요?"
+    ],
+    "checks": [
+      "압연률 의미를 설명했는가",
+      "pore collapse를 언급했는가",
+      "기계적 결함을 말했는가",
+      "여러 response를 함께 봐야 한다고 설명했는가"
+    ]
+  },
+  {
+    "cat": "Cracking",
+    "title": "Electrode Cracking 원인은 무엇입니까?",
+    "prompt": "재료, drying, calendering, handling stress를 나눠서 설명하세요.",
+    "answer": [
+      "Electrode cracking은 active layer에 균열이 발생하는 결함으로, 재료, drying, calendering, handling stress가 복합적으로 작용할 수 있습니다.",
+      "재료 측면에서는 binder 부족, 분산 불량, brittle한 전극 구조, particle size distribution 문제가 원인이 될 수 있습니다.",
+      "공정 측면에서는 급격한 drying으로 인한 수축 stress, 과도한 calender pressure, 높은 reduction ratio, web tension이나 bending stress가 영향을 줄 수 있습니다.",
+      "Crack은 particle 발생, adhesion 저하, resistance 증가, safety risk로 이어질 수 있으므로 발생 위치와 공정 시점을 먼저 구분해 원인을 찾아야 합니다."
+    ],
+    "tails": [
+      "Crack이 coating 후 생겼는지 calender 후 생겼는지 어떻게 구분하나요?",
+      "Binder가 crack에 미치는 영향은 무엇인가요?",
+      "Cracking을 줄이기 위한 개선 방향은 무엇인가요?"
+    ],
+    "checks": [
+      "원인을 카테고리별로 설명했는가",
+      "drying/calendering을 모두 언급했는가",
+      "품질 영향을 말했는가",
+      "발생 시점 구분을 언급했는가"
+    ]
+  },
+  {
+    "cat": "Calendering",
+    "title": "Calendering 후 Curling이 발생하는 이유는 무엇입니까?",
+    "prompt": "양면 stress imbalance, density gradient, foil/coating 특성 차이를 설명하세요.",
+    "answer": [
+      "Calendering 후 curling은 전극 양면 또는 폭 방향의 응력 균형이 맞지 않을 때 발생할 수 있습니다.",
+      "원인으로는 A/B side coating loading 차이, thickness 차이, density gradient, roll pressure imbalance, foil과 coating layer의 기계적 특성 차이를 볼 수 있습니다.",
+      "또 drying 과정에서 이미 stress가 형성된 상태에서 calendering 압축이 더해지면 curling이 심해질 수 있습니다.",
+      "Curling은 feeding, notching, stacking alignment에 영향을 주기 때문에 calender 조건뿐 아니라 coating balance와 drying history까지 함께 봐야 합니다."
+    ],
+    "tails": [
+      "A/B loading 차이가 curling에 영향을 주는 이유는 무엇인가요?",
+      "Curling과 wrinkle은 어떻게 다르게 접근하나요?",
+      "Calender roll temperature가 curling에 영향을 줄 수 있나요?"
+    ],
+    "checks": [
+      "stress imbalance로 설명했는가",
+      "A/B side 차이를 언급했는가",
+      "drying history와 연결했는가",
+      "후공정 문제를 말했는가"
+    ]
+  },
+  {
+    "cat": "품질/데이터",
+    "title": "SPC는 왜 사용하는 것입니까?",
+    "prompt": "공정 변동을 조기에 감지하고 안정성을 관리하는 도구로 설명하세요.",
+    "answer": [
+      "SPC는 Statistical Process Control의 약자로, 공정 데이터를 통계적으로 모니터링하여 이상 변동을 조기에 감지하기 위해 사용합니다.",
+      "전극 공정에서는 loading, thickness, density, viscosity, solid content 같은 CTQ를 관리도와 CPK로 모니터링할 수 있습니다.",
+      "SPC를 사용하면 spec out이 발생한 후 대응하는 것이 아니라 trend shift나 variation 증가를 미리 파악할 수 있습니다.",
+      "따라서 SPC는 품질 문제 예방, 공정 안정화, 원인분석 속도 향상에 중요한 도구입니다."
+    ],
+    "tails": [
+      "관리한계와 규격한계의 차이는 무엇인가요?",
+      "CPK와 SPC는 어떻게 다르나요?",
+      "전극에서 SPC로 관리할 항목은 무엇인가요?"
+    ],
+    "checks": [
+      "SPC 목적을 설명했는가",
+      "전극 CTQ 예시를 들었는가",
+      "사전 예방 관점을 말했는가",
+      "관리도/CPK를 언급했는가"
+    ]
+  },
+  {
+    "cat": "문제 해결",
+    "title": "품질 불량이 발생했을 때 어떻게 접근합니까?",
+    "prompt": "Containment → 데이터 확인 → 원인분석 → 개선 → 검증 순서로 답하세요.",
+    "answer": [
+      "품질 불량이 발생하면 먼저 containment를 통해 불량품이 다음 공정이나 고객으로 넘어가지 않도록 조치합니다.",
+      "그다음 불량 발생 시점, lot, 장비, operator, 원재료 batch, 공정 조건 변화를 확인해 데이터를 수집합니다.",
+      "원인분석은 5 Why, fishbone, trend 분석, DOE 또는 조건 비교를 활용해 material, machine, method, environment 측면으로 나누어 진행합니다.",
+      "개선안을 적용한 후에는 단기 효과뿐 아니라 재발 방지를 위해 validation, control plan, work instruction, SPC monitoring까지 연결해야 합니다."
+    ],
+    "tails": [
+      "Containment가 왜 먼저인가요?",
+      "원인분석 시 가장 먼저 확인할 데이터는 무엇인가요?",
+      "개선 후 재발 방지는 어떻게 하나요?"
+    ],
+    "checks": [
+      "containment를 먼저 말했는가",
+      "데이터 기반 접근을 설명했는가",
+      "분석 도구를 언급했는가",
+      "검증/재발방지까지 포함했는가"
+    ]
+  },
+  {
+    "cat": "공정 최적화",
+    "title": "공정 최적화 경험을 설명해 보세요.",
+    "prompt": "실제 경험은 Vacuum Decay DOE, 전극에는 동일한 접근을 적용한다고 연결하세요.",
+    "answer": [
+      "공정 최적화 경험으로는 Vacuum Decay 검사에서 false good risk를 줄이기 위해 조건을 최적화한 사례를 설명할 수 있습니다.",
+      "당시에는 vacuum level, hold time, hold vacuum threshold를 주요 인자로 두고, 검사 안정성과 false good risk를 response로 보면서 조건을 비교했습니다.",
+      "이 경험을 통해 공정 최적화는 단순히 조건을 바꾸는 것이 아니라 factor와 response를 명확히 정의하고, 품질과 생산성의 trade-off를 고려해 최적 window를 찾는 과정이라는 점을 배웠습니다.",
+      "전극 공정에서도 같은 방식으로 slurry viscosity, solid content, coating gap, drying profile, calender pressure를 factor로 두고 loading, thickness, density, adhesion, CPK를 response로 설정해 최적화할 수 있다고 생각합니다."
+    ],
+    "tails": [
+      "전극 공정에서 factor와 response를 어떻게 잡겠습니까?",
+      "품질과 생산성 trade-off 예시는 무엇인가요?",
+      "DOE와 단순 조건 비교의 차이는 무엇인가요?"
+    ],
+    "checks": [
+      "실제 경험을 간단히 언급했는가",
+      "factor/response를 설명했는가",
+      "trade-off를 말했는가",
+      "전극 공정에 연결했는가"
+    ]
+  },
+  {
+    "cat": "전체 경험",
+    "title": "전극 품질 개선 경험이 있습니까?",
+    "prompt": "ONE TFT1의 loading/thickness/density와 edge/alignment 사례 중 1~2개를 골라 말하세요.",
+    "answer": [
+      "네. ONE TFT1 자료를 기반으로 전극 품질 안정화 활동을 검토하면서 loading, thickness, density, alignment, edge defect를 중심으로 개선 접근을 학습했습니다.",
+      "예를 들어 Anode에서는 slurry viscosity와 solid content가 loading, calendered thickness, density, CPK에 어떤 영향을 주는지 DOE 데이터로 확인했습니다.",
+      "또 side wrinkle이나 edge curling 같은 문제는 단순 외관 불량이 아니라 coating edge, bare foil width, calendering, web handling이 연결된 문제로 보고 접근했습니다.",
+      "Cathode에서는 B-side coating capability, ceramic coating width/gap, A/B alignment를 관리하면서 active material loading뿐 아니라 geometry와 위치 정밀도도 중요하다는 점을 확인했습니다.",
+      "이 경험을 통해 전극 품질 개선은 단일 조건 변경보다 CTQ를 정하고 데이터를 기반으로 원인을 좁혀가는 방식이 중요하다고 생각하게 되었습니다."
+    ],
+    "tails": [
+      "구체적인 개선 사례 하나만 설명해 보세요.",
+      "Anode와 Cathode 중 어떤 사례가 더 기억에 남나요?",
+      "전극 품질 개선에서 가장 먼저 볼 데이터는 무엇인가요?"
+    ],
+    "checks": [
+      "ONE 사례를 근거로 말했는가",
+      "Anode/Cathode 중 1~2개 사례를 골랐는가",
+      "CTQ/CPK를 언급했는가",
+      "데이터 기반 개선으로 마무리했는가"
+    ]
+  }
+];
+
+
+function ensureQuestionIds(){
+  cards.forEach((c,i)=>{
+    if(!c.questionId){
+      c.questionId = "q_" + String(i+1).padStart(3,"0") + "_" +
+        c.title.toLowerCase().replace(/[^\w가-힣]+/g,"_").replace(/^_+|_+$/g,"");
+    }
+  });
+}
+ensureQuestionIds();
+
+function currentQuestionId(){
+  return cards[idx].questionId;
+}
+
+let idx=0, show=false, timer=null, remaining=180, total=180;
+const done = JSON.parse(localStorage.getItem("doneCards")||"{}");
+const memos = JSON.parse(localStorage.getItem("memos")||"{}");
+const memoHistory = JSON.parse(localStorage.getItem("memoHistory")||"[]");
+let historyMode = "current";
+
+const $=id=>document.getElementById(id);
+
+
+
+function closeMobileQuestionListAfterSelect(){
+  const qList = document.getElementById("qList");
+  const toggle = document.getElementById("mobileQuestionToggle");
+  if(window.matchMedia("(max-width: 900px)").matches && qList && qList.classList.contains("mobileOpen")){
+    qList.classList.remove("mobileOpen");
+    if(toggle) toggle.textContent = "질문 목록 열기/닫기";
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+}
+
+function setupMobileLayout(){
+  const toggle = document.getElementById("mobileQuestionToggle");
+  const qList = document.getElementById("qList");
+  if(toggle && qList && !toggle.dataset.ready){
+    toggle.dataset.ready = "1";
+    toggle.onclick = ()=>{
+      qList.classList.toggle("mobileOpen");
+      toggle.textContent = qList.classList.contains("mobileOpen") ? "질문 목록 닫기" : "질문 목록 열기/닫기";
+    };
+  }
+}
+
+function nowStamp(){
+  const d=new Date();
+  const pad=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+function saveMemoHistory(){
+  const text=$("memo").value.trim();
+  if(!text){
+    $("status").textContent="저장할 메모가 없습니다. 먼저 답변을 입력하세요.";
+    return;
+  }
+  const c=cards[idx];
+  memoHistory.unshift({
+    ts:nowStamp(),
+    qid:c.questionId,
+    idx,
+    title:c.title,
+    cat:c.cat,
+    prompt:c.prompt,
+    text
+  });
+  localStorage.setItem("memoHistory",JSON.stringify(memoHistory));
+  historyMode="current";
+  renderHistory();
+  setupMobileLayout();
+  setTimeout(autoResizeAllHistoryTextareas, 150);
+  $("status").textContent="현재 답변을 날짜/시간과 함께 저장했습니다.";
+}
+function renderHistory(){
+  const box=$("historyList");
+  if(!box) return;
+  const list=historyMode==="all" ? memoHistory : memoHistory.filter(x=>(x.qid||cards[x.idx]?.questionId)===currentQuestionId());
+  if(list.length===0){
+    box.innerHTML=`<div class="historyItem"><div class="historyText">아직 저장된 기록이 없습니다.</div></div>`;
+    return;
+  }
+  box.innerHTML=list.map((x)=>{
+    const originalIndex = memoHistory.indexOf(x);
+    return `
+      <div class="historyItem">
+        <div class="historyMeta">${x.ts} · ${escapeHtml(x.cat||"")} · ${escapeHtml(x.title||"")}</div>
+        <textarea class="historyEdit" id="historyEdit_${originalIndex}" oninput="autoResizeTextarea(this)" onfocus="autoResizeTextarea(this)" rows="1">${escapeHtml(x.text||"")}</textarea>
+        <div class="historyActions">
+          <button class="btn good" onclick="saveHistoryEdit(${originalIndex})">이 기록 수정 저장</button>
+          <button class="btn bad" onclick="deleteHistoryRecord(${originalIndex})">이 기록 삭제</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+  requestAnimationFrame(autoResizeAllHistoryTextareas);
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+}
+function exportMemoHistory(){
+  const data=memoHistory.map(x=>`[${x.ts}] ${x.cat} / ${x.title}\n${x.text}\n`).join("\n---\n\n");
+  const blob=new Blob([data || "저장된 답변 기록이 없습니다."],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=`Electrode_Process_Interview_답변기록_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  $("status").textContent="답변 기록을 txt 파일로 내보냈습니다.";
+}
+
+
+
+function autoResizeTextarea(el){
+  if(!el) return;
+  el.style.overflow = "hidden";
+  el.style.height = "1px";
+  el.style.height = (el.scrollHeight + 8) + "px";
+}
+
+function autoResizeAllHistoryTextareas(){
+  document.querySelectorAll(".historyEdit").forEach(el=>{
+    autoResizeTextarea(el);
+    setTimeout(()=>autoResizeTextarea(el), 0);
+    setTimeout(()=>autoResizeTextarea(el), 100);
+  });
+}
+
+
+function saveHistoryEdit(historyIndex){
+  const ta = document.getElementById("historyEdit_" + historyIndex);
+  if(!ta || !memoHistory[historyIndex]) return;
+  memoHistory[historyIndex].text = ta.value;
+  memoHistory[historyIndex].editedAt = nowStamp();
+  localStorage.setItem("memoHistory", JSON.stringify(memoHistory));
+  renderHistory();
+  $("status").textContent = "선택한 저장 기록을 수정했습니다.";
+}
+
+function deleteHistoryRecord(historyIndex){
+  if(!memoHistory[historyIndex]) return;
+  if(!confirm("이 저장 기록을 삭제하시겠습니까?")) return;
+  memoHistory.splice(historyIndex, 1);
+  localStorage.setItem("memoHistory", JSON.stringify(memoHistory));
+  renderHistory();
+  $("status").textContent = "선택한 저장 기록을 삭제했습니다.";
+}
+
+function exportHtmlBackup(){
+  try{
+    const backup = {
+      exportedAt: new Date().toISOString(),
+      app: "전극 프로세스 엔지니어 인터뷰 연습",
+      version: "editable-localStorage-html-backup-v2",
+      data: {
+        doneCards: JSON.parse(localStorage.getItem("doneCards") || "{}"),
+        memos: JSON.parse(localStorage.getItem("memos") || "{}"),
+        memoHistory: JSON.parse(localStorage.getItem("memoHistory") || "[]")
+      }
+    };
+
+    let htmlText = document.documentElement.outerHTML;
+    const assignment = "window.__INTERVIEW_BACKUP__ = " + JSON.stringify(backup).replace(/</g, "\\u003c") + ";";
+
+    if(htmlText.includes("window.__INTERVIEW_BACKUP__ = window.__INTERVIEW_BACKUP__ || null;")){
+      htmlText = htmlText.replace(
+        "window.__INTERVIEW_BACKUP__ = window.__INTERVIEW_BACKUP__ || null;",
+        assignment
+      );
+    } else if(/window\.__INTERVIEW_BACKUP__\s*=/.test(htmlText)){
+      htmlText = htmlText.replace(/window\.__INTERVIEW_BACKUP__\s*=\s*[\s\S]*?;/, assignment);
+    } else {
+      htmlText = htmlText.replace("<script>", "<script>\n" + assignment + "\n");
+    }
+
+    const blob = new Blob(["<!DOCTYPE html>\n" + htmlText], {type:"text/html;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const d = new Date();
+    const pad = n => String(n).padStart(2,"0");
+    const stamp = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+    a.href = url;
+    a.download = `전극_인터뷰_기록포함_${stamp}.html`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    $("status").textContent = "저장 기록을 포함한 HTML 파일을 생성했습니다. 이 파일 하나만 보내도 기록을 볼 수 있습니다.";
+  }catch(e){
+    console.error(e);
+    $("status").textContent = "기록 포함 HTML 생성 중 오류가 발생했습니다: " + e.message;
+  }
+}
+
+function restoreHtmlBackupIfNeeded(){
+  if(!window.__INTERVIEW_BACKUP__ || !window.__INTERVIEW_BACKUP__.data) return;
+
+  const key = "htmlBackupRestored_" + (window.__INTERVIEW_BACKUP__.exportedAt || "backup");
+  if(localStorage.getItem(key)) return;
+
+  const ok = confirm("이 HTML에는 저장 기록 백업이 포함되어 있습니다. 현재 브라우저에 복원할까요?");
+  if(!ok){
+    localStorage.setItem(key, "skipped");
+    return;
+  }
+
+  const data = window.__INTERVIEW_BACKUP__.data;
+  localStorage.setItem("doneCards", JSON.stringify(data.doneCards || {}));
+  localStorage.setItem("memos", JSON.stringify(data.memos || {}));
+  localStorage.setItem("memoHistory", JSON.stringify(data.memoHistory || []));
+
+  localStorage.setItem(key, "restored");
+  alert("저장 기록을 복원했습니다. 페이지를 새로고침하면 복원된 기록이 표시됩니다.");
+  location.reload();
+}
+
+
+function renderList(){
+  const q=$("search").value.toLowerCase();
+  $("qList").innerHTML="";
+  cards.forEach((c,i)=>{
+    const text=(c.title+" "+c.cat+" "+c.prompt).toLowerCase();
+    if(q && !text.includes(q)) return;
+    const b=document.createElement("button");
+    b.className="qItem"+(i===idx?" active":"")+(done[i]?" done":"");
+    b.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span>${c.title}<br><span style="font-size:12px;color:#94a3b8">${c.cat}</span>`;
+    b.onclick=()=>{idx=i;show=false;render();closeMobileQuestionListAfterSelect();};
+    $("qList").appendChild(b);
+  });
+}
+function render(){
+  const c=cards[idx];
+  $("meta").innerHTML=`<span class="pill">${idx+1} / ${cards.length}</span><span class="pill">${c.cat}</span><span class="pill">${done[idx]?"외웠음":"연습 중"}</span>`;
+  $("question").textContent=c.title;
+  $("prompt").textContent=c.prompt;
+  $("answerText").innerHTML=c.answer.map(p=>`<p>${p}</p>`).join("");
+  $("tails").innerHTML=c.tails.map(t=>`<p>• ${t}</p>`).join("");
+  $("checks").innerHTML=c.checks.map(ch=>`<label class="check"><input type="checkbox"> ${ch}</label>`).join("");
+  $("answer").className="answer"+(show?" show":"");
+  $("memo").value=memos[idx]||"";
+  $("status").textContent="먼저 답변을 말해본 뒤, 답변 보기를 누르세요.";
+  renderHistory();
+  renderList();
+  setTime(parseInt($("timeSelect").value,10), false);
+}
+function setTime(sec, updateTotal=true){
+  if(updateTotal) total=sec;
+  remaining=sec;
+  updateTimer();
+}
+function updateTimer(){
+  const m=Math.floor(remaining/60), s=remaining%60;
+  $("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  const pct=100*(1-remaining/total);
+  $("progress").style.width=Math.max(0,Math.min(100,pct))+"%";
+}
+$("showBtn").onclick=()=>{show=!show;render()};
+$("doneBtn").onclick=()=>{done[idx]=!done[idx];localStorage.setItem("doneCards",JSON.stringify(done));render()};
+$("randomBtn").onclick=()=>{idx=Math.floor(Math.random()*cards.length);show=false;render()};
+$("prevBtn").onclick=()=>{idx=(idx-1+cards.length)%cards.length;show=false;render()};
+$("nextBtn").onclick=()=>{idx=(idx+1)%cards.length;show=false;render()};
+$("printBtn").onclick=()=>window.print();
+$("search").oninput=renderList;
+$("timeSelect").onchange=e=>{clearInterval(timer);timer=null;total=parseInt(e.target.value,10);setTime(total,false)};
+$("startBtn").onclick=()=>{
+  if(timer){clearInterval(timer);timer=null;$("startBtn").textContent="타이머 시작";return;}
+  $("startBtn").textContent="일시정지";
+  timer=setInterval(()=>{
+    remaining--;
+    if(remaining<=0){remaining=0;clearInterval(timer);timer=null;$("startBtn").textContent="타이머 시작";$("status").textContent="시간 종료. 이제 답변 보기로 비교해보세요.";}
+    updateTimer();
+  },1000);
+};
+$("resetBtn").onclick=()=>{clearInterval(timer);timer=null;$("startBtn").textContent="타이머 시작";setTime(parseInt($("timeSelect").value,10),false)};
+$("saveMemoBtn").onclick=saveMemoHistory;
+
+$("clearCurrentHistoryBtn").onclick=()=>{
+  if(confirm("현재 질문의 저장 기록만 모두 삭제하시겠습니까?")){
+    for(let i=memoHistory.length-1;i>=0;i--){
+      if(memoHistory[i].idx===idx){
+        memoHistory.splice(i,1);
+      }
+    }
+    localStorage.setItem("memoHistory",JSON.stringify(memoHistory));
+    delete memos[idx];
+    localStorage.setItem("memos",JSON.stringify(memos));
+    document.getElementById("memo").value="";
+    renderHistory();
+    document.getElementById("status").textContent="현재 질문의 기록을 모두 삭제했습니다.";
+  }
+};
+
+$("showCurrentHistoryBtn").onclick=()=>{historyMode="current";renderHistory();$("status").textContent="현재 질문의 저장 기록을 보고 있습니다."};
+$("showAllHistoryBtn").onclick=()=>{historyMode="all";renderHistory();$("status").textContent="전체 저장 기록을 보고 있습니다."};
+$("exportMemoBtn").onclick=exportMemoHistory;
+$("exportHtmlBackupBtn").onclick=exportHtmlBackup;
+
+$("clearAllHistoryBtn").onclick=()=>{
+  if(confirm("모든 저장 기록과 메모를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")){
+    localStorage.removeItem("memoHistory");
+    localStorage.removeItem("memos");
+    memoHistory.length = 0;
+    Object.keys(memos).forEach(k=>delete memos[k]);
+    document.getElementById("memo").value="";
+    renderHistory();
+    document.getElementById("status").textContent="전체 기록을 삭제했습니다.";
+  }
+};
+$("clearMemoBtn").onclick=()=>{if(confirm("현재 입력창의 내용만 지울까요? 저장된 기록은 유지됩니다.")){memos[idx]="";localStorage.setItem("memos",JSON.stringify(memos));$("memo").value="";$("status").textContent="현재 입력창을 지웠습니다. 저장된 기록은 유지됩니다.";}}
+$("memo").oninput=()=>{memos[idx]=$("memo").value;localStorage.setItem("memos",JSON.stringify(memos))};
+render();
+restoreHtmlBackupIfNeeded();
+</script>
+
+
+</body></html>
