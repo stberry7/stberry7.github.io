@@ -395,6 +395,65 @@ button,input,textarea,select{
 }
 </style>
 
+
+
+<style id="mobile-readable-floating-next-update">
+/* ===== Mobile readability update: hide utility buttons and float Next ===== */
+@media(max-width:900px){
+  body{
+    padding-bottom:calc(86px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* 모바일에서는 가독성을 위해 보조 기능 숨김 */
+  #printBtn,
+  #timeSelect,
+  #startBtn,
+  #resetBtn{
+    display:none !important;
+  }
+
+  /* 남는 버튼들이 너무 작아지지 않도록 정리 */
+  .topbar .controls{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  /* 다음 버튼은 항상 누를 수 있게 화면 하단 고정 */
+  #nextBtn{
+    position:fixed !important;
+    left:16px !important;
+    right:16px !important;
+    bottom:calc(14px + env(safe-area-inset-bottom)) !important;
+    width:auto !important;
+    min-height:56px !important;
+    z-index:9999 !important;
+    border-radius:18px !important;
+    background:var(--accent) !important;
+    color:#fff !important;
+    border-color:var(--accent) !important;
+    font-size:18px !important;
+    font-weight:900 !important;
+    box-shadow:0 12px 30px rgba(37,99,235,.35) !important;
+  }
+
+  #nextBtn:active{
+    transform:translateY(1px);
+  }
+
+  /* 하단 floating 버튼에 내용이 가리지 않게 카드 여백 확보 */
+  .main{
+    padding-bottom:86px !important;
+  }
+}
+
+@media(max-width:430px){
+  #nextBtn{
+    left:12px !important;
+    right:12px !important;
+    bottom:calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
