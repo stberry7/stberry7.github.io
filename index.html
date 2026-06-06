@@ -472,6 +472,45 @@ button,input,textarea,select{
 }
 
 </style>
+<style>
+
+/* Mobile viewer cleanup:
+   Hide timer/status controls and answer/action buttons, keep fixed Next button visible */
+@media(max-width:900px){
+  /* 3분 status bar / timer area */
+  #timeSelect,
+  #startBtn,
+  #resetBtn,
+  .timerBox,
+  #timer,
+  .progressWrap,
+  #progress{
+    display:none !important;
+  }
+
+  /* answer/action buttons inside card */
+  #showBtn,
+  #showAllAnswersBtn,
+  #doneBtn,
+  #deleteQuestionBtn{
+    display:none !important;
+  }
+
+  /* topbar buttons already not needed on mobile */
+  #printBtn,
+  #showAllAnswersTopBtn,
+  #deleteQuestionTopBtn,
+  #restoreQuestionsTopBtn{
+    display:none !important;
+  }
+
+  /* keep only random/prev in original controls if present; fixed Next is separate */
+  .card > .controls{
+    display:none !important;
+  }
+}
+
+</style>
 </head>
 <body>
 <button type="button" id="mobileFixedNextBtn" aria-label="다음 질문">다음</button>
