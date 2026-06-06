@@ -1618,21 +1618,26 @@ const cards = [
     "title": "슬러리 점도가 갑자기 변했다면 어떻게 대응하겠습니까?",
     "prompt": "점도 급변을 단순 재측정이 아니라 rheology, shear, aging, gelation 관점으로 설명하세요.",
     "answer": [
-      "슬러리 점도 급변이 발생하면 먼저 측정 장비와 샘플링 조건을 확인하되, 단순히 용매 증발이나 응집만으로 판단하지 않겠습니다.",
-      "점도가 상승한 경우 mixing 중 과도한 shear stress로 인한 binder 구조 변화, gelation 가능성, slurry temperature 변화, holding time 증가에 따른 aging effect를 확인하겠습니다.",
-      "코팅 라인 투입 전 점도 aging trend와 비교하여 정상적인 경시 변화인지 비정상 급변인지 판단하고, 필요 시 rheology curve, solid content, PSD, slurry resistance를 함께 확인하겠습니다.",
-      "기준을 벗어난 batch는 hold 처리하고, 원재료 lot, mixing sequence, rpm, mixing time, tank agitation, coating 대기 시간을 추적하여 재발 방지 조건을 표준화하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 슬러리 점도 급변이 발생하면 먼저 측정 장비와 샘플링 조건을 확인하되, 단순히 용매 증발이나 응집만으로 판단하지 않겠습니다. 점도가 상승한 경우 mixing 중 과도한 shear stress로 인한 binder 구조 변화, gelation 가능성, slurry temperature 변화, holding time 증가에 따른 aging effect를 확인하겠습니다.",
+      "현상: 슬러리 점도가 spec 대비 갑자기 상승/하락했는지, 측정 조건 문제인지 실제 물성 변화인지 먼저 구분한다.",
+      "패턴: Batch 전체인지, holding time 이후인지, 온도 변화와 연동되는지, mixing 후부터인지 coating 직전인지 trend를 본다.",
+      "공정: Mixing·저장·이송·코팅 전 QC 구간으로 나눠 원인을 좁힌다.",
+      "4M: Material: solvent 증발, 수분, binder/분산제, 원재료 lot. Machine: mixer shear, tank agitation, pump heat. Method: 투입 순서, mixing time/RPM, holding time. Man: 샘플링·측정 방법.",
+      "검증: 재측정, 온도 보정 점도, rheology sweep, solid content, pH/수분, PSD, aging trend를 비교한다.",
+      "조치: 단기적으로 lot hold·조건 원복·재분산/희석 가능성 평가. 장기적으로 holding time, 온도, mixing 조건, 점도 측정 표준을 강화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "점도 상승과 gelation은 어떻게 구분하나요?",
-      "Brookfield 점도만으로 부족한 이유는 무엇인가요?",
-      "Aging trend를 관리해야 하는 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "측정 신뢰성 확인을 언급했는가",
-      "shear stress/gelation/aging을 설명했는가",
-      "코팅 투입 전 trend 비교를 말했는가",
-      "batch hold와 재발 방지까지 말했는가"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1640,21 +1645,26 @@ const cards = [
     "title": "고형분 편차가 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "Solid content 편차를 loading, cell capacity, feeder 계량, moisture와 연결하세요.",
     "answer": [
-      "고형분 편차는 coating loading과 cell capacity에 직접 영향을 주기 때문에 즉시 해당 batch 또는 lot을 hold하고 영향 범위를 확인하겠습니다.",
-      "우선 원재료 투입량, solvent 투입량, loss-in-weight feeder 계량 로그, 배합 dump data를 확인해 계량 오차나 투입 순서 이상을 추적하겠습니다.",
-      "또한 원재료 자체의 moisture content 변동, 보관 중 solvent evaporation, tank open time, slurry temperature를 확인하겠습니다.",
-      "확인된 고형분 편차가 spec을 벗어나면 점도와 loading 예측값까지 연계 평가하고, 재조정 가능 여부 또는 폐기 판단을 진행하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 고형분 편차는 coating loading과 cell capacity에 직접 영향을 주기 때문에 즉시 해당 batch 또는 lot을 hold하고 영향 범위를 확인하겠습니다. 우선 원재료 투입량, solvent 투입량, loss-in-weight feeder 계량 로그, 배합 dump data를 확인해 계량 오차나 투입 순서 이상을 추적하겠습니다.",
+      "현상: 고형분 편차가 loading과 cell capacity로 이어질 수 있으므로 해당 batch/lot을 hold하고 spec 이탈 수준을 확인한다.",
+      "패턴: 특정 batch만인지, 계량 시점 이후 반복인지, 저장 중 solvent loss로 점진 변화인지 확인한다.",
+      "공정: 원재료 계량→mixing→저장→coating loading까지 연결해서 본다.",
+      "4M: Material: 원재료 수분·용매 순도. Machine: feeder/scale calibration, tank cover, 배관 누설. Method: 투입량, dump data, sampling 위치. Man: 계량 확인·기록 누락.",
+      "검증: solid content 재분석, feeder log, solvent 투입량, slurry weight balance, coating loading data를 대조한다.",
+      "조치: 단기적으로 영향 lot 격리 및 보정 가능성 평가. 장기적으로 계량기 PM, 자동 로그 확인, sampling SOP를 보완한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "고형분 편차가 cell capacity에 미치는 영향은 무엇인가요?",
-      "Loss-in-weight feeder data에서 무엇을 확인하나요?",
-      "Moisture content가 고형분에 영향을 줄 수 있는 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "cell capacity 영향 언급",
-      "feeder/dump data 확인",
-      "moisture/evaporation 검토",
-      "hold 및 disposition 판단"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1662,21 +1672,26 @@ const cards = [
     "title": "슬러리 분산 불량이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "현미경 확인을 넘어서 PSD D50/D99, slurry resistance, 도전재 network로 답하세요.",
     "answer": [
-      "분산 불량은 단순 외관이나 현미경 확인만으로 판단하지 않고 정량 데이터로 확인하겠습니다.",
-      "PSD 분석으로 D50, D90, D99 profile 변화를 확인하여 큰 응집체 증가 여부를 판단하고, slurry resistance 측정으로 도전재 network 형성 상태를 보겠습니다.",
-      "원인은 mixing time, rpm, blade condition, 투입 순서, wetting 부족, 전단 에너지 부족 또는 과다, 원재료 lot 편차로 나누어 분석하겠습니다.",
-      "분산 불량은 die clogging, streak, pinhole, loading variation으로 연결되므로 해당 batch를 격리하고 재분산 가능 여부를 검토하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 분산 불량은 단순 외관이나 현미경 확인만으로 판단하지 않고 정량 데이터로 확인하겠습니다. PSD 분석으로 D50, D90, D99 profile 변화를 확인하여 큰 응집체 증가 여부를 판단하고, slurry resistance 측정으로 도전재 network 형성 상태를 보겠습니다.",
+      "현상: 분산 불량은 응집·도전재 network 불량으로 보고 외관만이 아니라 정량 데이터로 확인한다.",
+      "패턴: 입자성 결함이 전체적으로 증가하는지, 특정 시간 이후 증가하는지, coating streak/pinhole과 같이 나타나는지 확인한다.",
+      "공정: Mixing, milling, filtration, storage/transfer, coating 직전 QC 순서로 원인을 추적한다.",
+      "4M: Material: 활물질 PSD, CNT/Carbon wetting, binder. Machine: mixer blade, mill gap, filter. Method: 투입 순서, shear energy, mixing time. Man: 필터 교체·세척·QC 판정.",
+      "검증: PSD D50/D90/D99, microscope, grind gauge, slurry resistance, filter residue, coating defect map을 비교한다.",
+      "조치: 단기적으로 재분산·여과·lot hold. 장기적으로 mixing recipe, 투입 순서, 필터 기준, 도전재 분산 조건을 최적화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "D99가 중요한 이유는 무엇인가요?",
-      "Slurry resistance가 낮거나 높으면 무엇을 의미하나요?",
-      "CNT나 carbon black 분산 불량은 코팅에 어떻게 나타나나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "PSD 지표 언급",
-      "slurry resistance 언급",
-      "mixing 인자 분리",
-      "코팅 불량과 연결"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1684,21 +1699,26 @@ const cards = [
     "title": "코팅 품질이 갑자기 저하되면 어떻게 대응하겠습니까?",
     "prompt": "비전 검사 Map, A/B면, MD/CD 방향, 유량 밸런스와 연계해 답하세요.",
     "answer": [
-      "코팅 품질이 갑자기 저하되면 우선 비전 검사기 defect map으로 불량 유형, 발생 위치, 발생 방향을 확인하겠습니다.",
-      "MD 방향인지 CD 방향인지, edge인지 center인지, A/B side 중 어느 쪽인지 구분해 원인을 좁히겠습니다.",
-      "그 다음 top/bottom flow balance, pump pressure trend, slurry viscosity, slot die 상태, coating gap, web speed, tension data를 정상 lot과 비교하겠습니다.",
-      "Streak라면 die clogging이나 응집, 두께 편차라면 유량·gap·pump pulsation, pinhole이라면 기포·오염·탈포 문제를 우선 의심하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 코팅 품질이 갑자기 저하되면 우선 비전 검사기 defect map으로 불량 유형, 발생 위치, 발생 방향을 확인하겠습니다. MD 방향인지 CD 방향인지, edge인지 center인지, A/B side 중 어느 쪽인지 구분해 원인을 좁히겠습니다.",
+      "현상: 코팅 품질 저하는 defect type을 먼저 정의한다. streak, pinhole, edge, 두께 편차, loading 편차를 구분한다.",
+      "패턴: 비전 map으로 MD/CD 방향, edge/center, A/B side, 연속/간헐, 특정 폭 위치 반복 여부를 본다.",
+      "공정: Slurry 상태→pump/flow→slot die→web tension→drying 초기까지 순서대로 좁힌다.",
+      "4M: Material: 점도·고형분·응집·기포. Machine: pump, die lip, shim, filter, tension. Method: flow rate, gap, speed. Man: 세팅·청소 이력.",
+      "검증: Defect map, thickness profile, pump pressure trend, slurry QC, die/filter 점검 이력을 비교한다.",
+      "조치: 단기적으로 조건 원복·die/filter cleaning·영향 구간 격리. 장기적으로 alarm, PM, coating window를 강화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "MD 방향 결함과 CD 방향 결함은 원인 접근이 어떻게 다른가요?",
-      "비전 Map을 어떻게 활용하나요?",
-      "A/B side 불균일이 발생하면 무엇을 보나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "defect map 언급",
-      "MD/CD 및 A/B 구분",
-      "유량/압력/점도/텐션 비교",
-      "불량별 원인 분리"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1706,21 +1726,26 @@ const cards = [
     "title": "Slot Die가 막혔다면 어떻게 대응하겠습니까?",
     "prompt": "Streak, filter, slurry agglomerate, dual filter, magnetic filter 관점으로 답하세요.",
     "answer": [
-      "Slot die 막힘은 곧바로 streak 결함으로 나타날 수 있으므로 라인을 안정화하고 영향 구간을 격리하겠습니다.",
-      "막힘 원인은 slurry agglomerate, filter 성능 저하, die 내부 오염, magnetic particle 유입, 배관 dead zone으로 나누어 보겠습니다.",
-      "Die cleaning 후 trial coating을 진행하고 비전 map과 막힘 위치를 매칭해 특정 lip 구간의 반복 문제인지 확인하겠습니다.",
-      "재발 방지는 dual filter system, filter differential pressure trend 관리, magnetic filter 포집 이력 확인, slurry transfer line cleaning 주기 최적화로 접근하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Slot die 막힘은 곧바로 streak 결함으로 나타날 수 있으므로 라인을 안정화하고 영향 구간을 격리하겠습니다. 막힘 원인은 slurry agglomerate, filter 성능 저하, die 내부 오염, magnetic particle 유입, 배관 dead zone으로 나누어 보겠습니다.",
+      "현상: Slot die 막힘은 보통 선형 streak나 coating void로 나타나므로 즉시 위치와 폭을 확인한다.",
+      "패턴: 항상 같은 CD 위치인지, 시간이 갈수록 악화되는지, A/B 어느 면인지 확인한다.",
+      "공정: 슬러리 제조→filter→배관 dead zone→die lip/manifold 순으로 추적한다.",
+      "4M: Material: agglomerate, magnetic particle, gel. Machine: filter, die lip, 배관, magnetic filter. Method: 필터 교체 주기, circulation. Man: 세척·조립 상태.",
+      "검증: Filter residue 분석, die lip 현미경 확인, 압력 상승 trend, streak 위치와 die 위치를 매칭한다.",
+      "조치: 단기적으로 filter/die cleaning, lot hold. 장기적으로 dual filter, magnetic trap, 세척 표준, slurry QC 기준을 강화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Die clogging과 streak는 어떻게 연결되나요?",
-      "Filter differential pressure가 의미하는 것은 무엇인가요?",
-      "Dual filter system의 장점은 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "streak 영향 언급",
-      "막힘 원인 분리",
-      "cleaning 후 trial 검증",
-      "filter/magnetic filter 재발 방지"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1728,21 +1753,26 @@ const cards = [
     "title": "Pump 맥동이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "토출량 변동, damper diaphragm 압력, gear pump RPM, 두께 편차 주기로 답하세요.",
     "answer": [
-      "Pump 맥동은 토출량 변동으로 이어져 coating thickness variation을 만들 수 있으므로 압력 trend와 유량 trend를 먼저 확인하겠습니다.",
-      "장비 측면에서는 gear pump RPM 변동, pump 내부 마모, air 유입, 배관 누설, damper diaphragm pressure setting을 점검하겠습니다.",
-      "맥동 주기와 두께 편차 주기가 일치하는지 비교해 pump 기인 결함인지 검증하겠습니다.",
-      "조치로는 damper pressure 재세팅, air purge, pump 정비, 배관 연결부 점검, 유량 control loop tuning을 진행하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Pump 맥동은 토출량 변동으로 이어져 coating thickness variation을 만들 수 있으므로 압력 trend와 유량 trend를 먼저 확인하겠습니다. 장비 측면에서는 gear pump RPM 변동, pump 내부 마모, air 유입, 배관 누설, damper diaphragm pressure setting을 점검하겠습니다.",
+      "현상: Pump 맥동은 주기성 두께 편차와 loading 변동으로 나타나므로 압력·유량 변동을 먼저 본다.",
+      "패턴: 두께 편차 pitch가 pump RPM, gear tooth, damper 주기와 맞는지 확인한다.",
+      "공정: Slurry tank→pump→damper→die까지 유량 전달 계통으로 접근한다.",
+      "4M: Material: 기포, 점도 변동. Machine: gear pump wear, damper diaphragm pressure, air leak. Method: RPM, priming, purge. Man: 점검·세팅.",
+      "검증: Pressure trend, flow meter, thickness profile FFT/주기 비교, damper 압력 확인, air bubble 여부를 확인한다.",
+      "조치: 단기적으로 purge, damper setting, pump speed 원복. 장기적으로 pump PM, damper 관리 기준, 압력 alarm을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Damper 압력이 맞지 않으면 어떤 문제가 생기나요?",
-      "Pump 맥동과 두께 편차를 어떻게 매칭하나요?",
-      "Gear pump RPM trend를 보는 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "압력/유량 trend 언급",
-      "damper diaphragm 설정 확인",
-      "맥동 주기와 두께 주기 비교",
-      "설비 조치 제시"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1750,21 +1780,26 @@ const cards = [
     "title": "Coating Flow가 불안정하다면 어떻게 대응하겠습니까?",
     "prompt": "Bead stability, lip gap, die-to-foil gap, back vacuum, coating window로 답하세요.",
     "answer": [
-      "Coating flow 불안정은 slot die bead stability 문제로 보고 접근하겠습니다.",
-      "먼저 bead가 끊기는지, ribbing이 생기는지, air entrainment가 있는지 확인하고 lip gap, die-to-foil gap, back vacuum pressure trend를 점검하겠습니다.",
-      "또 slurry viscosity, flow rate, web speed 조합이 안정 coating window 안에 있는지 정상 조건과 비교하겠습니다.",
-      "Back vacuum 편차나 lip gap 불균일이 있으면 bead가 불안정해져 edge defect, ribbing, thickness variation으로 이어질 수 있으므로 설비 세팅을 우선 보정하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Coating flow 불안정은 slot die bead stability 문제로 보고 접근하겠습니다. 먼저 bead가 끊기는지, ribbing이 생기는지, air entrainment가 있는지 확인하고 lip gap, die-to-foil gap, back vacuum pressure trend를 점검하겠습니다.",
+      "현상: Coating flow 불안정은 bead stability 문제로 보고 bead 끊김, ribbing, air entrainment 여부를 구분한다.",
+      "패턴: 라인 속도 변경 시 악화되는지, edge에서만 발생하는지, 시작/정지부인지 안정 구간인지 본다.",
+      "공정: Slot die lip gap, die-to-foil gap, back vacuum, slurry rheology, web speed를 coating window 관점에서 본다.",
+      "4M: Material: viscosity/rheology, 기포. Machine: lip gap, back vacuum, pump. Method: speed, flow rate, gap 조건. Man: setup repeatability.",
+      "검증: Bead 관찰, pressure/vacuum trend, thickness profile, slurry rheology, 조건별 small DOE로 확인한다.",
+      "조치: 단기적으로 gap·vacuum·flow를 안정 영역으로 원복. 장기적으로 coating window chart와 setup SOP를 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Back vacuum의 역할은 무엇인가요?",
-      "Bead가 불안정하면 어떤 결함이 발생하나요?",
-      "Coating window를 어떻게 정의하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "bead stability로 접근",
-      "lip/die gap 언급",
-      "back vacuum trend 확인",
-      "coating window 확인"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1772,21 +1807,26 @@ const cards = [
     "title": "Web Guide 이상이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "EPC sensor뿐 아니라 foil 편육, winding tension profile, roll alignment까지 답하세요.",
     "answer": [
-      "Web guide 이상이 발생하면 EPC sensor 오염, calibration, actuator 응답성을 먼저 확인하겠습니다.",
-      "하지만 센서 문제로만 보지 않고 foil 두께 편차, 편육, winding tension profile 불량, roll alignment 이상도 함께 확인하겠습니다.",
-      "Web이 한쪽으로 지속적으로 쏠리면 원단 기인인지 설비 guide 기인인지 구분하기 위해 실제 edge position trend와 guide correction output을 비교하겠습니다.",
-      "필요 시 line speed를 낮춰 안정화하고, EPC calibration, roll alignment 보정, 원단 lot edge 품질 확인을 진행하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Web guide 이상이 발생하면 EPC sensor 오염, calibration, actuator 응답성을 먼저 확인하겠습니다. 하지만 센서 문제로만 보지 않고 foil 두께 편차, 편육, winding tension profile 불량, roll alignment 이상도 함께 확인하겠습니다.",
+      "현상: Web guide 이상은 전극 위치 흔들림, edge 불량, A/B alignment 문제로 나타날 수 있다.",
+      "패턴: 특정 roll 위치에서 흔들리는지, winding roll 직경 변화와 연동되는지, foil lot별 차이가 있는지 본다.",
+      "공정: Unwinder→EPC/CPC→guide roll→coater/dryer→rewinder까지 web path 전체를 확인한다.",
+      "4M: Material: foil 편육, baggy edge. Machine: EPC sensor, actuator, roll alignment. Method: tension profile, sensor 위치. Man: calibration·cleaning.",
+      "검증: EPC trend, edge position log, foil width/thickness, tension profile, roll alignment check를 비교한다.",
+      "조치: 단기적으로 sensor cleaning/calibration, tension 원복. 장기적으로 foil 입고 검사, guide PM, alignment 점검 기준을 강화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "EPC sensor 이상과 원단 이상을 어떻게 구분하나요?",
-      "편육 현상이 web tracking에 미치는 영향은 무엇인가요?",
-      "Winding tension profile은 왜 중요하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "EPC 확인",
-      "foil 편육/두께 편차 언급",
-      "tension profile/roll alignment 확인",
-      "원단 vs 설비 원인 분리"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1794,21 +1834,26 @@ const cards = [
     "title": "Web Break가 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "파단 위치, tension trend, foil edge burr, notch, 원자재 lot 이력으로 답하세요.",
     "answer": [
-      "Web break가 발생하면 먼저 안전 조치와 라인 정지를 수행하고, 파단 위치와 파단면을 확인하겠습니다.",
-      "이후 tension trend, web guide 동작, roll alignment, splice 상태를 확인해 장력 또는 설비 기인 여부를 보겠습니다.",
-      "특히 foil edge burr나 notch가 파단 기점이 될 수 있으므로 원자재 foil 입고 lot의 edge 품질 이력과 slitting 이력을 추적하겠습니다.",
-      "재발 방지는 적정 tension window 재설정, foil 입고 검사 강화, EPC calibration, 파단 위치별 database화를 통해 관리하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Web break가 발생하면 먼저 안전 조치와 라인 정지를 수행하고, 파단 위치와 파단면을 확인하겠습니다. 이후 tension trend, web guide 동작, roll alignment, splice 상태를 확인해 장력 또는 설비 기인 여부를 보겠습니다.",
+      "현상: Web break는 안전 조치 후 파단 위치와 파단면을 먼저 확인한다.",
+      "패턴: 항상 edge에서 시작하는지, splice 주변인지, 특정 tension 구간·속도 조건에서 발생하는지 본다.",
+      "공정: Foil 입고→unwind tension→coating/drying→rewind 또는 slitting 전까지 파단 발생 위치를 기준으로 좁힌다.",
+      "4M: Material: foil edge burr, notch, pinhole, 강도 저하. Machine: roll misalignment, web guide, tension. Method: speed, splice. Man: splicing 작업.",
+      "검증: 파단면 현미경, tension trend, guide log, foil lot COA, edge burr/notch 검사, splice 이력 확인.",
+      "조치: 단기적으로 라인 정지·영향구간 폐기·tension 원복. 장기적으로 foil 검사, splice 표준, tension recipe를 개선한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Foil edge burr가 web break를 유발하는 메커니즘은 무엇인가요?",
-      "파단면에서 무엇을 확인하나요?",
-      "Tension window를 어떻게 설정하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "안전/라인 정지 언급",
-      "파단 위치/면 확인",
-      "foil edge burr/notch 이력 추적",
-      "재발 방지 database화"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1816,21 +1861,26 @@ const cards = [
     "title": "Dryer 온도 이상이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "TC 센서, heater, duct damper, exhaust, binder migration, peel test로 답하세요.",
     "answer": [
-      "Dryer 온도 이상이 발생하면 먼저 TC sensor 불량인지 실제 온도 이상인지 구분하겠습니다.",
-      "Hardware 측면에서는 heater, fan, air duct damper 개도율, exhaust balance, zone별 airflow를 확인하겠습니다.",
-      "온도 급변은 binder migration, residual solvent 증가 또는 adhesion 저하를 유발할 수 있으므로 영향 구간 전극은 hold 처리하겠습니다.",
-      "격리품은 residual solvent, 180도 peel test, 필요 시 SAICAS 분석으로 접착력 영향을 확인하고 후공정 투입 여부를 결정하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Dryer 온도 이상이 발생하면 먼저 TC sensor 불량인지 실제 온도 이상인지 구분하겠습니다. Hardware 측면에서는 heater, fan, air duct damper 개도율, exhaust balance, zone별 airflow를 확인하겠습니다.",
+      "현상: Dryer 온도 이상은 실제 온도 이상인지 센서/표시 오류인지 먼저 분리한다.",
+      "패턴: 특정 zone만인지, 상/하부 차이인지, 시간에 따라 drift인지, defect와 동시 발생인지 확인한다.",
+      "공정: Coating 후 dryer zone별 온도, airflow, exhaust, residence time을 연결해 본다.",
+      "4M: Material: solvent load, coating thickness. Machine: TC sensor, heater, fan, damper, exhaust. Method: profile recipe, speed. Man: recipe 선택·점검.",
+      "검증: 독립 온도 측정, TC calibration, airflow/exhaust trend, residual solvent, peel test, defect map을 확인한다.",
+      "조치: 단기적으로 zone 조건 원복·영향 lot hold. 장기적으로 sensor PM, profile interlock, drying window를 관리한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "TC 센서 이상과 실제 온도 이상은 어떻게 구분하나요?",
-      "Dryer damper 개도율이 왜 중요한가요?",
-      "온도 이상 제품은 어떤 품질 검사를 해야 하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "센서 vs 실제 이상 구분",
-      "heater/fan/damper/exhaust 확인",
-      "binder migration 영향 언급",
-      "peel test/SAICAS 언급"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1838,21 +1888,26 @@ const cards = [
     "title": "코팅 수율이 갑자기 저하되면 어떻게 대응하겠습니까?",
     "prompt": "Pareto를 넘어서 MES/SPC, 전후공정 데이터, multivariate analysis로 답하세요.",
     "answer": [
-      "수율 저하는 먼저 불량 pareto와 발생 시점을 확인하되, 단일 공정만 보지 않겠습니다.",
-      "Mixing, coating, drying, calendering, slitting의 MES/SPC 데이터를 연결해 점도, 고형분, PSD, loading, thickness, dryer temperature, calender pressure, burr 데이터를 함께 보겠습니다.",
-      "다변량 분석으로 특정 불량과 숨겨진 X인자 간 상관관계를 찾고, 정상 lot과 비정상 lot의 process fingerprint를 비교하겠습니다.",
-      "개선 조건은 trial로 검증한 뒤 control plan, alarm limit, recipe window에 반영하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 수율 저하는 먼저 불량 pareto와 발생 시점을 확인하되, 단일 공정만 보지 않겠습니다. Mixing, coating, drying, calendering, slitting의 MES/SPC 데이터를 연결해 점도, 고형분, PSD, loading, thickness, dryer temperature, calender pressure, burr 데이터를 함께 보겠습니다.",
+      "현상: 코팅 수율 저하는 불량 pareto와 발생 시점을 먼저 확인하되 단일 원인으로 단정하지 않는다.",
+      "패턴: 특정 lot, 설비, shift, 시간대, A/B side, MD/CD 방향과 연동되는지 확인한다.",
+      "공정: Mixing부터 slitting까지 MES/SPC 데이터를 연결해 원인 공정을 좁힌다.",
+      "4M: Material: 점도, 고형분, PSD. Machine: die/pump/dryer/calender/slitter. Method: recipe 변경, speed. Man: setup/cleaning/교대.",
+      "검증: SPC trend, change point, defect pareto, multivariate analysis, 전후공정 데이터 correlation을 본다.",
+      "조치: 단기적으로 영향 lot hold·조건 원복. 장기적으로 CTQ alarm, recipe 관리, PM, cross-functional review를 운영한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Pareto 분석만으로 부족한 이유는 무엇인가요?",
-      "MES/SPC 데이터를 어떻게 연결해 보나요?",
-      "숨겨진 X인자를 찾는 방법은 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "Pareto 언급",
-      "전후공정 데이터 연동",
-      "다변량 분석 언급",
-      "control plan 반영"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1860,21 +1915,26 @@ const cards = [
     "title": "전극 Curling이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "상하부 수축률 차이, residual stress, nozzle 풍량 밸런스, tension으로 답하세요.",
     "answer": [
-      "Curling은 전극 상하부 또는 폭 방향 수축률 차이와 residual stress imbalance에서 발생한다고 보겠습니다.",
-      "먼저 curl 방향과 정도를 정량 측정하고, A/B loading balance, dryer 상하부 nozzle 풍량·풍속, zone별 온도 profile을 확인하겠습니다.",
-      "Calendering 후 발생했다면 roll pressure, roll temperature, tension condition, winding 조건도 함께 보겠습니다.",
-      "대책은 초기 drying profile 완화, 상하부 airflow balance 조정, calender 후 tension 안정화, 양면 coating balance 개선으로 접근하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Curling은 전극 상하부 또는 폭 방향 수축률 차이와 residual stress imbalance에서 발생한다고 보겠습니다. 먼저 curl 방향과 정도를 정량 측정하고, A/B loading balance, dryer 상하부 nozzle 풍량·풍속, zone별 온도 profile을 확인하겠습니다.",
+      "현상: Curling은 전극이 한 방향으로 말리는 현상으로 curl 방향과 정도를 정량화한다.",
+      "패턴: MD/TD curl, edge curl, A/B side, 건조 후/캘린더 후/슬리팅 후 중 언제 발생했는지 본다.",
+      "공정: Drying 수축, A/B loading balance, calender stress, winding tension을 순서대로 확인한다.",
+      "4M: Material: foil 두께, binder/solvent. Machine: nozzle, dryer balance, roll pressure. Method: drying profile, tension, calender pressure. Man: 측정/세팅.",
+      "검증: Curl height 측정, A/B loading, 상하부 nozzle 풍량, zone temp, calender gap/pressure, tension trend를 대조한다.",
+      "조치: 단기적으로 건조·장력·압연 조건 원복. 장기적으로 curl spec, 상하부 dryer balance, A/B coating 관리 기준을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Curl 방향으로 원인을 어떻게 추정하나요?",
-      "Dryer 상하부 풍량 차이가 curling을 만드는 이유는 무엇인가요?",
-      "Calender 후 curling은 무엇을 추가로 봐야 하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "residual stress 설명",
-      "curl 방향/정도 측정",
-      "dryer airflow balance 확인",
-      "calender/tension 연계"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1882,21 +1942,26 @@ const cards = [
     "title": "전극 Bowing이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "건조 불균일, roll bending, roll crown, heating roll 축 방향 온도 편차로 답하세요.",
     "answer": [
-      "Bowing은 후공정 stacking alignment 불량으로 이어질 수 있으므로 발생 수준과 방향을 먼저 정량화하겠습니다.",
-      "원인은 drying non-uniformity, residual stress, calender roll pressure 편차, roll bending, tension imbalance로 나누어 분석하겠습니다.",
-      "특히 roll crown profile, roll gap, heating roll의 축 방향 온도 편차, 폭 방향 thickness profile을 확인하겠습니다.",
-      "후공정 투입 가능성을 평가하고, 필요 시 calender pressure balance, roll temperature 안정화, tension 조건을 재설정하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Bowing은 후공정 stacking alignment 불량으로 이어질 수 있으므로 발생 수준과 방향을 먼저 정량화하겠습니다. 원인은 drying non-uniformity, residual stress, calender roll pressure 편차, roll bending, tension imbalance로 나누어 분석하겠습니다.",
+      "현상: Bowing은 전극이 활처럼 휘어 stacking alignment에 영향을 주므로 bow height와 방향을 측정한다.",
+      "패턴: 폭 방향 bow인지, 특정 edge가 올라가는지, calender 후 증가하는지, lot별 차이가 있는지 본다.",
+      "공정: Drying non-uniformity, calender roll pressure/temperature, winding tension 구간으로 접근한다.",
+      "4M: Material: foil/코팅 수축률, loading 편차. Machine: roll bending, roll crown, heating roll 온도 편차. Method: tension, pressure. Man: alignment 세팅.",
+      "검증: Bow gauge, widthwise thickness/density, roll crown, 축 방향 온도 profile, tension trend를 확인한다.",
+      "조치: 단기적으로 조건 원복 및 후공정 사용성 평가. 장기적으로 roll crown/온도 관리, drying uniformity, tension profile을 개선한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Bowing과 curling은 어떻게 다르게 보나요?",
-      "Roll crown이 bowing에 미치는 영향은 무엇인가요?",
-      "Heating roll 온도 편차를 왜 확인하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "후공정 영향 언급",
-      "원인 분리",
-      "roll crown/temperature 확인",
-      "투입 가능성 평가"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1904,21 +1969,26 @@ const cards = [
     "title": "전극 Waving이 발생했다면 어떻게 대응하겠습니까?",
     "prompt": "Center wave/edge wave 구분, roll crown, roll bending, tension profile로 답하세요.",
     "answer": [
-      "Waving이 발생하면 먼저 center wave인지 edge wave인지 구분하겠습니다.",
-      "Center wave는 중앙부 장력 부족이나 압연 불균일, edge wave는 가장자리 과압연, 장력 불균형, 폭 방향 응력 차이와 관련될 수 있습니다.",
-      "Calender roll crown, roll bending, heating roll 온도 편차, web tension profile, drying shrinkage 편차를 확인하겠습니다.",
-      "건조 기인인지 압연 기인인지 발생 시점을 구분하고, roll gap·pressure·tension 조건을 조정하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Waving이 발생하면 먼저 center wave인지 edge wave인지 구분하겠습니다. Center wave는 중앙부 장력 부족이나 압연 불균일, edge wave는 가장자리 과압연, 장력 불균형, 폭 방향 응력 차이와 관련될 수 있습니다.",
+      "현상: Waving은 center wave와 edge wave를 구분하고 wave pitch와 amplitude를 측정한다.",
+      "패턴: 중앙부/가장자리 중 어디가 느슨한지, 캘린더 후인지 winding 후인지, 폭 방향 반복성이 있는지 본다.",
+      "공정: Web tension, calender 압연 균일성, roll crown/bending, winding 조건을 확인한다.",
+      "4M: Material: foil 편육, coating thickness. Machine: roll crown, roll bending, nip pressure. Method: tension profile, line speed, pressure. Man: 세팅.",
+      "검증: 폭 방향 두께/밀도 profile, tension map, roll alignment, wave 측정, 조건 변경 전후 비교.",
+      "조치: 단기적으로 tension/pressure 원복. 장기적으로 roll crown 보정, winding profile, edge/center wave 판정 기준을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Center wave와 edge wave의 원인은 어떻게 다르나요?",
-      "Waving이 slitting/stacking에 미치는 영향은 무엇인가요?",
-      "Drying 기인과 calender 기인을 어떻게 구분하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "center/edge wave 구분",
-      "roll crown/bending 확인",
-      "tension profile 확인",
-      "발생 공정 구분"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1926,21 +1996,26 @@ const cards = [
     "title": "금속 이물이 발견되면 어떻게 대응하겠습니까?",
     "prompt": "Lot hold, 성분 분석, magnetic filter, iron remover, wear point 조사로 답하세요.",
     "answer": [
-      "금속 이물은 내부 단락과 안전 문제로 연결될 수 있으므로 즉시 해당 lot을 hold하고 영향 범위를 격리하겠습니다.",
-      "SEM-EDS 등으로 이물 성분이 Fe, Cu, Al, Ni 중 무엇인지 확인해 발생원을 추정하겠습니다.",
-      "Magnetic filter, iron remover 포집 이력, filter 교체 이력, pump·slot die·guide roll·cutter·slitter knife 등 마찰 및 마모 부위를 전수 점검하겠습니다.",
-      "재발 방지는 이물 map 관리, 포집 이력 trend화, wear point 정기 점검, 청정도 및 압축공기 관리 강화로 접근하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: 금속 이물은 내부 단락과 안전 문제로 연결될 수 있으므로 즉시 해당 lot을 hold하고 영향 범위를 격리하겠습니다. SEM-EDS 등으로 이물 성분이 Fe, Cu, Al, Ni 중 무엇인지 확인해 발생원을 추정하겠습니다.",
+      "현상: 금속 이물은 internal short 위험이 있으므로 즉시 lot hold와 영향 범위 격리를 한다.",
+      "패턴: 단발성인지, 특정 설비·공정·lot에서 반복되는지, 입자 크기와 위치 분포를 확인한다.",
+      "공정: 원재료 입고→mixing→filter/magnetic trap→coating→slitting/notching까지 wear point를 추적한다.",
+      "4M: Material: 원재료 오염. Machine: mixer, pump, die, roll, knife wear. Method: cleaning, magnetic filter 관리. Man: 공구/부품 취급.",
+      "검증: SEM-EDS 성분 분석, magnetic filter/iron remover 포집물, 설비 마모부 점검, 이물 map을 비교한다.",
+      "조치: 단기적으로 lot hold·선별·설비 청소. 장기적으로 wear point 개선, filter 강화, 이물 monitoring과 PM을 강화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Fe/Cu/Al 이물별로 의심 공정은 어떻게 달라지나요?",
-      "Magnetic filter 포집 이력을 왜 봐야 하나요?",
-      "금속 이물이 safety risk인 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "즉시 hold",
-      "성분 분석",
-      "magnetic filter/iron remover 확인",
-      "wear point 조사"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1948,21 +2023,26 @@ const cards = [
     "title": "High-Ni 양극 슬러리에서 Gelation이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "잔류 리튬, 수분, dew point, RH, holding time, 점도 aging 관점으로 답하세요.",
     "answer": [
-      "High-Ni 양극 슬러리에서 gelation이 발생하면 단순 점도 상승이 아니라 slurry chemical stability 문제로 접근하겠습니다.",
-      "양극 활물질 표면의 잔류 리튬, 수분 유입, 강염기성 환경, binder/분산계 상호작용으로 점도가 급상승할 수 있으므로 원재료 수분, mixing room dew point, RH, slurry pH 또는 alkalinity를 확인하겠습니다.",
-      "Mixing 완료 후 coating 투입까지의 holding time과 점도 aging curve를 확인해 어느 시점부터 gelation이 시작되는지 파악하겠습니다.",
-      "대책은 저습도 관리 강화, 원재료 보관 조건 개선, holding time 제한, slurry temperature 관리, 필요 시 formulation 또는 binder system 재검토입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: High-Ni 양극 슬러리에서 gelation이 발생하면 단순 점도 상승이 아니라 slurry chemical stability 문제로 접근하겠습니다. 양극 활물질 표면의 잔류 리튬, 수분 유입, 강염기성 환경, binder/분산계 상호작용으로 점도가 급상승할 수 있으므로 원재료 수분, mixing room dew point, RH, slurry pH 또는 alkalinity를 확인하겠습니다.",
+      "현상: High-Ni 양극 gelation은 단순 점도 상승이 아니라 화학적 안정성 문제로 접근한다.",
+      "패턴: holding time에 따라 점도가 증가하는지, 수분/RH/dew point와 연동되는지, 특정 활물질 lot인지 본다.",
+      "공정: 원재료 보관→mixing room 환경→slurry holding→coating까지 aging trend를 본다.",
+      "4M: Material: 잔류 리튬, 수분, binder/분산제. Machine: tank sealing, dryer/room control. Method: holding time, mixing sequence. Man: 노출 시간 관리.",
+      "검증: 수분, pH, viscosity aging, rheology, dew point/RH log, 활물질 lot 비교를 수행한다.",
+      "조치: 단기적으로 hold time 제한·lot 격리. 장기적으로 수분 관리, dew point spec, 원재료 pretreatment, recipe 안정화 검토.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "High-Ni에서 잔류 리튬이 문제가 되는 이유는 무엇인가요?",
-      "Dew point와 RH를 왜 엄격하게 관리하나요?",
-      "Gelation 발생 batch를 코팅하면 어떤 문제가 생기나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "chemical stability로 접근",
-      "잔류 리튬/수분 언급",
-      "dew point/RH/holding time 확인",
-      "재발 방지 조건 제시"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1970,21 +2050,26 @@ const cards = [
     "title": "CNT 도전재가 저장 또는 이송 중 재응집되면 어떻게 대응하겠습니까?",
     "prompt": "Storage tank agitation, circulation, dead zone, PSD, slurry resistance로 답하세요.",
     "answer": [
-      "CNT는 고비표면적 도전재라 초기 분산이 좋아도 storage tank나 transfer line에서 재응집될 수 있습니다.",
-      "먼저 coating 직전 slurry의 PSD D90/D99와 slurry resistance를 측정해 초기 QC 결과와 비교하겠습니다.",
-      "Storage tank의 저속 agitation 유지 여부, circulation flow rate, 배관 내 dead zone, 장시간 정체 구간, filter 압력 상승 여부를 확인하겠습니다.",
-      "대책은 tank agitation 조건 최적화, 배관 선속도 유지, dead zone 제거, coating 대기 시간 제한, 필요 시 inline mixing 또는 circulation 조건 강화입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: CNT는 고비표면적 도전재라 초기 분산이 좋아도 storage tank나 transfer line에서 재응집될 수 있습니다. 먼저 coating 직전 slurry의 PSD D90/D99와 slurry resistance를 측정해 초기 QC 결과와 비교하겠습니다.",
+      "현상: CNT 재응집은 초기 QC는 양호해도 저장/이송 후 PSD와 저항이 악화되는 문제로 본다.",
+      "패턴: Tank 체류 시간, circulation dead zone, 이송 거리, coating 직전 시점에서 악화되는지 본다.",
+      "공정: CNT dispersion→storage tank→transfer line→filter→coating head 순으로 점검한다.",
+      "4M: Material: CNT 농도/분산제. Machine: agitator, circulation pump, pipe dead zone. Method: agitation speed, circulation rate, hold time. Man: tank 운전 조건.",
+      "검증: 초기와 coating 직전 PSD D90/D99, slurry resistance, sampling 위치별 비교, tank bottom residue 확인.",
+      "조치: 단기적으로 circulation 강화·재분산 가능성 평가. 장기적으로 tank/배관 dead zone 개선, hold time 제한, 저항 QC 추가.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "CNT 재응집이 전극 저항에 미치는 영향은 무엇인가요?",
-      "배관 dead zone은 어떻게 확인하나요?",
-      "Agitation이 너무 강하면 어떤 문제가 생길 수 있나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "재응집 특성 설명",
-      "PSD/slurry resistance 비교",
-      "tank/circulation/dead zone 확인",
-      "대기 시간 제한"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -1992,21 +2077,26 @@ const cards = [
     "title": "패턴 코팅 무지부에서 Edge Flaring이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "기지부/무지부 경계, 건조 수축률 차이, shim slope, 1 zone nozzle balance로 답하세요.",
     "answer": [
-      "Edge flaring은 패턴 코팅에서 코팅부와 무지부 경계의 수축률 차이로 foil이 울거나 휘는 현상으로 보겠습니다.",
-      "먼저 발생 위치가 tab부인지, 코팅 경계부인지, 후공정 notching 또는 welding alignment에 영향을 주는지 확인하겠습니다.",
-      "원인은 경계부 두께 급변, shim pattern 형상, 초기 drying zone의 상하부 nozzle 풍량 불균형, web tension 조건으로 나누어 보겠습니다.",
-      "대책은 shim 형상을 최적화해 경계부 slope를 완만하게 만들고, dryer 1 zone의 상하부 풍량·풍속 balance를 미세 조정하며, 필요 시 tension 조건을 재설정하는 것입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Edge flaring은 패턴 코팅에서 코팅부와 무지부 경계의 수축률 차이로 foil이 울거나 휘는 현상으로 보겠습니다. 먼저 발생 위치가 tab부인지, 코팅 경계부인지, 후공정 notching 또는 welding alignment에 영향을 주는지 확인하겠습니다.",
+      "현상: Edge flaring은 패턴 코팅 무지부/기지부 경계가 벌어지거나 휘는 현상으로 정의한다.",
+      "패턴: Tab부, coating edge, 시작/끝단 중 어디인지, drying 1 zone 이후 심해지는지 확인한다.",
+      "공정: 패턴 코팅 shim, coating edge 형상, 초기 drying 수축, foil tension을 함께 본다.",
+      "4M: Material: foil 강성, coating loading. Machine: shim slope, lip, nozzle balance. Method: pattern recipe, 1 zone drying, tension. Man: shim 조립.",
+      "검증: 경계부 치수 측정, 비전 map, 1 zone 상하부 airflow, shim 형상, 후공정 alignment 영향을 확인한다.",
+      "조치: 단기적으로 tension/drying 조건 완화. 장기적으로 shim slope, edge profile, 초기 건조 조건을 최적화한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "무지부 edge flaring이 tab welding에 왜 문제인가요?",
-      "Shim slope가 중요한 이유는 무엇인가요?",
-      "Dryer 1 zone이 edge flaring에 민감한 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "경계부 수축률 차이 설명",
-      "후공정 영향 언급",
-      "shim slope 대책",
-      "1 zone nozzle balance 언급"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2014,21 +2104,26 @@ const cards = [
     "title": "코팅 표면에 Cratering 또는 Fish-eye가 발생하면 어떻게 대응하겠습니까?",
     "prompt": "표면장력 불일치, grease/oil mist, air line moisture, foil dyne level로 답하세요.",
     "answer": [
-      "Cratering 또는 fish-eye는 coating layer가 국부적으로 밀려나며 원형 결함이 생기는 현상으로, 표면장력 불일치를 우선 의심하겠습니다.",
-      "비전 map으로 발생 위치와 반복성을 확인하고, 설비 구동부 grease 비산, 압축공기 내 oil mist 또는 moisture, slurry 오염, foil 표면 압연유 잔류를 점검하겠습니다.",
-      "Foil의 dyne level 또는 wetting test를 통해 표면 젖음성을 확인하고, 원자재 lot별 표면 청정도 이력을 추적하겠습니다.",
-      "대책은 oil mist filter와 air dryer 점검, foil cleaning 또는 incoming inspection 강화, 오염 발생원 제거, 작업장 윤활 관리 기준 강화입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Cratering 또는 fish-eye는 coating layer가 국부적으로 밀려나며 원형 결함이 생기는 현상으로, 표면장력 불일치를 우선 의심하겠습니다. 비전 map으로 발생 위치와 반복성을 확인하고, 설비 구동부 grease 비산, 압축공기 내 oil mist 또는 moisture, slurry 오염, foil 표면 압연유 잔류를 점검하겠습니다.",
+      "현상: Cratering/Fish-eye는 표면장력 불일치나 오염으로 원형 결함이 생기는 현상으로 본다.",
+      "패턴: 무작위인지 특정 폭/설비 위치인지, foil lot별인지, 압축공기 사용 구간 이후인지 본다.",
+      "공정: Foil 표면→slurry 오염→coating 환경→air line/grease 비산 순으로 확인한다.",
+      "4M: Material: slurry surface tension, foil dyne level, oil residue. Machine: grease, air line moisture/oil mist. Method: cleaning, air blow. Man: 취급 오염.",
+      "검증: Dyne test, surface tension, FTIR/SEM-EDS, air line oil/moisture check, foil wipe test, defect map을 확인한다.",
+      "조치: 단기적으로 오염원 제거·lot 격리. 장기적으로 air filter, grease 관리, foil 표면 검사, 청정도 표준 강화.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Fish-eye와 pinhole은 어떻게 구분하나요?",
-      "Dyne level은 무엇을 의미하나요?",
-      "압축공기 품질이 코팅에 미치는 영향은 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "표면장력 불일치 설명",
-      "grease/oil/moisture 확인",
-      "dyne level 확인",
-      "오염원 제거 대책"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2036,21 +2131,26 @@ const cards = [
     "title": "건조 중 Skin Effect로 전극 표면 Crack이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "초기 과건조, 표면 skin 형성, 내부 solvent escape, mild drying으로 답하세요.",
     "answer": [
-      "Skin effect crack은 dryer 초기 zone에서 표면이 먼저 굳고 내부 solvent가 뒤늦게 빠져나오면서 표면에 미세 균열을 만드는 현상으로 보겠습니다.",
-      "먼저 crack 발생 위치, crack pattern, coating loading, wet thickness, line speed, 초기 zone 온도와 풍량을 확인하겠습니다.",
-      "대책은 dryer 전반부 zone의 온도와 풍량을 낮추는 mild drying profile로 전환해 표면 건조 속도를 완화하는 것입니다.",
-      "동시에 residual solvent, adhesion, binder migration 여부를 확인해 crack이 성능과 후공정에 미치는 영향을 평가하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Skin effect crack은 dryer 초기 zone에서 표면이 먼저 굳고 내부 solvent가 뒤늦게 빠져나오면서 표면에 미세 균열을 만드는 현상으로 보겠습니다. 먼저 crack 발생 위치, crack pattern, coating loading, wet thickness, line speed, 초기 zone 온도와 풍량을 확인하겠습니다.",
+      "현상: Skin effect crack은 초기 과건조로 표면이 먼저 굳고 내부 solvent가 빠져나오며 crack이 생기는 현상이다.",
+      "패턴: 초기 dryer zone 이후 시작되는지, 고 loading/wet thickness에서 악화되는지, 표면 crack pattern을 본다.",
+      "공정: Coating wet film→초기 drying→solvent diffusion→후반 drying 균일성으로 접근한다.",
+      "4M: Material: solvent/binder, solids. Machine: 1 zone heater/nozzle. Method: 초기 온도·풍량, line speed, residence time. Man: recipe 선택.",
+      "검증: Crack 위치, cross-section, residual solvent profile, zone temp/airflow, drying DOE를 확인한다.",
+      "조치: 단기적으로 초기 zone mild drying으로 완화. 장기적으로 drying profile을 단계화하고 loading별 profile 기준을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Skin effect와 binder migration은 어떻게 연결될 수 있나요?",
-      "초기 zone 온도를 낮추면 생산성에는 어떤 영향이 있나요?",
-      "Crack 발생 시 어떤 품질 검사를 추가하나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "skin 형성 메커니즘 설명",
-      "초기 zone 조건 확인",
-      "mild drying 제시",
-      "residual solvent/adhesion 확인"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2058,21 +2158,26 @@ const cards = [
     "title": "Calendering 중 Roll 열팽창으로 폭 방향 두께 편차가 발생하면 어떻게 대응하겠습니까?",
     "prompt": "Hot rolling, 축 방향 온도 분포, roll crown, zone control roll로 답하세요.",
     "answer": [
-      "Hot calendering 중 폭 방향 thickness profile이 흔들리면 roll gap 문제뿐 아니라 roll thermal expansion 차이를 의심하겠습니다.",
-      "Roll 중심부와 edge부의 축 방향 온도 분포, heater 균일성, bearing housing 냉각 상태, roll crown profile을 확인하겠습니다.",
-      "전극 폭 방향 두께 data와 roll temperature profile을 매칭해 특정 위치의 열팽창이 두께 편차와 연동되는지 검증하겠습니다.",
-      "대책은 roll 예열 안정화 시간 확보, 축 방향 다점 온도 모니터링, crown compensation, 필요 시 zone control roll 또는 가변 crown 제어 적용입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Hot calendering 중 폭 방향 thickness profile이 흔들리면 roll gap 문제뿐 아니라 roll thermal expansion 차이를 의심하겠습니다. Roll 중심부와 edge부의 축 방향 온도 분포, heater 균일성, bearing housing 냉각 상태, roll crown profile을 확인하겠습니다.",
+      "현상: Hot calendering 중 폭 방향 두께 편차가 커지면 roll thermal expansion을 의심한다.",
+      "패턴: 운전 시작 후 시간이 지나며 변하는지, center/edge 두께 차이가 온도 분포와 연동되는지 본다.",
+      "공정: Roll heating, roll crown, nip pressure, speed, 냉각/베어링 상태를 연결해 본다.",
+      "4M: Material: 전극 두께/밀도. Machine: heater 균일성, bearing cooling, roll crown. Method: warm-up, speed, pressure. Man: 예열·세팅.",
+      "검증: 축 방향 roll temp profile, widthwise thickness, pressure map, warm-up trend, crown data를 비교한다.",
+      "조치: 단기적으로 예열 안정화·pressure/gap 보정. 장기적으로 zone control roll, 온도 균일화, warm-up SOP를 적용한다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Roll 온도 편차가 두께 편차로 이어지는 이유는 무엇인가요?",
-      "Roll crown과 thermal crown의 차이는 무엇인가요?",
-      "Hot rolling에서 예열 안정화 시간이 중요한 이유는 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "thermal expansion 의심",
-      "축 방향 온도 확인",
-      "두께 profile과 매칭",
-      "crown/zone control 대책"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2080,21 +2185,26 @@ const cards = [
     "title": "Calender Roll Pick-up이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "활물질 탈리, residual solvent, peel strength, doctor blade, periodic dent로 답하세요.",
     "answer": [
-      "Roll pick-up은 전극 합제가 calender roll에 달라붙어 떨어지는 현상으로, roll 회전 주기와 일치하는 periodic dent를 만들 수 있습니다.",
-      "먼저 불량 pitch가 roll circumference와 맞는지 확인하고, roll 표면 오염과 doctor blade 상태를 점검하겠습니다.",
-      "원인은 residual solvent 과다, binder adhesion 부족, 건조 부족, 과압연, roll surface condition 문제로 나누어 분석하겠습니다.",
-      "조치로는 roll cleaning, doctor blade 조정, 해당 전극의 residual solvent와 180도 peel strength 확인, 필요 시 dryer profile과 calender pressure 조건 보정을 진행하겠습니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Roll pick-up은 전극 합제가 calender roll에 달라붙어 떨어지는 현상으로, roll 회전 주기와 일치하는 periodic dent를 만들 수 있습니다. 먼저 불량 pitch가 roll circumference와 맞는지 확인하고, roll 표면 오염과 doctor blade 상태를 점검하겠습니다.",
+      "현상: Roll pick-up은 합제가 roll에 묻어 periodic dent나 표면 탈리를 만드는 현상으로 정의한다.",
+      "패턴: 불량 pitch가 roll circumference와 일치하는지, 특정 면/폭 위치에서 반복되는지 확인한다.",
+      "공정: Drying 잔류용매/adhesion→calender roll 표면→doctor blade/cleaning 순으로 본다.",
+      "4M: Material: adhesion, residual solvent, binder. Machine: roll roughness, contamination, doctor blade. Method: roll temp, pressure, speed. Man: cleaning.",
+      "검증: Pitch 분석, peel strength, residual solvent, roll 표면 inspection, doctor blade 상태, defect map 확인.",
+      "조치: 단기적으로 roll cleaning·조건 완화·영향구간 격리. 장기적으로 adhesion/drying 관리, roll 표면 PM, blade 교체 기준을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Roll pick-up과 dent pitch를 어떻게 연결하나요?",
-      "Residual solvent가 pick-up을 유발하는 이유는 무엇인가요?",
-      "Doctor blade가 불량하면 어떤 문제가 생기나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "periodic dent 언급",
-      "doctor blade 확인",
-      "residual solvent/peel strength 확인",
-      "dryer/calender 조건 보정"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2102,21 +2212,26 @@ const cards = [
     "title": "Slitting 중 Scallop 또는 Chipping이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "Circular knife runout, overlap, clearance, side pressure, vibration으로 답하세요.",
     "answer": [
-      "Scallop이나 chipping은 slitting 절단면이 일직선이 아니라 톱날 모양이 되거나 활물질이 뜯겨 나가는 절단 품질 문제입니다.",
-      "먼저 절단면을 현미경으로 확인하고 burr, particle, edge crack 발생 수준을 측정하겠습니다.",
-      "원인은 circular knife 마모, knife runout, overlap, clearance, side pressure, 축 방향 play, knife shaft vibration으로 나누어 점검하겠습니다.",
-      "대책은 knife 조립 치수를 micrometer 기준으로 관리하고, side pressure와 overlap 표준화, knife 교체 주기 관리, 축 진동 모니터링을 적용하는 것입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Scallop이나 chipping은 slitting 절단면이 일직선이 아니라 톱날 모양이 되거나 활물질이 뜯겨 나가는 절단 품질 문제입니다. 먼저 절단면을 현미경으로 확인하고 burr, particle, edge crack 발생 수준을 측정하겠습니다.",
+      "현상: Scallop은 절단면 톱니/물결, chipping은 활물질 탈락으로 정의하고 edge 품질을 측정한다.",
+      "패턴: 특정 knife 위치인지, 속도 증가 시 악화되는지, 양극/음극 또는 특정 lot에서만 발생하는지 본다.",
+      "공정: Calender 후 전극 상태→slitter knife→tension/alignment→집진 순으로 접근한다.",
+      "4M: Material: adhesion, brittle electrode, edge crack. Machine: circular knife runout, overlap, clearance, side pressure, vibration. Method: speed/tension. Man: knife setup.",
+      "검증: 현미경 edge 분석, burr/particle 계수, knife runout, overlap/clearance 측정, vibration trend 확인.",
+      "조치: 단기적으로 knife 교체·overlap/clearance 원복·속도 완화. 장기적으로 knife PM, setup standard, edge quality inspection 강화.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "Scallop과 burr는 어떤 관계가 있나요?",
-      "Knife overlap과 clearance는 어떻게 관리하나요?",
-      "Knife runout이 절단면에 미치는 영향은 무엇인가요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "절단면 품질 정의",
-      "현미경/burr 확인",
-      "knife 조건 분리",
-      "조립 치수 표준화"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   },
   {
@@ -2124,21 +2239,26 @@ const cards = [
     "title": "Laser Notching에서 HAZ 또는 Melt Ball이 발생하면 어떻게 대응하겠습니까?",
     "prompt": "Pulse width, frequency, scan speed, heat input, side air blow, dust collection으로 답하세요.",
     "answer": [
-      "Laser notching에서 HAZ 또는 melt ball은 절단부 주변의 열영향과 용융물이 남는 현상으로, 내부 단락 위험 때문에 중요하게 관리하겠습니다.",
-      "먼저 절단부를 현미경 또는 SEM으로 확인해 HAZ 폭, melt ball 크기, burr, particle 잔류 수준을 평가하겠습니다.",
-      "원인은 laser power, pulse width, frequency, scan speed, focus position, 집진 조건, side air blow 조건으로 나누어 분석하겠습니다.",
-      "대책은 입열량을 줄이는 방향으로 pulse width, frequency, scan speed를 최적화하고, 절단 직후 side air blow와 dust collection suction을 강화하는 것입니다."
+      "“제가 그 케이스를 직접 많이 경험하지 않았더라도, 먼저 현상과 패턴을 정의하고 공정 흐름과 4M 기준으로 원인 후보를 좁힌 뒤 데이터로 검증하겠습니다.”",
+      "핵심 답변 방향: Laser notching에서 HAZ 또는 melt ball은 절단부 주변의 열영향과 용융물이 남는 현상으로, 내부 단락 위험 때문에 중요하게 관리하겠습니다. 먼저 절단부를 현미경 또는 SEM으로 확인해 HAZ 폭, melt ball 크기, burr, particle 잔류 수준을 평가하겠습니다.",
+      "현상: Laser HAZ/melt ball은 열영향부와 용융물이 남는 현상으로 internal short risk 관점에서 본다.",
+      "패턴: 절단 edge 전체인지 corner/tab부인지, 특정 laser head/recipe에서 반복되는지 확인한다.",
+      "공정: Laser parameter, scan path, side air blow, dust collection, material thickness/foil 조건을 본다.",
+      "4M: Material: foil/코팅 두께, 반사율. Machine: laser focus, optics, air blow, 집진. Method: pulse width, frequency, scan speed, power. Man: focus/cleaning.",
+      "검증: 현미경/SEM으로 HAZ width, melt ball size, particle 잔류, 단면 품질을 recipe별 비교한다.",
+      "조치: 단기적으로 heat input 감소, air blow/집진 점검, 영향 lot 격리. 장기적으로 recipe window와 optics PM, 검사 기준을 만든다.",
+      "마무리 문장: “원인을 바로 단정하기보다 발생 위치·방향·주기성과 변경점을 먼저 보고, 가장 가능성이 높은 원인부터 검증한 뒤 단기 containment와 장기 재발 방지로 마무리하겠습니다.”"
     ],
     "tails": [
-      "HAZ가 내부 단락 risk가 되는 이유는 무엇인가요?",
-      "입열량을 줄이면 생산성에는 어떤 trade-off가 있나요?",
-      "Melt ball을 줄이기 위해 laser 조건은 어떻게 바꾸나요?"
+      "이 불량이 언제부터, 어디서, 어떤 패턴으로 발생했는지 먼저 어떻게 확인하겠습니까?",
+      "4M 관점에서 가장 먼저 볼 항목은 무엇입니까?",
+      "단기 조치와 장기 재발 방지는 어떻게 나누겠습니까?"
     ],
     "checks": [
-      "HAZ/melt ball risk 설명",
-      "현미경/SEM 평가",
-      "laser parameter 분리",
-      "air blow/집진 대책"
+      "현상을 먼저 정의했는가",
+      "위치·방향·주기성 패턴을 언급했는가",
+      "공정 흐름 기준으로 원인을 좁혔는가",
+      "4M과 검증/조치를 모두 말했는가"
     ]
   }
 ];
