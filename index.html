@@ -2,7 +2,7 @@
 <html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>전극 프로세스 엔지니어 인터뷰 연습 - 전체 68항목 포함</title>
+<title>전극 프로세스 엔지니어 인터뷰 연습 - 전체 69항목 포함</title>
 <style>
 :root{
   --bg:#f4f7fb;--panel:#fff;--text:#172033;--muted:#657086;--line:#dfe5ef;
@@ -765,7 +765,61 @@ Calendering에서는 건조된 전극을 압연하여 target thickness, density,
       </div>
       <div class="status" id="status">저장 기록을 포함한 HTML 파일을 생성했습니다. 이 파일 하나만 보내도 기록을 볼 수 있습니다.</div>
     </section>
-  </main>
+  
+<section class="card" id="cpk-ppk-card" style="margin-top:18px;">
+  <div class="meta">
+    <span class="pill">추가 항목</span>
+    <span class="pill">SPC / 공정능력</span>
+    <span class="pill">Cpk vs Ppk</span>
+  </div>
+  <div class="question">Cpk와 Ppk의 차이는 무엇입니까?</div>
+  <div class="prompt">Within Variation(단기 변동)과 Overall Variation(장기 변동), 그리고 전극 Loading 예시로 설명하세요.</div>
+  <div class="answer show" style="display:block;">
+    <div class="sectionTitle">간단 답변</div>
+    <div id="answerText_cpk_ppk">
+      <p>Cpk와 Ppk의 가장 큰 차이는 사용하는 표준편차입니다. Cpk는 단기 변동(Within Variation, 단기 변동)을 사용하고, Ppk는 장기 변동(Overall Variation, 장기 변동)을 사용합니다.</p>
+      <p>공정이 안정적이면 Cpk와 Ppk는 비슷하지만, 교대조 차이, 설비 세팅 차이, 원재료 Lot 차이 같은 장기 변동이 있으면 Ppk가 Cpk보다 낮아질 수 있습니다.</p>
+      <p>예를 들어 전극 Loading(로딩) 공정에서 각 Shift(교대조) 내부 품질은 좋지만 Shift 간 평균 차이가 있다면 Cpk는 높게 나오고 Ppk는 낮게 나올 수 있습니다.</p>
+    </div>
+    <div class="sectionTitle">면접 답변 예시</div>
+    <p>Cpk는 공정이 통계적으로 안정된 상태라고 가정했을 때의 공정 능력(Process Capability, 공정능력)을 보는 지표입니다. 그래서 SPC(Statistical Process Control, 통계적 공정관리) 관리도에서 이상점, Trend(추세), Drift(드리프트)가 없는 안정 상태를 먼저 확인한 뒤 Cpk를 보는 것이 원칙입니다.</p>
+    <p>반면 Ppk는 실제 생산 데이터 전체를 기준으로 현재 공정 성능(Process Performance, 공정성능)을 보는 지표입니다. 신규 설비, 신규 조건 적용, 공정 변경 직후처럼 아직 공정이 완전히 안정화되지 않았을 때는 Ppk를 먼저 확인하는 것이 더 현실적입니다.</p>
+    <p>전극 제조 예시로 Coating Loading(코팅 로딩)을 보면, 각 교대조 내부에서는 편차가 작아 Cpk가 높게 나올 수 있습니다. 하지만 교대조별 평균값이 서로 다르거나 원재료 Lot(로트)에 따라 중심값이 이동하면 전체 변동이 커져 Ppk는 낮아집니다.</p>
+    <p>따라서 저는 신규 조건이나 설비 변경 직후에는 Ppk로 실제 성능을 먼저 보고, 이후 SPC로 공정 안정성을 확인한 다음 Cpk로 공정 능력을 관리하는 방식이 적절하다고 생각합니다.</p>
+    <div class="sectionTitle">꼬리질문 대비</div>
+    <div class="tail">
+      <p>• 왜 보통 Ppk가 Cpk보다 낮게 나오나요?</p>
+      <p>• 전극 공정에서 Cpk/Ppk를 볼 수 있는 대표 항목은 무엇인가요?</p>
+      <p>• SPC가 안정적인데 Cpk가 낮으면 어떻게 대응하겠습니까?</p>
+    </div>
+  </div>
+</section>
+
+  
+<section class="card" id="spc-card" style="margin-top:18px;">
+  <div class="meta">
+    <span class="pill">추가 항목</span>
+    <span class="pill">SPC</span>
+    <span class="pill">면접 대비</span>
+  </div>
+  <div class="question">어떤 SPC를 사용했습니까?</div>
+  <div class="answer show" style="display:block;">
+    <div class="sectionTitle">면접 답변 예시</div>
+    <p>공정 데이터 특성에 따라 X-bar/R Chart와 I-MR Chart를 사용했습니다.</p>
+    <p>전극 공정에서는 Thickness, Loading, Density처럼 일정 시간마다 여러 개의 샘플을 측정하는 항목이 많아서 X-bar/R Chart를 주로 사용했습니다.</p>
+    <p>X-bar Chart는 공정 평균의 변화를 관리하고, R Chart는 샘플 간 변동성을 관리하는 역할을 합니다.</p>
+    <p>반면 Assembly 공정의 Weld Resistance, Fill Weight, Cell Thickness와 같이 셀별로 개별 데이터가 생성되는 항목은 I-MR Chart를 사용했습니다.</p>
+    <p>I Chart는 개별 측정값의 추세를 관리하고, MR Chart는 연속 데이터 간 변동성을 관리합니다.</p>
+    <p>또한 불량률 관리가 필요한 경우에는 P Chart를 사용했고, Surface Defect 개수 관리에는 C Chart를 활용할 수 있습니다.</p>
+
+    <div class="sectionTitle">꼬리질문 대비</div>
+    <p><strong>Q. 관리한계를 벗어나면 어떻게 했습니까?</strong></p>
+    <p>먼저 측정 시스템 이상 여부를 확인하고, 이후 원재료, 설비 조건, 작업 조건 변경 여부를 확인했습니다.</p>
+    <p>원인을 분석한 후 조건을 수정하고 SPC가 다시 관리 상태로 복귀하는지 확인했습니다.</p>
+  </div>
+</section>
+
+</main>
 </div>
 
 
