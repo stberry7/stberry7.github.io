@@ -374,6 +374,14 @@ button,input,textarea,select{
 .mobileJump{display:block;margin:8px 0;}
 .mobileJump select{width:100%;}
 }
+
+/* 전체 답변보기 버튼 상태 */
+.btn.answerAllActive{
+  background:#0f766e !important;
+  color:#fff !important;
+  border-color:#0f766e !important;
+}
+
 </style>
 
 </head>
@@ -405,6 +413,7 @@ button,input,textarea,select{
         <button class="btn bad" id="resetBtn">리셋</button>
       </div>
       <button class="btn warn" id="printBtn">인쇄/저장</button>
+      <button class="btn" id="showAllAnswersTopBtn" title="모든 질문에서 답변이 계속 보이게 합니다">전체 답변보기</button>
     </div>
 
     <section class="card">
@@ -419,6 +428,7 @@ button,input,textarea,select{
 
       <div class="controls">
         <button class="btn primary" id="showBtn">답변 보기</button>
+        <button class="btn" id="showAllAnswersBtn">전체 답변보기</button>
         <button class="btn good" id="doneBtn">외웠음 표시</button>
       </div>
 
@@ -2017,7 +2027,7 @@ function currentQuestionId(){
   }
 })();
 
-let idx=0, show=false, timer=null, remaining=180, total=180;
+let idx=0, show=false, showAllAnswers=(localStorage.getItem("showAllAnswers")==="true"), timer=null, remaining=180, total=180;
 const done = JSON.parse(localStorage.getItem("doneCards")||"{}");
 const memos = JSON.parse(localStorage.getItem("memos")||"{}");
 const memoHistory = JSON.parse(localStorage.getItem("memoHistory")||"[]");
@@ -2226,6 +2236,23 @@ function restoreHtmlBackupIfNeeded(){
 }
 
 
+
+function updateShowAllAnswerButtons(){
+  ["showAllAnswersBtn","showAllAnswersTopBtn"].forEach(id=>{
+    const btn=$(id);
+    if(!btn) return;
+    btn.textContent = showAllAnswers ? "전체 답변숨기기" : "전체 답변보기";
+    btn.classList.toggle("answerAllActive", showAllAnswers);
+    btn.setAttribute("aria-pressed", showAllAnswers ? "true" : "false");
+  });
+}
+function toggleShowAllAnswers(){
+  showAllAnswers=!showAllAnswers;
+  localStorage.setItem("showAllAnswers", showAllAnswers ? "true" : "false");
+  if(showAllAnswers) show=true;
+  render();
+}
+
 function renderList(){
   const q=$("search").value.toLowerCase();
   $("qList").innerHTML="";
@@ -2235,7 +2262,7 @@ function renderList(){
     const b=document.createElement("button");
     b.className="qItem"+(i===idx?" active":"")+(done[i]?" done":"");
     b.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span>${c.title}<br><span style="font-size:12px;color:#94a3b8">${c.cat}</span>`;
-    b.onclick=()=>{idx=i;show=false;render();closeMobileQuestionListAfterSelect();};
+    b.onclick=()=>{idx=i;show=showAllAnswers;render();closeMobileQuestionListAfterSelect();};
     $("qList").appendChild(b);
   });
 }
@@ -2247,9 +2274,12 @@ function render(){
   $("answerText").innerHTML=c.answer.map(p=>`<p>${p}</p>`).join("");
   $("tails").innerHTML=c.tails.map(t=>`<p>• ${t}</p>`).join("");
   $("checks").innerHTML=c.checks.map(ch=>`<label class="check"><input type="checkbox"> ${ch}</label>`).join("");
-  $("answer").className="answer"+(show?" show":"");
+  const answerVisible = show || showAllAnswers;
+  $("answer").className="answer"+(answerVisible?" show":"");
+  $("showBtn").textContent = show ? "답변 숨기기" : "답변 보기";
+  updateShowAllAnswerButtons();
   $("memo").value=memos[idx]||"";
-  $("status").textContent="먼저 답변을 말해본 뒤, 답변 보기를 누르세요.";
+  $("status").textContent=showAllAnswers ? "전체 답변보기 상태입니다. 다음 질문으로 이동해도 답변이 계속 보입니다." : "먼저 답변을 말해본 뒤, 답변 보기를 누르세요.";
   renderHistory();
   renderList();
   setTime(parseInt($("timeSelect").value,10), false);
@@ -2266,10 +2296,12 @@ function updateTimer(){
   $("progress").style.width=Math.max(0,Math.min(100,pct))+"%";
 }
 $("showBtn").onclick=()=>{show=!show;render()};
+$("showAllAnswersBtn").onclick=toggleShowAllAnswers;
+$("showAllAnswersTopBtn").onclick=toggleShowAllAnswers;
 $("doneBtn").onclick=()=>{done[idx]=!done[idx];localStorage.setItem("doneCards",JSON.stringify(done));render()};
-$("randomBtn").onclick=()=>{idx=Math.floor(Math.random()*cards.length);show=false;render()};
-$("prevBtn").onclick=()=>{idx=(idx-1+cards.length)%cards.length;show=false;render()};
-$("nextBtn").onclick=()=>{idx=(idx+1)%cards.length;show=false;render()};
+$("randomBtn").onclick=()=>{idx=Math.floor(Math.random()*cards.length);show=showAllAnswers;render()};
+$("prevBtn").onclick=()=>{idx=(idx-1+cards.length)%cards.length;show=showAllAnswers;render()};
+$("nextBtn").onclick=()=>{idx=(idx+1)%cards.length;show=showAllAnswers;render()};
 $("printBtn").onclick=()=>window.print();
 $("search").oninput=renderList;
 $("timeSelect").onchange=e=>{clearInterval(timer);timer=null;total=parseInt(e.target.value,10);setTime(total,false)};
