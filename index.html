@@ -511,8 +511,30 @@ button,input,textarea,select{
 }
 
 </style>
-</head>
+<style>
+@media(max-width:900px){
+  /* move floating next button slightly lower */
+  #mobileFixedNextBtn{
+    top:60px !important;
+  }
+
+  /* quick jump selector */
+  #mobileJumpFixed{
+    position:fixed !important;
+    top:60px !important;
+    left:10px !important;
+    z-index:2147483646 !important;
+    width:85px !important;
+    height:34px !important;
+    border-radius:999px !important;
+    border:1px solid #cbd5e1 !important;
+    background:#fff !important;
+    font-size:12px !important;
+  }
+}
+</style></head>
 <body>
+<select id="mobileJumpFixed"><option value="">번호 이동</option></select>
 <button type="button" id="mobileFixedNextBtn" aria-label="다음 질문">다음</button>
 <div class="app">
   <aside class="side">
@@ -2596,6 +2618,34 @@ document.addEventListener('DOMContentLoaded', function(){
   if(fixedNext && realNext){
     fixedNext.addEventListener('click', function(){
       realNext.click();
+    });
+  }
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+  var sel = document.getElementById('mobileJumpFixed');
+  var items = document.querySelectorAll('#qList .qItem');
+
+  if(sel && items.length){
+    for(var i=0;i<items.length;i++){
+      var opt=document.createElement('option');
+      opt.value=i;
+      opt.text=(i+1);
+      sel.appendChild(opt);
+    }
+
+    sel.addEventListener('change', function(){
+      var idx=parseInt(this.value,10);
+      if(isNaN(idx)) return;
+
+      var btns=document.querySelectorAll('#qList .qItem');
+      if(btns[idx]){
+        btns[idx].click();
+      }
     });
   }
 });
