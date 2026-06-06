@@ -435,8 +435,46 @@ button,input,textarea,select{
 }
 
 </style>
+<style>
+
+/* Mobile-only fixed Next button: always visible even when page scrolls down */
+#mobileFixedNextBtn{
+  display:none;
+}
+@media(max-width:900px){
+  #nextBtn{
+    display:none !important;
+  }
+  #mobileFixedNextBtn{
+    display:block !important;
+    position:fixed !important;
+    top:calc(8px + env(safe-area-inset-top)) !important;
+    right:10px !important;
+    z-index:2147483647 !important;
+    width:auto !important;
+    min-width:60px !important;
+    height:34px !important;
+    padding:4px 12px !important;
+    border-radius:999px !important;
+    border:1px solid #2563eb !important;
+    background:#2563eb !important;
+    color:#fff !important;
+    font-weight:900 !important;
+    font-size:13px !important;
+    line-height:1 !important;
+    box-shadow:0 4px 14px rgba(0,0,0,.28) !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    transform:none !important;
+    -webkit-transform:none !important;
+  }
+}
+
+</style>
 </head>
 <body>
+<button type="button" id="mobileFixedNextBtn" aria-label="다음 질문">다음</button>
 <div class="app">
   <aside class="side">
     <div class="brand">전극 프로세스 엔지니어 인터뷰 연습</div>
@@ -2510,5 +2548,18 @@ render();
 restoreHtmlBackupIfNeeded();
 </script>
 
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var fixedNext = document.getElementById('mobileFixedNextBtn');
+  var realNext = document.getElementById('nextBtn');
+  if(fixedNext && realNext){
+    fixedNext.addEventListener('click', function(){
+      realNext.click();
+    });
+  }
+});
+</script>
 
 </body></html>
