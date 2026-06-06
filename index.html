@@ -2,7 +2,7 @@
 <html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>전극 프로세스 엔지니어 인터뷰 연습</title>
+<title>전극 프로세스 엔지니어 인터뷰 연습 - 전체 68항목 포함</title>
 <style>
 :root{
   --bg:#f4f7fb;--panel:#fff;--text:#172033;--muted:#657086;--line:#dfe5ef;
@@ -438,7 +438,8 @@ button,input,textarea,select{
 <style>
 
 /* Mobile-only fixed Next button: always visible even when page scrolls down */
-#mobileFixedNextBtn{
+#mobileFixedNextBtn,
+#mobileFixedPrevBtn{
   display:none;
 }
 @media(max-width:900px){
@@ -458,6 +459,31 @@ button,input,textarea,select{
     border-radius:999px !important;
     border:1px solid #2563eb !important;
     background:#2563eb !important;
+    color:#fff !important;
+    font-weight:900 !important;
+    font-size:13px !important;
+    line-height:1 !important;
+    box-shadow:0 4px 14px rgba(0,0,0,.28) !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    transform:none !important;
+    -webkit-transform:none !important;
+  }
+
+  #mobileFixedPrevBtn{
+    display:block !important;
+    position:fixed !important;
+    top:calc(8px + env(safe-area-inset-top)) !important;
+    right:78px !important;
+    z-index:2147483647 !important;
+    width:auto !important;
+    min-width:60px !important;
+    height:34px !important;
+    padding:4px 12px !important;
+    border-radius:999px !important;
+    border:1px solid #64748b !important;
+    background:#475569 !important;
     color:#fff !important;
     font-weight:900 !important;
     font-size:13px !important;
@@ -517,6 +543,9 @@ button,input,textarea,select{
   #mobileFixedNextBtn{
     top:60px !important;
   }
+  #mobileFixedPrevBtn{
+    top:60px !important;
+  }
 
   /* quick jump selector */
   #mobileJumpFixed{
@@ -524,7 +553,8 @@ button,input,textarea,select{
     top:60px !important;
     left:10px !important;
     z-index:2147483646 !important;
-    width:85px !important;
+    width:185px !important;
+    max-width:calc(100vw - 155px) !important;
     height:34px !important;
     border-radius:999px !important;
     border:1px solid #cbd5e1 !important;
@@ -569,6 +599,7 @@ button,input,textarea,select{
 </head>
 <body>
 <select id="mobileJumpFixed"><option value="">번호 이동</option></select>
+<button type="button" id="mobileFixedPrevBtn" aria-label="이전 질문">이전</button>
 <button type="button" id="mobileFixedNextBtn" aria-label="다음 질문">다음</button>
 <div class="app">
   <aside class="side">
@@ -736,6 +767,17 @@ Calendering에서는 건조된 전극을 압연하여 target thickness, density,
     </section>
   </main>
 </div>
+
+
+<script>
+/* Full 68-item version safeguard: restore all hidden/deleted questions once for this file version */
+try{
+  if(localStorage.getItem("full68_restore_done_v1") !== "true"){
+    localStorage.removeItem("deletedQuestionIds");
+    localStorage.setItem("full68_restore_done_v1","true");
+  }
+}catch(e){}
+</script>
 
 <script>
 
@@ -2366,6 +2408,116 @@ const cards = [
       "공정 흐름 기준으로 원인을 좁혔는가",
       "4M과 검증/조치를 모두 말했는가"
     ]
+  },
+  {
+      "cat": "대표 성과/적응력",
+      "title": "성과 사례 1: LG Long Bolt 개선 경험을 설명해 보세요.",
+      "prompt": "모듈 및 팩 조립 경험이 없었지만 빠르게 학습해 병목을 분석하고, Dual-Spindle 적용 후 품질까지 검증한 사례로 설명하세요.",
+      "answer": [
+          "핵심은 모듈 및 팩 조립(Module & Pack Assembly, 모듈 및 팩 조립) 경험이 전혀 없었지만, 현장 관찰과 데이터 분석으로 빠르게 학습해 성과를 냈다는 점입니다.",
+          "비디오 분석과 Gantt Chart(간트차트)로 Stud 공급이 아니라 Long Bolt 체결 동작이 실제 Bottleneck(병목 공정)임을 확인했습니다.",
+          "Dual-Spindle System(이중 스핀들 시스템) 적용 후 Torque(체결 토크), SPC(통계적 공정관리), Cpk(공정능력지수), Long Run Test(장시간 연속 생산 검증)로 품질과 안정성을 검증했습니다.",
+          "LG에너지솔루션에서 가장 기억에 남는 성과는 생산성 개선 프로젝트입니다.",
+          "당시 경영진에서 일일 생산량을 130 Pack/Day(팩/일)에서 140 Pack/Day(팩/일)로 향상하라는 목표를 주었습니다.",
+          "저는 설비팀 리드로 참여했지만, 사실 모듈 및 팩 조립(Module & Pack Assembly, 모듈 및 팩 조립) 공정 경험은 전혀 없는 상태였습니다.",
+          "그래서 먼저 약 20개 공정 스테이션(Station, 작업 공정)의 역할과 설비 동작을 학습했고, 전체 라인에 대한 Cycle Time Analysis(사이클 타임 분석)를 수행했습니다.",
+          "그 결과 Long Bolt Installation(롱볼트 체결) 공정이 전체 라인의 Bottleneck(병목 공정)이라는 것을 확인했습니다.",
+          "하지만 바로 개선안을 적용하지는 않았습니다.",
+          "먼저 Long Bolt Station(롱볼트 스테이션)을 비디오로 촬영한 후 설비별 동작 시간을 측정하여 Gantt Chart(간트차트)를 작성했습니다.",
+          "처음에는 Stud(스터드) 공급 장비가 병목일 것으로 예상했지만, 데이터를 분석해 보니 Stud 공급은 이미 완료된 상태에서 체결 장비가 볼트를 하나씩 순차적으로 체결하는 동안 다른 설비들이 대기하고 있었습니다.",
+          "즉 실제 병목은 공급 공정이 아니라 체결 공정이었습니다.",
+          "또한 단순히 체결 속도를 높이는 방법은 Torque(체결 토크) 품질과 설비 안정성 측면에서 리스크가 있다고 판단했습니다.",
+          "그래서 체결 조건은 그대로 유지하면서 두 개의 볼트를 동시에 체결할 수 있는 Dual-Spindle System(이중 스핀들 시스템)을 제안했고, 설비 업체와 협업하여 적용을 완료했습니다.",
+          "다만 Dual-Spindle 적용 시 가장 우려했던 부분은 두 개의 Spindle(스핀들)이 동시에 동작하면서 발생할 수 있는 Vibration(진동)이나 Mechanical Interference(기계적 간섭)가 Torque 품질에 영향을 줄 수 있다는 점이었습니다.",
+          "그래서 개선 후에는 단순히 생산량만 확인하지 않고, Single-Spindle(단일 스핀들) 조건과 Dual-Spindle(이중 스핀들) 조건의 Torque Data(토크 데이터)를 비교 분석했습니다.",
+          "각 Spindle별 Torque 평균값, 표준편차, NG 발생률을 확인했고, SPC(통계적 공정관리)와 Cpk(공정능력지수)를 활용하여 공정 변동성이 증가하지 않았는지 검증했습니다.",
+          "또한 여러 Shift(교대조)에서 Long Run Test(장시간 연속 생산 검증)를 수행하여 장시간 운전 시에도 Torque Drift(토크 드리프트)나 Spindle 간 편차가 발생하지 않는지 확인했습니다.",
+          "그 결과 Dual-Spindle 조건에서도 Torque 값은 Spec(규격) 내에서 안정적으로 유지되었고, Spindle 간 품질 차이나 설비 안정성 문제는 발견되지 않았습니다.",
+          "최종적으로 병목 공정의 Cycle Time을 약 30% 단축할 수 있었고, 목표였던 140 Pack/Day 생산량을 안정적으로 달성했습니다.",
+          "이 경험을 통해 저는 단순히 아이디어를 제안하는 것이 아니라, 현장을 빠르게 학습하고 데이터를 기반으로 병목을 찾아 개선하며, 품질과 안정성까지 검증한 후 양산에 적용하는 것이 엔지니어의 역할이라고 생각하게 되었습니다.",
+          "또한 새로운 공정이라도 동일한 접근 방식으로 빠르게 적응하고 성과를 만들 수 있다는 자신감을 갖게 되었습니다."
+      ],
+      "tails": [
+          "왜 Long Bolt 공정이 병목이라고 판단했습니까?",
+          "Cycle Time Analysis와 Gantt Chart는 어떻게 만들었습니까?",
+          "왜 Stud 공급 장비가 아니라 체결 장비가 병목이라고 판단했습니까?",
+          "Dual-Spindle 말고 다른 개선안은 검토하지 않았습니까?",
+          "Dual-Spindle 적용 시 진동이나 기계적 간섭이 Torque에 영향을 주지 않는지 어떻게 검증했습니까?",
+          "SPC와 Cpk는 어떤 목적으로 확인했습니까?",
+          "이 경험을 전극 공정 적응력과 어떻게 연결할 수 있습니까?"
+      ],
+      "checks": [
+          "처음 경험이 없었다는 점을 솔직하게 말했는가",
+          "빠르게 학습한 방법을 설명했는가",
+          "비디오 분석과 Gantt Chart로 병목을 확인했는가",
+          "Stud 공급이 아니라 체결이 병목이라는 근거를 설명했는가",
+          "Dual-Spindle 적용 이유와 리스크를 설명했는가",
+          "Torque/SPC/Cpk/Long Run Test로 품질 검증을 언급했는가",
+          "정량 결과 30% 단축, 140 Pack/Day 달성을 언급했는가"
+      ]
+  },
+  {
+    "cat": "대표 성과/품질 개선",
+    "title": "성과 사례 2: ONE Formation 누액 불량 개선 경험을 설명해 보세요.",
+    "prompt": "Vacuum Decay Test DOE 1차 개선 후 한계를 확인하고 Helium Leak Test를 적용한 사례로 설명하세요.",
+    "answer": [
+      "핵심은 기존 검사 방식을 바로 버리지 않고, 먼저 Vacuum Decay Test(진공 감쇠 검사)를 DOE(실험계획법)로 최적화했다는 점입니다.",
+      "1차 개선으로 검출 성능은 향상됐지만 Formation(화성) 누액이 남아 있어, 검사 조건이 아니라 검사 방식의 한계라고 판단했습니다.",
+      "이후 Helium Leak Test(헬륨 누설 검사)로 Micro Leak(미세 누설)을 확인했고, 누액 불량률을 약 3%에서 거의 0% 수준으로 낮췄습니다.",
+      "ONE에서 가장 기억에 남는 프로젝트는 Formation(화성) 누액 불량 개선 프로젝트입니다.",
+      "당시 각형 셀 Ramp-up(양산 초기 증산) 과정에서 약 3% 수준의 누액 불량이 발생하고 있었습니다.",
+      "처음에는 기존 Vacuum Decay Test(진공 감쇠 검사)를 유지하면서 해결하고자 했습니다.",
+      "검사 조건이 최적화되지 않았을 가능성을 고려하여 DOE(Design of Experiments, 실험계획법)를 수행했고, 진공도, 유지 시간, 판정 기준 등의 영향을 분석했습니다.",
+      "그 결과 검출 성능은 일부 향상되었고 불량률도 감소했지만, Formation(화성) 공정에서는 여전히 누액이 발생했습니다.",
+      "그래서 저는 문제의 원인이 검사 조건이 아니라 검사 방식 자체에 있을 수 있다고 판단했습니다.",
+      "이후 기존 검사에서 합격한 셀을 대상으로 Helium Leak Test(헬륨 누설 검사)를 수행했고, Vacuum Decay Test(진공 감쇠 검사)로는 검출되지 않는 Micro Leak(미세 누설)이 존재한다는 것을 확인했습니다.",
+      "이 데이터를 바탕으로 검사 방식 변경을 제안했고, 설비 업체와 제조기술, 품질팀과 협업하여 Helium Leak Test(헬륨 누설 검사)를 도입했습니다.",
+      "그 결과 Formation(화성) 누액 불량률을 약 3%에서 거의 0% 수준까지 낮출 수 있었습니다.",
+      "이 경험을 통해 문제를 해결할 때는 바로 새로운 기술을 도입하기보다 기존 공정의 가능성을 먼저 검증하고, 데이터로 한계를 확인한 후 근본 원인을 해결하는 것이 중요하다는 점을 배웠습니다."
+    ],
+    "tails": [
+      "왜 처음부터 Helium Leak Test를 적용하지 않았나요?",
+      "Vacuum Decay Test의 한계는 무엇이었나요?",
+      "Formation 누액과 Micro Leak은 어떻게 연결되나요?",
+      "품질팀/제조팀/벤더와 어떻게 협업했나요?"
+    ],
+    "checks": [
+      "기존 검사 DOE 1차 개선을 먼저 설명했는가",
+      "검사 조건의 한계와 검사 방식의 한계를 구분했는가",
+      "Helium Leak Test 적용 근거를 데이터로 설명했는가",
+      "3%에서 거의 0% 개선 결과를 언급했는가"
+    ]
+  },
+  {
+    "cat": "대표 성과/DOE",
+    "title": "꼬리질문: DOE를 어떻게 수행했는지 자세히 설명해 보세요.",
+    "prompt": "Minitab Main Effects Plot 중심으로 Vacuum Decay Test 조건을 검토한 방식으로 답변하세요.",
+    "answer": [
+      "DOE(Design of Experiments, 실험계획법)는 Minitab(미니탭)을 사용해 Main Effects Plot(주효과도) 중심으로 검토했다고 설명하면 됩니다.",
+      "주요 인자는 Vacuum Level(진공도), Hold Time(유지 시간), Stabilization Time(안정화 시간), Judgment Limit(판정 기준)이었습니다.",
+      "검사 결과와 Formation(화성) 이후 누액 발생 여부를 비교해 False Pass(불량인데 합격)가 줄어드는 조건을 확인했습니다.",
+      "DOE(Design of Experiments, 실험계획법)는 기존 Vacuum Decay Test(진공 감쇠 검사)의 검출력을 높일 수 있는지 확인하기 위해 진행했습니다.",
+      "저는 Minitab(미니탭)을 사용해서 Main Effects Plot(주효과도) 중심으로 검토했습니다.",
+      "주요 인자는 Vacuum Level(진공도), Hold Time(유지 시간), Stabilization Time(안정화 시간), Judgment Limit(판정 기준)으로 두었습니다.",
+      "각 조건별로 Leak Detection(누설 검출) 결과를 비교했고, 단순히 Pass/Fail(합격/불합격)만 본 것이 아니라 Formation(화성) 이후 실제 누액 발생 여부와 함께 비교했습니다.",
+      "Minitab(미니탭)에서 각 인자가 Leak Detection(누설 검출)에 얼마나 영향을 주는지 확인했고, 특히 진공도와 유지 시간이 검출력에 영향이 큰 것으로 확인했습니다.",
+      "조건 최적화를 통해 일부 False Pass(불량인데 합격)는 줄였지만, Formation(화성) 이후에도 누액이 남아 있었습니다.",
+      "그래서 최종적으로는 Vacuum Decay Test(진공 감쇠 검사)의 조건 문제가 아니라 Micro Leak(미세 누설)에 대한 검사 방식 자체의 한계라고 판단했습니다.",
+      "그 결과 Helium Leak Test(헬륨 누설 검사)를 검토하게 되었고, 기존 검사 합격품에서도 Micro Leak(미세 누설)을 확인하면서 검사 방식 변경의 근거를 확보했습니다.",
+      "면접에서 추가 질문이 나오면, Interaction Effect(교호작용)까지 깊게 보기보다는 빠른 양산 대응을 위해 Main Effect(주효과) 중심으로 조건 우선순위를 좁혔다고 설명하겠습니다."
+    ],
+    "tails": [
+      "Main Effects Plot은 무엇을 보기 위한 것인가요?",
+      "False Pass를 어떻게 정의했나요?",
+      "왜 Interaction Effect까지 깊게 보지 않았나요?",
+      "DOE 결과가 Helium 적용 결정에 어떻게 연결됐나요?"
+    ],
+    "checks": [
+      "Minitab과 Main Effects Plot을 언급했는가",
+      "진공도/유지 시간/안정화 시간/판정 기준 인자를 설명했는가",
+      "False Pass와 Formation 누액 결과를 연결했는가",
+      "조건 최적화 후에도 남은 한계를 Helium 검토로 연결했는가"
+    ]
   }
 ];
 
@@ -2846,6 +2998,14 @@ document.addEventListener('DOMContentLoaded', function(){
       realNext.click();
     });
   }
+
+  var fixedPrev = document.getElementById('mobileFixedPrevBtn');
+  var realPrev = document.getElementById('prevBtn');
+  if(fixedPrev && realPrev){
+    fixedPrev.addEventListener('click', function(){
+      realPrev.click();
+    });
+  }
 });
 </script>
 
@@ -2854,15 +3014,33 @@ document.addEventListener('DOMContentLoaded', function(){
 document.addEventListener('DOMContentLoaded', function(){
 
   var sel = document.getElementById('mobileJumpFixed');
-  var items = document.querySelectorAll('#qList .qItem');
 
-  if(sel && items.length){
+  function cleanTitle(txt){
+    return (txt || '')
+      .replace(/\s+/g,' ')
+      .replace(/^[0-9]{1,3}\s*/,'')
+      .trim();
+  }
+
+  function rebuildMobileJumpOptions(){
+    if(!sel) return;
+    var items = document.querySelectorAll('#qList .qItem');
+    sel.innerHTML = '<option value="">번호 이동</option>';
+
     for(var i=0;i<items.length;i++){
+      var raw = cleanTitle(items[i].innerText || items[i].textContent || '');
+      var title = raw.split(/전극 공정 전반|Mixing|Coating|Drying|Calendering|Slitting|CTQ|Slurry|Binder|Solvent|Slot Die|Coating Defect|Edge Defect|Alignment|Cracking|품질\/데이터|문제 해결|공정 최적화|전체 경험|성과 사례/i)[0].trim();
+      if(title.length > 24) title = title.slice(0,24) + '...';
+
       var opt=document.createElement('option');
       opt.value=i;
-      opt.text=(i+1);
+      opt.text=String(i+1).padStart(2,'0') + '  ' + title;
       sel.appendChild(opt);
     }
+  }
+
+  if(sel){
+    rebuildMobileJumpOptions();
 
     sel.addEventListener('change', function(){
       var idx=parseInt(this.value,10);
@@ -2873,6 +3051,14 @@ document.addEventListener('DOMContentLoaded', function(){
         btns[idx].click();
       }
     });
+
+    var qList = document.getElementById('qList');
+    if(qList && window.MutationObserver){
+      var obs = new MutationObserver(function(){
+        rebuildMobileJumpOptions();
+      });
+      obs.observe(qList, {childList:true, subtree:true});
+    }
   }
 });
 </script>
